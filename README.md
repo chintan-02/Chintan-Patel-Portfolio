@@ -1,1 +1,0 @@
-# Chintan-Patel-Portfolio
