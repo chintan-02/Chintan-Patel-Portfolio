@@ -389,7 +389,8 @@ body {
     justify-content: flex-start;
   }
   .profile-img {
-    height: 240px;
+    height: auto;
+    object-fit: contain;
   }
   #rotating-text {
     min-width: 18ch;
