@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <title>Chintan Patel | AI/ML & Data Science Portfolio</title>
+
+  <meta name="description" content="Chintan Patel – AI/ML & Data Science portfolio: projects, skills, education, experience, blog, and contact." />
+
+  <!-- Fonts: DM Sans (body) + Instrument Serif (display) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container header-inner">
+
+      <a class="brand" href="#home" aria-label="Go to homepage hero">
+        <span class="brand-mark" aria-hidden="true">CP</span>
+        <span class="brand-copy">
+          <span class="brand-text">Chintan Patel</span>
+          <span class="brand-subtitle">AI/ML Developer</span>
+        </span>
+      </a>
+
+      <nav class="nav" id="primary-navigation" aria-label="Primary navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#experience" class="nav-link">Experience</a>
+        <a href="#projects" class="nav-link">Projects</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions" aria-label="External profile links">
+        <a class="icon-btn" href="https://github.com/chintan-02" target="_blank" rel="noopener" aria-label="GitHub profile">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a class="icon-btn" href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a class="icon-btn" href="mailto:patel.chintan380@gmail.com" aria-label="Email Chintan Patel">
+          <i class="fa-regular fa-envelope"></i>
+        </a>
+        <a class="resume-nav-btn" href="Chintan Patel Resume.pdf" download>
+          <i class="fa-solid fa-file-arrow-down"></i>
+          Resume
+        </a>
+        <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="primary-navigation" aria-expanded="false">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-layout">
+
+        <div class="hero-photo-wrap">
+          <div class="hero-rings" aria-hidden="true">
+            <div class="radar-ring radar-s1"></div>
+            <div class="radar-ring radar-s2"></div>
+            <div class="radar-ring radar-s3"></div>
+            <div class="radar-ring radar-s4"></div>
+            <div class="radar-ring radar-s5"></div>
+            <div class="radar-ring radar-s6"></div>
+            <div class="radar-pulse radar-p1"></div>
+            <div class="radar-pulse radar-p2"></div>
+            <div class="radar-pulse radar-p3"></div>
+            <div class="radar-pulse radar-p4"></div>
+          </div>
+          <div class="radar-photo">
+            <img src="profile.JPG" alt="Chintan Patel" class="radar-img" loading="lazy">
+          </div>
+        </div>
+
+        <div class="hero-content reveal-on-scroll">
+          <p class="badge">
+            <span class="dot"></span>
+            <span class="badge-label">AI/ML Developer &bull; Data Science &bull; Canada</span>
+          </p>
+
+          <h1 class="hero-title">Building <span id="hero-tw"></span><span class="tw-cursor" aria-hidden="true">|</span></h1>
+
+          <div class="hero-actions">
+            <a href="#projects" class="btn btn-primary">View Projects</a>
+            <a href="Chintan Patel Resume.pdf" class="btn btn-resume" download>
+              <i class="fa-solid fa-download"></i> Download Resume
+            </a>
+          </div>
+
+          <div class="trust-strip" aria-label="Core AI and machine learning focus areas">
+            <span>Machine Learning</span>
+            <span>NLP</span>
+            <span>Computer Vision</span>
+            <span>FastAPI</span>
+            <span>Streamlit</span>
+            <span>SQL</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ABOUT -->
+    <section id="about" class="section">
+      <div class="container split">
+        <div class="panel">
+          <h2 class="section-title">About</h2>
+          <p>
+            I’m a Computer Science graduate studying Integrated Artificial Intelligence in Canada, building end-to-end ML systems that go beyond notebooks — from raw data to deployed, explainable applications with real clinical and business value.
+          </p>
+          <p>
+            My focus is on building things that actually work in production: clean APIs, structured pipelines, model explainability, and clear documentation. I care about writing code that other engineers can read, maintain, and trust.
+          </p>
+
+          <div class="highlight-list">
+            <div class="hl"><i class="fa-solid fa-check"></i><span>End-to-end ML pipelines — data cleaning, feature engineering, model training, and evaluation</span></div>
+            <div class="hl"><i class="fa-solid fa-check"></i><span>Clinical AI — triage scoring, NLP intake, SHAP explainability, and safety rule systems</span></div>
+            <div class="hl"><i class="fa-solid fa-check"></i><span>Production stack — FastAPI, Streamlit, SQLite, Azure Speech-to-Text, PDF generation, Docker basics</span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="section-title">Currently</h2>
+          <p>
+            Building TriageAI — a clinical emergency triage system with structured patient intake, ML-based CTAS/KTAS scoring, Azure Speech-to-Text, SHAP explainability, FastAPI backend, PDF report generation, and SQLite persistence.
+          </p>
+          <p>
+            Completing the IBM Data Science Professional Certificate on Coursera — covering ML, NLP, statistics, and applied data science with Python.
+          </p>
+          <p>
+            Actively job hunting in Canada (NOC 21232) and building toward Canadian Permanent Residency.
+          </p>
+
+          <div class="callout">
+            <div class="callout-icon"><i class="fa-solid fa-bolt"></i></div>
+            <div>
+              <h3>Open to</h3>
+              <p class="muted">
+                Junior ML Engineer, Junior Data Scientist, AI/ML Developer, Data Analyst, and co-op / internship roles across Canada. Open to remote and hybrid positions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Skills</h2>
+          <p class="muted">Grouped technical skills for AI/ML development, analytics, and deployment-ready project work.</p>
+        </div>
+
+        <div class="skills-grid">
+          <div class="skill-card">
+            <div class="skill-top"><i class="fa-solid fa-code"></i><h3>Programming</h3></div>
+            <div class="tool-icons" aria-hidden="true">
+              <i class="fa-brands fa-python"></i><i class="fa-solid fa-database"></i><i class="fa-brands fa-js"></i><i class="fa-brands fa-github"></i>
+            </div>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">JavaScript basics</span><span class="tag">Git/GitHub</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-top"><i class="fa-solid fa-chart-line"></i><h3>Data Science</h3></div>
+            <div class="tool-icons" aria-hidden="true">
+              <i class="fa-solid fa-table"></i><i class="fa-solid fa-chart-pie"></i><i class="fa-solid fa-broom"></i>
+            </div>
+            <div class="tags">
+              <span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">EDA</span><span class="tag">Data Cleaning</span><span class="tag">Feature Engineering</span><span class="tag">Visualization</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-top"><i class="fa-solid fa-brain"></i><h3>Machine Learning</h3></div>
+            <div class="tool-icons" aria-hidden="true">
+              <i class="fa-solid fa-diagram-project"></i><i class="fa-solid fa-chart-simple"></i><i class="fa-solid fa-magnifying-glass-chart"></i>
+            </div>
+            <div class="tags">
+              <span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Classification</span><span class="tag">Regression</span><span class="tag">Model Evaluation</span><span class="tag">Cross-validation</span><span class="tag">SHAP/Explainability</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-top"><i class="fa-solid fa-eye"></i><h3>NLP &amp; Computer Vision</h3></div>
+            <div class="tool-icons" aria-hidden="true">
+              <i class="fa-solid fa-language"></i><i class="fa-solid fa-file-lines"></i><i class="fa-solid fa-camera"></i>
+            </div>
+            <div class="tags">
+              <span class="tag">NLP</span><span class="tag">TF-IDF</span><span class="tag">Text Preprocessing</span><span class="tag">Resume Classification</span><span class="tag">Image Workflows</span><span class="tag">Model Inference</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-top"><i class="fa-solid fa-server"></i><h3>Backend &amp; Deployment</h3></div>
+            <div class="tool-icons" aria-hidden="true">
+              <i class="fa-solid fa-bolt"></i><i class="fa-solid fa-window-maximize"></i><i class="fa-brands fa-docker"></i><i class="fa-brands fa-github-alt"></i>
+            </div>
+            <div class="tags">
+              <span class="tag">FastAPI</span><span class="tag">Streamlit</span><span class="tag">REST APIs</span><span class="tag">Docker basics</span><span class="tag">GitHub Actions basics</span>
+            </div>
+          </div>
+
+          <div class="skill-card">
+            <div class="skill-top"><i class="fa-solid fa-database"></i><h3>Databases &amp; Tools</h3></div>
+            <div class="tool-icons" aria-hidden="true">
+              <i class="fa-solid fa-database"></i><i class="fa-solid fa-book-open"></i><i class="fa-solid fa-terminal"></i>
+            </div>
+            <div class="tags">
+              <span class="tag">SQLite</span><span class="tag">PostgreSQL basics</span><span class="tag">Jupyter</span><span class="tag">VS Code</span><span class="tag">Linux basics</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section id="experience" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Experience &amp; Practical Work</h2>
+          <p class="muted">Practical AI/ML, data science, and software project work built through portfolio development and current studies.</p>
+        </div>
+
+        <div class="experience-grid">
+          <article class="experience-card">
+            <div class="experience-top">
+              <h3>AI/ML Project Developer</h3>
+              <span class="pill">Portfolio</span>
+            </div>
+            <p class="muted">
+              Building production-style AI/ML applications that combine structured data intake, model inference, explainability, dashboards, reporting, and API-backed workflows.
+            </p>
+            <div class="tags">
+              <span class="tag">FastAPI</span><span class="tag">Streamlit</span><span class="tag">ML Systems</span><span class="tag">Explainability</span><span class="tag">Documentation</span>
+            </div>
+          </article>
+
+          <article class="experience-card">
+            <div class="experience-top">
+              <h3>Integrated Artificial Intelligence Student</h3>
+              <span class="pill">Current</span>
+            </div>
+            <p class="muted">
+              Studying AI in Canada with a focus on machine learning, NLP, computer vision, responsible AI, practical model evaluation, and deployment-ready development habits.
+            </p>
+            <div class="tags">
+              <span class="tag">Machine Learning</span><span class="tag">NLP</span><span class="tag">Computer Vision</span><span class="tag">Model Evaluation</span><span class="tag">Responsible AI</span>
+            </div>
+          </article>
+
+          <article class="experience-card">
+            <div class="experience-top">
+              <h3>Data Science &amp; ML Project Work</h3>
+              <span class="pill">Hands-on</span>
+            </div>
+            <p class="muted">
+              Developing end-to-end projects with data preprocessing, feature engineering, model comparison, SQL analysis, testing and Docker basics, clean README files, and deployment readiness.
+            </p>
+            <div class="tags">
+              <span class="tag">Data Cleaning</span><span class="tag">Feature Engineering</span><span class="tag">SQL</span><span class="tag">Docker basics</span><span class="tag">Testing basics</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Projects</h2>
+          <p class="muted projects-note">
+            Selected AI, machine learning, data science, and analytics projects focused on practical business value.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <article class="project-card featured" id="triageai">
+            <div class="project-visual" aria-hidden="true">
+              <i class="fa-solid fa-stethoscope"></i>
+            </div>
+            <div class="project-top">
+              <h3>TriageAI — AI Clinical Triage Support System</h3>
+              <span class="pill">Featured</span>
+            </div>
+            <p class="muted">
+              Problem: clinical intake needs clear risk signals and explainable support. Solution: a production-style healthcare triage app with structured patient intake, ML prediction, safety rules, PDF reports, dashboard, FastAPI backend, and database persistence. Value: demonstrates responsible AI workflow design for decision support.
+            </p>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">FastAPI</span><span class="tag">Scikit-learn/XGBoost</span><span class="tag">SQLite</span><span class="tag">SQLAlchemy</span><span class="tag">Docker</span><span class="tag">Explainable AI</span>
+            </div>
+            <div class="project-links">
+              <a href="#" aria-label="View GitHub repository for TriageAI">View GitHub Repo</a>
+              <a href="#" aria-label="Read case study for TriageAI">Case Study</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-visual" aria-hidden="true">
+              <i class="fa-solid fa-file-lines"></i>
+            </div>
+            <div class="project-top">
+              <h3>Resume Classifier — NLP Screening System</h3>
+            </div>
+            <p class="muted">
+              Problem: recruiters need faster resume screening signals. Solution: an NLP classification pipeline using text preprocessing, TF-IDF features, model training, evaluation, and recruiter-focused outputs. Value: turns unstructured resumes into consistent screening insights.
+            </p>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">NLP</span><span class="tag">Scikit-learn</span><span class="tag">TF-IDF</span><span class="tag">Pandas</span><span class="tag">Model Evaluation</span>
+            </div>
+            <div class="project-links">
+              <a href="#" aria-label="View GitHub repository for Resume Classifier">View GitHub Repo</a>
+              <a href="#" aria-label="Read case study for Resume Classifier">Case Study</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-visual" aria-hidden="true">
+              <i class="fa-solid fa-user-minus"></i>
+            </div>
+            <div class="project-top">
+              <h3>Customer Churn Prediction with Explainability</h3>
+            </div>
+            <p class="muted">
+              Problem: identify customers most likely to leave. Solution: clean customer data, engineer churn features, compare classification models, evaluate business-focused metrics, and explain drivers with SHAP. Value: supports retention targeting and risk prioritization.
+            </p>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">Scikit-learn</span><span class="tag">XGBoost</span><span class="tag">Pandas</span><span class="tag">SHAP</span><span class="tag">Model Evaluation</span>
+            </div>
+            <div class="project-links">
+              <a href="#" aria-label="View GitHub repository for Customer Churn Prediction">View GitHub Repo</a>
+              <a href="#" aria-label="Read case study for Customer Churn Prediction">Case Study</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-visual" aria-hidden="true">
+              <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div class="project-top">
+              <h3>Retail Sales Forecasting</h3>
+            </div>
+            <p class="muted">
+              Problem: improve demand visibility for inventory planning. Solution: analyze sales trends, seasonality, baseline forecasts, and model accuracy with time-series workflows. Value: helps teams compare demand scenarios and plan stock decisions.
+            </p>
+            <div class="tags">
+              <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Time Series</span><span class="tag">Forecasting</span><span class="tag">Visualization</span>
+            </div>
+            <div class="project-links">
+              <a href="#" aria-label="View GitHub repository for Retail Sales Forecasting">View GitHub Repo</a>
+              <a href="#" aria-label="Read case study for Retail Sales Forecasting">Case Study</a>
+            </div>
+          </article>
+
+          <article class="project-card">
+            <div class="project-visual" aria-hidden="true">
+              <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <div class="project-top">
+              <h3>E-commerce SQL Analytics</h3>
+            </div>
+            <p class="muted">
+              Problem: understand revenue, retention, and customer behavior from transactions. Solution: write SQL analytics using CTEs, window functions, cohort analysis, segmentation, and KPI reporting. Value: converts raw sales data into business-ready insights.
+            </p>
+            <div class="tags">
+              <span class="tag">SQL</span><span class="tag">PostgreSQL basics</span><span class="tag">SQLite</span><span class="tag">CTEs</span><span class="tag">Window Functions</span><span class="tag">KPIs</span>
+            </div>
+            <div class="project-links">
+              <a href="#" aria-label="View GitHub repository for E-commerce SQL Analytics">View GitHub Repo</a>
+              <a href="#" aria-label="Read case study for E-commerce SQL Analytics">Case Study</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION -->
+    <section id="education" class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Education</h2>
+          <p class="muted">My academic background and current programs.</p>
+        </div>
+
+        <div class="edu-grid">
+          <article class="edu-card">
+            <div class="edu-top">
+              <h3>Post Graduate Diploma in Integrated Artificial Intelligence</h3>
+              <span class="edu-pill">Current</span>
+            </div>
+            <p class="edu-school">Southern Alberta Institute of Technology (SAIT) • Calgary, AB</p>
+            <p class="edu-date"><i class="fa-regular fa-calendar"></i> January 2026 – August 2026 (Expected)</p>
+          </article>
+
+          <article class="edu-card">
+            <div class="edu-top">
+              <h3>Post Graduate Certificate in Supply Chain Management &amp; Logistics</h3>
+              <span class="edu-pill alt">Canada</span>
+            </div>
+            <p class="edu-school">MacEwan University • Edmonton, Alberta</p>
+            <p class="edu-date"><i class="fa-regular fa-calendar"></i> January 2025 – December 2025</p>
+          </article>
+
+          <article class="edu-card">
+            <div class="edu-top">
+              <h3>Bachelor of Engineering – Computer Science</h3>
+              <span class="edu-pill soft">Degree</span>
+            </div>
+            <p class="edu-school">ITM University • Gujarat, India</p>
+            <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2013 – 2019</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- BLOG -->
+    <section id="blog" class="section is-hidden">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">Blog</h2>
+          <p class="muted">I share what I learn in Data Science, Machine Learning, and building real projects.</p>
+        </div>
+
+        <div class="blog-toolbar">
+          <div class="blog-filters" id="blogFilters"></div>
+
+          <div class="blog-actions">
+            <a class="btn small ghost" href="blog.html">
+              <i class="fa-regular fa-newspaper"></i> View All Blogs
+            </a>
+            <a class="btn small ghost" href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener">
+              <i class="fa-brands fa-linkedin-in"></i> LinkedIn
+            </a>
+          </div>
+        </div>
+
+        <div class="blog-grid" id="blogGrid"></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact" class="section">
+      <div class="container contact">
+        <div class="opportunity-card">
+          <h2 class="section-title">Open to Opportunities</h2>
+          <p class="muted">
+            Open to internships, co-op roles, junior data analyst, junior data scientist, AI/ML developer, and ML engineering opportunities in Canada, remote, or relocation-friendly teams.
+          </p>
+        </div>
+
+        <div class="contact-card">
+          <h2 class="section-title">Contact</h2>
+          <p class="muted">Let’s connect for AI/ML, data science, analytics, and entry-level engineering opportunities.</p>
+
+          <div class="contact-grid">
+            <a class="contact-item" href="mailto:patel.chintan380@gmail.com">
+              <i class="fa-regular fa-envelope"></i>
+              <div>
+                <p class="contact-label">Email</p>
+                <p class="contact-value">patel.chintan380@gmail.com</p>
+              </div>
+            </a>
+
+            <a class="contact-item" href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener">
+              <i class="fa-brands fa-linkedin-in"></i>
+              <div>
+                <p class="contact-label">LinkedIn</p>
+                <p class="contact-value">Connect with me</p>
+              </div>
+            </a>
+
+            <a class="contact-item" href="https://github.com/chintan-02" target="_blank" rel="noopener">
+              <i class="fa-brands fa-github"></i>
+              <div>
+                <p class="contact-label">GitHub</p>
+                <p class="contact-value">Repositories</p>
+              </div>
+            </a>
+
+            <div class="contact-item" aria-label="Location">
+              <i class="fa-solid fa-location-dot"></i>
+              <div>
+                <p class="contact-label">Location</p>
+                <p class="contact-value">Canada</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="contact-cta">
+            <a class="btn primary" href="mailto:patel.chintan380@gmail.com">
+              <i class="fa-regular fa-envelope"></i> Email Me
+            </a>
+            <a class="btn ghost" href="#projects">
+              <i class="fa-solid fa-folder-open"></i> See Projects
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <a class="back-to-top" href="#home" aria-label="Back to top">
+      <i class="fa-solid fa-arrow-up"></i>
+    </a>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <p class="muted">© <span id="year"></span> Chintan Patel <br> Calgary, AB | +1 (780) 782-3796 <br> All rights reserved</p><br/>
+      <div class="footer-links">
+        <a href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener" aria-label="LinkedIn">
+          <i class="fa-brands fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/chintan-02" target="_blank" rel="noopener" aria-label="GitHub">
+          <i class="fa-brands fa-github"></i>
+        </a>
+        <a href="mailto:patel.chintan380@gmail.com" aria-label="Email Chintan Patel">
+          <i class="fa-regular fa-envelope"></i>
+        </a>
+        <a href="Chintan Patel Resume.pdf" download aria-label="Download resume">
+          <i class="fa-solid fa-file-arrow-down"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="node_modules/motion/dist/motion.js"></script>
+  <script src="script.js"></script>
+  <script>
+    (function () {
+      var phrases = [
+        "AI/ML systems.",
+        "clinical triage tools.",
+        "explainable models.",
+        "production-ready ML.",
+        "data-driven decisions."
+      ];
+      var el = document.getElementById("hero-tw");
+      if (!el) return;
+      var pi = 0, ci = 0, erasing = false;
+
+      function step() {
+        var text = phrases[pi];
+        if (!erasing) {
+          el.textContent = text.slice(0, ++ci);
+          if (ci >= text.length) { erasing = true; return setTimeout(step, 2000); }
+          setTimeout(step, 75);
+        } else {
+          el.textContent = text.slice(0, --ci);
+          if (ci <= 0) { erasing = false; pi = (pi + 1) % phrases.length; return setTimeout(step, 400); }
+          setTimeout(step, 40);
+        }
+      }
+      step();
+    }());
+  </script>
+
+  <button class="scroll-fab" id="scrollFab" aria-label="Scroll action">
+    <i class="ti ti-chevron-down" id="fabIconDown" aria-hidden="true"></i>
+    <i class="ti ti-home"        id="fabIconHome" aria-hidden="true"></i>
+  </button>
+  <script>
+  (function () {
+    const fab  = document.getElementById('scrollFab');
+    const hero = document.querySelector(
+      '#hero, .hero, [data-section="hero"], section:first-of-type'
+    );
+    const next = hero ? hero.nextElementSibling : null;
+    let heroVisible = true;
+
+    if (!hero || !fab) return;
+
+    const observer = new IntersectionObserver(function (entries) {
+      heroVisible = entries[0].isIntersecting;
+      fab.classList.toggle('show-home', !heroVisible);
+    }, { threshold: 0.3 });
+
+    observer.observe(hero);
+
+    fab.addEventListener('click', function () {
+      const target = heroVisible
+        ? (next || document.body)
+        : hero;
+      target.scrollIntoView({ behavior: 'smooth' });
+    });
+  })();
+  </script>
+</body>
+</html>
