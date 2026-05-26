@@ -1039,21 +1039,47 @@ ul  { margin: 0; padding-left: 18px; }
     border-color: rgba(14,165,233,0.35);
   }
 
-  .hero { margin-top: 0; padding: 72px 20px 2rem; min-height: auto; }
-  .hero-title { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+  .hero { margin-top: 0; padding: 60px 20px 40px; min-height: auto; text-align: center; align-items: center; }
+  .hero-title { font-size: clamp(1.5rem, 6vw, 2.2rem); text-align: center; width: 100%; }
   .radar-photo { width: 110px; height: 110px; max-width: 110px; max-height: 110px; }
   .hero-rings  { opacity: 0.35; }
   .radar-s5, .radar-s6 { display: none; }
   .hero-actions {
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     max-width: 300px;
     margin-left: auto;
     margin-right: auto;
     gap: 0.75rem;
+    width: 100%;
   }
   .hero-actions .btn { justify-content: center; width: 100%; max-width: 300px; }
   .trust-strip { margin-top: 1rem; justify-content: center; }
+
+  .hero-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .badge {
+    font-size: 10px;
+    max-width: 85vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
 }
 
@@ -1102,25 +1128,25 @@ ul  { margin: 0; padding-left: 18px; }
 
 /* ── SCROLL FAB ──────────────────────────────────────────────── */
 .scroll-fab {
+  display: flex !important;
+  opacity: 1 !important;
+  visibility: visible !important;
   position: fixed;
   bottom: 28px;
   left: 50%;
   transform: translateX(-50%);
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
+  background: #1a6b7a;
   border: none;
   cursor: pointer;
-  display: flex;
+  z-index: 999;
   align-items: center;
   justify-content: center;
-  z-index: 9000;
-  background: var(--accent);
   box-shadow: 0 4px 18px rgba(15,111,159,0.38), 0 1px 4px rgba(15,23,42,0.12);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 300ms ease, background 260ms ease,
-              box-shadow 260ms ease, transform 220ms ease;
+  pointer-events: auto;
+  transition: background 260ms ease, box-shadow 260ms ease, transform 220ms ease;
 }
 .scroll-fab.fab-visible {
   opacity: 1;
