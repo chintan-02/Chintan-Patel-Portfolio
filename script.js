@@ -374,11 +374,3 @@ renderPosts();
     }
   });
 })();
-
-setTimeout(function() {
-  document.querySelectorAll('.dash-bar').forEach(function(bar, i) {
-    setTimeout(function() {
-      bar.style.width = bar.dataset.width + '%';
-    }, i * 200);
-  });
-}, 500);
