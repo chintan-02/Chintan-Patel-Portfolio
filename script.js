@@ -8,14 +8,6 @@
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-/* ── DASH BAR ANIMATION ─────────────────────────────────────── */
-const bars = document.querySelectorAll('.dash-bar');
-bars.forEach((bar, i) => {
-  setTimeout(() => {
-    bar.style.width = bar.dataset.width + '%';
-  }, 400 + (i * 200));
-});
-
 /* ── ACTIVE NAV ON SCROLL ───────────────────────────────────── */
 const sections = document.querySelectorAll('section[id]');
 const navLinks  = document.querySelectorAll('.nav-link');
@@ -303,16 +295,6 @@ renderPosts();
         { amount: 0.1 }
       );
     }
-
-    /* — Hero featured card dash bars (desktop only) — */
-    if (window.innerWidth >= 1024) {
-      document.querySelectorAll('.dash-bar').forEach((bar, i) => {
-        const targetWidth = (bar.getAttribute('data-width') || '0') + '%';
-        setTimeout(() => {
-          animate(bar, { width: ['0%', targetWidth] }, { duration: 0.8, easing: ease });
-        }, 600 + i * 200);
-      });
-    }
   }
 
   /* ── CSS fallback (Motion unavailable) ──────────────────── */
@@ -342,29 +324,26 @@ renderPosts();
   }
 }());
 
-(function () {
-  const fab         = document.getElementById('scrollFab');
-  const fabIconDown = document.getElementById('fabIconDown');
-  const fabIconHome = document.getElementById('fabIconHome');
+(function() {
+  var fab = document.getElementById('scrollFab');
   if (!fab) return;
 
-  const allSections = Array.from(document.querySelectorAll(
-    'section[id], div[id="home"], div[id="hero"]'
-  )).filter(el => el.offsetParent !== null);
+  var heroSec    = document.getElementById('home');
+  var contactSec = document.getElementById('contact');
+  if (!heroSec || !contactSec) return;
 
-  const heroSec = allSections[0];
-  const contactSec = document.querySelector('#contact');
+  var sectionIds = ['home','about','skills','experience',
+                    'projects','education','contact'];
 
-  if (!heroSec || !contactSec) {
-    console.warn('FAB: hero or contact not found');
-    return;
-  }
+  var contactVisible = false;
 
-  let contactVisible = false;
-
-  const observer = new IntersectionObserver(function(entries) {
+  var observer = new IntersectionObserver(function(entries) {
     contactVisible = entries[0].isIntersecting;
-    fab.classList.toggle('show-home', contactVisible);
+    if (contactVisible) {
+      fab.classList.add('show-home');
+    } else {
+      fab.classList.remove('show-home');
+    }
   }, { threshold: 0.15 });
 
   observer.observe(contactSec);
@@ -375,23 +354,31 @@ renderPosts();
       return;
     }
 
-    const visibleSections = Array.from(
-      document.querySelectorAll('section[id]')
-    ).filter(el => el.offsetParent !== null);
+    var scrollY = window.scrollY;
+    var nextSec = null;
 
-    let nextSection = null;
-    for (let i = 0; i < visibleSections.length; i++) {
-      const rect = visibleSections[i].getBoundingClientRect();
-      if (rect.top > 100) {
-        nextSection = visibleSections[i];
+    for (var i = 0; i < sectionIds.length; i++) {
+      var el = document.getElementById(sectionIds[i]);
+      if (!el) continue;
+      var top = el.getBoundingClientRect().top + window.scrollY;
+      if (top > scrollY + 100) {
+        nextSec = el;
         break;
       }
     }
 
-    if (nextSection) {
-      nextSection.scrollIntoView({ behavior: 'smooth' });
+    if (nextSec) {
+      nextSec.scrollIntoView({ behavior: 'smooth' });
     } else {
       contactSec.scrollIntoView({ behavior: 'smooth' });
     }
   });
 })();
+
+setTimeout(function() {
+  document.querySelectorAll('.dash-bar').forEach(function(bar, i) {
+    setTimeout(function() {
+      bar.style.width = bar.dataset.width + '%';
+    }, i * 200);
+  });
+}, 500);
