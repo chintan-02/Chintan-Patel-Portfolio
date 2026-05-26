@@ -333,11 +333,12 @@ renderPosts();
   var contactSec = document.getElementById('contact');
   if (!contactSec) return;
 
-  window.addEventListener('scroll', function() {
+  function checkFab() {
     var rect = contactSec.getBoundingClientRect();
-    var visible = rect.top < window.innerHeight && rect.bottom > 0;
-    fab.classList.toggle('show-home', visible);
-  });
+    fab.classList.toggle('show-home', rect.top < window.innerHeight && rect.bottom > 0);
+  }
+  window.addEventListener('scroll', checkFab);
+  checkFab();
 
   fab.addEventListener('click', function() {
     if (fab.classList.contains('show-home')) {
