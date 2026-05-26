@@ -291,7 +291,7 @@ renderPosts();
 
     if (contact) {
       var rect = contact.getBoundingClientRect();
-      if (rect.top < vpH * 0.3) {
+      if (rect.top < vpH * 0.15) {
         fab.classList.add('show-home');
         fab.setAttribute('aria-label', 'Back to top');
       } else {

@@ -355,7 +355,8 @@ ul  { margin: 0; padding-left: 18px; }
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 90vw;
+  max-width: 85vw;
+  font-size: 10px;
 }
 .badge .dot {
   width: 8px;
