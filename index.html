@@ -570,16 +570,38 @@
   </button>
 
  <script>
-  window.addEventListener('scroll', function() {
-    var c = document.getElementById('contact');
-    var f = document.getElementById('scrollFab');
-    if (!c || !f) return;
-    var r = c.getBoundingClientRect();
+(function() {
+  var fab = document.getElementById('scrollFab');
+  var contact = document.getElementById('contact');
+  var home = document.getElementById('home');
+  if (!fab || !contact || !home) return;
+
+  function check() {
+    var r = contact.getBoundingClientRect();
     r.top < window.innerHeight && r.bottom > 0
-    ? f.classList.add('show-home')
-    : f.classList.remove('show-home');
+      ? fab.classList.add('show-home')
+      : fab.classList.remove('show-home');
+  }
+
+  window.addEventListener('scroll', check);
+  check();
+
+  fab.addEventListener('click', function() {
+    if (fab.classList.contains('show-home')) {
+      home.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      var ids = ['home','about','skills','experience','projects','education','contact'];
+      for (var i = 0; i < ids.length; i++) {
+        var el = document.getElementById(ids[i]);
+        if (el && el.getBoundingClientRect().top > 100) {
+          el.scrollIntoView({ behavior: 'smooth' });
+          return;
+        }
+      }
+    }
   });
- </script>
+})();
+</script>
 
 </body>
 </html>
