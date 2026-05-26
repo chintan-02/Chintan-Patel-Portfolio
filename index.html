@@ -564,10 +564,36 @@
   <script src="https://cdn.jsdelivr.net/npm/motion@12.9.4/dist/motion.js"></script>
   <script src="script.js"></script>
 
-  <button class="scroll-fab" id="scrollFab" aria-label="Scroll to next section">
-    <i class="fa-solid fa-chevron-down" id="fabIconDown" aria-hidden="true"></i>
-    <i class="fa-solid fa-house"        id="fabIconHome" aria-hidden="true"></i>
-  </button>
+<button class="scroll-fab" id="scrollFab" aria-label="Scroll action"
+  onclick="
+    var ids=['home','about','skills','experience','projects','education','contact'];
+    if(this.classList.contains('show-home')){
+      document.getElementById('home').scrollIntoView({behavior:'smooth'});
+      return;
+    }
+    for(var i=0;i<ids.length;i++){
+      var el=document.getElementById(ids[i]);
+      if(el && el.getBoundingClientRect().top > 80){
+        el.scrollIntoView({behavior:'smooth'});
+        return;
+      }
+    }
+  ">
+  <i class="ti ti-chevron-down" id="fabIconDown" aria-hidden="true"></i>
+  <i class="ti ti-home" id="fabIconHome" aria-hidden="true"></i>
+</button>
+
+<script>
+window.addEventListener('scroll', function() {
+  var c = document.getElementById('contact');
+  var f = document.getElementById('scrollFab');
+  if (c && f) {
+    c.getBoundingClientRect().bottom < window.innerHeight * 0.95
+      ? f.classList.add('show-home')
+      : f.classList.remove('show-home');
+  }
+});
+</script>
 
 </body>
 </html>
