@@ -335,7 +335,7 @@ renderPosts();
 
   new IntersectionObserver(function(e) {
     fab.classList.toggle('show-home', e[0].isIntersecting);
-  }, { threshold: 0.15 }).observe(contactSec);
+  }, { threshold: 0, rootMargin: '0px 0px -50px 0px' }).observe(contactSec);
 
   fab.addEventListener('click', function() {
     if (fab.classList.contains('show-home')) {
