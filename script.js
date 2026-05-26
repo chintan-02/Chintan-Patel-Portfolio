@@ -278,7 +278,7 @@ renderPosts();
   }
 
   window.addEventListener('scroll', checkFab, { passive: true });
-  checkFab();
+  setTimeout(checkFab, 100);
 
   fab.addEventListener('click', function() {
     if (fab.classList.contains('show-home')) {
