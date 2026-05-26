@@ -283,14 +283,12 @@ renderPosts();
     var vpH     = window.innerHeight;
     var contact = document.getElementById('contact');
 
-    /* show FAB once user scrolls past 30% of the viewport height */
     if (scrollY > vpH * 0.30) {
       fab.classList.add('fab-visible');
     } else {
       fab.classList.remove('fab-visible');
     }
 
-    /* switch to home icon when contact section enters lower 65% of viewport */
     if (contact) {
       var rect = contact.getBoundingClientRect();
       if (rect.top < vpH * 0.65) {
@@ -310,7 +308,6 @@ renderPosts();
       return;
     }
 
-    /* scroll to the next section below current scroll position */
     var sections  = getSections();
     var threshold = (window.scrollY || window.pageYOffset) + 80;
 
