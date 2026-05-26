@@ -261,3 +261,68 @@ renderPosts();
   }
 }());
 
+/* ── FAB SCROLL BUTTON ───────────────────────────────────────── */
+(function () {
+  var fab = document.getElementById('scrollFab');
+  if (!fab) return;
+
+  var SECTION_IDS = ['home','about','skills','experience','projects','education','contact'];
+
+  function getSections() {
+    return SECTION_IDS
+      .map(function (id) { return document.getElementById(id); })
+      .filter(function (el) {
+        if (!el) return false;
+        var parent = el.closest ? el.closest('.is-hidden') : null;
+        return !parent && getComputedStyle(el).display !== 'none';
+      });
+  }
+
+  function onScroll() {
+    var scrollY = window.scrollY || window.pageYOffset;
+    var vpH     = window.innerHeight;
+    var contact = document.getElementById('contact');
+
+    /* show FAB once user scrolls past 30% of the viewport height */
+    if (scrollY > vpH * 0.30) {
+      fab.classList.add('fab-visible');
+    } else {
+      fab.classList.remove('fab-visible');
+    }
+
+    /* switch to home icon when contact section enters lower 65% of viewport */
+    if (contact) {
+      var rect = contact.getBoundingClientRect();
+      if (rect.top < vpH * 0.65) {
+        fab.classList.add('show-home');
+        fab.setAttribute('aria-label', 'Back to top');
+      } else {
+        fab.classList.remove('show-home');
+        fab.setAttribute('aria-label', 'Scroll to next section');
+      }
+    }
+  }
+
+  fab.addEventListener('click', function () {
+    if (fab.classList.contains('show-home')) {
+      var home = document.getElementById('home');
+      if (home) home.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    /* scroll to the next section below current scroll position */
+    var sections  = getSections();
+    var threshold = (window.scrollY || window.pageYOffset) + 80;
+
+    for (var i = 0; i < sections.length; i++) {
+      if (sections[i].offsetTop > threshold) {
+        sections[i].scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+    }
+  });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}());
+
