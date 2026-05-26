@@ -333,9 +333,11 @@ renderPosts();
   var contactSec = document.getElementById('contact');
   if (!contactSec) return;
 
-  new IntersectionObserver(function(e) {
-    fab.classList.toggle('show-home', e[0].isIntersecting);
-  }, { threshold: 0, rootMargin: '0px 0px -50px 0px' }).observe(contactSec);
+  window.addEventListener('scroll', function() {
+    var rect = contactSec.getBoundingClientRect();
+    var visible = rect.top < window.innerHeight && rect.bottom > 0;
+    fab.classList.toggle('show-home', visible);
+  });
 
   fab.addEventListener('click', function() {
     if (fab.classList.contains('show-home')) {
