@@ -584,35 +584,39 @@
 </button>
 
 <script>
-  (function () {
+(function () {
   var fab     = document.getElementById('scrollFab');
   var contact = document.getElementById('contact');
   if (!fab || !contact) return;
 
-  // Icon swap: home icon appears once the contact section scrolls
-  // into the lower-middle of the viewport. Height-independent.
   var io = new IntersectionObserver(function (entries) {
     fab.classList.toggle('show-home', entries[0].isIntersecting);
   }, { threshold: 0, rootMargin: '0px 0px -40% 0px' });
-
   io.observe(contact);
 
-  // Click behavior (kept from your existing logic)
   var ids = ['home','about','skills','experience','projects','education','contact'];
+  var NAV = 100; // navbar height + buffer — must be LARGER than scroll-margin-top
+
   fab.addEventListener('click', function () {
     if (fab.classList.contains('show-home')) {
       document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
       return;
     }
+
+    // Current section = the LAST section whose top has passed the navbar line.
+    var current = 0;
     for (var i = 0; i < ids.length; i++) {
       var el = document.getElementById(ids[i]);
-      if (el && el.getBoundingClientRect().top > 80) {
-        el.scrollIntoView({ behavior: 'smooth' });
-        return;
+      if (el && el.getBoundingClientRect().top <= NAV) {
+        current = i;
       }
     }
+
+    // Go to the next one (clamped so the last section can't overshoot).
+    var next = document.getElementById(ids[Math.min(current + 1, ids.length - 1)]);
+    if (next) next.scrollIntoView({ behavior: 'smooth' });
   });
- })();
+})();
 </script>
 
 </body>
