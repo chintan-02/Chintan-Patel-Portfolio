@@ -1054,8 +1054,6 @@ ul  { margin: 0; padding-left: 18px; }
   .hero-actions .btn { justify-content: center; width: 100%; max-width: 300px; }
   .trust-strip { margin-top: 1rem; justify-content: center; }
 
-  #scrollFab { bottom: 88px; }
-  body { padding-bottom: 80px; }
 }
 
 /* ── RESPONSIVE — 560px ──────────────────────────────────────── */
@@ -1097,57 +1095,8 @@ ul  { margin: 0; padding-left: 18px; }
   .reveal-item   { opacity: 1; transform: none; }
   .radar-pulse   { animation: none !important; opacity: 0.08 !important; }
   .tw-cursor     { animation: none !important; opacity: 1; }
-  .scroll-fab,
-  .scroll-fab i  { transition: none; }
 }
 
-/* ── SCROLL FAB ──────────────────────────────────────────────── */
-.scroll-fab {
-  position: fixed;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: #1a6b7a;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 40;
-  box-shadow: 0 4px 12px rgba(26,107,122,0.35);
-  transition: all 220ms ease;
-}
-@media (hover: hover) {
-  .scroll-fab:hover {
-    background: #124f5a;
-    transform: translateX(-50%) translateY(-2px);
-  }
-}
-.scroll-fab i {
-  color: #fff;
-  font-size: 20px;
-  position: absolute;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-}
-#fabIconDown {
-  opacity: 1;
-  transform: scale(1);
-}
-#fabIconHome {
-  opacity: 0;
-  transform: scale(0.6);
-}
-.scroll-fab.show-home #fabIconDown {
-  opacity: 0;
-  transform: scale(0.6);
-}
-.scroll-fab.show-home #fabIconHome {
-  opacity: 1;
-  transform: scale(1);
-}
 
 /* ── BTN SECONDARY ───────────────────────────────────────────── */
 .btn-secondary {
