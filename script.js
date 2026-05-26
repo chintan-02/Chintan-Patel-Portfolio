@@ -30,11 +30,17 @@ const menuToggle = document.querySelector('.menu-toggle');
 const headerMenu = document.getElementById('primary-navigation');
 
 if (menuToggle && headerMenu) {
+  const backdrop = document.createElement('div');
+  backdrop.id = 'navBackdrop';
+  backdrop.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:45;display:none';
+  document.body.appendChild(backdrop);
+
   const closeMenu = () => {
     headerMenu.classList.remove('is-open');
     menuToggle.classList.remove('is-open');
     menuToggle.setAttribute('aria-expanded', 'false');
     menuToggle.setAttribute('aria-label', 'Open navigation menu');
+    backdrop.style.display = 'none';
   };
 
   menuToggle.addEventListener('click', () => {
@@ -42,9 +48,11 @@ if (menuToggle && headerMenu) {
     menuToggle.classList.toggle('is-open', isOpen);
     menuToggle.setAttribute('aria-expanded', String(isOpen));
     menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation menu' : 'Open navigation menu');
+    backdrop.style.display = isOpen ? 'block' : 'none';
   });
 
-  headerMenu.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
+  backdrop.addEventListener('click', closeMenu);
+  document.querySelectorAll('#primary-navigation a').forEach(a => a.addEventListener('click', closeMenu));
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
 }
 
@@ -124,6 +132,12 @@ renderPosts();
   ];
   const el = document.getElementById('hero-tw');
   if (!el) return;
+
+  if (window.innerWidth < 768) {
+    el.textContent = phrases[0];
+    return;
+  }
+
   let pi = 0, ci = 0, erasing = false;
 
   function step() {
@@ -281,6 +295,16 @@ renderPosts();
         { amount: 0.1 }
       );
     }
+
+    /* — Hero featured card dash bars (desktop only) — */
+    if (window.innerWidth >= 1024) {
+      document.querySelectorAll('.dash-bar').forEach((bar, i) => {
+        const targetWidth = (bar.getAttribute('data-width') || '0') + '%';
+        setTimeout(() => {
+          animate(bar, { width: ['0%', targetWidth] }, { duration: 0.8, easing: ease });
+        }, 600 + i * 200);
+      });
+    }
   }
 
   /* ── CSS fallback (Motion unavailable) ──────────────────── */
@@ -308,4 +332,55 @@ renderPosts();
 
     targets.forEach(el => obs.observe(el));
   }
+}());
+
+/* ── SCROLL FAB ─────────────────────────────────────────────── */
+/* Hero section:   id="home"  class="hero"  (real selector from Step 0) */
+/* Contact section: id="contact"            (real selector from Step 0) */
+(function () {
+  const fab         = document.getElementById('scrollFab');
+  const fabIconDown = document.getElementById('fabIconDown');
+  const fabIconHome = document.getElementById('fabIconHome');
+  if (!fab) return;
+
+  const heroSec    = document.querySelector(
+    '#hero, #home, .hero-section, .hero, section:first-of-type'
+  );
+  const contactSec = document.querySelector(
+    '#contact, .contact-section, .contact'
+  );
+  if (!heroSec || !contactSec) {
+    console.warn('FAB: sections not found — check IDs');
+    return;
+  }
+
+  let contactVisible = false;
+
+  const observer = new IntersectionObserver(function(entries) {
+    contactVisible = entries[0].isIntersecting;
+    fab.classList.toggle('show-home', contactVisible);
+  }, { threshold: 0.15 });
+
+  observer.observe(contactSec);
+
+  fab.addEventListener('click', function() {
+    if (contactVisible) {
+      heroSec.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    const sections = Array.from(document.querySelectorAll(
+      '#hero,#home,#about,#skills,#experience,#projects,#education,#contact'
+    )).filter(el => el.offsetParent !== null);
+    if (!sections.length) return;
+    let nextSec = null;
+    for (let i = 0; i < sections.length; i++) {
+      const top = sections[i].getBoundingClientRect().top
+                  + window.scrollY;
+      if (top > window.scrollY + 80) {
+        nextSec = sections[i];
+        break;
+      }
+    }
+    (nextSec || heroSec).scrollIntoView({ behavior: 'smooth' });
+  });
 }());

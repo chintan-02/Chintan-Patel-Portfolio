@@ -45,6 +45,17 @@
         <a href="#experience" class="nav-link">Experience</a>
         <a href="#projects" class="nav-link">Projects</a>
         <a href="#contact" class="nav-link">Contact</a>
+        <div class="mobile-nav-social">
+          <a href="https://github.com/chintan-02" target="_blank" rel="noopener" aria-label="GitHub profile">
+            <i class="fa-brands fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+            <i class="fa-brands fa-linkedin-in"></i>
+          </a>
+          <a href="mailto:patel.chintan380@gmail.com" aria-label="Email Chintan Patel">
+            <i class="fa-regular fa-envelope"></i>
+          </a>
+        </div>
       </nav>
 
       <div class="nav-actions" aria-label="External profile links">
@@ -62,9 +73,9 @@
           Resume
         </a>
         <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="primary-navigation" aria-expanded="false">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
+          <span></span>
+          <span></span>
+          <span></span>
         </button>
       </div>
 
@@ -75,47 +86,73 @@
     <section class="hero" id="home">
       <div class="container hero-layout">
 
-        <div class="hero-photo-wrap">
-          <div class="hero-rings" aria-hidden="true">
-            <div class="radar-ring radar-s1"></div>
-            <div class="radar-ring radar-s2"></div>
-            <div class="radar-ring radar-s3"></div>
-            <div class="radar-ring radar-s4"></div>
-            <div class="radar-ring radar-s5"></div>
-            <div class="radar-ring radar-s6"></div>
-            <div class="radar-pulse radar-p1"></div>
-            <div class="radar-pulse radar-p2"></div>
-            <div class="radar-pulse radar-p3"></div>
-            <div class="radar-pulse radar-p4"></div>
+        <div class="hero-left">
+          <div class="hero-photo-wrap">
+            <div class="hero-rings" aria-hidden="true">
+              <div class="radar-ring radar-s1"></div>
+              <div class="radar-ring radar-s2"></div>
+              <div class="radar-ring radar-s3"></div>
+              <div class="radar-ring radar-s4"></div>
+              <div class="radar-ring radar-s5"></div>
+              <div class="radar-ring radar-s6"></div>
+              <div class="radar-pulse radar-p1"></div>
+              <div class="radar-pulse radar-p2"></div>
+              <div class="radar-pulse radar-p3"></div>
+              <div class="radar-pulse radar-p4"></div>
+            </div>
+            <div class="radar-photo">
+              <img src="profile.JPG" alt="Chintan Patel" class="radar-img" loading="lazy">
+            </div>
           </div>
-          <div class="radar-photo">
-            <img src="profile.JPG" alt="Chintan Patel" class="radar-img" loading="lazy">
+
+          <div class="hero-content reveal-on-scroll">
+            <p class="badge">
+              <span class="dot"></span>
+              <span class="badge-label">AI/ML Developer &bull; Data Science &bull; Canada</span>
+            </p>
+
+            <h1 class="hero-title">Building <span id="hero-tw"></span><span class="tw-cursor" aria-hidden="true">|</span></h1>
+
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-primary">View Projects</a>
+              <a href="Chintan Patel Resume.pdf" class="btn btn-resume" download>
+                <i class="fa-solid fa-download"></i> Download Resume
+              </a>
+            </div>
+
+            <div class="trust-strip" aria-label="Core AI and machine learning focus areas">
+              <span>Machine Learning</span>
+              <span>NLP</span>
+              <span>Computer Vision</span>
+              <span>FastAPI</span>
+              <span>Streamlit</span>
+              <span>SQL</span>
+            </div>
           </div>
         </div>
 
-        <div class="hero-content reveal-on-scroll">
-          <p class="badge">
-            <span class="dot"></span>
-            <span class="badge-label">AI/ML Developer &bull; Data Science &bull; Canada</span>
-          </p>
-
-          <h1 class="hero-title">Building <span id="hero-tw"></span><span class="tw-cursor" aria-hidden="true">|</span></h1>
-
-          <div class="hero-actions">
-            <a href="#projects" class="btn btn-primary">View Projects</a>
-            <a href="Chintan Patel Resume.pdf" class="btn btn-resume" download>
-              <i class="fa-solid fa-download"></i> Download Resume
-            </a>
-          </div>
-
-          <div class="trust-strip" aria-label="Core AI and machine learning focus areas">
-            <span>Machine Learning</span>
-            <span>NLP</span>
-            <span>Computer Vision</span>
+        <div class="hero-featured-card">
+          <span class="featured-label">Featured System</span>
+          <h3>TriageAI</h3>
+          <p>Clinical triage support system with ML prediction,
+             SHAP explainability, FastAPI backend, PDF reports,
+             and SQLite persistence.</p>
+          <div class="hero-card-chips">
+            <span>Python</span>
             <span>FastAPI</span>
             <span>Streamlit</span>
-            <span>SQL</span>
+            <span>Explainable AI</span>
           </div>
+          <div class="mini-dashboard">
+            <div class="dash-bar" data-width="85"></div>
+            <div class="dash-bar" data-width="62"></div>
+            <div class="dash-bar" data-width="91"></div>
+            <div class="dash-row">
+              <div class="dash-metric">CTAS Score</div>
+              <div class="dash-metric">Risk Level</div>
+            </div>
+          </div>
+          <a href="#triageai" class="btn-secondary">View Project →</a>
         </div>
 
       </div>
@@ -550,64 +587,11 @@
 
   <script src="node_modules/motion/dist/motion.js"></script>
   <script src="script.js"></script>
-  <script>
-    (function () {
-      var phrases = [
-        "AI/ML systems.",
-        "clinical triage tools.",
-        "explainable models.",
-        "production-ready ML.",
-        "data-driven decisions."
-      ];
-      var el = document.getElementById("hero-tw");
-      if (!el) return;
-      var pi = 0, ci = 0, erasing = false;
-
-      function step() {
-        var text = phrases[pi];
-        if (!erasing) {
-          el.textContent = text.slice(0, ++ci);
-          if (ci >= text.length) { erasing = true; return setTimeout(step, 2000); }
-          setTimeout(step, 75);
-        } else {
-          el.textContent = text.slice(0, --ci);
-          if (ci <= 0) { erasing = false; pi = (pi + 1) % phrases.length; return setTimeout(step, 400); }
-          setTimeout(step, 40);
-        }
-      }
-      step();
-    }());
-  </script>
 
   <button class="scroll-fab" id="scrollFab" aria-label="Scroll action">
     <i class="ti ti-chevron-down" id="fabIconDown" aria-hidden="true"></i>
     <i class="ti ti-home"        id="fabIconHome" aria-hidden="true"></i>
   </button>
-  <script>
-  (function () {
-    const fab  = document.getElementById('scrollFab');
-    const hero = document.querySelector(
-      '#hero, .hero, [data-section="hero"], section:first-of-type'
-    );
-    const next = hero ? hero.nextElementSibling : null;
-    let heroVisible = true;
 
-    if (!hero || !fab) return;
-
-    const observer = new IntersectionObserver(function (entries) {
-      heroVisible = entries[0].isIntersecting;
-      fab.classList.toggle('show-home', !heroVisible);
-    }, { threshold: 0.3 });
-
-    observer.observe(hero);
-
-    fab.addEventListener('click', function () {
-      const target = heroVisible
-        ? (next || document.body)
-        : hero;
-      target.scrollIntoView({ behavior: 'smooth' });
-    });
-  })();
-  </script>
 </body>
 </html>
