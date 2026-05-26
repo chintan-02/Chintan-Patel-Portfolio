@@ -584,15 +584,35 @@
 </button>
 
 <script>
-window.addEventListener('scroll', function() {
-  var c = document.getElementById('contact');
-  var f = document.getElementById('scrollFab');
-  if (c && f) {
-    c.getBoundingClientRect().bottom < window.innerHeight * 0.95
-      ? f.classList.add('show-home')
-      : f.classList.remove('show-home');
-  }
-});
+  (function () {
+  var fab     = document.getElementById('scrollFab');
+  var contact = document.getElementById('contact');
+  if (!fab || !contact) return;
+
+  // Icon swap: home icon appears once the contact section scrolls
+  // into the lower-middle of the viewport. Height-independent.
+  var io = new IntersectionObserver(function (entries) {
+    fab.classList.toggle('show-home', entries[0].isIntersecting);
+  }, { threshold: 0, rootMargin: '0px 0px -40% 0px' });
+
+  io.observe(contact);
+
+  // Click behavior (kept from your existing logic)
+  var ids = ['home','about','skills','experience','projects','education','contact'];
+  fab.addEventListener('click', function () {
+    if (fab.classList.contains('show-home')) {
+      document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el && el.getBoundingClientRect().top > 80) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+    }
+  });
+ })();
 </script>
 
 </body>
