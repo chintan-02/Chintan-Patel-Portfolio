@@ -569,5 +569,17 @@
     <i class="ti ti-home"        id="fabIconHome" aria-hidden="true"></i>
   </button>
 
+  <script>
+  window.addEventListener('scroll', function() {
+    var c = document.getElementById('contact');
+    var f = document.getElementById('scrollFab');
+    if (!c || !f) return;
+    var r = c.getBoundingClientRect();
+    r.top < window.innerHeight && r.bottom > 0
+    ? f.classList.add('show-home')
+    : f.classList.remove('show-home');
+  });
+  </script>
+
 </body>
 </html>
