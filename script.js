@@ -8,6 +8,14 @@
 const yearEl = document.getElementById('year');
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+/* ── DASH BAR ANIMATION ─────────────────────────────────────── */
+const bars = document.querySelectorAll('.dash-bar');
+bars.forEach((bar, i) => {
+  setTimeout(() => {
+    bar.style.width = bar.dataset.width + '%';
+  }, 400 + (i * 200));
+});
+
 /* ── ACTIVE NAV ON SCROLL ───────────────────────────────────── */
 const sections = document.querySelectorAll('section[id]');
 const navLinks  = document.querySelectorAll('.nav-link');
@@ -334,23 +342,21 @@ renderPosts();
   }
 }());
 
-/* ── SCROLL FAB ─────────────────────────────────────────────── */
-/* Hero section:   id="home"  class="hero"  (real selector from Step 0) */
-/* Contact section: id="contact"            (real selector from Step 0) */
 (function () {
   const fab         = document.getElementById('scrollFab');
   const fabIconDown = document.getElementById('fabIconDown');
   const fabIconHome = document.getElementById('fabIconHome');
   if (!fab) return;
 
-  const heroSec    = document.querySelector(
-    '#hero, #home, .hero-section, .hero, section:first-of-type'
-  );
-  const contactSec = document.querySelector(
-    '#contact, .contact-section, .contact'
-  );
+  const allSections = Array.from(document.querySelectorAll(
+    'section[id], div[id="home"], div[id="hero"]'
+  )).filter(el => el.offsetParent !== null);
+
+  const heroSec = allSections[0];
+  const contactSec = document.querySelector('#contact');
+
   if (!heroSec || !contactSec) {
-    console.warn('FAB: sections not found — check IDs');
+    console.warn('FAB: hero or contact not found');
     return;
   }
 
@@ -368,19 +374,24 @@ renderPosts();
       heroSec.scrollIntoView({ behavior: 'smooth' });
       return;
     }
-    const sections = Array.from(document.querySelectorAll(
-      '#hero,#home,#about,#skills,#experience,#projects,#education,#contact'
-    )).filter(el => el.offsetParent !== null);
-    if (!sections.length) return;
-    let nextSec = null;
-    for (let i = 0; i < sections.length; i++) {
-      const top = sections[i].getBoundingClientRect().top
-                  + window.scrollY;
-      if (top > window.scrollY + 80) {
-        nextSec = sections[i];
+
+    const visibleSections = Array.from(
+      document.querySelectorAll('section[id]')
+    ).filter(el => el.offsetParent !== null);
+
+    let nextSection = null;
+    for (let i = 0; i < visibleSections.length; i++) {
+      const rect = visibleSections[i].getBoundingClientRect();
+      if (rect.top > 100) {
+        nextSection = visibleSections[i];
         break;
       }
     }
-    (nextSec || heroSec).scrollIntoView({ behavior: 'smooth' });
+
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      contactSec.scrollIntoView({ behavior: 'smooth' });
+    }
   });
-}());
+})();
