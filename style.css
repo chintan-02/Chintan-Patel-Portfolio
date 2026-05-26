@@ -58,9 +58,11 @@ ul  { margin: 0; padding-left: 18px; }
 }
 
 .section {
-  padding: 5rem 0;
+  padding: 4rem 0;
   scroll-margin-top: 92px;
 }
+
+#contact { padding-top: 2rem; }
 
 .section-title {
   margin: 0 0 12px;
@@ -693,7 +695,7 @@ ul  { margin: 0; padding-left: 18px; }
   font-size: 13px;
   font-weight: 700;
   color: var(--accent);
-  padding: 9px 12px;
+  padding: 11px 14px;
   border-radius: 12px;
   border: 1px solid var(--border);
   background: #ffffff;
@@ -962,6 +964,7 @@ ul  { margin: 0; padding-left: 18px; }
   .header-inner, .nav-wrap { min-height: 72px; }
   body { padding-top: 72px; }
   .section { padding: 3.5rem 0; }
+  .nav { gap: 1.25rem; }
   .hero { margin-top: 0; padding: 60px 20px 48px; min-height: auto; }
   .hero-title { font-size: clamp(2.0rem, 5.5vw, 3.2rem); }
   .skills-grid     { grid-template-columns: repeat(2, 1fr); }
@@ -1088,27 +1091,28 @@ ul  { margin: 0; padding-left: 18px; }
   .container { width: min(1100px, calc(100% - 28px)); }
   body { padding-top: 70px; }
   .header-inner, .nav-wrap { min-height: 70px; }
-  .section { padding: 3rem 0; }
+  .section { padding: 3rem 0; scroll-margin-top: 80px; }
   .hero { margin-top: 0; padding: 40px 16px 40px; }
   .hero-title { font-size: clamp(1.8rem, 8vw, 2.4rem); line-height: 1.12; }
   .hero-actions { display: flex; flex-direction: column; align-items: center; }
   .hero-actions .btn { justify-content: center; width: 100%; max-width: 260px; }
   .contact-grid { grid-template-columns: 1fr; }
   .footer-row { align-items: flex-start; flex-wrap: wrap; gap: 0.5rem; }
-  .footer-row .muted { font-size: 0.8rem; white-space: nowrap; line-height: 1.6; }
+  .footer-row .muted { font-size: 0.8rem; white-space: normal; line-height: 1.6; }
   .skills-grid { grid-template-columns: 1fr 1fr; }
   .skill-card  { align-items: flex-start; align-self: stretch; min-height: unset; }
   .skill-top h3 { font-size: 0.85rem; }
-  #about, #skills, #experience, #projects, #education, #contact {
-    scroll-margin-top: 80px;
-    padding-bottom: 80px;
-  }
 }
 
 /* ── RESPONSIVE — 480px ──────────────────────────────────────── */
 @media (max-width: 480px) {
   .radar-photo { width: 110px; height: 110px; }
   .radar-s4    { display: none; }
+}
+
+/* ── RESPONSIVE — 440px ──────────────────────────────────────── */
+@media (max-width: 440px) {
+  .skills-grid { grid-template-columns: 1fr; }
 }
 
 /* ── REDUCED MOTION ──────────────────────────────────────────── */
