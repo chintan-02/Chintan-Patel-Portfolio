@@ -1,7 +1,5 @@
 /* ================================================================
    CHINTAN PATEL PORTFOLIO — script.js
-   Motion 12 (window.Motion) handles all animations.
-   Fallback IntersectionObserver fires if Motion fails to load.
    ================================================================ */
 
 /* ── FOOTER YEAR ────────────────────────────────────────────── */
@@ -157,57 +155,37 @@ renderPosts();
 
 /* ── ANIMATIONS ─────────────────────────────────────────────── */
 (function () {
-  /* Respect reduced-motion OS preference */
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  /* Motion 12 globals from UMD bundle */
   const hasMotion = typeof Motion !== 'undefined' && Motion.animate && Motion.inView;
+  if (hasMotion) { motionAnimate(); } else { cssRevealFallback(); }
 
-  if (hasMotion) {
-    motionAnimate();
-  } else {
-    cssRevealFallback();
-  }
-
-  /* ── Motion path ─────────────────────────────────────────── */
   function motionAnimate() {
     const { animate, inView, stagger } = Motion;
-
-    /* Shared easing curve (ease-out-quart feel) */
     const ease = [0.25, 0.46, 0.45, 0.94];
 
-    /* — Hero entrance (staggered on page load) — */
-    const heroItems = [
-      ...document.querySelectorAll(
-        '.hero-content .badge, .hero-content .hero-title, ' +
-        '.hero-content .hero-subtitle, .hero-content .hero-support, ' +
-        '.hero-content .hero-actions, .hero-content .hero-socials, ' +
-        '.hero-content .trust-strip'
-      )
-    ];
+    const heroItems = [...document.querySelectorAll(
+      '.hero-content .badge, .hero-content .hero-title, ' +
+      '.hero-content .hero-subtitle, .hero-content .hero-support, ' +
+      '.hero-content .hero-actions, .hero-content .hero-socials, ' +
+      '.hero-content .trust-strip'
+    )];
     const radarWrap = document.querySelector('.hero-photo-wrap');
 
-    /* Set invisible before first paint to avoid flash */
     heroItems.forEach(el => { el.style.opacity = '0'; });
     if (radarWrap) radarWrap.style.opacity = '0';
 
     if (heroItems.length) {
-      animate(
-        heroItems,
+      animate(heroItems,
         { opacity: [0, 1], transform: ['translateY(24px)', 'translateY(0px)'] },
-        { duration: 0.65, delay: stagger(0.11), easing: ease }
-      );
+        { duration: 0.65, delay: stagger(0.11), easing: ease });
     }
-
     if (radarWrap) {
-      animate(
-        radarWrap,
+      animate(radarWrap,
         { opacity: [0, 1], transform: ['translateY(24px)', 'translateY(0px)'] },
-        { duration: 0.70, delay: 0.20, easing: ease }
-      );
+        { duration: 0.70, delay: 0.20, easing: ease });
     }
 
-    /* — Assign stagger index to grid children (drives CSS transition-delay) — */
     document.querySelectorAll(
       '.skills-grid, .projects-grid, .edu-grid, .experience-grid, .contact-grid'
     ).forEach(grid => {
@@ -216,101 +194,61 @@ renderPosts();
       });
     });
 
-    /* — Section headings fade-up on scroll — */
     document.querySelectorAll('.section-head, .section-title').forEach(el => {
-      /* Skip anything already inside the hero */
       if (el.closest('.hero')) return;
       el.style.opacity = '0';
       el.style.transform = 'translateY(16px)';
-      inView(
-        el,
-        () => animate(
-          el,
-          { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] },
-          { duration: 0.55, easing: ease }
-        ),
-        { amount: 0.35 }
-      );
+      inView(el, () => animate(el,
+        { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] },
+        { duration: 0.55, easing: ease }), { amount: 0.35 });
     });
 
-    /* — Card grids: staggered fade-up when grid scrolls into view — */
     document.querySelectorAll(
       '.skills-grid, .projects-grid, .edu-grid, .experience-grid'
     ).forEach(grid => {
       const cards = Array.from(grid.children);
       cards.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(22px)'; });
-      inView(
-        grid,
-        () => animate(
-          cards,
-          { opacity: [0, 1], transform: ['translateY(22px)', 'translateY(0px)'] },
-          { duration: 0.55, delay: stagger(0.07), easing: ease }
-        ),
-        { amount: 0.08 }
-      );
+      inView(grid, () => animate(cards,
+        { opacity: [0, 1], transform: ['translateY(22px)', 'translateY(0px)'] },
+        { duration: 0.55, delay: stagger(0.07), easing: ease }), { amount: 0.08 });
     });
 
-    /* — About panels — */
     document.querySelectorAll('.panel').forEach((el, i) => {
       el.style.opacity = '0';
       el.style.transform = 'translateY(18px)';
-      inView(
-        el,
-        () => animate(
-          el,
-          { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0px)'] },
-          { duration: 0.55, delay: i * 0.09, easing: ease }
-        ),
-        { amount: 0.2 }
-      );
+      inView(el, () => animate(el,
+        { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0px)'] },
+        { duration: 0.55, delay: i * 0.09, easing: ease }), { amount: 0.2 });
     });
 
-    /* — Contact cards — */
     document.querySelectorAll('.opportunity-card, .contact-card').forEach((el, i) => {
       el.style.opacity = '0';
       el.style.transform = 'translateY(18px)';
-      inView(
-        el,
-        () => animate(
-          el,
-          { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0px)'] },
-          { duration: 0.55, delay: i * 0.10, easing: ease }
-        ),
-        { amount: 0.2 }
-      );
+      inView(el, () => animate(el,
+        { opacity: [0, 1], transform: ['translateY(18px)', 'translateY(0px)'] },
+        { duration: 0.55, delay: i * 0.10, easing: ease }), { amount: 0.2 });
     });
 
-    /* — Contact grid items — */
     const contactGrid = document.querySelector('.contact-grid');
     if (contactGrid) {
       const items = Array.from(contactGrid.children);
       items.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(16px)'; });
-      inView(
-        contactGrid,
-        () => animate(
-          items,
-          { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] },
-          { duration: 0.50, delay: stagger(0.07), easing: ease }
-        ),
-        { amount: 0.1 }
-      );
+      inView(contactGrid, () => animate(items,
+        { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] },
+        { duration: 0.50, delay: stagger(0.07), easing: ease }), { amount: 0.1 });
     }
   }
 
-  /* ── CSS fallback (Motion unavailable) ──────────────────── */
   function cssRevealFallback() {
     const targets = document.querySelectorAll(
       '.reveal-on-scroll, .panel, .skill-card, .experience-card, ' +
-      '.project-card, .edu-card, .contact-card, .opportunity-card, ' +
-      '.section-head'
+      '.project-card, .edu-card, .contact-card, .opportunity-card, .section-head'
     );
     targets.forEach(el => el.classList.add('reveal-item'));
-
     if (!('IntersectionObserver' in window)) {
       targets.forEach(el => el.classList.add('is-visible'));
       return;
     }
-
     const obs = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -319,35 +257,36 @@ renderPosts();
         }
       });
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-
     targets.forEach(el => obs.observe(el));
   }
 }());
 
+/* ── FAB SCROLL BUTTON ──────────────────────────────────────── */
 (function() {
   var fab = document.getElementById('scrollFab');
   if (!fab) return;
 
-  var sections = ['home','about','skills','experience',
-                  'projects','education','contact'];
+  var sectionIds = ['home','about','skills','experience',
+                    'projects','education','contact'];
   var contactSec = document.getElementById('contact');
   if (!contactSec) return;
 
   function checkFab() {
     var rect = contactSec.getBoundingClientRect();
-    fab.classList.toggle('show-home', rect.top < window.innerHeight && rect.bottom > 0);
+    var isContact = rect.top < window.innerHeight && rect.bottom > 0;
+    fab.classList.toggle('show-home', isContact);
   }
-  window.addEventListener('scroll', checkFab);
+
+  window.addEventListener('scroll', checkFab, { passive: true });
   checkFab();
 
   fab.addEventListener('click', function() {
     if (fab.classList.contains('show-home')) {
-      document.getElementById('home')
-        .scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('home').scrollIntoView({ behavior: 'smooth' });
       return;
     }
-    for (var i = 0; i < sections.length; i++) {
-      var el = document.getElementById(sections[i]);
+    for (var i = 0; i < sectionIds.length; i++) {
+      var el = document.getElementById(sectionIds[i]);
       if (el && el.getBoundingClientRect().top > 100) {
         el.scrollIntoView({ behavior: 'smooth' });
         return;
@@ -355,5 +294,3 @@ renderPosts();
     }
   });
 })();
-
-
