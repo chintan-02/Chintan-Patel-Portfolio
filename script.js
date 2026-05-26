@@ -273,9 +273,8 @@ renderPosts();
 
   function checkFab() {
     var rect = contactSec.getBoundingClientRect();
-    var vpH  = window.innerHeight;
-    var isContact = rect.bottom < vpH * 0.95;
-    if (isContact) {
+    var atBottom = rect.bottom < window.innerHeight * 0.95;
+    if (atBottom) {
       fab.classList.add('show-home');
     } else {
       fab.classList.remove('show-home');

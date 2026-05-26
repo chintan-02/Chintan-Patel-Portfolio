@@ -1175,7 +1175,7 @@ ul  { margin: 0; padding-left: 18px; }
   line-height: 1;
 }
 #fabIconDown { opacity: 1;  transform: scale(1);   }
-#fabIconHome { opacity: 0;  transform: scale(0.5); }
+#fabIconHome { opacity: 0;  transform: scale(0.6); }
 
 .scroll-fab.show-home #fabIconDown { opacity: 0;  transform: scale(0.5); }
 .scroll-fab.show-home #fabIconHome { opacity: 1;  transform: scale(1);   }
