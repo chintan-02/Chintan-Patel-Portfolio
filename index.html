@@ -593,7 +593,7 @@
       var ids = ['home','about','skills','experience','projects','education','contact'];
       for (var i = 0; i < ids.length; i++) {
         var el = document.getElementById(ids[i]);
-        if (el && el.getBoundingClientRect().top > window.innerHeight * 0.3) {
+        if (el && el.getBoundingClientRect().top > 80) {
           el.scrollIntoView({ behavior: 'smooth' });
           return;
         }
