@@ -578,9 +578,11 @@
 
   function check() {
     var r = contact.getBoundingClientRect();
-    r.top < window.innerHeight && r.bottom > 0
-      ? fab.classList.add('show-home')
-      : fab.classList.remove('show-home');
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      fab.classList.add('show-home');
+    } else {
+      fab.classList.remove('show-home');
+    }
   }
 
   window.addEventListener('scroll', check);
@@ -589,14 +591,14 @@
   fab.addEventListener('click', function() {
     if (fab.classList.contains('show-home')) {
       home.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      var ids = ['home','about','skills','experience','projects','education','contact'];
-      for (var i = 0; i < ids.length; i++) {
-        var el = document.getElementById(ids[i]);
-        if (el && el.getBoundingClientRect().top > 80) {
-          el.scrollIntoView({ behavior: 'smooth' });
-          return;
-        }
+      return;
+    }
+    var ids = ['home','about','skills','experience','projects','education','contact'];
+    for (var i = 0; i < ids.length; i++) {
+      var el = document.getElementById(ids[i]);
+      if (el && el.getBoundingClientRect().top > 80) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
       }
     }
   });
