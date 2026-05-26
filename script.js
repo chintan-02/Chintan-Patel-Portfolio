@@ -328,49 +328,27 @@ renderPosts();
   var fab = document.getElementById('scrollFab');
   if (!fab) return;
 
-  var heroSec    = document.getElementById('home');
+  var sections = ['home','about','skills','experience',
+                  'projects','education','contact'];
   var contactSec = document.getElementById('contact');
-  if (!heroSec || !contactSec) return;
+  if (!contactSec) return;
 
-  var sectionIds = ['home','about','skills','experience',
-                    'projects','education','contact'];
-
-  var contactVisible = false;
-
-  var observer = new IntersectionObserver(function(entries) {
-    contactVisible = entries[0].isIntersecting;
-    if (contactVisible) {
-      fab.classList.add('show-home');
-    } else {
-      fab.classList.remove('show-home');
-    }
-  }, { threshold: 0.15 });
-
-  observer.observe(contactSec);
+  new IntersectionObserver(function(e) {
+    fab.classList.toggle('show-home', e[0].isIntersecting);
+  }, { threshold: 0.15 }).observe(contactSec);
 
   fab.addEventListener('click', function() {
-    if (contactVisible) {
-      heroSec.scrollIntoView({ behavior: 'smooth' });
+    if (fab.classList.contains('show-home')) {
+      document.getElementById('home')
+        .scrollIntoView({ behavior: 'smooth' });
       return;
     }
-
-    var scrollY = window.scrollY;
-    var nextSec = null;
-
-    for (var i = 0; i < sectionIds.length; i++) {
-      var el = document.getElementById(sectionIds[i]);
-      if (!el) continue;
-      var top = el.getBoundingClientRect().top + window.scrollY;
-      if (top > scrollY + 100) {
-        nextSec = el;
-        break;
+    for (var i = 0; i < sections.length; i++) {
+      var el = document.getElementById(sections[i]);
+      if (el && el.getBoundingClientRect().top > 100) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        return;
       }
-    }
-
-    if (nextSec) {
-      nextSec.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      contactSec.scrollIntoView({ behavior: 'smooth' });
     }
   });
 })();
