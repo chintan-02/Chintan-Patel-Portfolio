@@ -7,3 +7,8 @@ __pycache__/
 
 # OS files
 .DS_Store
+
+node_modules/
+dist/
+.env
+.DS_Store
