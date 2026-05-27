@@ -1,1 +1,9 @@
-node_modules/
+# AI assistant tooling — local only
+.agents/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
