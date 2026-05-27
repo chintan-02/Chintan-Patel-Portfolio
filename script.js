@@ -131,11 +131,6 @@ renderPosts();
   const el = document.getElementById('hero-tw');
   if (!el) return;
 
-  if (window.innerWidth < 768) {
-    el.textContent = phrases[0];
-    return;
-  }
-
   let pi = 0, ci = 0, erasing = false;
 
   function step() {
