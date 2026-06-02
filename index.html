@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='32' y2='32' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%230d9488'/%3E%3Cstop offset='100%25' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='7' fill='url(%23g)'/%3E%3Cpath d='M23 8 C23 5.5 7 5.5 7 16 C7 26.5 23 26.5 23 24' stroke='white' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='23' cy='8' r='3.5' fill='white'/%3E%3Ccircle cx='23' cy='24' r='3.5' fill='white'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+ <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <title>Chintan Patel | AI/ML & Data Science Portfolio</title>
 
@@ -58,17 +58,17 @@
         </div>
       </nav>
 
-      <div class="nav-actions" aria-label="External profile links">
-        <a class="icon-btn" href="https://github.com/chintan-02" target="_blank" rel="noopener" aria-label="GitHub profile">
+      <div class="nav-actions" aria-label="External profile links" style="display:flex;align-items:center;gap:4px;padding-left:12px;margin-left:8px;">
+        <a class="icon-btn" href="https://github.com/chintan-02" target="_blank" rel="noopener" aria-label="GitHub profile" style="margin:0 2px;">
           <i class="fa-brands fa-github"></i>
         </a>
-        <a class="icon-btn" href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+        <a class="icon-btn" href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener" aria-label="LinkedIn profile" style="margin:0 2px;">
           <i class="fa-brands fa-linkedin-in"></i>
         </a>
-        <a class="icon-btn" href="mailto:patel.chintan380@gmail.com" aria-label="Email Chintan Patel">
+        <a class="icon-btn" href="mailto:patel.chintan380@gmail.com" aria-label="Email Chintan Patel" style="margin:0 2px;">
           <i class="fa-regular fa-envelope"></i>
         </a>
-        <a class="resume-nav-btn" href="Chintan Patel Resume.pdf" download>
+        <a class="resume-nav-btn" href="Chintan Patel Resume.pdf" download style="margin-left:10px;">
           <i class="fa-solid fa-file-arrow-down"></i>
           Resume
         </a>
@@ -420,33 +420,52 @@
           <p class="muted">My academic background and current programs.</p>
         </div>
 
-        <div class="edu-grid">
-          <article class="edu-card">
-            <div class="edu-top">
-              <h3>Post Graduate Diploma in Integrated Artificial Intelligence</h3>
-              <span class="edu-pill">Current</span>
-            </div>
-            <p class="edu-school">Southern Alberta Institute of Technology (SAIT) • Calgary, AB</p>
-            <p class="edu-date"><i class="fa-regular fa-calendar"></i> January 2026 – August 2026 (Expected)</p>
-          </article>
+        <div class="edu-card edu-card--list">
+          <div class="edu-list">
 
-          <article class="edu-card">
-            <div class="edu-top">
-              <h3>Post Graduate Certificate in Supply Chain Management &amp; Logistics</h3>
-              <span class="edu-pill alt">Canada</span>
+            <div class="edu-row">
+              <div class="edu-icon edu-icon--active">
+                <i class="ti ti-brain" aria-hidden="true"></i>
+              </div>
+              <div class="edu-body">
+                <h3 class="edu-title">Post Graduate Diploma in Integrated Artificial Intelligence</h3>
+                <p class="edu-school">Southern Alberta Institute of Technology (SAIT) · Calgary, AB</p>
+              </div>
+              <div class="edu-right">
+                <span class="edu-pill">Current</span>
+                <span class="edu-date-inline">Jan 2026 – Aug 2026</span>
+              </div>
             </div>
-            <p class="edu-school">MacEwan University • Edmonton, Alberta</p>
-            <p class="edu-date"><i class="fa-regular fa-calendar"></i> January 2025 – December 2025</p>
-          </article>
 
-          <article class="edu-card">
-            <div class="edu-top">
-              <h3>Bachelor of Engineering – Computer Science</h3>
-              <span class="edu-pill soft">Degree</span>
+            <div class="edu-row">
+              <div class="edu-icon">
+                <i class="ti ti-truck-delivery" aria-hidden="true"></i>
+              </div>
+              <div class="edu-body">
+                <h3 class="edu-title">Post Graduate Certificate in Supply Chain Management &amp; Logistics</h3>
+                <p class="edu-school">MacEwan University · Edmonton, Alberta</p>
+              </div>
+              <div class="edu-right">
+                <span class="edu-pill alt">Canada</span>
+                <span class="edu-date-inline">Jan 2025 – Dec 2025</span>
+              </div>
             </div>
-            <p class="edu-school">ITM University • Gujarat, India</p>
-            <p class="edu-date"><i class="fa-regular fa-calendar"></i> 2013 – 2019</p>
-          </article>
+
+            <div class="edu-row">
+              <div class="edu-icon">
+                <i class="ti ti-school" aria-hidden="true"></i>
+              </div>
+              <div class="edu-body">
+                <h3 class="edu-title">Bachelor of Engineering – Computer Science</h3>
+                <p class="edu-school">ITM University · Gujarat, India</p>
+              </div>
+              <div class="edu-right">
+                <span class="edu-pill soft">Degree</span>
+                <span class="edu-date-inline">2013 – 2019</span>
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
     </section>
@@ -542,22 +561,45 @@
   </main>
 
   <footer class="footer">
-    <div class="container footer-row">
-      <p class="muted">© <span id="year"></span> Chintan Patel <br> Calgary, AB | +1 (780) 782-3796 <br> All rights reserved</p><br/>
-      <div class="footer-links">
-        <a href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener" aria-label="LinkedIn">
-          <i class="fa-brands fa-linkedin-in"></i>
+    <div class="container footer-inner">
+
+      <!-- Brand column -->
+      <div class="footer-brand">
+        <a class="footer-brand-logo" href="#home" aria-label="Back to top">
+          <span class="brand-mark" aria-hidden="true">CP</span>
+          <span class="footer-brand-copy">
+            <span class="footer-brand-name">Chintan Patel</span>
+            <span class="footer-brand-sub">AI/ML Developer · Calgary, AB</span>
+          </span>
         </a>
-        <a href="https://github.com/chintan-02" target="_blank" rel="noopener" aria-label="GitHub">
-          <i class="fa-brands fa-github"></i>
-        </a>
-        <a href="mailto:patel.chintan380@gmail.com" aria-label="Email Chintan Patel">
-          <i class="fa-regular fa-envelope"></i>
-        </a>
-        <a href="Chintan Patel Resume.pdf" download aria-label="Download resume">
-          <i class="fa-solid fa-file-arrow-down"></i>
-        </a>
+        <p class="footer-tagline">Building healthcare AI and supply chain intelligence systems.</p>
       </div>
+
+      <!-- Navigation column -->
+      <div class="footer-col">
+        <span class="footer-col-label">Navigation</span>
+        <a href="#about"      class="footer-col-link">About</a>
+        <a href="#skills"     class="footer-col-link">Skills</a>
+        <a href="#experience" class="footer-col-link">Experience</a>
+        <a href="#projects"   class="footer-col-link">Projects</a>
+        <a href="#contact"    class="footer-col-link">Contact</a>
+      </div>
+
+      <!-- Connect column -->
+      <div class="footer-col">
+        <span class="footer-col-label">Connect</span>
+        <a href="https://www.linkedin.com/in/chintan-patel-987765129/" target="_blank" rel="noopener" class="footer-col-link">LinkedIn</a>
+        <a href="https://github.com/chintan-02"                        target="_blank" rel="noopener" class="footer-col-link">GitHub</a>
+        <a href="mailto:patel.chintan380@gmail.com"                                    class="footer-col-link">Email</a>
+        <a href="Chintan Patel Resume.pdf" download                                    class="footer-col-link">Resume</a>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="container footer-bottom">
+      <span class="footer-bottom-copy">© <span id="year"></span> Chintan Patel · All rights reserved</span>
+      <span class="footer-bottom-copy">+1 (780) 782–3796</span>
     </div>
   </footer>
 
@@ -566,7 +608,7 @@
 
 <button class="scroll-fab" id="scrollFab" aria-label="Scroll action"
   onclick="
-    var ids=['home','about','skills','experience','projects','education','contact'];
+    var ids=['home','about','skills','experience','projects','education','contact','roadmap'];
     if(this.classList.contains('show-home')){
       document.getElementById('home').scrollIntoView({behavior:'smooth'});
       return;
@@ -594,7 +636,7 @@
   }, { threshold: 0, rootMargin: '0px 0px -40% 0px' });
   io.observe(contact);
 
-  var ids = ['home','about','skills','experience','projects','education','contact'];
+  var ids = ['home','about','skills','experience','projects','education','contact','roadmap'];
   var NAV = 100; // navbar height + buffer — must be LARGER than scroll-margin-top
 
   fab.addEventListener('click', function () {
@@ -618,6 +660,78 @@
   });
 })();
 </script>
+
+<script>
+(function() {
+  var WEEKS = [
+    'w1','w2','w3','w4','w5','w6',
+    'w7','w8','w9','w10','w11','w12'
+  ];
+  var M_WEEKS = {
+    m1:['w1','w2','w3','w4'],
+    m2:['w5','w6','w7','w8'],
+    m3:['w9','w10','w11','w12']
+  };
+  var CURRENT = {
+    w1:'Week 1: Python Core — Decorators, Generators, OOP',
+    w2:'Week 2: NumPy, Pandas, Matplotlib — Data Toolkit',
+    w3:'Week 3: ML Algorithms + Scikit-learn + Evaluation',
+    w4:'Week 4: SQL, Git, Project Structure',
+    w5:'Week 5: PyTorch — Tensors, Autograd, Training Loop',
+    w6:'Week 6: Transformers, HuggingFace, Attention',
+    w7:'Week 7: ClinicalBERT Fine-tuning + MLflow',
+    w8:'Week 8: SHAP Explainability + Azure Deployment',
+    w9:'Week 9: FastAPI — ML Model Serving Backend',
+    w10:'Week 10: Docker + Azure App Service — TriageAI Live',
+    w11:'Week 11: LangChain + RAG + Clinical Knowledge Assistant',
+    w12:'Week 12: Interview Prep + Resume + Applications'
+  };
+  function getState() {
+    try {
+      return JSON.parse(localStorage.getItem('lj_progress')||'{}');
+    } catch(e) { return {}; }
+  }
+  function syncTeaser() {
+    var s = getState();
+    var done = WEEKS.filter(function(w){
+      return s[w]==='done';
+    }).length;
+    var pct = Math.round((done/WEEKS.length)*100);
+    var mainBar = document.getElementById('lj-main-bar');
+    var pctEl   = document.getElementById('lj-pct');
+    var label   = document.getElementById('lj-bar-label');
+    var curEl   = document.getElementById('lj-current-text');
+    if(mainBar) mainBar.style.width = pct+'%';
+    if(pctEl)   pctEl.textContent   = pct+'%';
+    if(label)   label.textContent   = done+' of 12 weeks complete';
+    var cur = WEEKS.filter(function(w){
+      return s[w]!=='done';
+    })[0] || 'w12';
+    if(curEl) curEl.textContent = done===12
+      ? 'All 12 weeks complete! Actively applying for AI/ML roles.'
+      : CURRENT[cur];
+    ['m1','m2','m3'].forEach(function(m){
+      var mDone = M_WEEKS[m].filter(function(w){
+        return s[w]==='done';
+      }).length;
+      var bar = document.getElementById('lj-'+m+'-bar');
+      var cnt = document.getElementById('lj-'+m+'-cnt');
+      if(bar) bar.style.width = Math.round((mDone/4)*100)+'%';
+      if(cnt) cnt.textContent = mDone;
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', syncTeaser);
+  } else {
+    syncTeaser();
+  }
+  window.addEventListener('storage', function(e){
+    if(e.key==='lj_progress') syncTeaser();
+  });
+})();
+
+</script>
+
 
 </body>
 </html>

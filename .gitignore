@@ -8,7 +8,15 @@ __pycache__/
 # OS files
 .DS_Store
 
+# Dependencies
 node_modules/
 dist/
+
+# Environment
 .env
-.DS_Store
+
+# Private / local only
+master.html
+learning.html
+files.zip
+LOGO/
