@@ -184,7 +184,7 @@ renderPosts();
     }
 
     document.querySelectorAll(
-      '.skills-grid, .projects-grid, .edu-list, .experience-grid, .contact-grid'
+      '.skills-grid, .projects-grid, .edu-accordion, .experience-grid, .contact-grid'
     ).forEach(grid => {
       Array.from(grid.children).forEach((child, i) => {
         child.style.setProperty('--stagger-i', i);
@@ -201,7 +201,7 @@ renderPosts();
     });
 
     document.querySelectorAll(
-      '.skills-grid, .projects-grid, .edu-list, .experience-grid'
+      '.skills-grid, .projects-grid, .edu-accordion, .experience-grid'
     ).forEach(grid => {
       const cards = Array.from(grid.children);
       cards.forEach(c => { c.style.opacity = '0'; c.style.transform = 'translateY(22px)'; });
@@ -239,7 +239,7 @@ renderPosts();
   function cssRevealFallback() {
     const targets = document.querySelectorAll(
       '.reveal-on-scroll, .panel, .skill-card, .experience-card, ' +
-      '.project-card, .edu-row, .contact-card, .opportunity-card, .section-head'
+      '.project-card, .edu-acc-card, .contact-card, .opportunity-card, .section-head'
     );
     targets.forEach(el => el.classList.add('reveal-item'));
     if (!('IntersectionObserver' in window)) {

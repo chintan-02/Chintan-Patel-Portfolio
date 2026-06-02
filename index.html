@@ -24,6 +24,198 @@
         href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
 
   <link rel="stylesheet" href="style.css" />
+
+<style>
+/* Callout alignment + improvement fix */
+.callout {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  margin-top: 20px;
+}
+.callout-icon {
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 2px;
+}
+.callout-body {
+  flex: 1;
+  min-width: 0;
+}
+.callout-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.callout-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+.callout-badge {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(13,148,136,0.12);
+  border: 1px solid rgba(13,148,136,0.25);
+  color: #0d9488;
+  white-space: nowrap;
+}
+.callout-text {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+</style>
+
+<style>
+/* Project version blocks */
+.project-version-block {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0,0,0,0.07);
+}
+.project-version-block--wip {
+  background: rgba(245,158,11,0.04);
+  border: 1px dashed rgba(245,158,11,0.25);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin-top: 10px;
+}
+.project-version-label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--muted, #6b7280);
+  margin-bottom: 8px;
+}
+.pv-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.pv-dot--live {
+  background: #10b981;
+  box-shadow: 0 0 0 2px rgba(16,185,129,0.2);
+}
+.pv-dot--wip {
+  background: #f59e0b;
+  box-shadow: 0 0 0 2px rgba(245,158,11,0.2);
+}
+.project-wip-stack {
+  font-size: 12px;
+  color: var(--muted, #6b7280);
+  line-height: 1.6;
+  margin: 0;
+}
+.project-link-disabled {
+  opacity: 0.45;
+  cursor: default;
+  pointer-events: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted, #6b7280);
+  padding: 11px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border, #e5e7eb);
+  background: #ffffff;
+}
+</style>
+
+<style>
+/* Certifications row under Education */
+.edu-certs {
+  margin-top: 16px;
+  padding: 14px 20px;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 14px;
+  background: rgba(255,255,255,0.92);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.edu-certs-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.edu-certs-label i { color: #f59e0b; font-size: 12px; }
+.edu-certs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.edu-cert-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.edu-cert-item:last-child { border-bottom: none; padding-bottom: 0; }
+.edu-cert-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.2);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.edu-cert-icon i { font-size: 14px; color: #f59e0b; }
+.edu-cert-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.edu-cert-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+.edu-cert-issuer {
+  font-size: 11px;
+  color: var(--muted);
+}
+.edu-cert-badge {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid rgba(16,185,129,0.25);
+  color: #10b981;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .edu-certs { padding: 12px 14px; }
+  .edu-cert-name { font-size: 12px; }
+}
+</style>
 </head>
 
 <body>
@@ -68,7 +260,7 @@
         <a class="icon-btn" href="mailto:patel.chintan380@gmail.com" aria-label="Email Chintan Patel" style="margin:0 2px;">
           <i class="fa-regular fa-envelope"></i>
         </a>
-        <a class="resume-nav-btn" href="Chintan Patel Resume.pdf" download style="margin-left:10px;">
+        <a class="resume-nav-btn" href="Chintan_Patel_Resume.pdf" download style="margin-left:10px;">
           <i class="fa-solid fa-file-arrow-down"></i>
           Resume
         </a>
@@ -115,7 +307,7 @@
 
             <div class="hero-actions">
               <a href="#projects" class="btn btn-primary">View Projects</a>
-              <a href="Chintan Patel Resume.pdf" class="btn btn-resume" download>
+              <a href="Chintan_Patel_Resume.pdf" class="btn btn-resume" download>
                 <i class="fa-solid fa-download"></i> Download Resume
               </a>
             </div>
@@ -165,11 +357,17 @@
           </p>
 
           <div class="callout">
-            <div class="callout-icon"><i class="fa-solid fa-bolt"></i></div>
-            <div>
-              <h3>Open to</h3>
-              <p class="muted">
-                Internship, co-op, junior data analyst, junior data scientist, AI/ML developer, and ML engineering opportunities in Canada. Open to remote and hybrid positions.
+            <div class="callout-icon" aria-hidden="true">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+            <div class="callout-body">
+              <div class="callout-top">
+                <h3 class="callout-title">Open to Opportunities</h3>
+                <span class="callout-badge">Available 2026</span>
+              </div>
+              <p class="muted callout-text">
+                Internship · Co-op · Junior Data Scientist · Junior Data Analyst ·
+                AI/ML Developer · ML Engineer — Canada, remote, or hybrid.
               </p>
             </div>
           </div>
@@ -348,10 +546,39 @@
             <div class="tags">
               <span class="tag">Python</span><span class="tag">Streamlit</span><span class="tag">FastAPI</span><span class="tag">Scikit-learn/XGBoost</span><span class="tag">SQLite</span><span class="tag">SQLAlchemy</span><span class="tag">Docker</span><span class="tag">Explainable AI</span>
             </div>
-            <div class="project-links">
-              <a href="#" class="project-link-demo" aria-label="Live demo for TriageAI"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>
-              <a href="#" aria-label="View GitHub repository for TriageAI">GitHub</a>
-              <a href="#" aria-label="Read case study for TriageAI">Case Study</a>
+            <div class="project-version-block">
+              <div class="project-version-label">
+                <span class="pv-dot pv-dot--live"></span>
+                v1 · Basic — Live
+              </div>
+              <div class="project-links">
+                <a href="https://ai-triage-chintan.azurewebsites.net"
+                   target="_blank" rel="noopener"
+                   class="project-link-demo"
+                   aria-label="Live demo for TriageAI">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+                </a>
+                <a href="https://github.com/chintan-02/ai-healthcare-triage-system"
+                   target="_blank" rel="noopener"
+                   aria-label="GitHub repository for TriageAI">
+                  <i class="fa-brands fa-github"></i> GitHub
+                </a>
+                <a href="#" class="project-link-disabled"
+                   aria-label="Case study coming soon">
+                  <i class="fa-solid fa-file-lines"></i> Case Study · Soon
+                </a>
+              </div>
+            </div>
+
+            <div class="project-version-block project-version-block--wip">
+              <div class="project-version-label">
+                <span class="pv-dot pv-dot--wip"></span>
+                v2 · Advanced — In Progress
+              </div>
+              <p class="project-wip-stack">
+                ClinicalBERT · FastAPI · Azure ML · SHAP Waterfall ·
+                MLflow · RAG Clinical Assistant · Docker · CI/CD
+              </p>
             </div>
           </article>
 
@@ -368,10 +595,40 @@
             <div class="tags">
               <span class="tag">Python</span><span class="tag">NLP</span><span class="tag">Scikit-learn</span><span class="tag">TF-IDF</span><span class="tag">Pandas</span><span class="tag">FastAPI</span><span class="tag">Model Evaluation</span>
             </div>
-            <div class="project-links">
-              <a href="#" class="project-link-demo" aria-label="Live demo for ResumeIQ"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo</a>
-              <a href="#" aria-label="View GitHub repository for ResumeIQ">GitHub</a>
-              <a href="#" aria-label="Read case study for ResumeIQ">Case Study</a>
+            <div class="project-version-block">
+              <div class="project-version-label">
+                <span class="pv-dot pv-dot--live"></span>
+                v1 · Basic — Live
+              </div>
+              <div class="project-links">
+                <a href="https://resume-classifier-chintan.azurewebsites.net"
+                   target="_blank" rel="noopener"
+                   class="project-link-demo"
+                   aria-label="Live demo for ResumeIQ">
+                  <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Demo
+                </a>
+                <a href="https://github.com/chintan-02/smart-resume-classifier"
+                   target="_blank" rel="noopener"
+                   aria-label="GitHub repository for ResumeIQ">
+                  <i class="fa-brands fa-github"></i> GitHub
+                </a>
+                <a href="#" class="project-link-disabled"
+                   aria-label="Case study coming soon">
+                  <i class="fa-solid fa-file-lines"></i> Case Study · Soon
+                </a>
+              </div>
+            </div>
+
+            <div class="project-version-block project-version-block--wip">
+              <div class="project-version-label">
+                <span class="pv-dot pv-dot--wip"></span>
+                v2 · Advanced — In Progress
+              </div>
+              <p class="project-wip-stack">
+                ClinicalBERT-style fine-tuning · FastAPI · Azure ML ·
+                Job Compatibility Scoring · SHAP Explainability ·
+                Actionable Recommendations Engine · Docker
+              </p>
             </div>
           </article>
         </div>
@@ -386,51 +643,99 @@
           <p class="muted">My academic background and current programs.</p>
         </div>
 
-        <div class="edu-card edu-card--list">
-          <div class="edu-list">
+        <div class="edu-accordion">
 
-            <div class="edu-row edu-row--expanded">
-              <div class="edu-icon edu-icon--active">
+          <!-- SAIT -->
+          <div class="edu-acc-card edu-acc-card--active">
+            <div class="edu-acc-header">
+              <div class="edu-acc-icon edu-acc-icon--teal">
                 <i class="ti ti-brain" aria-hidden="true"></i>
               </div>
-              <div class="edu-body">
-                <h3 class="edu-title">Integrated Artificial Intelligence — Post-Diploma Certificate</h3>
-                <p class="edu-school">Southern Alberta Institute of Technology (SAIT) · Calgary, AB</p>
-                <p class="edu-coursework">Applied Statistics · Predictive Analytics · NLP · Computer Vision · AI Governance &amp; Ethics · Human-Centred AI · AI Management &amp; Maintenance · Web Development &amp; Cloud Computing · Capstone Applied Projects</p>
+              <div class="edu-acc-meta">
+                <h3 class="edu-acc-title">Integrated Artificial Intelligence — Post-Diploma Certificate</h3>
+                <p class="edu-acc-school">Southern Alberta Institute of Technology (SAIT) · Calgary, AB</p>
               </div>
-              <div class="edu-right">
+              <div class="edu-acc-right">
                 <span class="edu-pill">Current</span>
-                <span class="edu-date-inline">Jan 2026 – Aug 2026</span>
+                <span class="edu-acc-date">Jan 2026 – Aug 2026</span>
               </div>
             </div>
+            <div class="edu-acc-body">
+              <p class="edu-acc-label">Coursework</p>
+              <p class="edu-acc-courses">Applied Statistics · Predictive Analytics · NLP · Computer Vision · AI Governance &amp; Ethics · Human-Centred AI · AI Management &amp; Maintenance · Web Development &amp; Cloud Computing · Capstone Applied Projects</p>
+            </div>
+          </div>
 
-            <div class="edu-row edu-row--expanded">
-              <div class="edu-icon">
+          <!-- MacEwan -->
+          <div class="edu-acc-card">
+            <div class="edu-acc-header">
+              <div class="edu-acc-icon">
                 <i class="ti ti-truck-delivery" aria-hidden="true"></i>
               </div>
-              <div class="edu-body">
-                <h3 class="edu-title">Supply Chain Management &amp; Logistics — Post-Graduate Certificate</h3>
-                <p class="edu-school">MacEwan University · Edmonton, Alberta</p>
-                <p class="edu-coursework">Supply Chain Strategy · Logistics Operations · Procurement · Inventory Management · Operations Analytics · Professional Communication · Business Administration</p>
+              <div class="edu-acc-meta">
+                <h3 class="edu-acc-title">Supply Chain Management &amp; Logistics — Post-Graduate Certificate</h3>
+                <p class="edu-acc-school">MacEwan University · Edmonton, Alberta</p>
               </div>
-              <div class="edu-right">
+              <div class="edu-acc-right">
                 <span class="edu-pill alt">Canada</span>
-                <span class="edu-date-inline">Jan 2025 – Dec 2025</span>
+                <span class="edu-acc-date">Jan 2025 – Dec 2025</span>
               </div>
             </div>
+            <div class="edu-acc-body">
+              <p class="edu-acc-label">Coursework</p>
+              <p class="edu-acc-courses">Supply Chain Strategy · Logistics Operations · Procurement · Inventory Management · Operations Analytics · Professional Communication · Business Administration</p>
+            </div>
+          </div>
 
-            <div class="edu-row">
-              <div class="edu-icon">
+          <!-- GTU -->
+          <div class="edu-acc-card">
+            <div class="edu-acc-header">
+              <div class="edu-acc-icon">
                 <i class="ti ti-school" aria-hidden="true"></i>
               </div>
-              <div class="edu-body">
-                <h3 class="edu-title">Bachelor of Engineering – Computer Science</h3>
-                <p class="edu-school">Gujarat Technological University (GTU) · Gujarat, India</p>
+              <div class="edu-acc-meta">
+                <h3 class="edu-acc-title">Bachelor of Engineering – Computer Science</h3>
+                <p class="edu-acc-school">Gujarat Technological University (GTU) · Gujarat, India</p>
               </div>
-              <div class="edu-right">
+              <div class="edu-acc-right">
                 <span class="edu-pill soft">Degree</span>
-                <span class="edu-date-inline">2013 – 2019</span>
+                <span class="edu-acc-date">2013 – 2019</span>
               </div>
+            </div>
+            <div class="edu-acc-body">
+              <p class="edu-acc-label">Coursework</p>
+              <p class="edu-acc-courses">Data Structures · Database Management Systems · Operating Systems · Object-Oriented Programming (C++ &amp; Java) · Computer Networks · Analysis &amp; Design of Algorithms · Software Engineering · Web Technology · Artificial Intelligence · Python Programming · Data Mining &amp; Business Intelligence · Compiler Design · Information &amp; Network Security · Computer Organization</p>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="edu-certs">
+          <p class="edu-certs-label">
+            <i class="fa-solid fa-certificate"></i> Certifications
+          </p>
+          <div class="edu-certs-list">
+
+            <div class="edu-cert-item">
+              <div class="edu-cert-icon">
+                <i class="fa-solid fa-database"></i>
+              </div>
+              <div class="edu-cert-body">
+                <span class="edu-cert-name">SQL Essential Training</span>
+                <span class="edu-cert-issuer">LinkedIn Learning</span>
+              </div>
+              <span class="edu-cert-badge">Verified</span>
+            </div>
+
+            <div class="edu-cert-item">
+              <div class="edu-cert-icon">
+                <i class="fa-solid fa-robot"></i>
+              </div>
+              <div class="edu-cert-body">
+                <span class="edu-cert-name">AI Literacy for Everyone</span>
+                <span class="edu-cert-issuer">LinkedIn Learning</span>
+              </div>
+              <span class="edu-cert-badge">Verified</span>
             </div>
 
           </div>
@@ -466,13 +771,6 @@
     <!-- CONTACT -->
     <section id="contact" class="section">
       <div class="container contact">
-        <div class="opportunity-card">
-          <h2 class="section-title">Open to Opportunities</h2>
-          <p class="muted">
-            Open to internships, co-op roles, junior data analyst, junior data scientist, AI/ML developer, and ML engineering opportunities in Canada, remote, or relocation-friendly teams.
-          </p>
-        </div>
-
         <div class="contact-card">
           <h2 class="section-title">Contact</h2>
           <p class="muted">Let’s connect for AI/ML, data science, analytics, and entry-level engineering opportunities.</p>
