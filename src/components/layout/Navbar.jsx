@@ -53,15 +53,15 @@ export function Navbar() {
           ))}
         </nav>
 
-        {/* Resume CTA */}
+        {/* Global resume access: smaller than the hero CTA, always available. */}
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeToggle />
           <a
             href={siteMeta.resume}
             download
-            className="inline-flex items-center gap-2 rounded-xl border border-accent bg-accent px-5 py-2.5 text-[13px] font-bold text-[#0A0A0F] shadow-[0_8px_20px_rgb(var(--accent-rgb)/0.22)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-strong hover:shadow-[0_12px_28px_rgb(var(--accent-rgb)/0.3)]"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[rgb(var(--accent-rgb)/0.55)] bg-[rgb(var(--accent-rgb)/0.92)] px-3.5 py-2 text-xs font-bold text-[#0A0A0F] shadow-[0_6px_16px_rgb(var(--accent-rgb)/0.16)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-strong hover:shadow-[0_10px_24px_rgb(var(--accent-rgb)/0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
           >
-            <FileDown className="h-4 w-4" />
+            <FileDown className="h-3.5 w-3.5" />
             Resume
           </a>
         </div>

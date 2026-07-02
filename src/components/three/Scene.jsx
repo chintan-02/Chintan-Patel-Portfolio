@@ -16,6 +16,7 @@ function hasWebGL() {
 }
 
 function useMobileStaticPoster() {
+  // 3D scene is disabled on mobile to protect performance and battery life.
   const [mobilePoster, setMobilePoster] = useState(() => {
     if (typeof window === 'undefined') return true;
     return window.matchMedia('(max-width: 767px), (pointer: coarse)').matches;

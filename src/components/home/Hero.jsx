@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from 'framer-motion';
+import { FileDown } from 'lucide-react';
 import { Button } from '../ui/Button.jsx';
 import { ScrollCue } from './ScrollCue.jsx';
 import { siteMeta } from '../../data/siteMeta.js';
@@ -86,8 +87,11 @@ export function Hero() {
 
         {/* actions */}
         <motion.div variants={item} className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
-          <Button href="/projects" variant="onDarkAccent">View Projects</Button>
-          <Button href={siteMeta.resume} variant="onDark" download icon={false}>Download Resume</Button>
+          <Button href="/projects" variant="onDark">View Projects</Button>
+          <Button href={siteMeta.resume} variant="onDarkAccent" download icon={false}>
+            <FileDown className="h-4 w-4" />
+            Download Resume
+          </Button>
         </motion.div>
 
         {/* surfaced social — recruiters often click GitHub first */}

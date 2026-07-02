@@ -303,27 +303,75 @@ function ApiPreview() {
   );
 }
 
+const flowLabelOverrides = new Map([
+  [
+    'Question embedded (SentenceTransformers, all-MiniLM-L6-v2)',
+    { title: 'Embed question', description: 'SentenceTransformers, all-MiniLM-L6-v2' }
+  ],
+  [
+    'Candidate chunks retrieved from ChromaDB',
+    { title: 'Retrieve chunks', description: 'ChromaDB candidate evidence' }
+  ],
+  [
+    'Evidence-gate scoring against a confidence threshold',
+    { title: 'Score evidence', description: 'Confidence threshold check' }
+  ],
+  [
+    'Below threshold → fallback response, no LLM call relied on',
+    { title: 'Fallback if below threshold', description: 'Skip or override unsupported generation' }
+  ],
+  [
+    'Above threshold → LLM answer generation, gated and citation-bound',
+    { title: 'Generate cited answer', description: 'LLM output stays evidence-bound' }
+  ],
+  [
+    'Answer returned only with page-level citations attached',
+    { title: 'Return citations', description: 'Page-level sources attached' }
+  ]
+]);
+
+function getFlowStep(step) {
+  if (typeof step === 'object' && step !== null) {
+    return {
+      title: step.title ?? step.label ?? '',
+      description: step.description ?? step.detail ?? ''
+    };
+  }
+
+  const text = String(step);
+  return flowLabelOverrides.get(text) ?? { title: text, description: '' };
+}
+
 export function VisualFlow({ title = 'Architecture Flow', steps = [] }) {
   if (!steps.length) return null;
 
   return (
     <div className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.85)] p-5 shadow-card backdrop-blur-sm">
       <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{title}</p>
-      <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:flex-wrap lg:items-stretch">
-        {steps.map((step, index) => (
-          <div key={step} className="flex flex-col gap-3 lg:flex-row lg:items-center">
-            <div className="flex min-h-[84px] w-full items-center gap-3 rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4 lg:w-[170px]">
-              <FileSearch className="h-4 w-4 shrink-0 text-accent" />
-              <span className="text-sm font-semibold leading-6 text-ink">{step}</span>
-            </div>
-            {index < steps.length - 1 && (
-              <div className="flex justify-center text-accent lg:justify-start" aria-hidden="true">
-                <ArrowDown className="h-4 w-4 lg:hidden" />
-                <ArrowRight className="hidden h-4 w-4 lg:block" />
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:flex xl:flex-wrap xl:items-stretch">
+        {steps.map((step, index) => {
+          const display = getFlowStep(step);
+
+          return (
+            <div key={`${display.title}-${index}`} className="flex min-w-0 flex-col gap-3 xl:flex-row xl:items-center">
+              <div className="flex min-h-[92px] min-w-0 items-start gap-3 rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4 sm:h-full xl:w-[190px] xl:max-w-[210px]">
+                <FileSearch className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                <div className="min-w-0">
+                  <p className="text-sm font-bold leading-5 text-ink [overflow-wrap:anywhere]">{display.title}</p>
+                  {display.description && (
+                    <p className="mt-1.5 text-xs font-medium leading-5 text-ink-muted [overflow-wrap:anywhere]">{display.description}</p>
+                  )}
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+              {index < steps.length - 1 && (
+                <div className="flex justify-center text-accent xl:justify-start" aria-hidden="true">
+                  <ArrowDown className="h-4 w-4 xl:hidden" />
+                  <ArrowRight className="hidden h-4 w-4 xl:block" />
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
     </div>
   );
