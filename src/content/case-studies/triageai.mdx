@@ -1,0 +1,96 @@
+import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ScreenshotGallery, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Healthcare AI Case Study"
+  title="TriageAI — ESI Clinical Intake & Care Routing Assistant"
+  description="An end-to-end healthcare AI decision-support workflow for emergency intake — structured patient data, real LightGBM inference, safety-rule escalation, clinician accept/override, audit logging, dashboard views, and PDF decision-support report generation. This is a clinical decision-support prototype, not a diagnostic tool, and does not replace clinician judgment."
+  links={[
+    { label: 'Live Demo', href: 'https://ai-triage-chintan.azurewebsites.net', external: true },
+    { label: 'GitHub', href: 'https://github.com/chintan-02/triageai-esi-care-routing', external: true }
+  ]}
+/>
+
+<TechStackBlock items={["Python", "FastAPI", "Streamlit", "LightGBM", "Scikit-learn", "SQLite", "SQLAlchemy", "Pydantic", "pytest", "Azure"]} />
+
+## Problem
+
+Emergency intake decisions need to be fast, consistent, and safety-aware. In real clinical settings, patient acuity depends on structured information: age, chief complaint, vitals, arrival mode, pain score, and clinical context.
+
+A machine learning model can help identify patterns in structured intake data, but healthcare AI must be designed carefully. Predictions need to be explainable, reviewable, auditable, and supervised by clinicians. A model that just outputs a number without context is not appropriate here.
+
+<ScreenshotGallery
+  title="Visual walkthrough in progress"
+  note="Compact placeholders remain here until the final TriageAI screenshots are available."
+  items={[
+    { label: "Structured intake form", detail: "Visual walkthrough in progress" },
+    { label: "Prediction result", detail: "Visual walkthrough in progress" },
+    { label: "Dashboard, audit trail, PDF report", detail: "Visual walkthrough in progress" }
+  ]}
+/>
+
+## Solution
+
+TriageAI combines ML prediction with a human-in-the-loop clinical review workflow. The backend generates an ESI 3/4/5 model prediction with confidence and probability scores. A safety-rule layer checks for higher-risk signals and can escalate the final ESI recommendation. The frontend presents the result with model confidence, class probabilities, safety flags, clinical explanation, and a recommended review action.
+
+Clinicians can accept the recommendation or override the final ESI when additional clinical context justifies a different decision. Every decision — including overrides — is stored with a required reason, timestamp, and full audit trail.
+
+The model is intentionally scoped to ESI 3/4/5 prediction, while higher-risk escalation is handled by explicit safety rules and clinician review rather than unsupported model claims.
+
+<ArchitectureBlock steps={[
+  "Patient intake",
+  "Streamlit UI",
+  "FastAPI",
+  "LightGBM ESI model",
+  "Safety-rule escalation",
+  "Clinician review/override",
+  "Audit log/database",
+  "PDF decision-support summary"
+]} />
+
+<StatusBadges
+  built={["Structured intake", "LightGBM inference", "Safety-rule escalation", "Clinician review/override", "Audit trail", "PDF decision-support summary"]}
+  planned={["Docker setup", "CI/CD workflow", "Demo walkthrough", "Model registry"]}
+/>
+
+## Key Features
+
+- Structured patient intake workflow covering vitals, chief complaint, arrival mode, and clinical context.
+- Real LightGBM V2 model inference for ESI 3, ESI 4, and ESI 5 acuity prediction.
+- Probability and confidence output per class — not just a label.
+- Safety-rule escalation logic that can raise the ESI recommendation when critical signals are present.
+- Clinician accept/override workflow — clinicians remain the final authority on every case.
+- Required override reason — every override is documented and stored, not silent.
+- Audit trail for every prediction and every review decision.
+- Dashboard with assessment history, review status, and filtering.
+- Assessment detail page with persisted model and review data per case.
+- PDF decision-support report generation for structured documentation.
+- Local demo database reset and seed workflow with pre-built recruiter-ready demo cases.
+- FastAPI health and readiness endpoints, SQLAlchemy ORM, SQLite local DB with PostgreSQL-compatible design.
+- pytest-based backend and workflow validation.
+
+<MetricCard label="Verified Model — LightGBM V2 Weighted Threshold" value="78.35% accuracy · 0.71% safety-critical error" note="Model type: LightGBM. Version: esi_345_lightgbm_v2_threshold. Prediction scope: ESI 3 / ESI 4 / ESI 5 only. Feature count: 272. ESI 5 threshold: 0.60. Macro F1: 70.42–70.59%. Weighted F1: 78.91–78.94%. ESI 5 F1: 54.78–55.34%. ESI 3→5 safety error: 0.64–0.71%." />
+
+## Machine Learning Scope
+
+The deployed model is a **LightGBM V2 weighted-threshold model** trained specifically for ESI 3, 4, and 5 classification. It does not independently predict ESI 1 or ESI 2 — higher-acuity outcomes are handled through the safety-rule escalation layer and clinician review. This design keeps the ML scope precise and the safety behavior explicit rather than mixing model confidence on rare, high-severity classes with the escalation logic.
+
+The model was selected after a bake-off against XGBoost, Random Forest, a Dense Neural Network, an RNN, and a GRU — evaluated on weighted F1 and ESI 3→5 safety-critical error rate, not raw accuracy alone.
+
+## Human-in-the-Loop Design
+
+TriageAI does not present the model as final clinical authority. The model generates a structured decision-support recommendation, but every clinician can accept or override it. When an override occurs, the system records the clinician's decision, their final ESI, override reason, review note, timestamp, clinician ID, and an audit trail event.
+
+This means every decision is accountable — not just the model's recommendation, but the human decision on top of it.
+
+## Production Concerns
+
+The next phase focuses on testing and reliability hardening: API smoke-test scripts, Docker setup, CI/CD workflow, deployment readiness improvements, full screenshots and a demo walkthrough document. Longer-term: optional ClinicalBERT experimentation for text-based chief complaint features, and MLflow or a structured model registry for versioning.
+
+## Roadmap
+
+- API smoke-test script and expanded pytest coverage.
+- Docker setup for local development and deployment consistency.
+- CI/CD workflow for automated testing and deployment.
+- Final screenshot set and demo walkthrough documentation.
+- Optional: ClinicalBERT experimentation for free-text chief complaint.
+- Optional: MLflow or structured model registry for versioning.

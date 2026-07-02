@@ -1,0 +1,87 @@
+import { CaseStudyHero, TechStackBlock, ArchitectureBlock, ScreenshotGallery, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="NLP Case Study"
+  title="ResumeIQ — AI-Assisted Resume Intelligence Platform"
+  description="A resume intelligence workflow for classification, ATS-style compatibility signals, skill extraction, template and placeholder detection, AI-like sentence analysis, and practical improvement feedback. It surfaces separate NLP signals rather than claiming to predict hiring outcomes."
+  links={[
+    { label: 'Live Demo', href: 'https://resume-classifier-chintan.azurewebsites.net', external: true },
+    { label: 'GitHub', href: 'https://github.com/chintan-02/smart-resume-classifier', external: true }
+  ]}
+/>
+
+<TechStackBlock items={["Python", "Scikit-learn", "TF-IDF", "Logistic Regression", "NLP", "Pandas", "Streamlit", "Azure"]} />
+
+## Problem
+
+Many job seekers do not know why their resume is not performing well. A resume may be missing important keywords, contain weak or generic bullet points, use AI-like wording that reads as templated, include placeholder content that signals a copy-paste origin, or simply fail to match the job description clearly.
+
+Traditional resume templates do not identify these issues. Generic scoring tools give a number with no actionable next step. ResumeIQ surfaces practical signals users can review before applying, without claiming to predict hiring decisions.
+
+<ScreenshotGallery
+  title="Visual walkthrough in progress"
+  note="Compact placeholders remain here until the final ResumeIQ screenshots are available."
+  items={[
+    { label: "Resume upload screen", detail: "Visual walkthrough in progress" },
+    { label: "ATS/classification result", detail: "Visual walkthrough in progress" },
+    { label: "Feedback and suggestions view", detail: "Visual walkthrough in progress" }
+  ]}
+/>
+
+## Solution
+
+ResumeIQ analyzes uploaded resume text and provides structured feedback across multiple dimensions — not a single fused score that hides what went wrong. Each signal is surfaced separately so the user can see likely keyword gaps, skill matches, classification output, and sentence-quality issues.
+
+<ArchitectureBlock steps={[
+  "Resume upload",
+  "Parsing",
+  "Preprocessing",
+  "TF-IDF/classifier",
+  "Skills extraction",
+  "ATS scoring",
+  "Sentence-quality analysis",
+  "Feedback"
+]} />
+
+<StatusBadges
+  built={["Resume upload", "Parsing", "TF-IDF classifier", "Skills extraction", "ATS scoring", "Sentence-quality checks", "Feedback dashboard"]}
+  planned={["Final evaluation benchmark", "Semantic JD matching", "Report export", "Docker and CI/CD"]}
+/>
+
+<div className="my-6 rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-5">
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Evaluation note</p>
+  <p className="mt-3 text-sm leading-7 text-ink-muted">Formal final classifier accuracy is not claimed because the evaluation results have not been finalized into a verified benchmark report. The current version demonstrates the resume analysis workflow, NLP feature engineering, ATS-style scoring, and user-facing feedback.</p>
+</div>
+
+## Key Features
+
+- Resume text parsing and structured extraction from PDF or plain text.
+- Resume category classification using TF-IDF features and a Logistic Regression baseline.
+- Skill extraction module — matched skills and missing skills surfaced separately.
+- ATS-style compatibility scoring based on keyword coverage and structural signals.
+- Template and incomplete resume detection — flags resumes that appear copy-pasted or unfinished.
+- Placeholder content detection — catches literal placeholder text that signals a careless submission.
+- AI-like sentence detection — flags wording patterns that read as generic or LLM-generated.
+- Sentence quality analysis with targeted improvement guidance per flagged sentence.
+- Streamlit interface deployed to Azure Web App.
+- Modular source-code structure with separate services for configuration, preprocessing, prediction, skill extraction, ATS scoring, and sentence quality analysis.
+
+## Model Thinking
+
+A resume intelligence system should not rely on one model output. The useful approach is layered: parser quality, keyword coverage, category prediction, confidence, ATS signals, and human-readable recommendations as separate, transparent components. Showing one opaque score would make a worse product here — someone who scores 62% has no idea whether the problem is keyword coverage, wording quality, or structure. Surfacing each signal separately is the explainability decision, not just an engineering one.
+
+## Production Concerns
+
+The next version should improve parsing robustness across diverse resume formats, add confidence calibration, test evaluation on realistic resume samples, clean up the UI flow, separate the API layer from the Streamlit frontend more cleanly, add Docker packaging, and generate structured PDF or HTML reports for users to keep.
+
+## Roadmap
+
+- Humanized rewrite suggestions per flagged sentence.
+- Job-description semantic matching (keyword gap analysis).
+- Tailored cover letter generation.
+- Resume structure advisor (section order, length, formatting signals).
+- Model comparison: Linear SVM, Naive Bayes, XGBoost baseline against Logistic Regression.
+- Confidence calibration and a finalized evaluation benchmark.
+- Possible MiniLM / BERT upgrade for semantic matching beyond TF-IDF.
+- Premium UI/UX restructuring for recruiter-style analysis workflow.
+- Docker and CI/CD.

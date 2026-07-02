@@ -1,0 +1,38 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 5 min read"
+  title="Why I Chose LightGBM Over XGBoost for TriageAI"
+  description="A model-selection write-up from the TriageAI build: what I compared, why accuracy alone was the wrong metric to optimize for, and the actual numbers behind the decision."
+/>
+
+## The Setup
+
+TriageAI predicts Emergency Severity Index (ESI) acuity from structured patient intake data — roughly 367,000 emergency department records across 272 engineered features. The obvious starting point for a tabular classification problem like this is gradient-boosted trees, so the real question wasn't "which family of model" so much as "which implementation, and judged by what."
+
+I didn't pick a model and move on. I ran a bake-off: LightGBM, XGBoost, Random Forest, a Dense Neural Network, and two sequence models (RNN, GRU) that I included mostly to confirm structured tabular data doesn't actually benefit from sequence architectures here — it didn't, and that result alone was worth the time it cost.
+
+## Why Accuracy Wasn't the Deciding Metric
+
+This is a 5-class problem (ESI 1 through 5), and the classes are imbalanced — most ED visits aren't the most severe cases. A model can post a respectable overall accuracy by being mediocre at the rare, high-acuity classes and very good at the common, low-acuity ones — which is exactly the failure mode you don't want in a triage system, since under-triaging a genuinely severe case is the costly error, not over-triaging a mild one.
+
+So the comparison ran on two numbers, not one: **weighted F1**, which accounts for per-class performance rather than just overall correctness, and a metric I built specifically for this problem — **ESI 3→5 safety error**, the rate at which the model assigns a low-acuity label to a patient who actually needed urgent care. That second number is the one that actually matters clinically.
+
+<MetricCard label="Final Model — LightGBM V2" value="78.35% accuracy · 0.71% safety error" note="Selected over XGBoost, Random Forest, Dense NN, RNN, and GRU on weighted F1 (78.91%) and ESI 3→5 safety error — not on raw accuracy alone." />
+
+## What Actually Separated the Candidates
+
+XGBoost and LightGBM landed close to each other on raw accuracy — close enough that picking between them on that number alone would have been close to a coin flip. The separation showed up in two other places: LightGBM's leaf-wise tree growth handled the high-dimensional, sparse feature space (many engineered features are sparse by nature) more efficiently, which mattered at this row count, and its performance on the minority high-acuity classes — the ones the safety-error metric is built around — was measurably more consistent across validation folds.
+
+<ArchitectureBlock steps={[
+  "Feature preparation across ~972 engineered columns",
+  "Train/validate split with class-imbalance awareness",
+  "Parallel bake-off: LightGBM, XGBoost, Random Forest, Dense NN, RNN, GRU",
+  "Scored on weighted F1 and ESI 3→5 safety error, not accuracy alone",
+  "LightGBM V2 selected; SHAP run on the final model for explainability"
+]} />
+
+## What I'd Do Differently
+
+The bake-off cost real time I could have spent elsewhere, and for a lot of tabular problems the honest answer is that LightGBM and XGBoost will land close enough that the choice doesn't matter much. It mattered here because the cost of being wrong is asymmetric — a missed high-acuity case is a very different kind of error than a missed low-acuity one — and that's exactly the situation where it's worth the extra time to check rather than defaulting to whichever library you reached for first. The lesson I took from this isn't "LightGBM is better than XGBoost" as a general rule; it's that the metric you optimize for should come from the actual cost of being wrong in your specific problem, not from whichever number is easiest to report.

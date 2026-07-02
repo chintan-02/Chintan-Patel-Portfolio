@@ -1,0 +1,34 @@
+import { CaseStudyHero, MetricCard } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 5 min read"
+  title="What 'Explainable AI' Actually Means in Practice"
+  description="Explainability gets used as one umbrella term, but it solves three different problems depending on the system. Notes from building it three different ways across a healthcare triage model, a resume scorer, and a RAG assistant."
+/>
+
+## It's Not One Technique
+
+"Explainable AI" usually gets talked about as if it's a single tool you bolt onto a model — add SHAP, ship it, done. After building three systems that each needed explainability for a genuinely different reason, I don't think that's accurate. Each one needed something different, because each one was solving a different version of "why should anyone trust this output."
+
+## TriageAI: Explaining a Score That Has Real Consequences
+
+For a model predicting emergency severity, the question isn't just "why did the model say ESI level 3" — it's "should a clinician trust this enough to act on it, and what happens when the model is wrong." That's why TriageAI isn't just a model with SHAP values attached to it; it's a model plus clinical safety rules that can escalate the output, plus a clinician review step that can override it. SHAP explains *why* the model reached a number. The safety rules and human review exist because explaining a wrong answer doesn't make it a safe one — they're the part of the system that keeps the model's output from being treated as final clinical authority.
+
+<MetricCard label="TriageAI's Approach" value="SHAP + safety rules + human override" note="Explainability here isn't the model justifying itself in isolation — it's one layer in a system where a human stays in the loop on the highest-stakes decisions." />
+
+## ResumeIQ: Explaining Without a Single Score to Hide Behind
+
+ResumeIQ's problem is the opposite shape. There's no single high-stakes prediction to explain — there's a resume, and a job seeker who wants to know *specifically* what to fix. A single opaque "match score" would actually be a worse product here, not just a less explainable one, because it gives someone a number with no actionable next step. So ResumeIQ doesn't really have one black-box score at all — it surfaces ATS-style signals, JD keyword overlap, matched and missing skills, and sentence-quality signals separately, as transparent components rather than one fused number. The explainability requirement shaped the product decision, not just the model output.
+
+## PolicyGPT: Explaining by Refusing to Answer
+
+A RAG assistant answering questions about HR and compliance documents has a different trust problem again — it's not "explain this score," it's "prove this answer is actually grounded in the source document, and tell me clearly when it isn't." That's what the evidence gate and page-level citations are for: every supported answer is traceable to a specific page, and when retrieval doesn't clear the confidence bar, the system says so explicitly instead of generating a plausible-sounding guess. Here, the most important explainability feature isn't a justification attached to an answer — it's the system's honesty about the edge of its own knowledge.
+
+## The Common Thread
+
+Underneath three different implementations, the actual requirement was the same each time: don't make someone take the system's word for it. Show the reasoning where a clinician needs to weigh it, decompose the score where a job seeker needs to act on it, and cite the source — or admit you can't — where the cost of being confidently wrong is high. That's the practical version of "intelligence you can trace": not a single library you import, but a design constraint that changes what the system actually outputs, project to project.
+
+## What Explainability Doesn't Guarantee
+
+It's worth being honest about the limit here. SHAP values explain what the model's decision boundary did, not whether the model's training data was representative or fair — those are separate problems that explainability alone doesn't solve. Transparent component scores in ResumeIQ make the *signals* visible, not necessarily complete. And an evidence-gated RAG system can still cite a source document that's outdated or wrong. Explainability tells you how a system reached its output. It doesn't, by itself, guarantee the output is correct — and treating it as if it does would be exactly the kind of false confidence these systems are supposed to avoid.

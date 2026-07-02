@@ -1,0 +1,368 @@
+@import "tailwindcss";
+
+/* ============================================================
+   DESIGN TOKENS — "OBSERVATORY"  (Tailwind v4 CSS-first @theme)
+   One committed cinematic look (no light/dark toggle).
+   Deep-space base + amber accent. Single source of truth:
+   tokens here generate utilities (bg-base, text-ink, text-accent,
+   rounded-card, shadow-card, ease-out-soft, font-display-serif …)
+   AND emit real CSS custom properties on :root.
+   ============================================================ */
+@theme {
+  /* type — Fraunces (cinematic serif, used ONCE) + Space Grotesk (headings)
+     + Inter (body) + JetBrains Mono (data/labels) */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display-serif: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* raw R G B channels (no commas — CSS relative-color syntax) for every soft
+     tint/border/glow across the site, e.g. rgb(var(--accent-rgb)/0.08). One
+     definition here covers ~90 call sites; flipping these per-theme below is
+     what makes every existing "soft amber bg" component re-skin for free,
+     without having to hand-edit each component. Dark values = defaults. */
+  --accent-rgb: 232 168 124;
+  --ink-rgb: 244 244 248;
+  --violet-rgb: 139 127 232;
+  --surface-rgb: 20 21 31;
+  --surface2-rgb: 28 30 43;
+  --base-rgb: 10 10 15;
+
+  /* color — Observatory (dark / default) */
+  --color-base: #0A0A0F;          /* deep-space page base */
+  --color-base-2: #0C0D14;        /* base gradient end */
+  --color-surface: #14151F;       /* raised surface / card */
+  --color-surface-2: #1C1E2B;     /* glass panel / inset */
+  --color-ink: #F4F4F8;           /* primary text */
+  --color-ink-muted: #9A9CB0;     /* secondary text */
+  --color-ink-faint: #5A5C70;     /* faint labels / captions */
+  --color-accent: #E8A87C;        /* amber accent */
+  --color-accent-strong: #F0B98E; /* amber hover (brighter on dark) */
+  --color-accent-deep: #C98A5E;   /* amber pressed / deep */
+  --color-violet: #8B7FE8;        /* cool secondary (point-cloud depth only) */
+  --color-line: rgb(var(--ink-rgb)/0.10);        /* hairline border */
+  --color-line-strong: rgb(var(--ink-rgb)/0.18); /* stronger divider */
+
+  /* radius scale — semantic names avoid collision with rounded-xl/2xl */
+  --radius-inset: 0.625rem;   /* 10px — chips, small insets */
+  --radius-card: 1rem;        /* 16px — default card (dominant) */
+  --radius-panel: 1.5rem;     /* 24px — large panels */
+  --radius-hero: 2rem;        /* 32px — hero / feature panels */
+
+  /* elevation — on dark, shadows read faintly; lean on borders + amber glow.
+     Light theme softens these further below (deep black shadows look heavy
+     on a cream surface). */
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.45);
+  --shadow-card-hover: 0 18px 50px rgba(0, 0, 0, 0.55);
+  --shadow-feature: 0 28px 64px rgba(0, 0, 0, 0.55);
+  --glow-amber: 0 0 40px rgb(var(--accent-rgb)/0.12);
+
+  /* easing tokens (CSS transitions; mirrored in src/lib/motion.js for Framer) */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ============================================================
+   LIGHT THEME — "Observatory Daylight"
+   Same brand, same hue family, same component code — only the
+   token values flip. Inspired by a warm cream/bronze palette
+   (deep cream base, copper-bronze accent, warm charcoal ink)
+   rather than a generic white-and-gray light mode, so it still
+   reads as "this site", not a different product. Selector beats
+   :root specificity (element + attribute), so it reliably wins
+   regardless of source order. Toggled via ThemeToggle → sets
+   document.documentElement.dataset.theme (see lib/themeStore.jsx). */
+html[data-theme="light"] {
+  color-scheme: light;
+
+  --accent-rgb: 184 118 62;
+  --ink-rgb: 42 38 32;
+  --violet-rgb: 107 91 196;
+  --surface-rgb: 253 250 244;
+  --surface2-rgb: 241 233 218;
+  --base-rgb: 246 241 233;
+
+  --color-base: #F6F1E9;
+  --color-base-2: #EFE6D3;
+  --color-surface: #FDFAF4;
+  --color-surface-2: #F1E9DA;
+  --color-ink: #2A2620;
+  --color-ink-muted: #6B6457;
+  --color-ink-faint: #94897A;
+  --color-accent: #B8763E;
+  --color-accent-strong: #9C5F2E; /* hover darkens on light, mirrors dark theme's brighten-on-dark logic */
+  --color-accent-deep: #7D4D26;
+  --color-violet: #6B5BC4;
+  --color-line: rgb(var(--ink-rgb)/0.12);
+  --color-line-strong: rgb(var(--ink-rgb)/0.20);
+
+  --shadow-card: 0 8px 24px rgba(42, 38, 32, 0.10);
+  --shadow-card-hover: 0 16px 40px rgba(42, 38, 32, 0.14);
+  --shadow-feature: 0 24px 56px rgba(42, 38, 32, 0.16);
+  --glow-amber: 0 0 40px rgb(var(--accent-rgb)/0.16);
+}
+
+:root {
+  color-scheme: dark;
+
+  /* motion durations (CSS side; JS mirror in lib/motion.js) */
+  --dur-fast: 150ms;
+  --dur-base: 240ms;
+  --dur-slow: 420ms;
+  --dur-cine: 900ms;   /* cinematic-slow for hero reveals */
+
+  /* backward-compatible aliases → point at @theme tokens (one source of truth) */
+  --bg: var(--color-base);
+  --text: var(--color-ink);
+  --muted: var(--color-ink-muted);
+  --muted2: var(--color-ink-faint);
+  --card: var(--color-surface);
+  --border: var(--color-line);
+  --shadow: var(--shadow-card);
+  --shadow-hover: var(--shadow-card-hover);
+  --accent: var(--color-accent);
+  --accent2: var(--color-violet);
+  --accent-soft: rgb(var(--accent-rgb)/0.12);
+}
+
+/* Base resets live in @layer base so Tailwind utilities (text-ink, text-accent…)
+   reliably win — critical for link-buttons where an unlayered a{color:inherit}
+   would otherwise override the variant color. */
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-width: 320px;
+    color: var(--text);
+    /* deep-space base + amber/violet aurora blooms */
+    background:
+      radial-gradient(70rem 50rem at 85% -8%, rgb(var(--accent-rgb)/0.10), transparent 60%),
+      radial-gradient(55rem 45rem at 4% 104%, rgb(var(--violet-rgb)/0.08), transparent 60%),
+      linear-gradient(180deg, var(--color-base) 0%, var(--color-base-2) 100%);
+    background-attachment: fixed;
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* fine dot-grid — one static fixed compositor layer, masked to fade.
+     Perf budget: no animation, no repaint, negligible cost. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -2;
+    pointer-events: none;
+    background-image: radial-gradient(rgb(var(--ink-rgb)/0.05) 1px, transparent 1px);
+    background-size: 26px 26px;
+    -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 20%, transparent 80%);
+            mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, #000 20%, transparent 80%);
+  }
+
+  ::selection { background: rgb(var(--accent-rgb)/0.26); color: var(--color-ink); }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+  button, input, textarea { font: inherit; }
+
+  /* visible keyboard focus (mouse clicks don't trigger it) */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+.text-balance { text-wrap: balance; }
+
+/* ── LENIS smooth scroll (only active when .lenis classes are applied) ───────── */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* ============================================================
+   CARD SYSTEM — dark glass; token-driven radius/elevation/hover.
+   In @layer components so utilities can override (padding, border-l…).
+   On dark, separation comes from a hairline + faint blur, not shadow alone.
+   ============================================================ */
+@layer components {
+  .card {
+    border-radius: var(--radius-card);
+    border: 1px solid var(--color-line);
+    background-color: rgb(var(--surface-rgb)/0.72);
+    box-shadow: var(--shadow-card);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .card-hover {
+    transition:
+      transform var(--dur-base) var(--ease-out-soft),
+      box-shadow var(--dur-base) var(--ease-out-soft),
+      border-color var(--dur-base) var(--ease-out-soft);
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);                  /* GPU-friendly (transform only) */
+    box-shadow: var(--shadow-card-hover), var(--glow-amber);
+    border-color: rgb(var(--accent-rgb)/0.34);      /* amber-tinted edge for separation */
+  }
+  .card-inset {
+    border-radius: var(--radius-inset);
+    border: 1px solid var(--color-line);
+    background-color: rgb(var(--surface2-rgb)/0.6);
+  }
+}
+
+/* opt-in stronger glass (project cards over the 3D scene) */
+.glass-panel {
+  background: rgb(var(--surface-rgb)/0.55);
+  border: 1px solid var(--color-line);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+.site-grid { display: none; }
+
+/* ── eyebrow / data label (mono, amber-tinted) ──────────────── */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;        /* 11px */
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--color-ink-faint);
+}
+
+/* ── HERO STATIC POSTER (reduced-motion fallback for the 3D scene) ──────────── */
+.hero-poster {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(38rem 38rem at 50% 42%, rgb(var(--accent-rgb)/0.18), transparent 62%),
+    radial-gradient(22rem 22rem at 62% 54%, rgb(var(--violet-rgb)/0.12), transparent 60%);
+}
+.hero-poster::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgb(var(--accent-rgb)/0.5) 1.1px, transparent 1.2px);
+  background-size: 30px 30px;
+  -webkit-mask-image: radial-gradient(34rem 34rem at 50% 44%, #000 0%, transparent 70%);
+          mask-image: radial-gradient(34rem 34rem at 50% 44%, #000 0%, transparent 70%);
+  opacity: 0.5;
+}
+
+/* scroll-cue dot travels down the line; static (non-animated) base stays visible
+   so reduced-motion users see a static dot rather than nothing. */
+@keyframes scrollDot {
+  0%   { transform: translate(-50%, 0); opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { transform: translate(-50%, 38px); opacity: 0; }
+}
+.scroll-dot { transform: translate(-50%, 14px); animation: scrollDot 2.2s var(--ease-in-out-soft) infinite; }
+
+@keyframes twBlink { 0%,100%{opacity:1} 50%{opacity:0} }
+.tw-cursor { animation: twBlink .9s step-end infinite; }
+
+/* page prose (dark) */
+.prose-ai h1,
+.prose-ai h2,
+.prose-ai h3 { font-family: var(--font-display); color: var(--text); font-weight: 600; }
+.prose-ai h1 { font-size: clamp(2.4rem, 5vw, 4.2rem); line-height: 1.02; margin-bottom: 1rem; }
+.prose-ai h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.12; margin-top: 3.5rem; margin-bottom: 1rem; }
+.prose-ai h3 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: .65rem; }
+.prose-ai p { color: var(--muted); font-size: 1.05rem; line-height: 1.85; margin: 1rem 0; }
+.prose-ai ul { margin: 1.2rem 0; padding-left: 1.2rem; color: var(--muted); }
+.prose-ai li { margin: .55rem 0; line-height: 1.7; }
+.prose-ai strong { color: var(--text); }
+.prose-ai code { border-radius: .55rem; background: var(--accent-soft); padding: .12rem .38rem; color: var(--color-accent-strong); font-size: .92em; }
+
+/* custom interactive cursor (Observatory) — amber dot + lagging ring that
+   blooms over clickable elements. JS gates this to fine-pointer + motion-ok
+   devices (see Cursor.jsx); cursor-none is only ever added there. */
+html.cursor-none,
+html.cursor-none a,
+html.cursor-none button,
+html.cursor-none * { cursor: none; }
+html.cursor-none input,
+html.cursor-none textarea { cursor: text; }
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  opacity: 1;
+  transition: opacity .2s ease;
+  will-change: transform;
+}
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgb(var(--accent-rgb)/0.42);
+  background: rgb(var(--accent-rgb)/0.05);
+  opacity: 1;
+  transition:
+    width .25s var(--ease-out-soft),
+    height .25s var(--ease-out-soft),
+    background .25s var(--ease-out-soft),
+    border-color .25s var(--ease-out-soft),
+    opacity .2s ease;
+  will-change: transform;
+}
+.cursor-ring.is-hover {
+  width: 56px;
+  height: 56px;
+  border-color: rgb(var(--accent-rgb)/0.7);
+  background: rgb(var(--accent-rgb)/0.1);
+}
+.cursor-ring.is-down { width: 26px; height: 26px; }
+
+/* premium avatar — the source photo (bright snow, cool blue tones) would clash
+   hard with the deep-space palette dropped in raw, so it's colour-graded warm
+   + dark to belong, then framed with a slow rotating amber/violet ring and a
+   soft blurred halo (the same two accent colours as the aurora blooms / point
+   cloud, so it reads as part of the same visual system, not a pasted-in photo). */
+.avatar-frame { position: relative; display: inline-flex; }
+.avatar-halo {
+  position: absolute;
+  inset: -20px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, rgb(var(--accent-rgb)/0.30), rgb(var(--violet-rgb)/0.16) 55%, transparent 76%);
+  filter: blur(16px);
+  pointer-events: none;
+}
+.avatar-ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 9999px;
+  background: conic-gradient(from 0deg, var(--color-accent), var(--color-violet), var(--color-accent));
+  opacity: 0.7;
+  animation: avatarSpin 16s linear infinite;
+  pointer-events: none;
+}
+.avatar-photo {
+  filter: grayscale(0.48) sepia(0.22) saturate(1.4) brightness(0.86) contrast(1.1);
+}
+@keyframes avatarSpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
+}

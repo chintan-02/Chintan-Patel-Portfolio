@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- runs before first paint: applies a stored light-theme preference immediately
+         so returning light-mode visitors never see a dark flash. Dark is the CSS
+         default (no attribute needed), so there's nothing to do for dark/first-time
+         visitors — this only ever needs to ADD the light attribute, never remove it. -->
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.addEventListener('DOMContentLoaded', function () {
+              var meta = document.querySelector('meta[name="theme-color"]');
+              if (meta) meta.setAttribute('content', '#F6F1E9');
+            });
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0A0A0F" />
+
+    <!-- SEO -->
+    <meta name="description" content="Applied AI/ML portfolio featuring TriageAI, ResumeIQ, and PolicyGPT Enterprise — evaluated ML systems, RAG workflows, clinical decision-support prototypes, and deployed AI applications." />
+    <meta name="keywords" content="Applied AI/ML Engineer, Machine Learning, NLP, RAG, LLM, Python, FastAPI, Azure, Calgary, Canada, Data Science, TriageAI, ResumeIQ, PolicyGPT" />
+    <meta name="author" content="Chintan Patel" />
+
+    <link rel="canonical" href="https://chintan-patel-ai.netlify.app/" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Chintan Patel | AI/ML Engineer Portfolio" />
+    <meta property="og:description" content="Applied AI/ML portfolio featuring TriageAI, ResumeIQ, and PolicyGPT Enterprise — evaluated ML systems, RAG workflows, clinical decision-support prototypes, and deployed AI applications." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://chintan-patel-ai.netlify.app/" />
+    <!-- Replace /og-image.svg with a final branded preview image if a raster social card is exported later. -->
+    <meta property="og:image" content="https://chintan-patel-ai.netlify.app/og-image.svg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Chintan Patel Portfolio" />
+    <meta property="og:locale" content="en_CA" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Chintan Patel | AI/ML Engineer Portfolio" />
+    <meta name="twitter:description" content="Applied AI/ML portfolio featuring TriageAI, ResumeIQ, and PolicyGPT Enterprise — evaluated ML systems, RAG workflows, clinical decision-support prototypes, and deployed AI applications." />
+    <meta name="twitter:image" content="https://chintan-patel-ai.netlify.app/og-image.svg" />
+
+    <link rel="icon" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Fraunces (cinematic display, used once in hero) + Space Grotesk (headings) + Inter (body) + JetBrains Mono (data/labels) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..600&family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <title>Chintan Patel | AI/ML Engineer Portfolio</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

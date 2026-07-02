@@ -1,0 +1,26 @@
+import { CaseStudyHero, MetricCard } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 3 min read"
+  title="Data Drift Explained for Production ML"
+  description="A short production-minded explanation of how real-world data changes after deployment and why monitoring is necessary."
+/>
+
+## What Is Data Drift?
+
+Data drift happens when new production data starts looking different from the data used to train the model. The model may still run, but its predictions can become less reliable.
+
+## Simple Example
+
+A resume classifier trained on old resumes may perform worse when new AI-generated resumes, new job titles, and new skill keywords become common. The input text distribution changed, so the model needs monitoring and possibly retraining.
+
+## What To Monitor
+
+- Input feature distributions.
+- Prediction distribution over time.
+- Confidence scores.
+- Error patterns from user feedback.
+- Changes in business or domain behavior.
+
+<MetricCard label="Production Lesson" value="Models age after deployment" note="Monitoring is what turns a model from a notebook artifact into a maintainable system." />

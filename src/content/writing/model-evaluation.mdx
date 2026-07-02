@@ -1,0 +1,30 @@
+import { CaseStudyHero, MetricCard } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 3 min read"
+  title="How I Evaluate ML Models Beyond Accuracy"
+  description="A practical explanation of why accuracy alone can be misleading and how precision, recall, F1-score, confusion matrix, and business risk change model evaluation."
+/>
+
+## Accuracy Is Not Enough
+
+Accuracy tells us how often the model was correct overall. That is useful, but it can be dangerous when classes are imbalanced. For example, if 95% of cases are low-risk, a model can look accurate while failing to catch important high-risk cases.
+
+A concrete example: in TriageAI, the overall score matters, but the more important question is whether the model creates unsafe routing errors. A model that improves accuracy while sending more urgent ESI 3 cases toward ESI 5 would be a worse system, not a better one. That is why I look at class-level behavior, confusion patterns, and safety-weighted errors instead of treating one headline number as the whole story.
+
+## What I Check First
+
+- Class distribution before training.
+- Train/test split quality.
+- Confusion matrix by class.
+- Precision, recall, and F1-score.
+- Errors that create the highest real-world risk.
+
+<MetricCard label="Rule of Thumb" value="Evaluate risk, not just score" note="A model with slightly lower accuracy may be safer if it catches more important cases." />
+
+## Production Thinking
+
+After deployment, evaluation does not stop. I would monitor input drift, prediction distribution, confidence trends, latency, error patterns, and real user feedback. For a resume workflow, that might mean watching whether new resume formats or AI-generated wording change parsing quality. For a RAG system, it means tracking unsupported-question fallbacks, citation coverage, retrieval confidence, and answer latency.
+
+The production question is not only “did it work on the test set?” but “is it still reliable on new data, with new users, under real usage patterns?” That is where monitoring, logging, review loops, and periodic evaluation become part of the model system rather than an afterthought.

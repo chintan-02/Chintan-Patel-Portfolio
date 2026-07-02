@@ -1,0 +1,131 @@
+import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ProductWalkthrough, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="GenAI / RAG Case Study"
+  title="PolicyGPT Enterprise — Evidence-First RAG for HR & Compliance PDFs"
+  description="A Phase 1 local RAG assistant for querying HR, policy, SOP, and compliance PDFs with a working FastAPI backend, Streamlit UI, ChromaDB retrieval, citation cards, evidence explorer, unsupported-question fallback, and Swagger API docs. Deployment is planned; the current focus is a grounded, testable evidence-first workflow."
+  links={[
+    { label: 'GitHub', href: 'https://github.com/chintan-02/policygpt-enterprise', external: true }
+  ]}
+/>
+
+<TechStackBlock items={["Python", "FastAPI", "ChromaDB", "SentenceTransformers", "Groq Llama-3.3-70B", "PyMuPDF", "Streamlit", "Pydantic v2"]} />
+
+## Problem
+
+Organizations store important policy and compliance information inside long PDF documents. Employees need quick, grounded answers — but manually searching through documents is slow, and the cost of a wrong answer in a compliance context is high.
+
+Generic chatbots can respond quickly, but they may hallucinate or provide unsupported answers. For enterprise document Q&A, answers must be grounded, traceable, and connected back to source documents. A system that confidently invents a policy answer is worse than one that says it doesn't know.
+
+<ProductWalkthrough
+  steps={[
+    {
+      title: "Document Upload",
+      why: "Upload enterprise policy documents, configure retrieval settings, and index them for semantic search.",
+      image: "/projects/policygpt/01-dashboard-upload.png",
+      alt: "PolicyGPT document upload dashboard for indexing enterprise policy PDFs."
+    },
+    {
+      title: "Citation-backed Answer",
+      why: "Every answer is grounded in retrieved evidence with confidence scoring and source citations.",
+      image: "/projects/policygpt/02-citation-backed-answer.png",
+      alt: "PolicyGPT citation-backed answer screen with confidence score and source citations."
+    },
+    {
+      title: "Multi-source Retrieval",
+      why: "The assistant combines evidence from multiple document sections before generating an answer.",
+      image: "/projects/policygpt/03-ai-policy-answer.png",
+      alt: "PolicyGPT answer screen showing response generated from multiple retrieved policy sections."
+    },
+    {
+      title: "Unsupported-question Fallback",
+      why: "If retrieved evidence does not satisfy the confidence threshold, the assistant refuses to answer instead of hallucinating.",
+      image: "/projects/policygpt/04-unsupported-fallback.png",
+      alt: "PolicyGPT unsupported-question fallback screen refusing to answer without sufficient evidence.",
+      emphasis: true
+    },
+    {
+      title: "Evidence Explorer",
+      why: "Inspect retrieved chunks, confidence, citations, and retrieval reasoning before generation.",
+      image: "/projects/policygpt/05-evidence-explorer.png",
+      alt: "PolicyGPT evidence explorer screen showing retrieved chunks, confidence, citations, and reasoning."
+    },
+    {
+      title: "System Architecture",
+      why: "Illustrates the end-to-end RAG workflow from ingestion to evidence-gated generation.",
+      image: "/projects/policygpt/06-architecture-page.png",
+      alt: "PolicyGPT architecture page showing the end-to-end RAG workflow from ingestion to evidence-gated generation."
+    },
+    {
+      title: "FastAPI Backend",
+      why: "Interactive API documentation showing backend endpoints for upload, search, evidence inspection, and question answering.",
+      image: "/projects/policygpt/07-fastapi-docs.png",
+      alt: "PolicyGPT FastAPI Swagger documentation showing backend endpoints for upload, search, evidence inspection, and question answering."
+    }
+  ]}
+/>
+
+## Solution
+
+PolicyGPT allows users to upload policy PDFs and ask natural-language questions through a Streamlit UI backed by FastAPI. The backend extracts PDF text, cleans it, chunks it with page-level metadata, creates embeddings, and stores them in ChromaDB. For each question, it retrieves evidence, scores retrieval confidence, and only allows the LLM to generate an answer if the evidence clears a threshold — otherwise it returns a documented fallback response, not a guess.
+
+<ArchitectureBlock steps={[
+  "User uploads PDF",
+  "PyMuPDF",
+  "Cleaning",
+  "Chunking",
+  "SentenceTransformer",
+  "ChromaDB",
+  "Evidence Gate",
+  "LLM Provider",
+  "Citation Cards",
+  "Response"
+]} />
+
+<StatusBadges
+  built={["PDF ingestion", "Chunk metadata", "Embeddings", "Vector search", "Evidence gate", "Citations", "Fallback guardrails"]}
+  planned={["Cloud deployment", "Persistent vector store", "RAG evaluation dataset", "Logging dashboard"]}
+/>
+
+## Key Features
+
+- PDF upload and ingestion with PyMuPDF text extraction and cleaning.
+- Metadata-rich document chunking with page-level citation support.
+- SentenceTransformers embeddings (all-MiniLM-L6-v2) stored in ChromaDB.
+- Semantic retrieval pipeline with per-chunk retrieval score calculation.
+- Evidence-gate scoring: retrieval confidence evaluated before generation is allowed.
+- Citation-backed answer generation — every supported answer is tied to specific pages.
+- Confidence score surfaced alongside every answer, not hidden.
+- Unsupported-question fallback: when evidence doesn't clear the threshold, the system declines rather than guessing.
+- Provider-agnostic LLM layer — built against Groq Llama-3.3-70B, switchable to OpenAI-compatible endpoint.
+- Evidence Explorer page for retrieval transparency — users can inspect what was retrieved and at what score.
+- Working FastAPI backend with Swagger API documentation and health endpoint.
+- Streamlit enterprise dashboard as the user-facing interface.
+- Citation cards showing document name, page number, section title, excerpt, and retrieval score.
+
+<MetricCard label="Verified Unsupported-Question Test" value="0 citations · 0.0000 confidence" note="Asked: 'What is the CEO home address?' — a question no HR policy PDF contains. Result: insufficient evidence, confidence 0.0000, 0 citations, fallback triggered. The strongest test is not when the system answers correctly — it is when it refuses to answer because evidence is insufficient." />
+
+## Evidence-First Design
+
+The key architectural decision is that retrieval quality *gates* generation — the LLM is not given free rein to respond to every query. Most basic RAG demos retrieve some passages and let the model do its best with whatever comes back, even when nothing relevant was actually found. PolicyGPT scores retrieval first: if evidence doesn't clear the confidence bar, the LLM call is either skipped or its output is overridden by the fallback path, and the user is told explicitly why.
+
+For HR and compliance use cases, "I don't have enough information to answer that" is a better outcome than a fluent, wrong answer that someone might act on.
+
+<MetricCard label="System Type" value="Phase 1 MVP / local, deployment planned" note="Self-built, running locally — not yet deployed. Built to demonstrate the retrieval-gating, citation, evidence explorer, Streamlit UI, and FastAPI patterns a deployable document-intelligence system needs." />
+
+## Production Concerns
+
+Going from Phase 1 MVP to something deployable requires: authentication and document-level access control (HR documents are sensitive by nature), persistent vector storage replacing the local ChromaDB instance, a labeled evaluation dataset to measure retrieval precision/recall and citation accuracy quantitatively rather than by spot check, request logging and monitoring for both latency and answer quality, and containerized deployment via Docker Compose.
+
+## Roadmap
+
+- Cloud deployment (Azure or similar) with persistent vector store.
+- Retrieval and answer logging for every query.
+- Custom RAG evaluation dataset and evaluation runner.
+- Improved confidence scoring with calibrated thresholds.
+- RAG evaluation dashboard.
+- PostgreSQL metadata layer for production-grade persistence.
+- Docker Compose for reproducible local development.
+- Multi-document comparison across more than one policy PDF.
+- Compliance summary report generation.
+- Second LLM provider behind the same evidence gate to confirm provider independence.

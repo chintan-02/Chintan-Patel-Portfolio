@@ -1,0 +1,28 @@
+# AI assistant tooling — local only
+.agents/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+
+# Dependencies
+node_modules/
+dist/
+
+# Environment
+.env
+
+# Private / local only
+master.html
+learning.html
+files.zip
+LOGO/
+
+.DS_Store
+node_modules/
+dist/
+.env
+.env.local

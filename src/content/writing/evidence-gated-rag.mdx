@@ -1,0 +1,41 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 4 min read"
+  title="Building an Evidence Gate: How to Stop a RAG System from Hallucinating"
+  description="Most RAG demos retrieve some passages and let the model do its best with whatever comes back. Here's the architecture decision from PolicyGPT that treats retrieval as a gate instead of a suggestion — and the test that actually proves it works."
+/>
+
+## The Problem With Naive RAG
+
+The standard retrieval-augmented generation pattern is: embed a question, retrieve the nearest chunks from a vector store, stuff them into a prompt, let the model generate an answer. It works well when the retrieved chunks are actually relevant. The failure mode nobody's demo shows you is what happens when they aren't — when the question is out of scope, or the document simply doesn't cover it. A standard RAG pipeline will still generate something, because nothing in the architecture tells the model it's allowed to say "I don't know." It'll sound exactly as confident being wrong as it does being right.
+
+For a system answering questions about HR policy and compliance documents, that's not a quality problem, it's a liability problem. A confidently wrong answer about a compliance policy is worse than no answer at all.
+
+## Treating Retrieval as a Gate, Not a Suggestion
+
+The fix I built into PolicyGPT is architectural, not a prompt trick: retrieval quality is scored *before* generation is allowed to happen at all. The system embeds the question, retrieves candidate chunks, and scores the retrieval confidence against a threshold. Only if that threshold is cleared does the request proceed to the LLM — and even then, the answer has to come back with page-level citations tying it to the source document. If retrieval doesn't clear the bar, the LLM call is skipped or its output is overridden, and the system returns a fallback response instead.
+
+<ArchitectureBlock steps={[
+  "Question embedded (SentenceTransformers, all-MiniLM-L6-v2)",
+  "Candidate chunks retrieved from ChromaDB",
+  "Evidence-gate scoring against a confidence threshold",
+  "Below threshold → fallback response, no LLM call relied on",
+  "Above threshold → LLM answer generation, gated and citation-bound",
+  "Answer returned only with page-level citations attached"
+]} />
+
+## The Test That Actually Proves It
+
+It's easy to claim a system "won't hallucinate." The way I actually verified it was by asking it something the source documents have no way of answering — a question like a CEO's home address, which obviously isn't in an HR policy PDF. A naive RAG pipeline will often still produce something plausible-sounding here, because there's nothing stopping it from doing so.
+
+<MetricCard label="Unsupported-Question Test" value="0 citations · 0.0000 confidence" note="The system correctly returned zero citations and a 0.0000 confidence score, triggering the fallback path instead of generating an answer. That's the test that matters — not whether the system answers well on questions it can answer, but what it does on ones it can't." />
+
+## Why Refusing to Answer Is a Feature
+
+In a compliance or HR context specifically, "I don't have enough information to answer that" is a genuinely better outcome than a fluent, wrong answer — it tells the user to go check the source document or ask a human, instead of acting on something the system made up. Most of the engineering effort in a system like this isn't in making it answer well; it's in making the boundary between "I know" and "I don't know" actually reliable, and then making the system honest about which side of that boundary it's on.
+
+## What This Doesn't Solve
+
+I want to be specific about the limits here, since it's easy to oversell an evidence gate. It doesn't guarantee the *retrieved* evidence is itself correct or current — if the source PDF is outdated, a well-cited answer can still be wrong in a way the gate can't catch. It also doesn't eliminate the need for a real evaluation set; right now the gate's threshold was tuned by hand against a handful of test questions, not a labeled benchmark, which is the honest next step before I'd call this production-ready rather than a working reference implementation.
