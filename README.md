@@ -1,542 +1,781 @@
-# Chintan Patel — Applied AI/ML Engineer Portfolio
+# Chintan Patel — Applied AI/ML Engineering Portfolio
 
-> **Live site:** [chintan-patel-ai.netlify.app](https://chintan-patel-ai.netlify.app)
+<div align="center">
 
-A production-grade personal portfolio built with React, Vite, Tailwind CSS v4, Framer Motion, React Three Fiber, and MDX. Features a cinematic dark-space design ("Observatory"), a real-time 3D WebGL point cloud, light/dark theme toggle, full case study system, technical writing section, and a complete project showcase — purpose-built as a job-search conversion surface for AI/ML, Data Science, and Software roles in Canada.
+![React](https://img.shields.io/badge/React-19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat-square&logo=vite&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![MDX](https://img.shields.io/badge/Content-MDX-1B1F24?style=flat-square&logo=mdx&logoColor=white)
+![Three.js](https://img.shields.io/badge/3D-React_Three_Fiber-000000?style=flat-square&logo=threedotjs&logoColor=white)
+![Netlify](https://img.shields.io/badge/Deployment-Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white)
+
+**A recruiter-focused portfolio for applied AI/ML engineering, data science, NLP, RAG, and responsible AI product work.**
+
+[Live Portfolio](https://chintan-patel-ai.netlify.app/) ·
+[GitHub Profile](https://github.com/chintan-02) ·
+[LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
+
+</div>
 
 ---
 
-## Table of Contents
+## Overview
 
-- [Live Site](#live-site)
-- [Tech Stack](#tech-stack)
-- [Architecture Overview](#architecture-overview)
-- [Project Structure](#project-structure)
-- [Design System](#design-system)
-- [Pages & Routes](#pages--routes)
-- [Key Features](#key-features)
-- [3D Scene — Latent-Space Point Cloud](#3d-scene--latent-space-point-cloud)
-- [Theme System](#theme-system)
-- [Content System — MDX](#content-system--mdx)
-- [Projects Showcased](#projects-showcased)
-- [Performance & Accessibility](#performance--accessibility)
-- [Running Locally](#running-locally)
-- [Adding Content](#adding-content)
-- [Deployment](#deployment)
-- [License](#license)
+This repository contains my personal AI/ML engineering portfolio.
+
+The site is designed to show more than project titles or screenshots. It connects each flagship project to:
+
+- the problem being solved
+- the architecture and data flow
+- model and system design decisions
+- evaluation evidence
+- safety and responsible AI boundaries
+- implementation details
+- deployment status
+- current limitations
+- next engineering steps
+
+The portfolio combines a modern React interface with structured project data, MDX case studies, technical writing, interactive 3D visuals, responsive themes, and Netlify deployment.
+
+---
+
+## Portfolio Goals
+
+The site is built to help technical recruiters, hiring managers, engineers, and collaborators quickly understand:
+
+- what I have built
+- which parts are working today
+- how the systems are architected
+- how I evaluate models beyond accuracy
+- where human review and safety controls are used
+- which capabilities are completed, experimental, or planned
+- how I communicate technical work clearly
+
+The portfolio targets opportunities in:
+
+- Applied AI/ML Engineering
+- Machine Learning Engineering
+- Data Science
+- NLP and RAG Engineering
+- MLOps
+- AI-focused Software Development
 
 ---
 
 ## Live Site
 
-| URL | Status |
-|-----|--------|
-| [chintan-patel-ai.netlify.app](https://chintan-patel-ai.netlify.app) | Production (Netlify, auto-deploys from `main`) |
+| Resource | Link |
+|---|---|
+| Portfolio | [chintan-patel-ai.netlify.app](https://chintan-patel-ai.netlify.app/) |
+| GitHub | [github.com/chintan-02](https://github.com/chintan-02) |
+| LinkedIn | [linkedin.com/in/chintan-patel-ai](https://www.linkedin.com/in/chintan-patel-ai/) |
+
+The site is deployed through Netlify as a client-side React application.
 
 ---
 
-## Tech Stack
+## Flagship Projects
 
-| Layer | Technology | Version | Purpose |
-|-------|-----------|---------|---------|
-| **Framework** | React | 19 | UI component model |
-| **Build tool** | Vite | 8 | Dev server + production bundler |
-| **Styling** | Tailwind CSS | v4 (CSS-first) | Utility classes + design tokens via `@theme` |
-| **Animation** | Framer Motion | 12 | Page reveals, hero entrance, scroll animations |
-| **3D / WebGL** | React Three Fiber | 9.6.1 | R3F declarative wrapper for Three.js |
-| **3D engine** | Three.js | 0.185.0 | Point cloud geometry, materials, fog |
-| **Smooth scroll** | Lenis | 1.3.25 | Native-feel momentum scrolling |
-| **Routing** | React Router DOM | 7 | Client-side SPA routing |
-| **Content** | MDX (`@mdx-js/rollup`) | — | Case studies + articles as `.mdx` files |
-| **Icons** | Lucide React | — | Consistent line-icon set |
-| **Fonts** | Fraunces · Space Grotesk · Inter · JetBrains Mono | — | Cinematic serif + clean sans + mono |
-| **Hosting** | Netlify | — | Static hosting + SPA redirect rules |
+### TriageAI / SympDirect
 
----
+**ESI Clinical Intake & Care Routing Assistant**
 
-## Architecture Overview
+A healthcare AI clinical decision-support workflow for structured intake and ESI care routing.
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│                        Browser                              │
-│                                                             │
-│  ┌──────────────────────────────────────────────────────┐  │
-│  │  React SPA (Vite + React Router v7)                  │  │
-│  │                                                      │  │
-│  │  ┌─────────────┐  ┌──────────────┐  ┌───────────┐  │  │
-│  │  │  PageShell   │  │  ThemeStore  │  │  Lenis    │  │  │
-│  │  │  (layout)    │  │  (context)   │  │  (scroll) │  │  │
-│  │  └──────┬───────┘  └──────┬───────┘  └─────┬─────┘  │  │
-│  │         │                 │                  │        │  │
-│  │  ┌──────▼──────────────────▼──────────────────▼────┐ │  │
-│  │  │              Route Pages                        │ │  │
-│  │  │  Home · Projects · Case Studies · Writing       │ │  │
-│  │  │  About · Contact · Article · NotFound           │ │  │
-│  │  └─────────────────────────────────────────────────┘ │  │
-│  │                                                      │  │
-│  │  ┌──────────────────────────────────────────────┐   │  │
-│  │  │  Fixed 3D Background (z-index: -1)           │   │  │
-│  │  │  Scene.jsx → lazy SceneCanvas → PointCloud   │   │  │
-│  │  │  (only loads when WebGL + motion available)  │   │  │
-│  │  └──────────────────────────────────────────────┘   │  │
-│  └──────────────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────────────┘
+The project combines:
 
-Data flow:
-src/data/*.js  ──►  Pages / Components  ──►  Rendered UI
-src/content/*.mdx ──►  MDX loader  ──►  CaseStudy / Article pages
-ThemeProvider ──►  CSS [data-theme="light"] override  ──►  All tokens re-map
-themeState (mutable) ──►  Three.js PointCloud  ──►  Dual particle palettes
-```
+- React and TypeScript clinical workflow
+- FastAPI backend
+- LightGBM V2 ESI 3/4/5 inference
+- Clinical Intake NLP Safety Layer
+- transparent safety-rule escalation
+- clinician accept and override review
+- SQLAlchemy persistence
+- audit logging
+- prediction latency tracking
+- backend-generated PDF summaries
+
+Verified model evidence:
+
+| Metric | Value |
+|---|---:|
+| Accuracy | **78.32%** |
+| Macro F1 | **70.37%** |
+| Weighted F1 | **78.88%** |
+| ESI 5 F1 | **54.70%** |
+| Unsafe ESI 3→5 downgrade rate | **0.68%** |
+| Model features | **273** |
+
+> TriageAI is positioned as clinical decision support, not diagnosis or autonomous medical decision-making.
+
+[Case Study](https://chintan-patel-ai.netlify.app/case-studies/triageai) ·
+[Repository](https://github.com/chintan-02/triageai-esi-care-routing)
 
 ---
 
-## Project Structure
+### PolicyGPT Enterprise
 
+**Evidence-First RAG for Policy and Compliance Documents**
+
+A production-shaped retrieval-augmented generation system that retrieves and scores document evidence before answer generation.
+
+The project includes:
+
+- PDF extraction with PyMuPDF
+- page-aware text cleaning and chunking
+- SentenceTransformer embeddings
+- ChromaDB vector retrieval
+- evidence scoring
+- configurable threshold filtering
+- page-level citation cards
+- Evidence Explorer
+- Groq and OpenAI provider modes
+- no-LLM evidence fallback
+- unsupported-question refusal behavior
+- FastAPI backend
+- Streamlit compliance console
+
+PolicyGPT does not claim formal production RAG accuracy yet. Retrieval, faithfulness, confidence calibration, and cloud deployment remain active roadmap areas.
+
+[Case Study](https://chintan-patel-ai.netlify.app/case-studies/policygpt) ·
+[Repository](https://github.com/chintan-02/policygpt-enterprise)
+
+---
+
+### ResumeIQ
+
+**Privacy-Aware Resume Intelligence Platform**
+
+An NLP decision-support system for resume analysis, job-description matching, skill intelligence, and structured reviewer workflows.
+
+The project includes:
+
+- PDF, DOCX, and TXT parsing
+- TF-IDF role classification
+- ATS-style compatibility signals
+- keyword matching
+- semantic similarity
+- skill normalization
+- skill-gap analysis
+- generic-sentence detection
+- rewrite guidance
+- batch ranking foundations
+- recruiter notes and shortlist workflows
+- privacy-safe display mode
+- FastAPI foundation
+- SQLAlchemy persistence
+- Docker Compose
+- GitHub Actions
+- Azure demonstration deployment
+
+ResumeIQ avoids presenting its baseline model as production-validated until leakage, split quality, class balance, calibration, and independent evaluation are completed.
+
+[Live Demo](https://resume-classifier-chintan.azurewebsites.net/) ·
+[Case Study](https://chintan-patel-ai.netlify.app/case-studies/resumeiq) ·
+[Repository](https://github.com/chintan-02/smart-resume-classifier)
+
+---
+
+## Case Study System
+
+Project case studies are authored in MDX and rendered through reusable React components.
+
+Current case studies:
+
+- TriageAI
+- PolicyGPT Enterprise
+- ResumeIQ
+
+Each case study can present:
+
+- project context
+- problem statement
+- architecture
+- data flow
+- model or retrieval pipeline
+- evaluation metrics
+- safety constraints
+- technical stack
+- design decisions
+- limitations
+- roadmap
+- repository and demo links
+
+Reusable MDX components include:
+
+```jsx
+<CaseStudyHero />
+<ArchitectureBlock />
+<MetricCard />
+<TechStackBlock />
 ```
-chintan-patel-portfolio/
-│
-├── public/                          # Static assets (served as-is)
-│   ├── Chintan_Patel_Resume.pdf     # Downloadable résumé
-│   ├── profile.JPG                  # Identity photo (About page)
-│   ├── favicon.svg
-│   ├── og-image.svg                 # Open Graph card
-│   └── _redirects                   # Netlify SPA redirect rules
-│
-├── src/
-│   ├── App.jsx                      # Root: ThemeProvider + BrowserRouter
-│   ├── main.jsx                     # React DOM entry point
-│   │
-│   ├── components/
-│   │   ├── home/                    # Home page section components
-│   │   │   ├── Hero.jsx             # Availability pill, headline, proof row, CTAs
-│   │   │   ├── ScrollCue.jsx        # Animated scroll indicator
-│   │   │   ├── ProofStrip.jsx       # Proof-point strip below hero
-│   │   │   ├── About.jsx            # Home teaser (not the full About page)
-│   │   │   ├── FeaturedProjects.jsx # Project card grid
-│   │   │   ├── SkillsSystem.jsx     # Vertical skills pipeline
-│   │   │   ├── Experience.jsx       # Work history
-│   │   │   ├── Education.jsx        # Education timeline
-│   │   │   ├── CaseStudyPreview.jsx # 3-column case study teasers
-│   │   │   ├── Now.jsx              # "Now" section: Building/Improving/Learning/Targeting
-│   │   │   └── ContactCTA.jsx       # Bottom home CTA
-│   │   │
-│   │   ├── layout/                  # Site-wide layout primitives
-│   │   │   ├── PageShell.jsx        # Mounts Scene, Cursor, Navbar, Footer, SocialStrip
-│   │   │   ├── Navbar.jsx           # Sticky nav + ThemeToggle + Resume button
-│   │   │   ├── Footer.jsx           # Site footer
-│   │   │   ├── SocialStrip.jsx      # Fixed left-edge GitHub/LinkedIn/Email strip
-│   │   │   ├── ThemeToggle.jsx      # Sun/moon icon toggle button
-│   │   │   ├── Cursor.jsx           # Custom amber dot + lagging ring cursor
-│   │   │   ├── SmoothScroll.jsx     # Lenis smooth scroll wrapper
-│   │   │   └── ScrollToTop.jsx      # Hash-aware scroll-to-top on route change
-│   │   │
-│   │   ├── three/                   # WebGL / 3D scene components
-│   │   │   ├── Scene.jsx            # Gate: WebGL detect → lazy load SceneCanvas
-│   │   │   ├── SceneCanvas.jsx      # R3F Canvas + fog + FogSync (theme-reactive)
-│   │   │   └── PointCloud.jsx       # Gaussian cluster geometry + dual palettes
-│   │   │
-│   │   ├── projects/
-│   │   │   └── ProjectCard.jsx      # Full project card with metrics, stack, CTAs
-│   │   │
-│   │   ├── mdx/
-│   │   │   └── MDXComponents.jsx    # CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock
-│   │   │
-│   │   └── ui/                      # Shared primitives
-│   │       ├── Button.jsx           # onDark / onDarkAccent variants
-│   │       ├── Badge.jsx            # Amber eyebrow badge
-│   │       ├── TechChip.jsx         # Stack chip
-│   │       ├── Reveal.jsx           # Scroll-reveal wrapper (Framer Motion)
-│   │       ├── SectionHeader.jsx    # Eyebrow + heading + description block
-│   │       ├── Card.jsx             # Base card primitive
-│   │       └── BrandIcons.jsx       # GitHub / LinkedIn SVG icons
-│   │
-│   ├── content/
-│   │   ├── case-studies/
-│   │   │   ├── triageai.mdx         # TriageAI full breakdown
-│   │   │   ├── resumeiq.mdx         # ResumeIQ full breakdown
-│   │   │   └── policygpt.mdx        # PolicyGPT Enterprise full breakdown
-│   │   │
-│   │   └── writing/
-│   │       ├── lightgbm-vs-xgboost.mdx       # Model selection write-up (TriageAI)
-│   │       ├── evidence-gated-rag.mdx         # RAG evidence gate architecture
-│   │       ├── explainable-ai-in-practice.mdx # XAI synthesis across all 3 projects
-│   │       ├── model-evaluation.mdx           # ML evaluation beyond accuracy
-│   │       └── data-drift.mdx                 # Production data drift explained
-│   │
-│   ├── data/                        # All site content as plain JS
-│   │   ├── projects.js              # 3 projects: TriageAI, PolicyGPT, ResumeIQ
-│   │   ├── proof.js                 # Shared hero + About proof-anchor stats
-│   │   ├── writing.js               # Writing article metadata + slugs
-│   │   ├── skills.js                # Skills by category
-│   │   ├── experience.js            # Work history
-│   │   ├── education.js             # Education entries
-│   │   ├── navLinks.js              # Navigation link definitions
-│   │   └── siteMeta.js              # Name, email, GitHub, LinkedIn, availability
-│   │
-│   ├── lib/
-│   │   ├── themeStore.jsx           # ThemeProvider, useTheme(), themeState mirror
-│   │   ├── scrollStore.js           # Mutable scroll state (non-React, for R3F useFrame)
-│   │   ├── motion.js                # Framer Motion duration/easing tokens
-│   │   └── utils.js                 # cn() classname utility
-│   │
-│   ├── pages/                       # Route-level page components
-│   │   ├── Home.jsx
-│   │   ├── Projects.jsx
-│   │   ├── CaseStudies.jsx
-│   │   ├── CaseStudy.jsx            # MDX slug router
-│   │   ├── Writing.jsx
-│   │   ├── Article.jsx              # MDX slug router
-│   │   ├── About.jsx
-│   │   ├── Contact.jsx
-│   │   └── NotFound.jsx
-│   │
-│   ├── routes/
-│   │   └── AppRoutes.jsx            # All route definitions
-│   │
-│   └── styles/
-│       └── globals.css              # @theme tokens, dark/light themes, component classes
-│
-├── index.html                       # Entry HTML + no-flash theme script
-├── vite.config.js                   # Vite + MDX plugin config
-├── netlify.toml                     # SPA redirect: /* → /index.html
-└── package.json
+
+This approach keeps long-form technical content separate from page-layout code while preserving a consistent visual system.
+
+---
+
+## Technical Writing
+
+The portfolio includes an MDX-based technical writing section tied directly to project decisions.
+
+Current topics include:
+
+- LightGBM versus XGBoost
+- evidence-gated RAG
+- explainable AI in practice
+- model evaluation beyond accuracy
+- data drift and production monitoring
+
+The writing section is intended to demonstrate:
+
+- technical reasoning
+- model-selection judgment
+- system-design understanding
+- responsible AI awareness
+- ability to explain complex ideas clearly
+
+---
+
+## Technology Stack
+
+| Layer | Technology | Purpose |
+|---|---|---|
+| Framework | React 19 | Component-driven user interface |
+| Build system | Vite 8 | Development server and production bundling |
+| Styling | Tailwind CSS v4 | Utility styling and CSS-first design tokens |
+| Routing | React Router DOM 7 | Client-side route handling |
+| Content | MDX | Case studies and technical articles |
+| Animation | Framer Motion | Page and scroll transitions |
+| 3D rendering | React Three Fiber and Three.js | Interactive point-cloud background |
+| Smooth scrolling | Lenis | Controlled page scrolling |
+| Icons | Lucide React | Consistent icon system |
+| Hosting | Netlify | Static deployment and SPA routing |
+| Code quality | ESLint | JavaScript and React linting |
+
+---
+
+## Application Architecture
+
+```text
+Browser
+  │
+  ▼
+React SPA
+  │
+  ├── Global Page Shell
+  │     ├── Navbar
+  │     ├── Footer
+  │     ├── Social Links
+  │     ├── Smooth Scrolling
+  │     ├── Theme Provider
+  │     └── Optional 3D Scene
+  │
+  ├── Route Pages
+  │     ├── Home
+  │     ├── Projects
+  │     ├── Case Studies
+  │     ├── Writing
+  │     ├── About
+  │     ├── Contact
+  │     └── Not Found
+  │
+  ├── Structured Data
+  │     ├── Projects
+  │     ├── Skills
+  │     ├── Experience
+  │     ├── Education
+  │     ├── Writing Metadata
+  │     └── Site Metadata
+  │
+  └── MDX Content
+        ├── Project Case Studies
+        └── Technical Articles
 ```
+
+### Content flow
+
+```text
+src/data/*.js
+      ↓
+Page and reusable UI components
+      ↓
+Rendered portfolio content
+```
+
+```text
+src/content/*.mdx
+      ↓
+Vite MDX loader
+      ↓
+CaseStudy and Article routes
+      ↓
+Rendered long-form content
+```
+
+---
+
+## Pages and Routes
+
+| Route | Purpose |
+|---|---|
+| `/` | Main portfolio landing page |
+| `/projects` | Flagship project overview |
+| `/case-studies` | Case-study index |
+| `/case-studies/triageai` | TriageAI case study |
+| `/case-studies/policygpt` | PolicyGPT Enterprise case study |
+| `/case-studies/resumeiq` | ResumeIQ case study |
+| `/writing` | Technical writing index |
+| `/writing/:slug` | Individual technical article |
+| `/about` | Professional background and current focus |
+| `/contact` | Contact methods and opportunity context |
+| `*` | Custom not-found page |
 
 ---
 
 ## Design System
 
-The entire visual language is defined in `src/styles/globals.css` using **Tailwind v4's CSS-first `@theme` block** — no `tailwind.config.js` file. One token definition generates both Tailwind utility classes and CSS custom properties simultaneously.
+The site uses a custom visual system called **Observatory**.
 
-### Observatory — Dark Theme (default)
+### Dark theme
 
-```css
-@theme {
-  /* Typography */
-  --font-sans:          "Inter", ui-sans-serif, system-ui;
-  --font-display:       "Space Grotesk", "Inter", ui-sans-serif;
-  --font-display-serif: "Fraunces", Georgia, serif;       /* cinematic headline, used once */
-  --font-mono:          "JetBrains Mono", ui-monospace;
+The default theme uses:
 
-  /* Color palette — deep-space Observatory */
-  --color-base:         #0A0A0F;   /* deep-space page base */
-  --color-surface:      #14151F;   /* raised surface / card */
-  --color-surface-2:    #1C1E2B;   /* glass panel / inset */
-  --color-ink:          #F4F4F8;   /* primary text */
-  --color-ink-muted:    #9A9CB0;   /* secondary text */
-  --color-ink-faint:    #5A5C70;   /* captions / labels */
-  --color-accent:       #E8A87C;   /* amber accent */
-  --color-accent-strong:#F0B98E;   /* amber hover */
-  --color-accent-deep:  #C98A5E;   /* amber pressed */
-  --color-violet:       #8B7FE8;   /* point-cloud depth accent */
+- deep-space background surfaces
+- warm amber accents
+- violet depth highlights
+- cinematic display typography
+- transparent layered panels
+- restrained motion
+- technical mono labels
 
-  /* Radius scale */
-  --radius-inset:  0.625rem;  /* 10px — chips, tags */
-  --radius-card:   1rem;      /* 16px — cards */
-  --radius-panel:  1.5rem;    /* 24px — large panels */
-  --radius-hero:   2rem;      /* 32px — hero panels */
+### Light theme
 
-  /* RGB channel vars — enables rgb(var(--accent-rgb)/0.08) soft tints */
-  --accent-rgb:    232 168 124;
-  --ink-rgb:       244 244 248;
-  --violet-rgb:    139 127 232;
-  --surface-rgb:   20 21 31;
-  --surface2-rgb:  28 30 43;
-  --base-rgb:      10 10 15;
-}
-```
+The optional light theme remaps the same design tokens to:
 
-### Observatory Daylight — Light Theme
+- warm cream backgrounds
+- charcoal text
+- bronze accents
+- deeper plum highlights
 
-Activated by `html[data-theme="light"]` — same structure, warm cream palette:
+Theme state is stored in the browser and applied before the first React paint to reduce incorrect-theme flashing.
 
-```css
-html[data-theme="light"] {
-  --color-base:      #F6F1E9;  /* warm cream */
-  --color-ink:       #2A2620;  /* warm charcoal */
-  --color-accent:    #B8763E;  /* bronze/copper */
-  --color-violet:    #6B5BC4;  /* deeper plum */
-  /* ...all 6 RGB channel vars also re-map */
-}
-```
+### Typography
 
-### Component Classes
+| Role | Typeface |
+|---|---|
+| Primary UI | Inter |
+| Display headings | Space Grotesk |
+| Cinematic accent heading | Fraunces |
+| Code and technical labels | JetBrains Mono |
 
-```css
-/* Glass card — main surface for project/case-study cards */
-.glass-panel { background: rgba(20,21,31,0.72); backdrop-filter: blur(16px); }
+### Reusable visual primitives
 
-/* Base card */
-.card { border-radius: var(--radius-card); border: 1px solid var(--color-line); background: var(--color-surface); }
+The interface uses shared components for:
 
-/* Hover lift */
-.card-hover { transition: transform 0.25s, box-shadow 0.25s; }
-.card-hover:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
-
-/* Premium avatar — colour-graded photo + rotating amber/violet ring */
-.avatar-ring { animation: avatarSpin 16s linear infinite; }
-.avatar-photo { filter: grayscale(0.48) sepia(0.22) saturate(1.4) brightness(0.86); }
-```
+- buttons
+- badges
+- cards
+- project cards
+- technology chips
+- section headers
+- scroll reveals
+- layout shells
+- MDX case-study blocks
 
 ---
 
-## Pages & Routes
+## Interactive 3D Background
 
-| Route | Component | Description |
-|-------|-----------|-------------|
-| `/` | `Home` | Full hero conversion funnel: availability → headline → proof → Now → CTAs |
-| `/projects` | `Projects` | All 3 project cards with metrics, pipeline, stack chips, live/GitHub/case-study CTAs |
-| `/case-studies` | `CaseStudies` | Index of all case studies with pipeline visualization and full stack |
-| `/case-studies/triageai` | `CaseStudy` | TriageAI full MDX breakdown |
-| `/case-studies/resumeiq` | `CaseStudy` | ResumeIQ full MDX breakdown |
-| `/case-studies/policygpt` | `CaseStudy` | PolicyGPT Enterprise full MDX breakdown |
-| `/writing` | `Writing` | 5 technical articles |
-| `/writing/:slug` | `Article` | Individual MDX article |
-| `/about` | `About` | Connected-node timeline, values, proof row, Now cross-link |
-| `/contact` | `Contact` | Based in / Open to / Response time context + Email, LinkedIn, GitHub, Location cards |
-| `*` | `NotFound` | 404 page |
+The portfolio includes a code-generated point-cloud scene built with React Three Fiber and Three.js.
+
+The scene:
+
+- uses multiple Gaussian point clusters
+- responds subtly to scroll position
+- supports pointer parallax
+- uses theme-specific particle palettes
+- changes blending behavior between dark and light themes
+- is lazy-loaded as a separate bundle
+- uses fewer particles on mobile and touch devices
+- falls back to a static visual when WebGL is unavailable
+- respects reduced-motion preferences
+
+```text
+Scene Gate
+  ├── WebGL available and motion allowed
+  │      ↓
+  │   Lazy-load React Three Fiber canvas
+  │      ↓
+  │   Render interactive point cloud
+  │
+  └── WebGL unavailable or reduced motion requested
+         ↓
+      Render static CSS fallback
+```
+
+The 3D scene is decorative. It is kept behind readable content and is not required for navigation or understanding the site.
 
 ---
 
-## Key Features
+## Theme and Motion Accessibility
 
-### Hero Section
-- **Availability pill** with pulsing amber status dot — the most important signal for a job search
-- **Cinematic headline** — "Intelligence you can *trace*." (Fraunces serif, used exactly once)
-- **Concrete positioning line** — "Applied AI/ML Engineer building production-ready AI systems."
-- **Tool-rich subtitle** covering all three project domains
-- **Proof-anchor row** — `3 AI systems · 366K+ clinical records · 78.35% triage accuracy · 2 Azure demos` in amber
-- **Surfaced social links** — GitHub and LinkedIn visible in the hero (not buried in a rail)
-- **Legibility scrim** — radial gradient behind text so the point cloud never obscures readability
+The site includes several accessibility-oriented behaviors:
 
-### Now Section
-Four cards on the home page signalling active momentum — **Building / Improving / Learning / Targeting** — with a "Currently building" status badge. Honest, real content.
+- `prefers-reduced-motion` support
+- static fallback when animated 3D should not run
+- motion-aware custom cursor behavior
+- cursor disabled for touch or coarse-pointer devices
+- keyboard-accessible links and buttons
+- semantic page structure
+- high-contrast dark and light themes
+- visible focus states
+- descriptive image alternative text
+- route-level scroll reset
+- theme persistence without relying only on operating-system defaults
 
-### Custom Interactive Cursor
-Amber dot + lagging ring that blooms over clickable elements. Fine-pointer + motion-ok devices only. `pointer-events: none` — never blocks clicks. Respects `prefers-reduced-motion`.
-
-### Case Study System
-Three full MDX case studies with custom components:
-- **`<CaseStudyHero>`** — label, title, description, action buttons
-- **`<ArchitectureBlock>`** — numbered pipeline steps
-- **`<MetricCard>`** — highlighted label + value + note
-- **`<TechStackBlock>`** — tech chip row
-
-### Writing System
-Five technical articles tied directly to real project decisions — not generic ML content. Each article references actual engineering choices made in TriageAI, PolicyGPT, or ResumeIQ.
-
-### Contact Page
-"Based in / Open to / Response time" context row above the link cards — sets recruiter expectations before they even open an email.
-
-### About Page
-- **Connected node timeline** — not generic stacked boxes. Echoes the "intelligence you can trace" connected-points motif with a highlighted "Current" node
-- **Proof row** — same real numbers as the hero, so About isn't the only page without evidence
-- **Cross-link** to the Now section (`/#now`)
-- **Premium avatar** — colour-graded photo (`grayscale + sepia + warm`) with a rotating amber/violet conic-gradient ring and blurred halo
+Accessibility is treated as an ongoing engineering responsibility rather than a completed certification claim.
 
 ---
 
-## 3D Scene — Latent-Space Point Cloud
+## Performance Approach
 
-The signature visual: three loosely-overlapping Gaussian clusters that read as one diffuse amber manifold. Built entirely in code — no textures, no external assets.
+The portfolio uses several strategies to reduce unnecessary runtime work:
 
-### How it works
+- route-oriented component structure
+- lazy loading for the Three.js scene
+- static fallback for unsupported WebGL environments
+- reduced particle count on mobile devices
+- MDX content compiled at build time
+- static data modules for portfolio content
+- optimized Netlify static deployment
+- production build through Vite
+- reusable components to avoid duplicated page logic
 
-```
-Scene.jsx
-  └── checks: WebGL available? prefers-reduced-motion: no?
-       ├── YES → lazy-import SceneCanvas (code-split, ~235KB gzip)
-       └── NO  → static CSS poster (no bundle cost)
-            └── SceneCanvas.jsx
-                  ├── R3F Canvas (dpr 1–1.75, powerPreference: high-performance)
-                  ├── FogSync component (re-applies fog on theme change)
-                  └── PointCloud.jsx
-                        ├── 3,200 points (1,400 on mobile/touch)
-                        ├── 3 Gaussian clusters (Box-Muller sampling)
-                        ├── Per-point colour: amber core → warm-white edge, 8% violet depth
-                        ├── Dark theme:  AdditiveBlending, opacity 0.92
-                        ├── Light theme: NormalBlending, deeper bronze, opacity 0.85
-                        ├── Scroll-reactive drift (reads scrollStore.js in useFrame)
-                        └── Pointer parallax (mouse position from window events)
-```
-
-### Why two blending modes for light/dark?
-`AdditiveBlending` makes light-coloured particles glow against a dark background — it's effectively invisible on a light (cream) background because the math adds light values that are already near-white. Light theme uses `NormalBlending` with deeper bronze/plum tones so particles read as visible dust rather than disappearing into the page.
-
-### Bundle strategy
-Three.js is code-split via `React.lazy` into a separate `SceneCanvas` chunk (~235KB gzip). The main app bundle stays at ~141KB gzip. Users who can't run WebGL (or prefer reduced motion) never download the Three.js chunk.
+Exact bundle sizes can change as content and dependencies evolve, so the README does not treat a single local build measurement as a permanent performance guarantee.
 
 ---
 
-## Theme System
+## Project Structure
 
-### Architecture
-
-```
-index.html
-  └── blocking script (first in <head>)
-       └── reads localStorage → sets data-theme="light" before first paint
-            └── prevents flash-of-wrong-theme for returning light-mode users
-
-ThemeProvider (src/lib/themeStore.jsx)
-  ├── React context: theme, toggleTheme()
-  ├── Sets document.documentElement.dataset.theme
-  ├── Persists to localStorage
-  ├── Updates meta[name="theme-color"] for mobile browser chrome
-  └── Updates themeState.current (mutable mirror for non-React code)
-
-ThemeToggle (Navbar)
-  └── Sun/moon icon button → calls toggleTheme()
-
-CSS
-  └── html[data-theme="light"] { ...all 6 RGB channel vars re-map... }
-       └── ~90 rgb(var(--accent-rgb)/X) calls across all components re-skin automatically
-
-Three.js (non-React)
-  └── reads themeState.current (mutable, synchronous)
-       ├── PointCloud: useMemo keyed on theme → regenerates geometry + palette
-       └── FogSync: useEffect on theme → updates scene.fog colour
-```
-
-### Why not `prefers-color-scheme`?
-The dark "Observatory" look is the primary, designed-for experience. Light is an opt-in alternative. Defaulting to the OS preference would silently serve the light theme to dark-mode users who haven't visited before — the wrong default for a portfolio with a strong dark-first visual identity.
-
----
-
-## Content System — MDX
-
-Case studies and articles are authored in `.mdx` files and processed via `@mdx-js/rollup`. Each file imports custom MDX components from `src/components/mdx/MDXComponents.jsx`.
-
-### Adding a case study
-
-1. Create `src/content/case-studies/your-slug.mdx`
-2. Import and register in `src/pages/CaseStudy.jsx`:
-   ```js
-   import YourProject from '../content/case-studies/your-slug.mdx';
-   const studies = { ..., 'your-slug': YourProject };
-   ```
-3. Add a `caseStudyUrl: '/case-studies/your-slug'` entry in `src/data/projects.js`
-
-### Adding a writing article
-
-1. Create `src/content/writing/your-slug.mdx`
-2. Add to `src/data/writing.js`:
-   ```js
-   { slug: 'your-slug', title: '...', description: '...', tags: [...], route: '/writing/your-slug' }
-   ```
-3. Import and register in `src/pages/Article.jsx`
-
-### Available MDX components
-
-```jsx
-<CaseStudyHero label="..." title="..." description="..." links={[...]} />
-<ArchitectureBlock steps={["Step 1", "Step 2", ...]} />
-<MetricCard label="..." value="..." note="..." />
-<TechStackBlock items={["Python", "FastAPI", ...]} />
+```text
+Chintan-Patel-Portfolio/
+├── public/
+│   ├── Chintan_Patel_Resume.pdf
+│   ├── profile.JPG
+│   ├── favicon.svg
+│   ├── og-image.svg
+│   └── _redirects
+│
+├── src/
+│   ├── components/
+│   │   ├── home/
+│   │   ├── layout/
+│   │   ├── mdx/
+│   │   ├── projects/
+│   │   ├── three/
+│   │   └── ui/
+│   │
+│   ├── content/
+│   │   ├── case-studies/
+│   │   │   ├── triageai.mdx
+│   │   │   ├── policygpt.mdx
+│   │   │   └── resumeiq.mdx
+│   │   └── writing/
+│   │
+│   ├── data/
+│   │   ├── projects.js
+│   │   ├── writing.js
+│   │   ├── skills.js
+│   │   ├── experience.js
+│   │   ├── education.js
+│   │   ├── proof.js
+│   │   ├── navLinks.js
+│   │   └── siteMeta.js
+│   │
+│   ├── lib/
+│   │   ├── themeStore.jsx
+│   │   ├── scrollStore.js
+│   │   ├── motion.js
+│   │   └── utils.js
+│   │
+│   ├── pages/
+│   ├── routes/
+│   ├── styles/
+│   ├── App.jsx
+│   └── main.jsx
+│
+├── index.html
+├── netlify.toml
+├── package.json
+├── vite.config.js
+└── README.md
 ```
 
 ---
 
-## Projects Showcased
+## Local Development
 
-### TriageAI — ESI Clinical Intake & Care Routing Assistant
-Healthcare AI decision-support workflow: FastAPI backend, real LightGBM ESI 3/4/5 model inference (272 features, 78.4% accuracy, 0.71% safety-critical error), safety-rule escalation, clinician accept/override with audit trail, PDF reports, dashboard views. Live on Azure.
+### Requirements
 
-### PolicyGPT Enterprise — Evidence-First RAG for HR & Compliance PDFs
-Production-pattern RAG assistant: PyMuPDF extraction, SentenceTransformers embeddings, ChromaDB vector storage, evidence-gate scoring (retrieval confidence must clear a threshold before LLM generation is allowed), page-level citation cards, fallback guardrails. Verified: out-of-scope questions return 0 citations, 0.0000 confidence. Phase 1 MVP, local.
+- Node.js 18 or newer
+- npm
 
-### ResumeIQ — AI Resume Intelligence & ATS Analysis Platform
-NLP resume analysis: TF-IDF + Logistic Regression classifier, skill extraction, ATS compatibility scoring, template/placeholder detection, AI-like sentence quality checks, modular architecture for JD matching extension. Live on Azure.
-
----
-
-## Performance & Accessibility
-
-| Metric | Value |
-|--------|-------|
-| Main JS bundle (gzip) | ~141 KB |
-| Three.js chunk (gzip) | ~235 KB (lazy, only when WebGL + motion available) |
-| CSS (gzip) | ~12 KB |
-| `prefers-reduced-motion` | Respected — 3D scene replaced by static poster; all Framer Motion animations disabled |
-| Custom cursor | Fine-pointer + motion-ok devices only; `pointer-events: none` |
-| Theme flash | Blocking inline script in `<head>` prevents flash-of-wrong-theme |
-| Avatar ring animation | Disabled by global reduced-motion wildcard rule |
-| Scroll animations | `useReducedMotion()` hook wired into all Framer Motion `Reveal` components |
-
----
-
-## Running Locally
+### Clone the repository
 
 ```bash
-# clone
 git clone https://github.com/chintan-02/Chintan-Patel-Portfolio.git
 cd Chintan-Patel-Portfolio
+```
 
-# install
+### Install dependencies
+
+```bash
 npm install
+```
 
-# dev server (hot reload)
+### Start the development server
+
+```bash
 npm run dev
-# → http://localhost:5173
+```
 
-# production build
+Open:
+
+```text
+http://localhost:5173
+```
+
+### Run lint checks
+
+```bash
+npm run lint
+```
+
+### Create a production build
+
+```bash
 npm run build
+```
 
-# preview production build locally
+### Preview the production build
+
+```bash
 npm run preview
 ```
 
-> **Node requirement:** Node.js 18+ recommended (Vite 8 requirement).
-
 ---
 
-## Adding Content
+## Content Management
 
-### Update personal info
-Edit `src/data/siteMeta.js` — name, email, GitHub, LinkedIn, portfolio URL, resume path, availability text.
+### Update personal metadata
 
-### Add a new project
-Add an entry to `src/data/projects.js`. It auto-appears on `/projects` and in the case-study preview grid on the home page. The card renders conditionally — buttons for Live Demo, GitHub, and Read Case Study only appear if the URL fields are set.
+Edit:
 
-### Add a new case study
-1. Author `src/content/case-studies/your-slug.mdx`
-2. Register in `src/pages/CaseStudy.jsx`
-3. Set `caseStudyUrl: '/case-studies/your-slug'` in `src/data/projects.js`
+```text
+src/data/siteMeta.js
+```
 
-### Add a new article
-1. Author `src/content/writing/your-slug.mdx`
-2. Add metadata to `src/data/writing.js`
-3. Register in `src/pages/Article.jsx`
+This file contains:
 
-### Update the résumé
-Replace `public/Chintan_Patel_Resume.pdf` — all "Download Resume" buttons across the site point to `/Chintan_Patel_Resume.pdf`.
+- name
+- professional title
+- location
+- email
+- GitHub URL
+- LinkedIn URL
+- portfolio URL
+- resume path
+- availability statement
 
-### Update the proof-anchor numbers
-Edit `src/data/proof.js` — this is the single source of truth used by both the Hero and the About page proof row. Change in one place, updates both.
+### Update projects
+
+Edit:
+
+```text
+src/data/projects.js
+```
+
+Project data controls:
+
+- title and category
+- status
+- description
+- technology stack
+- feature list
+- metric cards
+- pipeline steps
+- repository link
+- demo link
+- case-study route
+
+### Add a case study
+
+1. Create an MDX file:
+
+```text
+src/content/case-studies/your-project.mdx
+```
+
+2. Register the file in the case-study route map.
+
+3. Add the matching `caseStudyUrl` to `src/data/projects.js`.
+
+### Add a technical article
+
+1. Create an MDX file:
+
+```text
+src/content/writing/your-article.mdx
+```
+
+2. Add its metadata to `src/data/writing.js`.
+
+3. Register it in the article route map.
+
+### Update the resume
+
+Replace:
+
+```text
+public/Chintan_Patel_Resume.pdf
+```
+
+The site’s resume buttons reference this file.
 
 ---
 
 ## Deployment
 
-Netlify auto-deploys on every push to `main`. The `netlify.toml` sets an SPA redirect rule (`/* → /index.html 200`) so React Router handles all client-side navigation.
+The portfolio is deployed on Netlify.
+
+The repository includes SPA redirect configuration so React Router can handle direct visits to nested routes.
 
 ```toml
-# netlify.toml
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
 ```
 
-To deploy manually to any static host:
+### Netlify workflow
+
+```text
+Push to main
+   ↓
+Netlify build
+   ↓
+npm run build
+   ↓
+Publish dist/
+   ↓
+Live portfolio updated
+```
+
+For another static host:
+
 ```bash
 npm run build
-# upload the contents of dist/ to your host
 ```
+
+Upload the generated `dist/` directory according to the hosting provider’s static-site instructions.
 
 ---
 
-## License
+## Engineering Decisions
 
-Personal portfolio — all content, project descriptions, personal information, and written articles belong to **Chintan Patel** and are not for redistribution. The React/Vite/Tailwind scaffolding is open for reference.
+### Structured data instead of repeated page text
+
+Project, skill, education, and experience content is stored in centralized data modules. This reduces duplicated content across pages and makes updates easier to manage.
+
+### MDX for long-form technical work
+
+Case studies and writing articles use MDX because they need both readable content and reusable interactive React components.
+
+### Decorative 3D kept separate from core navigation
+
+The WebGL scene is lazy-loaded and has a static fallback. The portfolio remains usable without Three.js, animation, or WebGL.
+
+### One theme system for CSS and 3D
+
+A shared theme state keeps the React interface and Three.js visuals synchronized when users switch between dark and light modes.
+
+### Evidence-focused project communication
+
+Project content emphasizes:
+
+- verified metrics
+- architecture
+- responsible AI boundaries
+- human-review workflows
+- limitations
+- deployment status
+- planned work
+
+This avoids presenting prototypes as production systems or future features as completed experience.
+
+---
+
+## Current Limitations
+
+- the portfolio is a client-side application without a content-management backend
+- project content must be updated manually in data and MDX files
+- the 3D scene increases optional JavaScript bundle size
+- accessibility testing is ongoing and is not presented as formal certification
+- there is no automated visual-regression suite yet
+- there is no end-to-end browser test suite yet
+- analytics and privacy controls depend on future implementation choices
+- live project availability may depend on third-party hosting status
+- project details must be kept synchronized with their source repositories
+
+---
+
+## Planned Improvements
+
+- add automated component and route testing
+- add end-to-end browser tests
+- add automated accessibility checks
+- add performance-budget checks
+- add visual-regression testing
+- add project screenshots and architecture diagrams where useful
+- improve Open Graph previews for case studies
+- add structured metadata for search engines
+- keep project metrics and statuses synchronized with repository evidence
+- continue refining mobile and reduced-motion experiences
+
+---
+
+## Accuracy and Honesty
+
+This portfolio separates:
+
+- completed project functionality
+- experimental foundations
+- deployment demonstrations
+- future roadmap work
+
+Project metrics should match their source repositories and saved evaluation artifacts.
+
+The site does not claim that portfolio projects are production clinical, legal, compliance, or hiring systems. Each case study documents its decision-support boundaries and limitations.
+
+The portfolio itself is a deployed frontend application and project communication system. It is not represented as a full multi-user SaaS platform.
+
+---
+
+## Author
+
+**Chintan Patel**
+
+Applied AI/ML Engineer based in Calgary, Alberta, Canada.
+
+- [Portfolio](https://chintan-patel-ai.netlify.app/)
+- [LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
+- [GitHub](https://github.com/chintan-02)
+- [Email](mailto:patel.chintan380@gmail.com)
+
+---
+
+## License and Use
+
+This repository contains personal portfolio content, project descriptions, visual design, and technical writing created for Chintan Patel’s professional portfolio.
+
+The source code may be reviewed for learning and reference. Personal information, project narratives, written articles, and visual branding should not be redistributed or presented as another person’s work.
