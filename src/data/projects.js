@@ -1,33 +1,70 @@
 export const projects = [
   {
-    slug: 'triageai',
-    category: 'Healthcare AI',
-    title: 'TriageAI',
-    subtitle: 'ESI Clinical Intake & Care Routing Assistant',
-    status: 'Live · v2 in progress',
-    description:
-      'End-to-end healthcare AI decision-support workflow for ESI care routing — real LightGBM inference, safety-rule escalation, clinician accept/override, audit trail, dashboard views, assessment detail, and PDF decision-support report generation.',
-    problem:
-      'Emergency intake decisions need to be fast, consistent, and safety-aware. A model alone is not enough — the output must be explainable, reviewable, auditable, and supervised by clinicians.',
-    stack: ['Python', 'FastAPI', 'Streamlit', 'LightGBM', 'Scikit-learn', 'SQLite', 'SQLAlchemy', 'Pydantic', 'pytest', 'Azure'],
-    features: ['ESI 3/4/5 Prediction', 'Safety-Rule Escalation', 'Clinician Review', 'Override Audit Trail', 'Dashboard', 'PDF Report'],
-    metrics: [
-      { value: '78.35%', label: 'Accuracy' },
-      { value: '70.42%', label: 'Macro F1' },
-      { value: '0.71%', label: 'ESI 3→5 safety error' },
-      { value: '272', label: 'model features' }
-    ],
-    screenshots: [
-      { label: 'Structured intake form', detail: 'Visual walkthrough in progress' },
-      { label: 'Prediction result', detail: 'Visual walkthrough in progress' },
-      { label: 'Dashboard, audit trail, PDF report', detail: 'Visual walkthrough in progress' }
-    ],
-    pipeline: ['Patient Intake', 'Feature Build', 'LightGBM V2', 'Safety Rules', 'Clinician Review', 'Audit + Report'],
-    liveUrl: 'https://ai-triage-chintan.azurewebsites.net',
-    githubUrl: 'https://github.com/chintan-02/triageai-esi-care-routing',
-    caseStudyUrl: '/case-studies/triageai',
-    accent: 'from-amber-400 to-orange-500'
-  },
+  slug: 'triageai',
+  category: 'Healthcare AI',
+  title: 'TriageAI',
+  subtitle: 'Clinical Intake & ESI Care Routing Assistant',
+  status: 'Active development · React integration in progress',
+  description:
+    'Healthcare AI clinical decision-support workflow combining structured intake, evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, safety-rule escalation, clinician review, audit logging, dashboard views, and PDF reporting. The system supports—not replaces—clinical judgment.',
+  problem:
+    'Emergency intake decisions need to be fast, consistent, explainable, and safety-aware. A prediction model alone is not enough—the output must be reviewed by clinicians, protected by safety rules, and preserved in an auditable workflow.',
+  stack: [
+    'Python',
+    'FastAPI',
+    'React',
+    'TypeScript',
+    'LightGBM',
+    'Scikit-learn',
+    'SQLAlchemy',
+    'SQLite',
+    'Pydantic',
+    'pytest'
+  ],
+  features: [
+    'Clinical Intake NLP',
+    'ESI 3/4/5 Prediction',
+    'Safety-Rule Escalation',
+    'Clinician Review',
+    'Human Override',
+    'Audit Trail',
+    'Dashboard',
+    'PDF Report'
+  ],
+  metrics: [
+    { value: '78.32%', label: 'Accuracy' },
+    { value: '70.37%', label: 'Macro F1' },
+    { value: '54.70%', label: 'ESI 5 F1' },
+    { value: '0.68%', label: 'Unsafe ESI 3→5 rate' }
+  ],
+  screenshots: [
+    {
+      label: 'Structured clinical intake',
+      detail: 'Capture structured fields or extract them from clinician free-text notes.'
+    },
+    {
+      label: 'Prediction and safety review',
+      detail: 'Review LightGBM output, confidence, safety escalation, and supporting evidence.'
+    },
+    {
+      label: 'Clinician review and audit',
+      detail: 'Accept or override the result while preserving the clinical decision trail.'
+    }
+  ],
+  pipeline: [
+    'Clinical Intake',
+    'NLP Review',
+    'Feature Build',
+    'LightGBM V2',
+    'Safety Rules',
+    'Clinician Review',
+    'Audit + Report'
+  ],
+  liveUrl: null,
+  githubUrl: 'https://github.com/chintan-02/triageai-esi-care-routing',
+  caseStudyUrl: '/case-studies/triageai',
+  accent: 'from-amber-400 to-orange-500'
+},
   {
     slug: 'policygpt',
     category: 'GenAI / RAG',
