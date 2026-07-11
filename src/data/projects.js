@@ -97,33 +97,71 @@ export const projects = [
     accent: 'from-amber-400 to-violet-400'
   },
   {
-    slug: 'resumeiq',
-    category: 'NLP / Resume Intelligence',
-    title: 'ResumeIQ',
-    subtitle: 'AI-Assisted Resume Intelligence Platform',
-    status: 'Live · v2 in progress',
-    description:
-      'AI-assisted resume intelligence workflow for classification, ATS-style compatibility signals, skill extraction, template detection, AI-like sentence analysis, and practical improvement feedback — layered NLP signals rather than a single opaque score.',
-    problem:
-      'Many job seekers do not know why their resume may be underperforming. It may be missing keywords, contain weak bullet points, use generic AI-like wording, or fail to match the job description clearly.',
-    stack: ['Python', 'Scikit-learn', 'TF-IDF', 'Logistic Regression', 'NLP', 'Pandas', 'Streamlit', 'Azure'],
-    features: ['Resume Classification', 'ATS Scoring', 'Skill Extraction', 'AI-Sentence Detection', 'Template Detection', 'Improvement Feedback'],
-    metrics: [
-      { value: '77% / 50%', label: 'ATS (strong vs weak)' },
-      { value: '74% / 41%', label: 'JD keyword match' },
-      { value: '20 / 11', label: 'Skills matched' }
-    ],
-    screenshots: [
-      { label: 'Resume upload screen', detail: 'Visual walkthrough in progress' },
-      { label: 'ATS/classification result', detail: 'Visual walkthrough in progress' },
-      { label: 'Feedback and suggestions view', detail: 'Visual walkthrough in progress' }
-    ],
-    pipeline: ['Resume Upload', 'Text Extraction', 'NLP Preprocessing', 'TF-IDF + Classify', 'ATS + Skills', 'Feedback Dashboard'],
-    liveUrl: 'https://resume-classifier-chintan.azurewebsites.net',
-    githubUrl: 'https://github.com/chintan-02/smart-resume-classifier',
-    caseStudyUrl: '/case-studies/resumeiq',
-    accent: 'from-amber-400 to-rose-400'
-  }
+  slug: 'resumeiq',
+  category: 'NLP / Resume Intelligence',
+  title: 'ResumeIQ',
+  subtitle: 'Privacy-Aware Resume Intelligence Platform',
+  status: 'Live demo · active development',
+  description:
+    'Privacy-aware NLP decision-support platform for resume parsing, baseline role classification, ATS-style compatibility signals, job-description matching, normalized skill extraction, writing-quality analysis, batch review, and recruiter-supported human decision workflows.',
+  problem:
+    'Candidates and reviewers often receive unexplained resume scores without knowing which skills, keywords, structural issues, or writing patterns influenced the result. ResumeIQ separates these signals and presents them for transparent human review.',
+  stack: [
+    'Python',
+    'Streamlit',
+    'FastAPI',
+    'Scikit-learn',
+    'TF-IDF',
+    'SQLAlchemy',
+    'SQLite',
+    'Docker',
+    'GitHub Actions',
+    'Azure'
+  ],
+  features: [
+    'PDF, DOCX & TXT Parsing',
+    'Baseline Role Classification',
+    'ATS-Style Signals',
+    'Semantic JD Matching',
+    'Skill-Gap Analysis',
+    'Writing-Quality Review',
+    'Batch Resume Ranking',
+    'Recruiter Review Workflow'
+  ],
+  metrics: [
+    { value: '3', label: 'Resume formats supported' },
+    { value: 'Multi-signal', label: 'Analysis approach' },
+    { value: 'Human', label: 'Review required' },
+    { value: 'Azure', label: 'Portfolio demo' }
+  ],
+  screenshots: [
+    {
+      label: 'Resume upload and parsing',
+      detail: 'Upload PDF, DOCX, or TXT files for local text extraction and normalization.'
+    },
+    {
+      label: 'Resume intelligence dashboard',
+      detail: 'Review classification, structure, skills, keyword, semantic, and writing-quality signals.'
+    },
+    {
+      label: 'Recruiter review workflow',
+      detail: 'Compare candidates, add notes, and preserve human responsibility for final decisions.'
+    }
+  ],
+  pipeline: [
+    'Resume Upload',
+    'Parse + Normalize',
+    'Baseline Classification',
+    'Skill Intelligence',
+    'JD Matching',
+    'Quality Review',
+    'Human Review'
+  ],
+  liveUrl: 'https://resume-classifier-chintan.azurewebsites.net',
+  githubUrl: 'https://github.com/chintan-02/smart-resume-classifier',
+  caseStudyUrl: '/case-studies/resumeiq',
+  accent: 'from-amber-400 to-rose-400'
+}
 ];
 
 export const projectFilters = ['All', 'Healthcare AI', 'NLP / Resume Intelligence', 'GenAI / RAG'];
