@@ -1,31 +1,31 @@
-import { Hammer, RefreshCw, GraduationCap, Target } from 'lucide-react';
+import { CloudCog, GraduationCap, RefreshCw, SearchCheck } from 'lucide-react';
 import { Badge } from '../ui/Badge.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
 
 const focus = [
   {
-    icon: Hammer,
+    icon: SearchCheck,
     tag: 'Building',
-    title: 'Portfolio Maintenance System',
-    text: 'Designing a human-reviewed workflow that keeps repository evidence, case studies, GitHub, LinkedIn, resume claims, screenshots, and interview stories synchronized.'
+    title: 'PolicyGPT Retrieval & Evaluation',
+    text: 'Expanding retrieval experiments, provider-enabled answer-quality evaluation, and deployment planning while preserving citations, evidence gating, and unsupported-question controls.'
   },
   {
     icon: RefreshCw,
     tag: 'Improving',
-    title: 'TriageAI + ResumeIQ',
-    text: 'Hardening evaluation, responsible-AI boundaries, documentation, screenshots, and recruiter-facing evidence across the healthcare and resume-intelligence systems.'
+    title: 'TriageAI + ResumeIQ Product Evidence',
+    text: 'Completing real screenshots, reliability checks, documentation, and recruiter-facing evidence across the healthcare and resume-intelligence workflows.'
+  },
+  {
+    icon: CloudCog,
+    tag: 'Learning',
+    title: 'Production ML, RAG & MLOps',
+    text: 'Deepening skills in observability, secure data lifecycles, managed cloud services, monitoring, Docker operations, and scalable backend architecture.'
   },
   {
     icon: GraduationCap,
-    tag: 'Learning',
-    title: 'Production ML & GenAI Systems',
-    text: 'Deepening skills in retrieval evaluation, observability, secure data lifecycles, Docker operations, monitoring, and scalable backend architecture.'
-  },
-  {
-    icon: Target,
     tag: 'Targeting',
-    title: 'AI/ML Co-op & New-Grad Roles',
-    text: 'Preparing for AI/ML Engineering, Data Science, Analytics, Junior MLOps, GenAI/RAG, and Applied Software roles across Canada.'
+    title: 'AI/ML Co-op, Internship & New-Grad Roles',
+    text: 'Preparing for AI/ML Engineering, Data Science, Analytics, Junior MLOps, GenAI/RAG, and Applied Software opportunities across Canada.'
   }
 ];
 
@@ -37,27 +37,29 @@ export function Now() {
           <div className="max-w-2xl">
             <Badge>Now</Badge>
             <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-[-0.04em] text-ink sm:text-4xl">
-              What I'm focused on right now.
+              What I&apos;m focused on right now.
             </h2>
             <p className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-ink-faint">
               Last updated: July 2026
             </p>
           </div>
+
           <span className="mb-1 inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
             </span>
-            Currently building
+            Current priorities
           </span>
         </Reveal>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {focus.map((item, index) => {
             const Icon = item.icon;
+
             return (
               <Reveal key={item.tag} delay={index * 0.07} className="h-full">
-                <div className="card card-hover flex h-full flex-col p-6">
+                <article className="card card-hover flex h-full flex-col p-6">
                   <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
                     <Icon className="h-5 w-5" />
                   </div>
@@ -68,7 +70,7 @@ export function Now() {
                     {item.title}
                   </h3>
                   <p className="mt-3 text-sm leading-7 text-ink-muted">{item.text}</p>
-                </div>
+                </article>
               </Reveal>
             );
           })}

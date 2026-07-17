@@ -1,32 +1,92 @@
 export const skillLayers = [
   {
-    layer: 'Data Layer',
-    label: 'Clean inputs and durable state',
-    skills: ['Python', 'Pandas', 'SQL', 'PostgreSQL', 'SQLAlchemy', 'Alembic', 'Data Cleaning', 'Feature Engineering'],
-    note: 'Reliable systems start with clean inputs, explicit data ownership, traceable preprocessing, and durable lifecycle state.'
+    layer: 'Data & Persistence',
+    label: 'Prepare inputs, preserve identity',
+    skills: [
+      'Python',
+      'NumPy',
+      'Pandas',
+      'SQL',
+      'PostgreSQL',
+      'SQLite',
+      'SQLAlchemy',
+      'Alembic',
+      'PyMuPDF',
+      'Feature Engineering'
+    ],
+    note:
+      'Reliable AI systems begin with clean inputs, reproducible transformations, explicit document or assessment identity, and durable state ownership.'
   },
   {
-    layer: 'Model Layer',
-    label: 'Train, evaluate, explain',
-    skills: ['scikit-learn', 'LightGBM', 'XGBoost', 'Classification', 'Model Evaluation', 'Threshold Tuning', 'Calibration', 'SHAP'],
-    note: 'Model work is framed around per-class performance, risk-weighted errors, confidence, and explainability rather than one headline score.'
+    layer: 'ML & Evaluation',
+    label: 'Train, compare, calibrate',
+    skills: [
+      'scikit-learn',
+      'LightGBM',
+      'XGBoost',
+      'Random Forest',
+      'Classification',
+      'Class Imbalance',
+      'Threshold Tuning',
+      'Calibration',
+      'Feature Importance',
+      'Model Evaluation'
+    ],
+    note:
+      'Model selection is driven by per-class behaviour, risk-sensitive errors, calibration tradeoffs, reproducibility, and deployment fit—not one accuracy number.'
   },
   {
-    layer: 'NLP & GenAI Layer',
-    label: 'Language and evidence intelligence',
-    skills: ['NLP', 'RAG', 'TF-IDF', 'Embeddings', 'SentenceTransformers', 'ChromaDB', 'Evidence Gating', 'RAG Evaluation'],
-    note: 'Text systems focus on extraction quality, retrieval support, citations, safe fallback, privacy boundaries, and human review.'
+    layer: 'NLP, Retrieval & RAG',
+    label: 'Extract, retrieve, ground',
+    skills: [
+      'Clinical NLP',
+      'TF-IDF',
+      'Semantic Matching',
+      'RAG',
+      'Embeddings',
+      'SentenceTransformers',
+      'ChromaDB',
+      'Evidence Gating',
+      'Citation Grounding',
+      'RAG Evaluation'
+    ],
+    note:
+      'Language systems emphasize reviewable extraction, retrieval support, answerability, citations, unsupported-question handling, privacy boundaries, and human review.'
   },
   {
-    layer: 'API & Product Layer',
+    layer: 'APIs & Product',
     label: 'Turn intelligence into workflows',
-    skills: ['FastAPI', 'React', 'Next.js', 'TypeScript', 'Streamlit', 'REST APIs', 'Pydantic', 'PDF Reports'],
-    note: 'Models and retrieval pipelines are wrapped in typed APIs, review flows, dashboards, reports, and explicit failure states.'
+    skills: [
+      'FastAPI',
+      'Pydantic v2',
+      'REST APIs',
+      'React',
+      'TypeScript',
+      'Next.js',
+      'Streamlit',
+      'Tailwind CSS',
+      'ReportLab',
+      'Server-Side BFF'
+    ],
+    note:
+      'Models and retrieval pipelines are delivered through typed APIs, review-first interfaces, dashboards, reports, and visible loading, error, and fallback states.'
   },
   {
-    layer: 'Delivery & Operations',
-    label: 'Ship, validate, observe',
-    skills: ['Docker', 'Docker Compose', 'Azure', 'GitHub Actions', 'pytest', 'Vitest', 'Structured Logging', 'Monitoring'],
-    note: 'Projects use reproducible environments, automated checks, readiness contracts, operational logs, and honest deployment boundaries.'
+    layer: 'Delivery & Reliability',
+    label: 'Test, release, observe',
+    skills: [
+      'Docker',
+      'Docker Compose',
+      'GitHub Actions',
+      'Azure App Service',
+      'pytest',
+      'Vitest',
+      'ESLint',
+      'Structured Logging',
+      'Request IDs',
+      'Health & Readiness'
+    ],
+    note:
+      'Projects use reproducible environments, automated checks, migration and readiness gates, structured operational evidence, and honest local-versus-cloud boundaries.'
   }
 ];

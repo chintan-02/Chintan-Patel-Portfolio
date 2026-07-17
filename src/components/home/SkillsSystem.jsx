@@ -5,21 +5,25 @@ import { Reveal } from '../ui/Reveal.jsx';
 
 const emphasizedSkills = new Set([
   'Python',
-  'SQL',
   'PostgreSQL',
+  'SQLAlchemy',
   'scikit-learn',
   'LightGBM',
-  'NLP',
+  'Clinical NLP',
   'RAG',
+  'SentenceTransformers',
+  'ChromaDB',
+  'Evidence Gating',
   'FastAPI',
   'React',
   'Next.js',
   'TypeScript',
-  'ChromaDB',
-  'Docker',
   'Docker Compose',
-  'Azure',
-  'GitHub Actions'
+  'GitHub Actions',
+  'Azure App Service',
+  'pytest',
+  'Structured Logging',
+  'Health & Readiness'
 ]);
 
 export function SkillsSystem() {
@@ -28,36 +32,44 @@ export function SkillsSystem() {
       <div className="mx-auto max-w-[1100px]">
         <SectionHeader
           eyebrow="Technical System"
-          title="Skills organized as an AI product stack."
-          description="Instead of a generic tool list, the stack follows how real AI systems move from data and models to evidence, product workflows, delivery, and operations."
+          title="Skills organized as an end-to-end AI product stack."
+          description="The stack reflects technologies and engineering practices demonstrated across TriageAI, ResumeIQ, and PolicyGPT—from data contracts and model evaluation to evidence-grounded product workflows, release checks, and operational reliability."
         />
+
         <div className="space-y-4">
           {skillLayers.map((layer, index) => (
             <Reveal key={layer.layer} delay={index * 0.06}>
-              <div className="card card-hover grid gap-5 p-6 md:grid-cols-[240px_1fr] md:gap-8 md:p-7">
+              <article className="card card-hover grid gap-5 p-6 md:grid-cols-[250px_1fr] md:gap-8 md:p-7">
                 <div className="flex items-start gap-4">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-line bg-[rgb(var(--accent-rgb)/0.08)] font-mono text-sm font-bold text-accent">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-[rgb(var(--accent-rgb)/0.22)] bg-[rgb(var(--accent-rgb)/0.08)] font-mono text-sm font-bold text-accent">
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div>
-                    <h3 className="text-lg font-bold leading-tight tracking-[-0.02em] text-ink">{layer.layer}</h3>
+                    <h3 className="text-lg font-bold leading-tight tracking-[-0.02em] text-ink">
+                      {layer.layer}
+                    </h3>
                     <p className="mt-1 text-xs font-semibold text-accent">{layer.label}</p>
                   </div>
                 </div>
+
                 <div className="md:border-l md:border-line md:pl-8">
-                  <p className="text-sm leading-7 text-ink-muted">{layer.note}</p>
+                  <p className="max-w-3xl text-sm leading-7 text-ink-muted">{layer.note}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {layer.skills.map((skill) => (
                       <TechChip
                         key={skill}
-                        className={emphasizedSkills.has(skill) ? 'border-[rgb(var(--accent-rgb)/0.34)] bg-[rgb(var(--accent-rgb)/0.08)] text-ink' : undefined}
+                        className={
+                          emphasizedSkills.has(skill)
+                            ? 'border-[rgb(var(--accent-rgb)/0.34)] bg-[rgb(var(--accent-rgb)/0.08)] text-ink'
+                            : undefined
+                        }
                       >
                         {skill}
                       </TechChip>
                     ))}
                   </div>
                 </div>
-              </div>
+              </article>
             </Reveal>
           ))}
         </div>
