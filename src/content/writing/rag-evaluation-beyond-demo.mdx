@@ -1,0 +1,227 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 9 min read"
+  title="How I Evaluate a RAG System Beyond Demo Questions"
+  description="How PolicyGPT Enterprise turns supported and unsupported policy questions into a versioned benchmark, diagnostic artifacts, provider-failure tests, and an Evaluation product—without calling a small local run production accuracy."
+/>
+
+<TechStackBlock items={["RAG Evaluation", "FastAPI", "ChromaDB", "PostgreSQL", "Next.js", "JSON", "CSV", "Docker Compose"]} />
+
+## A good demo question proves very little
+
+A RAG system can look impressive when the developer already knows which question will retrieve the right paragraph.
+
+That does not answer:
+
+- Can the system reject unsupported requests?
+- Does it retrieve the expected page?
+- Does it preserve citations?
+- Does confidence behave differently for supported and unsupported cases?
+- What happens when the generation provider is unavailable?
+- Can the result be reproduced later?
+
+PolicyGPT Enterprise therefore treats evaluation as a versioned product capability rather than a collection of screenshots.
+
+## Designing the benchmark
+
+The checked-in dataset contains:
+
+- **16 total questions**
+- **11 expected-supported questions**
+- **5 expected-unsupported questions**
+- **6 easy, 6 moderate, and 4 hard cases**
+
+The cases cover policy areas such as remote work, vacation, leave, expenses, confidentiality, security, performance, conduct, and AI privacy.
+
+Unsupported cases intentionally request information such as:
+
+- private personal details
+- executive facts absent from the document
+- legal advice
+- undisclosed security details
+- benefits not described by the policy
+
+The unsupported cases are not secondary.
+
+They test whether the evidence gate can say “the documents do not support this” instead of asking a language model to improvise.
+
+## What each case defines
+
+A benchmark record can specify:
+
+- expected answer-readiness state
+- expected pages
+- expected answer concepts or keywords
+- category
+- difficulty
+- evaluation focus
+
+This creates a repeatable contract between the dataset and the evaluation runner.
+
+## The evaluation pipeline
+
+<ArchitectureBlock steps={[
+  { title: "Versioned dataset", description: "Supported and unsupported policy questions" },
+  { title: "Evidence API", description: "The same retrieval and answerability path used by the product" },
+  { title: "Case runner", description: "Executes all questions and records safe diagnostics" },
+  { title: "Scoring", description: "Readiness, fallback, page hit, citations, confidence, and errors" },
+  { title: "Completed artifacts", description: "Atomic JSON and CSV outputs" },
+  { title: "Persistent volume", description: "Latest validated run survives Compose restart" },
+  { title: "Next.js Evaluation view", description: "Overview, cases, confidence, provider reliability, and downloads" }
+]} />
+
+The browser does not start the benchmark.
+
+Long-running or operator-controlled evaluation stays outside the interactive UI. The frontend reads the latest completed artifact.
+
+This avoids turning an evaluation dashboard into an ungoverned job launcher.
+
+## Diagnostics beyond pass or fail
+
+Per-case records include information such as:
+
+- expected and actual answer-readiness
+- evidence status
+- answerability score
+- confidence score and breakdown
+- top retrieval score
+- average retrieval score
+- retrieval margin
+- lexical coverage
+- numeric consistency
+- numeric mismatch
+- scope risk
+- direct-support state
+- expected and retrieved pages
+- keyword coverage
+- citation count and retrieval scores
+- duplicate-citation detection
+- provider and model state
+- latency
+- safe error information
+
+These diagnostics make a failure actionable.
+
+A wrong result can be separated into:
+
+```text
+retrieval problem
+answerability-calibration problem
+citation problem
+provider problem
+answer-content problem
+or application error
+```
+
+## Testing provider-disabled behaviour
+
+One verified Docker Compose run intentionally used no generation provider.
+
+That is useful because it tests whether retrieval and evidence remain valuable when optional generation is unavailable.
+
+The run produced:
+
+<MetricCard
+  label="Provider-Disabled Local Benchmark"
+  value="16 cases · 0 request errors"
+  note="Answer-readiness accuracy: 100%. Fallback accuracy: 100%. Expected-page retrieval hit rate: 100%. Supported questions returned citation-only evidence because no generation provider was available."
+/>
+
+Additional run values included:
+
+- average confidence: **0.4698**
+- average supported confidence: **0.6833**
+- average citation count: **1.69**
+- local average latency: **24.19 ms**
+
+## Why the headline result needs a caveat
+
+The same run had no generated policy prose.
+
+Therefore:
+
+- generated-answer keyword match was 0%
+- the combined case-pass result was 5 of 16
+- answer-content quality was not evaluated
+
+The valid conclusion is narrow:
+
+> The controlled local release run classified answerability, rejected unsupported requests, retrieved expected pages, and preserved citation evidence without an available LLM provider.
+
+It is not valid to call this:
+
+- production RAG accuracy
+- customer performance
+- answer-faithfulness proof
+- a latency service-level guarantee
+- broad policy-domain validation
+
+This distinction is part of trustworthy evaluation.
+
+## Why confidence is not similarity
+
+PolicyGPT does not display raw vector similarity as the probability that an answer is correct.
+
+The answerability signal considers:
+
+- retrieval strength
+- candidate separation
+- query-to-evidence lexical coverage
+- top-chunk coverage
+- numeric consistency
+- direct support
+- external-authority or scope risk
+
+This allows supported and unsupported cases to be separated more deliberately than a single similarity threshold.
+
+## Versioned artifacts make results reviewable
+
+Completed runs are written to JSON and CSV.
+
+That provides:
+
+- a stable record of the dataset version
+- case-level diagnostics
+- reproducible comparisons
+- downloadable evidence for review
+- a clean boundary between evaluation execution and presentation
+
+Artifacts are installed atomically so the browser does not read a partially written run.
+
+## What I would evaluate next
+
+The 16-case benchmark is intentionally compact.
+
+The next quality steps would include:
+
+- larger human-reviewed question sets
+- more document types
+- answer-content and citation-faithfulness review with a provider enabled
+- retrieval ablations
+- hybrid lexical and vector retrieval
+- reranking experiments
+- per-category thresholds
+- latency distributions rather than one mean
+- cost and token reporting
+- regression comparison between releases
+- optional RAGAS or judge-model comparison with human review
+
+## The engineering lesson
+
+RAG evaluation is not one percentage.
+
+A useful evaluation system should answer:
+
+```text
+Did we retrieve the right evidence?
+Was the evidence sufficient?
+Did we reject unsupported requests?
+Were citations preserved?
+What happened when the provider failed?
+Can another run reproduce the result?
+What exactly was not evaluated?
+```
+
+That is the difference between a polished demo and an inspectable RAG engineering workflow.

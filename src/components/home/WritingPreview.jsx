@@ -5,7 +5,11 @@ import { SectionHeader } from '../ui/SectionHeader.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
 import { TechChip } from '../ui/TechChip.jsx';
 
-const featuredSlugs = ['lightgbm-vs-xgboost', 'evidence-gated-rag', 'model-evaluation'];
+const featuredSlugs = [
+  'lightgbm-vs-xgboost',
+  'clinical-nlp-safety-layer',
+  'rag-evaluation-beyond-demo'
+];
 
 export function WritingPreview() {
   const featuredArticles = featuredSlugs
@@ -19,7 +23,7 @@ export function WritingPreview() {
           <SectionHeader
             eyebrow="Technical Thinking"
             title="How I reason about models, systems, and risk."
-            description="A compact writing preview for model selection, RAG reliability, and evaluation beyond headline accuracy."
+            description="Engineering notes from real project decisions: safety-tuned modelling, review-first clinical NLP, RAG evaluation, reproducible deployment, and responsible product design."
           />
           <Link
             to="/writing"
