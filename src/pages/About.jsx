@@ -32,7 +32,7 @@ const timeline = [
     icon: Rocket,
     period: '2026 – Present',
     title: 'Integrated AI at SAIT, Calgary',
-    detail: 'Post-Diploma in Integrated Artificial Intelligence. Building end-to-end ML systems: TriageAI (healthcare triage prediction + explainability) and ResumeIQ (NLP resume intelligence). Focused on Python, FastAPI, Streamlit, Docker, and Azure deployment.',
+    detail: 'Post-Diploma in Integrated Artificial Intelligence. Building end-to-end AI systems: TriageAI for review-first clinical decision support, ResumeIQ for privacy-aware resume intelligence, and PolicyGPT Enterprise for evidence-gated policy RAG. Focused on Python, FastAPI, React and Next.js, SQL, Docker, evaluation, and responsible AI.',
     current: true
   }
 ];
@@ -41,23 +41,23 @@ const values = [
   {
     icon: Code2,
     title: 'Build things that work',
-    text: 'I care about the full path from a Jupyter notebook to a deployed API with a usable interface. Not just model accuracy — but does it run in production, can a non-technical user understand the output, and is the decision auditable?'
+    text: 'I care about the full path from a notebook to a reliable API and usable interface. Not just model accuracy — but are inputs traceable, does the workflow fail safely, can a reviewer understand the output, and is the decision auditable?'
   },
   {
     icon: Gauge,
     title: 'Explainability over black boxes',
-    text: 'In healthcare AI and resume screening, the model decision matters less than whether a clinician or job seeker can understand and trust it. I build with SHAP, safety rules, and human-review steps built in from the start — intelligence you can trace, not just a score you have to take on faith.'
+    text: 'Explainability changes by system: clinical evidence and human review in TriageAI, decomposed resume signals in ResumeIQ, and answerability diagnostics with citations and safe fallback in PolicyGPT. The common rule is intelligence you can trace, not output you must accept on faith.'
   },
   {
     icon: Rocket,
     title: 'Ship, then improve',
-    text: 'Both my projects are live on Azure. They are not perfect — they have known limitations documented in the case studies. But they run, they respond, and they give me real feedback to iterate on. That mindset carries into every project.'
+    text: 'ResumeIQ has an Azure portfolio demo, while TriageAI and PolicyGPT have verified local workflows with explicit deployment boundaries. I document what is built, what is tested, what remains local, and what would be required before production use.'
   }
 ];
 
 const interests = [
-  'Healthcare AI', 'Supply Chain ML', 'NLP Applications',
-  'Explainable AI', 'MLOps', 'Operations Research',
+  'Healthcare AI', 'Enterprise RAG', 'NLP Applications',
+  'Explainable AI', 'Responsible AI', 'MLOps',
   'Data Pipelines', 'API Design'
 ];
 

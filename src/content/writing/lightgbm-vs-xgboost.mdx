@@ -2,37 +2,77 @@ import { CaseStudyHero, MetricCard, ArchitectureBlock } from '../../components/m
 
 <CaseStudyHero
   label="Technical Writing"
-  meta="Published July 2026 · 5 min read"
+  meta="Published July 2026 · Updated July 2026 · 5 min read"
   title="Why I Chose LightGBM Over XGBoost for TriageAI"
-  description="A model-selection write-up from the TriageAI build: what I compared, why accuracy alone was the wrong metric to optimize for, and the actual numbers behind the decision."
+  description="A model-selection write-up from the TriageAI build: the ESI 3/4/5 scope, the risk-weighted metrics I used, and the final registry evidence behind the decision."
 />
 
-## The Setup
+## The setup
 
-TriageAI predicts Emergency Severity Index (ESI) acuity from structured patient intake data — roughly 367,000 emergency department records across 272 engineered features. The obvious starting point for a tabular classification problem like this is gradient-boosted trees, so the real question wasn't "which family of model" so much as "which implementation, and judged by what."
+The source dataset contains 366,890 emergency-department records and 972 columns. After scoping the deployment model to ESI 3, ESI 4, and ESI 5, the final modeling subset contained 257,306 records and the runtime feature builder produced 273 model features.
 
-I didn't pick a model and move on. I ran a bake-off: LightGBM, XGBoost, Random Forest, a Dense Neural Network, and two sequence models (RNN, GRU) that I included mostly to confirm structured tabular data doesn't actually benefit from sequence architectures here — it didn't, and that result alone was worth the time it cost.
+For structured tabular data, gradient-boosted trees were the natural starting point. The real question was not simply “LightGBM or XGBoost?” It was “which candidate gives the best balance of overall performance, class-level behaviour, and safety-sensitive downgrade risk?”
 
-## Why Accuracy Wasn't the Deciding Metric
+The comparison included LightGBM, XGBoost, Random Forest, a Dense Neural Network, an RNN, and a GRU. The sequence models were useful challengers, but the structured tabular problem did not gain enough from sequence architectures to justify their additional complexity.
 
-This is a 5-class problem (ESI 1 through 5), and the classes are imbalanced — most ED visits aren't the most severe cases. A model can post a respectable overall accuracy by being mediocre at the rare, high-acuity classes and very good at the common, low-acuity ones — which is exactly the failure mode you don't want in a triage system, since under-triaging a genuinely severe case is the costly error, not over-triaging a mild one.
+## Why accuracy was not the deciding metric
 
-So the comparison ran on two numbers, not one: **weighted F1**, which accounts for per-class performance rather than just overall correctness, and a metric I built specifically for this problem — **ESI 3→5 safety error**, the rate at which the model assigns a low-acuity label to a patient who actually needed urgent care. That second number is the one that actually matters clinically.
+The final model predicts three classes, but those classes are not equally important.
 
-<MetricCard label="Final Model — LightGBM V2" value="78.35% accuracy · 0.71% safety error" note="Selected over XGBoost, Random Forest, Dense NN, RNN, and GRU on weighted F1 (78.91%) and ESI 3→5 safety error — not on raw accuracy alone." />
+A model can improve overall accuracy while making more unsafe ESI 3-to-ESI 5 downgrades. That would be a worse system even if the headline number looked better.
 
-## What Actually Separated the Candidates
+I therefore compared candidates using:
 
-XGBoost and LightGBM landed close to each other on raw accuracy — close enough that picking between them on that number alone would have been close to a coin flip. The separation showed up in two other places: LightGBM's leaf-wise tree growth handled the high-dimensional, sparse feature space (many engineered features are sparse by nature) more efficiently, which mattered at this row count, and its performance on the minority high-acuity classes — the ones the safety-error metric is built around — was measurably more consistent across validation folds.
+- macro F1
+- weighted F1
+- ESI 5 F1
+- class-level confusion patterns
+- unsafe ESI 3-to-ESI 5 downgrade rate
+- deployment complexity and reproducibility
+
+<MetricCard
+  label="Final LightGBM V2 Registry"
+  value="78.32% accuracy · 0.68% unsafe downgrade rate"
+  note="Macro F1: 70.37%. Weighted F1: 78.88%. ESI 5 F1: 54.70%. Runtime scope: ESI 3/4/5 with 273 features. Higher-acuity ESI 1/2 handling remains explicit safety logic rather than an unsupported classifier claim."
+/>
+
+## What separated the candidates
+
+LightGBM and XGBoost were close enough on raw accuracy that choosing only from that number would have been weak engineering.
+
+LightGBM provided the stronger final combination of:
+
+- weighted and macro F1
+- ESI 5 behaviour
+- lower unsafe downgrade risk
+- efficient training and inference for high-dimensional tabular features
+- a straightforward text-model artifact for the FastAPI registry
+
+Calibration was evaluated, but the raw LightGBM probabilities were retained because the calibrated challengers did not preserve all configured guardrails.
 
 <ArchitectureBlock steps={[
-  "Feature preparation across ~972 engineered columns",
-  "Train/validate split with class-imbalance awareness",
-  "Parallel bake-off: LightGBM, XGBoost, Random Forest, Dense NN, RNN, GRU",
-  "Scored on weighted F1 and ESI 3→5 safety error, not accuracy alone",
-  "LightGBM V2 selected; SHAP run on the final model for explainability"
+  { title: "Source audit", description: "366,890 rows and 972 source columns" },
+  { title: "Deployment scope", description: "257,306 ESI 3/4/5 records" },
+  { title: "Feature contract", description: "273 final runtime features" },
+  { title: "Candidate bake-off", description: "LightGBM, XGBoost, Random Forest, Dense NN, RNN, and GRU" },
+  { title: "Risk-aware evaluation", description: "Macro/weighted F1, ESI 5 F1, and unsafe downgrade rate" },
+  { title: "Final registry", description: "LightGBM V2 artifacts, thresholds, labels, and verified metrics" }
 ]} />
 
-## What I'd Do Differently
+## Why the model does not predict ESI 1 or ESI 2
 
-The bake-off cost real time I could have spent elsewhere, and for a lot of tabular problems the honest answer is that LightGBM and XGBoost will land close enough that the choice doesn't matter much. It mattered here because the cost of being wrong is asymmetric — a missed high-acuity case is a very different kind of error than a missed low-acuity one — and that's exactly the situation where it's worth the extra time to check rather than defaulting to whichever library you reached for first. The lesson I took from this isn't "LightGBM is better than XGBoost" as a general rule; it's that the metric you optimize for should come from the actual cost of being wrong in your specific problem, not from whichever number is easiest to report.
+The deployment model is intentionally scoped to the classes for which the final evaluation evidence is strongest.
+
+Higher-acuity cases are handled through transparent safety rules and clinician review. This keeps the machine-learning claim precise and makes safety escalation visible instead of burying it inside a poorly supported rare-class prediction.
+
+## What I would do next
+
+The next model-quality work would focus on:
+
+- additional external or temporally separated validation
+- calibration and confidence interpretation under changing data
+- subgroup and error analysis
+- model-drift monitoring
+- challenger experiments only when they improve measured safety or maintainability
+
+The general lesson is not that LightGBM always beats XGBoost. The lesson is that the evaluation metric must reflect the real cost of being wrong, and the final architecture must be honest about what the model is and is not qualified to predict.

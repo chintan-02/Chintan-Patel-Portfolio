@@ -9,14 +9,14 @@ import { siteMeta } from '../data/siteMeta.js';
 export function Contact() {
   const items = [
     { label: 'Email', value: siteMeta.email, href: `mailto:${siteMeta.email}`, icon: Mail, ariaLabel: `Email ${siteMeta.name}` },
-    { label: 'LinkedIn', value: 'https://www.linkedin.com/in/chintan-patel-ai/', href: siteMeta.linkedin, icon: BrandLinkedin, ariaLabel: 'Open Chintan Patel LinkedIn profile' },
+    { label: 'LinkedIn', value: 'linkedin.com/in/chintan-patel-987765129', href: siteMeta.linkedin, icon: BrandLinkedin, ariaLabel: 'Open Chintan Patel LinkedIn profile' },
     { label: 'GitHub', value: 'github.com/chintan-02', href: siteMeta.github, icon: BrandGithub, ariaLabel: 'Open Chintan Patel GitHub profile' },
     { label: 'Location', value: siteMeta.location, href: null, icon: MapPin }
   ];
 
   const context = [
     { icon: MapPin, label: 'Based in', value: 'Calgary, Alberta · Canada' },
-    { icon: Compass, label: 'Open to', value: 'AI/ML Engineering, Data Science, Analytics, and Applied Software roles · Canada' },
+    { icon: Compass, label: 'Open to', value: 'AI/ML Engineering, Data Science, Analytics, Junior MLOps, GenAI/RAG, and Applied Software roles · Canada' },
     { icon: Clock, label: 'Response time', value: 'Usually within 24 hours' }
   ];
 
@@ -26,11 +26,10 @@ export function Contact() {
         <SectionHeader
           eyebrow="Contact"
           title="Open to AI/ML Engineering, Data Science, Analytics, and Applied Software roles."
-          description="Best fit: roles where machine learning, data workflows, APIs, dashboards, and production-minded software come together."
+          description="Best fit: roles where machine learning, NLP or RAG, data workflows, APIs, evaluation, and production-minded software come together."
           align="center"
         />
 
-        {/* context row — sets expectations before the contact methods themselves */}
         <Reveal>
           <div className="mb-10 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-3">
             {context.map((c) => {

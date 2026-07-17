@@ -5,18 +5,21 @@ import { Reveal } from '../ui/Reveal.jsx';
 
 const emphasizedSkills = new Set([
   'Python',
-  'Pandas',
   'SQL',
+  'PostgreSQL',
   'scikit-learn',
   'LightGBM',
-  'XGBoost',
   'NLP',
   'RAG',
   'FastAPI',
-  'Streamlit',
-  'SQLAlchemy',
+  'React',
+  'Next.js',
+  'TypeScript',
+  'ChromaDB',
+  'Docker',
+  'Docker Compose',
   'Azure',
-  'GitHub'
+  'GitHub Actions'
 ]);
 
 export function SkillsSystem() {
@@ -26,7 +29,7 @@ export function SkillsSystem() {
         <SectionHeader
           eyebrow="Technical System"
           title="Skills organized as an AI product stack."
-          description="Instead of a generic skills list, the stack is grouped by how real ML applications move from data to model to product."
+          description="Instead of a generic tool list, the stack follows how real AI systems move from data and models to evidence, product workflows, delivery, and operations."
         />
         <div className="space-y-4">
           {skillLayers.map((layer, index) => (

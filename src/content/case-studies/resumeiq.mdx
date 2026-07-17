@@ -2,86 +2,153 @@ import { CaseStudyHero, TechStackBlock, ArchitectureBlock, ScreenshotGallery, St
 
 <CaseStudyHero
   label="NLP Case Study"
-  title="ResumeIQ — AI-Assisted Resume Intelligence Platform"
-  description="A resume intelligence workflow for classification, ATS-style compatibility signals, skill extraction, template and placeholder detection, AI-like sentence analysis, and practical improvement feedback. It surfaces separate NLP signals rather than claiming to predict hiring outcomes."
+  meta="Azure portfolio demo · Active engineering project"
+  title="ResumeIQ — Privacy-Aware Resume Intelligence Platform"
+  description="A multi-signal NLP decision-support workflow for resume parsing, baseline role classification, ATS-style compatibility estimates, semantic job-description matching, skill intelligence, writing-quality review, batch comparison, and human recruiter workflows. It does not claim to predict hiring outcomes or reproduce a commercial ATS."
   links={[
     { label: 'Live Demo', href: 'https://resume-classifier-chintan.azurewebsites.net', external: true },
     { label: 'GitHub', href: 'https://github.com/chintan-02/smart-resume-classifier', external: true }
   ]}
 />
 
-<TechStackBlock items={["Python", "Scikit-learn", "TF-IDF", "Logistic Regression", "NLP", "Pandas", "Streamlit", "Azure"]} />
+<TechStackBlock items={["Python", "Streamlit", "FastAPI", "Scikit-learn", "TF-IDF", "SQLAlchemy", "SQLite", "Docker Compose", "GitHub Actions", "Azure"]} />
 
 ## Problem
 
-Many job seekers do not know why their resume is not performing well. A resume may be missing important keywords, contain weak or generic bullet points, use AI-like wording that reads as templated, include placeholder content that signals a copy-paste origin, or simply fail to match the job description clearly.
+Resume tools often compress many different issues into one unexplained score.
 
-Traditional resume templates do not identify these issues. Generic scoring tools give a number with no actionable next step. ResumeIQ surfaces practical signals users can review before applying, without claiming to predict hiring decisions.
+A candidate may have a parsing problem, missing keywords, weak skill visibility, incomplete structure, generic writing, or poor job-description alignment. One percentage does not tell the user which problem exists or what to improve.
 
-<ScreenshotGallery
-  title="Visual walkthrough in progress"
-  note="Compact placeholders remain here until the final ResumeIQ screenshots are available."
-  items={[
-    { label: "Resume upload screen", detail: "Visual walkthrough in progress" },
-    { label: "ATS/classification result", detail: "Visual walkthrough in progress" },
-    { label: "Feedback and suggestions view", detail: "Visual walkthrough in progress" }
-  ]}
-/>
+Hiring-related AI also creates privacy and responsible-AI risks. Resume content can contain personal information, and an analysis tool should not quietly become an automated hiring decision system.
 
 ## Solution
 
-ResumeIQ analyzes uploaded resume text and provides structured feedback across multiple dimensions — not a single fused score that hides what went wrong. Each signal is surfaced separately so the user can see likely keyword gaps, skill matches, classification output, and sentence-quality issues.
+ResumeIQ converts resumes and job descriptions into separate, reviewable signals.
+
+The current application supports PDF, DOCX, and TXT parsing, local text normalization, baseline TF-IDF role classification, keyword and semantic job-description matching, normalized skill extraction, skill-gap analysis, ATS-style structure and content signals, sentence-quality review, humanized rewrite guidance, batch comparison, reviewer notes, and shortlist foundations.
+
+The primary Streamlit application can operate locally even when the optional FastAPI service is unavailable. When enabled, FastAPI adds typed analysis, readiness, persistence, local retrieval, and safe prompt-preview foundations without being presented as the only runtime source of truth.
 
 <ArchitectureBlock steps={[
-  "Resume upload",
-  "Parsing",
-  "Preprocessing",
-  "TF-IDF/classifier",
-  "Skills extraction",
-  "ATS scoring",
-  "Sentence-quality analysis",
-  "Feedback"
+  { title: "Resume and job description", description: "PDF, DOCX, TXT, and target-role context" },
+  { title: "Parsing and normalization", description: "Local extraction, cleaning, and section-aware preparation" },
+  { title: "Baseline classification", description: "TF-IDF and scikit-learn role prediction" },
+  { title: "Skill intelligence", description: "Normalized matches, gaps, and evidence" },
+  { title: "Keyword and semantic matching", description: "Separate overlap and similarity signals" },
+  { title: "Quality and structure review", description: "Generic wording, placeholders, completeness, and rewrites" },
+  { title: "Human review workflow", description: "Candidate interpretation, notes, comparison, and shortlist support" }
 ]} />
 
 <StatusBadges
-  built={["Resume upload", "Parsing", "TF-IDF classifier", "Skills extraction", "ATS scoring", "Sentence-quality checks", "Feedback dashboard"]}
-  planned={["Final evaluation benchmark", "Semantic JD matching", "Report export", "Docker and CI/CD"]}
+  built={[
+    "PDF, DOCX, and TXT parsing",
+    "Baseline role classification",
+    "ATS-style compatibility signals",
+    "Keyword and semantic JD matching",
+    "Normalized skill intelligence",
+    "Writing and structure guidance",
+    "Batch comparison and reviewer notes",
+    "Privacy-safe display mode",
+    "FastAPI and SQLAlchemy foundations",
+    "Docker Compose and GitHub Actions",
+    "Azure-hosted demonstration"
+  ]}
+  planned={[
+    "Independent leakage and duplicate audit",
+    "Final classifier benchmark",
+    "Calibration and out-of-distribution analysis",
+    "Production authentication and RBAC",
+    "Encrypted document lifecycle",
+    "Production monitoring"
+  ]}
 />
 
+## Product walkthrough
+
+<ScreenshotGallery
+  title="Updated screenshots coming next"
+  note="The screenshot boxes remain intentionally. They will be replaced with verified captures from the current Azure-aligned application after the deployment version is confirmed."
+  items={[
+    { label: "Multi-format resume upload", detail: "PDF, DOCX, or TXT parsing and normalized text preparation." },
+    { label: "Resume intelligence dashboard", detail: "Classification, ATS-style, skill, structure, and writing-quality signals." },
+    { label: "Job-description matching", detail: "Keyword coverage, semantic similarity, role alignment, and missing skills." },
+    { label: "Writing and structure guidance", detail: "Generic wording, placeholders, incomplete sections, and targeted rewrites." },
+    { label: "Batch candidate comparison", detail: "Human-reviewed comparison rather than autonomous ranking decisions." },
+    { label: "Privacy and responsible-AI view", detail: "Synthetic labels, privacy-safe display, and documented limitations." }
+  ]}
+/>
+
+## Why multiple signals instead of one score?
+
+A single score hides the reason behind the result.
+
+ResumeIQ keeps these components separate:
+
+- parsing quality
+- baseline role prediction
+- keyword overlap
+- semantic similarity
+- matched and missing skills
+- structure and completeness
+- sentence quality
+- human reviewer interpretation
+
+This is both an explainability decision and a product decision. The user can see which signal needs attention instead of treating one number as objective hiring truth.
+
+## Evaluation position
+
 <div className="my-6 rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-5">
-  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Evaluation note</p>
-  <p className="mt-3 text-sm leading-7 text-ink-muted">Formal final classifier accuracy is not claimed because the evaluation results have not been finalized into a verified benchmark report. The current version demonstrates the resume analysis workflow, NLP feature engineering, ATS-style scoring, and user-facing feedback.</p>
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Evaluation boundary</p>
+  <p className="mt-3 text-sm leading-7 text-ink-muted">ResumeIQ intentionally does not publish a headline classifier accuracy. Strong validation results require additional review for data leakage, duplicate and near-duplicate resumes, split quality, class imbalance, category overlap, calibration, overfitting, and out-of-distribution behaviour. The current model is presented as a portfolio baseline, not a production-validated hiring model.</p>
 </div>
 
-## Key Features
+A credible final evaluation should include stratified cross-validation, per-class precision and recall, macro and weighted F1, confusion-matrix analysis, calibration, duplicate checks, semantic-matching benchmarks, error analysis, and responsible-AI review.
 
-- Resume text parsing and structured extraction from PDF or plain text.
-- Resume category classification using TF-IDF features and a Logistic Regression baseline.
-- Skill extraction module — matched skills and missing skills surfaced separately.
-- ATS-style compatibility scoring based on keyword coverage and structural signals.
-- Template and incomplete resume detection — flags resumes that appear copy-pasted or unfinished.
-- Placeholder content detection — catches literal placeholder text that signals a careless submission.
-- AI-like sentence detection — flags wording patterns that read as generic or LLM-generated.
-- Sentence quality analysis with targeted improvement guidance per flagged sentence.
-- Streamlit interface deployed to Azure Web App.
-- Modular source-code structure with separate services for configuration, preprocessing, prediction, skill extraction, ATS scoring, and sentence quality analysis.
+## Privacy and responsible AI
 
-## Model Thinking
+Current boundaries include:
 
-A resume intelligence system should not rely on one model output. The useful approach is layered: parser quality, keyword coverage, category prediction, confidence, ATS signals, and human-readable recommendations as separate, transparent components. Showing one opaque score would make a worse product here — someone who scores 62% has no idea whether the problem is keyword coverage, wording quality, or structure. Surfacing each signal separately is the explainability decision, not just an engineering one.
+- human review remains required
+- protected attributes are not intentionally used for scoring
+- full resume and job-description text should not be persisted unnecessarily
+- selected displays can mask common personal information
+- fairness visualizations are explicitly synthetic or demonstration-only
+- external GenAI is disabled by default
+- ATS-style outputs are educational estimates, not official ATS scores
+- no autonomous hiring action is performed
 
-## Production Concerns
+The local recruiter-copilot foundation is not presented as a production RAG system, and the prompt-preview endpoint builds and validates prompts without sending resume data to an external provider.
 
-The next version should improve parsing robustness across diverse resume formats, add confidence calibration, test evaluation on realistic resume samples, clean up the UI flow, separate the API layer from the Streamlit frontend more cleanly, add Docker packaging, and generate structured PDF or HTML reports for users to keep.
+## Engineering foundations
 
-## Roadmap
+Beyond the visible Streamlit workflow, the repository includes:
 
-- Humanized rewrite suggestions per flagged sentence.
-- Job-description semantic matching (keyword gap analysis).
-- Tailored cover letter generation.
-- Resume structure advisor (section order, length, formatting signals).
-- Model comparison: Linear SVM, Naive Bayes, XGBoost baseline against Logistic Regression.
-- Confidence calibration and a finalized evaluation benchmark.
-- Possible MiniLM / BERT upgrade for semantic matching beyond TF-IDF.
-- Premium UI/UX restructuring for recruiter-style analysis workflow.
-- Docker and CI/CD.
+- FastAPI health, readiness, and version endpoints
+- typed Pydantic contracts
+- SQLite and SQLAlchemy persistence foundations
+- local model-registry and MLflow foundations
+- structured application logging
+- Docker Compose development setup
+- pytest coverage
+- GitHub Actions continuous integration
+- optional API fallback behaviour
+
+These are engineering foundations rather than claims of a fully distributed production platform.
+
+## Current limitations and roadmap
+
+Current limitations include incomplete independent model validation, educational ATS-style scoring, semantic matching that needs benchmarking, Streamlit as the primary interface, optional rather than authoritative FastAPI integration, local SQLite persistence, demonstration authentication, partial PII masking, synthetic fairness views, disabled external GenAI, and no production monitoring.
+
+The next high-value work is:
+
+- complete leakage, duplicate, and split-quality analysis
+- compare baseline models under a stronger evaluation protocol
+- add calibration and per-class reporting
+- benchmark semantic job matching
+- strengthen privacy and document-lifecycle controls
+- evaluate a React or Next.js migration only when it improves the product architecture
+- add production observability and deployment hardening
+
+## What this project demonstrates
+
+ResumeIQ demonstrates multi-format parsing, NLP preprocessing, TF-IDF classification, semantic and keyword matching, skill normalization, explainable multi-signal product design, privacy-aware workflow decisions, FastAPI and persistence foundations, Docker and CI, Azure deployment, and honest evaluation positioning.

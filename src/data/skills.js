@@ -1,32 +1,32 @@
 export const skillLayers = [
   {
     layer: 'Data Layer',
-    label: 'Clean inputs before modeling',
-    skills: ['Python', 'Pandas', 'SQL', 'NumPy', 'Data Cleaning', 'Feature Engineering'],
-    note: 'Reliable models start with clean, structured inputs and traceable preprocessing.'
+    label: 'Clean inputs and durable state',
+    skills: ['Python', 'Pandas', 'SQL', 'PostgreSQL', 'SQLAlchemy', 'Alembic', 'Data Cleaning', 'Feature Engineering'],
+    note: 'Reliable systems start with clean inputs, explicit data ownership, traceable preprocessing, and durable lifecycle state.'
   },
   {
     layer: 'Model Layer',
     label: 'Train, evaluate, explain',
-    skills: ['scikit-learn', 'LightGBM', 'XGBoost', 'Classification', 'Model Evaluation', 'SHAP'],
-    note: 'Model work is framed around measurable performance, error tradeoffs, and explainability.'
+    skills: ['scikit-learn', 'LightGBM', 'XGBoost', 'Classification', 'Model Evaluation', 'Threshold Tuning', 'Calibration', 'SHAP'],
+    note: 'Model work is framed around per-class performance, risk-weighted errors, confidence, and explainability rather than one headline score.'
   },
   {
     layer: 'NLP & GenAI Layer',
-    label: 'Language intelligence',
-    skills: ['NLP', 'RAG', 'TF-IDF', 'Text Classification', 'Embeddings', 'Prompt Engineering'],
-    note: 'Text systems focus on retrieval quality, grounded answers, and actionable feedback.'
+    label: 'Language and evidence intelligence',
+    skills: ['NLP', 'RAG', 'TF-IDF', 'Embeddings', 'SentenceTransformers', 'ChromaDB', 'Evidence Gating', 'RAG Evaluation'],
+    note: 'Text systems focus on extraction quality, retrieval support, citations, safe fallback, privacy boundaries, and human review.'
   },
   {
     layer: 'API & Product Layer',
-    label: 'Turn models into apps',
-    skills: ['FastAPI', 'Streamlit', 'SQLAlchemy', 'REST APIs', 'PDF Reports', 'React'],
-    note: 'Model outputs are wrapped in interfaces, APIs, review flows, and reports users can act on.'
+    label: 'Turn intelligence into workflows',
+    skills: ['FastAPI', 'React', 'Next.js', 'TypeScript', 'Streamlit', 'REST APIs', 'Pydantic', 'PDF Reports'],
+    note: 'Models and retrieval pipelines are wrapped in typed APIs, review flows, dashboards, reports, and explicit failure states.'
   },
   {
-    layer: 'Deployment Layer',
-    label: 'Ship and maintain',
-    skills: ['Azure', 'GitHub', 'GitHub Actions', 'Docker', 'Cloud Deployment', 'Monitoring'],
-    note: 'Projects are shaped for demos, deployment readiness, and production-style maintainability.'
+    layer: 'Delivery & Operations',
+    label: 'Ship, validate, observe',
+    skills: ['Docker', 'Docker Compose', 'Azure', 'GitHub Actions', 'pytest', 'Vitest', 'Structured Logging', 'Monitoring'],
+    note: 'Projects use reproducible environments, automated checks, readiness contracts, operational logs, and honest deployment boundaries.'
   }
 ];

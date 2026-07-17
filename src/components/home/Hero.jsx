@@ -9,7 +9,7 @@ import { EASE } from '../../lib/motion.js';
 /* Cinematic hero. No opaque background — the fixed 3D scene shows through, with a
    soft scrim behind the text so it always stays legible over the point cloud.
    Funnel: availability → hook headline → concrete positioning → what I build →
-   real proof → actions. Built to convert a recruiter in five seconds. */
+   real proof → actions. */
 export function Hero() {
   const reduce = useReducedMotion();
 
@@ -23,7 +23,6 @@ export function Hero() {
 
   return (
     <section className="relative -mt-20 flex min-h-screen flex-col justify-center overflow-hidden px-6 pt-20 sm:px-10 lg:px-16">
-      {/* legibility scrim — darkens behind the text column, fades out over the cloud */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 z-0"
@@ -36,7 +35,6 @@ export function Hero() {
         animate="show"
         className="relative z-10 mx-auto w-full max-w-[1200px] text-center md:text-left"
       >
-        {/* availability — the single most important signal for a job search */}
         <motion.div variants={item} className="flex justify-center md:justify-start">
           <span className="inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.08)] px-4 py-2 font-mono text-[11px] font-medium tracking-[0.06em] text-accent">
             <span className="relative flex h-2 w-2">
@@ -47,7 +45,6 @@ export function Hero() {
           </span>
         </motion.div>
 
-        {/* hook headline — the one cinematic serif line */}
         <motion.h1
           variants={item}
           className="mt-6 font-display-serif text-[clamp(2.5rem,6.5vw,5.2rem)] font-normal leading-[1.03] tracking-[-0.02em] text-ink"
@@ -55,23 +52,20 @@ export function Hero() {
           Intelligence you can <span className="italic text-accent">trace</span>.
         </motion.h1>
 
-        {/* concrete positioning — what I am, in plain language */}
         <motion.p
           variants={item}
           className="mt-5 font-display text-[clamp(1.1rem,2vw,1.45rem)] font-semibold tracking-[-0.01em] text-ink"
         >
-          Applied AI/ML Engineer building evaluated, explainable, deployed AI systems across healthcare, NLP, and enterprise RAG.
+          Applied AI/ML Engineer building evaluated, explainable, deployable AI systems across healthcare, NLP, and enterprise RAG.
         </motion.p>
 
-        {/* what I build */}
         <motion.p
           variants={item}
-          className="mx-auto mt-4 max-w-[620px] text-[1rem] leading-[1.7] text-ink-muted md:mx-0"
+          className="mx-auto mt-4 max-w-[660px] text-[1rem] leading-[1.7] text-ink-muted md:mx-0"
         >
-          I build practical AI products with Python, FastAPI, Streamlit, SQL, vector search, evaluation pipelines, and cloud deployment.
+          I build practical AI products with Python, FastAPI, React and Next.js, SQL, model and retrieval evaluation, human-review workflows, Docker, and cloud deployment.
         </motion.p>
 
-        {/* proof anchor row — real numbers in the first screen */}
         <motion.div
           variants={item}
           className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2 font-mono text-[13px] text-ink-faint md:justify-start"
@@ -85,7 +79,6 @@ export function Hero() {
           ))}
         </motion.div>
 
-        {/* actions */}
         <motion.div variants={item} className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
           <Button href="/projects" variant="onDark">View Projects</Button>
           <Button href={siteMeta.resume} variant="onDarkAccent" download icon={false}>
@@ -94,7 +87,6 @@ export function Hero() {
           </Button>
         </motion.div>
 
-        {/* surfaced social — recruiters often click GitHub first */}
         <motion.div variants={item} className="mt-6 flex justify-center gap-5 font-mono text-[12px] tracking-[0.04em] text-ink-faint md:justify-start">
           <a href={siteMeta.github} target="_blank" rel="noreferrer" className="transition-colors hover:text-accent">GitHub ↗</a>
           <span className="text-ink-faint/40">·</span>
@@ -102,7 +94,6 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* scroll cue — pinned bottom-center of the hero (cinematic anchor) */}
       <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
         <ScrollCue target="about" />
       </div>

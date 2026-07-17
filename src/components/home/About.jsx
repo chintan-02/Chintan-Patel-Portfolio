@@ -3,9 +3,9 @@ import { SectionHeader } from '../ui/SectionHeader.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
 
 const cards = [
-  { title: 'Build', icon: Code2, text: 'Data pipelines, models, APIs, and product workflows.' },
-  { title: 'Explain', icon: Gauge, text: 'Metrics, safety rules, audit trails, citations, and limitations.' },
-  { title: 'Deploy', icon: Rocket, text: 'Cloud-hosted demos and production-style architecture.' }
+  { title: 'Build', icon: Code2, text: 'Data pipelines, models, retrieval systems, APIs, and reviewable product workflows.' },
+  { title: 'Explain', icon: Gauge, text: 'Class-level metrics, safety rules, audit evidence, citations, confidence diagnostics, and limitations.' },
+  { title: 'Deliver', icon: Rocket, text: 'Azure demos, Docker Compose release profiles, automated checks, and production-style architecture.' }
 ];
 
 export function About() {
@@ -14,16 +14,16 @@ export function About() {
       <div className="mx-auto max-w-[1100px]">
         <SectionHeader
           eyebrow="Positioning"
-          title="From data to model to API to deployed product."
-          description="The portfolio is built around practical AI engineering: clean inputs, evaluated models, explainable workflows, backend integration, and usable interfaces."
+          title="From data to model to API to reviewable product."
+          description="The portfolio is built around practical AI engineering: clean inputs, evaluated models and retrieval, typed backend integration, human oversight, operational evidence, and usable interfaces."
         />
         <div className="grid gap-6 lg:grid-cols-[1fr_1.1fr]">
           <Reveal className="card p-6">
             <p className="text-lg leading-9 text-ink-muted">
-              I am a Computer Science graduate studying Integrated Artificial Intelligence at SAIT in Calgary. My work focuses on building end-to-end AI applications: data preprocessing, model training, evaluation, explainability, API development, dashboards, and deployment.
+              I am a Computer Science graduate studying Integrated Artificial Intelligence at SAIT in Calgary. My work covers healthcare ML, privacy-aware NLP, and enterprise RAG—from preprocessing and evaluation to APIs, persistence, frontend workflows, testing, and deployment.
             </p>
             <p className="mt-5 text-lg leading-9 text-ink-muted">
-              I am especially interested in applied machine learning, NLP, healthcare AI, resume intelligence, and production-ready ML systems.
+              I am especially interested in systems where model or retrieval output must be explainable, evidence-backed, reviewable, and honest about uncertainty and limitations.
             </p>
           </Reveal>
           <div className="grid gap-4 sm:grid-cols-3">

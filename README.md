@@ -13,7 +13,7 @@
 
 [Live Portfolio](https://chintan-patel-ai.netlify.app/) ·
 [GitHub Profile](https://github.com/chintan-02) ·
-[LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
+[LinkedIn](https://www.linkedin.com/in/chintan-patel-987765129/)
 
 </div>
 
@@ -68,7 +68,7 @@ The portfolio targets opportunities in:
 |---|---|
 | Portfolio | [chintan-patel-ai.netlify.app](https://chintan-patel-ai.netlify.app/) |
 | GitHub | [github.com/chintan-02](https://github.com/chintan-02) |
-| LinkedIn | [linkedin.com/in/chintan-patel-ai](https://www.linkedin.com/in/chintan-patel-ai/) |
+| LinkedIn | [linkedin.com/in/chintan-patel-987765129](https://www.linkedin.com/in/chintan-patel-987765129/) |
 
 The site is deployed through Netlify as a client-side React application.
 
@@ -87,13 +87,15 @@ The project combines:
 - React and TypeScript clinical workflow
 - FastAPI backend
 - LightGBM V2 ESI 3/4/5 inference
-- Clinical Intake NLP Safety Layer
+- evidence-linked Clinical Intake NLP Safety Layer
+- editable clinician review before prediction
 - transparent safety-rule escalation
 - clinician accept and override review
 - SQLAlchemy persistence
-- audit logging
+- reviewed NLP evidence in the audit trail
+- assessment detail and dashboard workflows
 - prediction latency tracking
-- backend-generated PDF summaries
+- backend-generated PDF summaries with reviewed NLP evidence
 
 Verified model evidence:
 
@@ -115,27 +117,37 @@ Verified model evidence:
 
 ### PolicyGPT Enterprise
 
-**Evidence-First RAG for Policy and Compliance Documents**
+**Production-Style Evidence Intelligence for Policy Documents**
 
-A production-shaped retrieval-augmented generation system that retrieves and scores document evidence before answer generation.
+PolicyGPT Enterprise v0.3.0 is a production-style policy RAG system that makes document identity, provenance, answerability, controlled failure, evaluation, and release-like local deployment part of the product contract.
 
 The project includes:
 
-- PDF extraction with PyMuPDF
-- page-aware text cleaning and chunking
-- SentenceTransformer embeddings
-- ChromaDB vector retrieval
-- evidence scoring
-- configurable threshold filtering
-- page-level citation cards
-- Evidence Explorer
-- Groq and OpenAI provider modes
-- no-LLM evidence fallback
-- unsupported-question refusal behavior
-- FastAPI backend
-- Streamlit compliance console
+- Next.js Documents, Ask, Evaluation, and System workspaces
+- server-side BFF and FastAPI evidence API
+- PostgreSQL document identity and lifecycle metadata
+- SHA-256 duplicate prevention and atomic source storage
+- page-aware PyMuPDF extraction and metadata-rich chunking
+- local SentenceTransformer embeddings
+- persistent ChromaDB evidence retrieval
+- calibrated answerability and evidence gating
+- page-level citations
+- generated-answer, citation-only, and unsupported states
+- versioned 16-case RAG evaluation
+- request IDs, structured logs, liveness, and readiness
+- Alembic migrations and a four-service Docker Compose release profile
 
-PolicyGPT does not claim formal production RAG accuracy yet. Retrieval, faithfulness, confidence calibration, and cloud deployment remain active roadmap areas.
+Verified v0.3.0 evidence:
+
+| Metric | Value |
+|---|---:|
+| Controlled benchmark cases | **16** |
+| Answer-readiness accuracy | **100%** |
+| Expected-page retrieval hit rate | **100%** |
+| Backend tests | **229** |
+| Frontend tests | **112** |
+
+> The benchmark values describe one controlled local provider-disabled run. Supported cases returned citation-only evidence, so generated-answer quality was not evaluated. This is not a cloud-production or real-company deployment claim.
 
 [Case Study](https://chintan-patel-ai.netlify.app/case-studies/policygpt) ·
 [Repository](https://github.com/chintan-02/policygpt-enterprise)
@@ -768,7 +780,7 @@ The portfolio itself is a deployed frontend application and project communicatio
 Applied AI/ML Engineer based in Calgary, Alberta, Canada.
 
 - [Portfolio](https://chintan-patel-ai.netlify.app/)
-- [LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
+- [LinkedIn](https://www.linkedin.com/in/chintan-patel-987765129/)
 - [GitHub](https://github.com/chintan-02)
 - [Email](mailto:patel.chintan380@gmail.com)
 
