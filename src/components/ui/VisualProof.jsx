@@ -2,37 +2,37 @@ import { ArrowDown, ArrowRight, FileSearch, Image, Layers3 } from 'lucide-react'
 
 const previewConfig = {
   triageai: {
-    eyebrow: 'Clinical decision-support workflow',
-    title: 'Patient intake → ESI care routing',
-    leftTitle: 'Structured intake',
-    leftRows: ['Chief complaint', 'Vitals + pain score', 'Arrival mode'],
-    mainTitle: 'Prediction result',
+    eyebrow: 'Review-first clinical AI workflow',
+    title: 'Clinical note → reviewed intake → ESI care routing',
+    leftTitle: 'Evidence-linked intake',
+    leftRows: ['Clinical note or structured data', 'Extracted fields + evidence', 'Missing information'],
+    mainTitle: 'Reviewed decision support',
     mainValue: 'ESI 3 / 4 / 5',
-    mainMeta: 'Safety-rule escalation + clinician review',
-    rightTitle: 'Audit + PDF summary',
-    rightRows: ['Review status', 'Override reason', 'Decision-support report']
+    mainMeta: 'Clinician confirmation + safety-rule escalation',
+    rightTitle: 'Traceability',
+    rightRows: ['Clinician decision', 'Audit evidence', 'Backend PDF summary']
   },
   resumeiq: {
-    eyebrow: 'Resume intelligence workflow',
-    title: 'Upload → ATS analysis → feedback',
-    leftTitle: 'Resume upload',
-    leftRows: ['PDF / text input', 'Role target', 'Job description'],
-    mainTitle: 'ATS + classification',
-    mainValue: 'Skills, match, category',
-    mainMeta: 'Separate transparent signals',
-    rightTitle: 'Feedback view',
-    rightRows: ['Missing terms', 'Sentence quality', 'Improvement suggestions']
+    eyebrow: 'Privacy-aware resume intelligence',
+    title: 'Multi-format resume → transparent signals → human review',
+    leftTitle: 'Parsing and context',
+    leftRows: ['PDF / DOCX / TXT', 'Target role', 'Job description'],
+    mainTitle: 'Multi-signal analysis',
+    mainValue: 'Skills, match, quality',
+    mainMeta: 'Classification + keyword + semantic + structure signals',
+    rightTitle: 'Human workflow',
+    rightRows: ['Improvement guidance', 'Candidate comparison', 'Reviewer responsibility']
   },
   policygpt: {
-    eyebrow: 'Evidence-first RAG workflow',
-    title: 'Upload → citations → safe fallback',
-    leftTitle: 'Document upload',
-    leftRows: ['Policy PDF', 'Parse + chunk', 'Embeddings'],
-    mainTitle: 'Citation-backed answer',
-    mainValue: 'Evidence gate passed',
-    mainMeta: 'Confidence + page citations',
-    rightTitle: 'Evidence explorer',
-    rightRows: ['Retrieved evidence', 'Confidence score', 'Fallback when unsupported']
+    eyebrow: 'v0.3.0 evidence intelligence',
+    title: 'Documents → Ask → Evaluation → System',
+    leftTitle: 'Durable ingestion',
+    leftRows: ['SHA-256 identity', 'PostgreSQL lifecycle', 'Chroma evidence'],
+    mainTitle: 'Evidence-gated answer',
+    mainValue: 'Generate, cite, or refuse',
+    mainMeta: 'Calibrated answerability + provider-resilient fallback',
+    rightTitle: 'Evaluation and operations',
+    rightRows: ['16-case benchmark', 'Readiness contracts', 'Structured logs']
   }
 };
 
@@ -40,36 +40,6 @@ export function ProductPreview({ project, slug, title, className = '' }) {
   const key = slug ?? project?.slug;
   const config = previewConfig[key] ?? previewConfig.policygpt;
   const displayTitle = title ?? config.title;
-
-  if (key === 'policygpt') {
-    return (
-      <div className={`group overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] shadow-card ${className}`}>
-        <div className="flex items-center gap-2 border-b border-line bg-[rgb(var(--surface2-rgb)/0.58)] px-4 py-3">
-          <span className="h-2.5 w-2.5 rounded-full bg-[rgb(var(--accent-rgb)/0.8)]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[rgb(var(--ink-rgb)/0.22)]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[rgb(var(--violet-rgb)/0.55)]" />
-          <span className="ml-auto rounded-full border border-line bg-[rgb(var(--surface-rgb)/0.7)] px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
-            Product preview
-          </span>
-        </div>
-        <a
-          href="/projects/policygpt/02-citation-backed-answer.png"
-          target="_blank"
-          rel="noreferrer"
-          aria-label="Open PolicyGPT citation-backed answer screenshot"
-          className="block overflow-hidden"
-        >
-          <img
-            src="/projects/policygpt/02-citation-backed-answer.png"
-            alt="PolicyGPT citation-backed answer screen showing grounded response, confidence, and citations."
-            loading="lazy"
-            decoding="async"
-            className="aspect-[16/9] w-full bg-[rgb(var(--surface2-rgb)/0.8)] object-cover object-top transition-transform duration-500 group-hover:scale-[1.015]"
-          />
-        </a>
-      </div>
-    );
-  }
 
   return (
     <div className={`group overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] shadow-card ${className}`}>
@@ -96,7 +66,7 @@ export function ProductPreview({ project, slug, title, className = '' }) {
                   <Image className="h-4 w-4" />
                 </span>
                 <div>
-                  <p className="font-display text-lg font-semibold text-ink">Visual walkthrough in progress</p>
+                  <p className="font-display text-lg font-semibold text-ink">Updated screenshots coming next</p>
                   <p className="mt-1 text-sm leading-6 text-ink-muted">{config.mainMeta}</p>
                 </div>
               </div>
@@ -133,7 +103,7 @@ function PreviewPanel({ title, rows = [] }) {
   );
 }
 
-export function ScreenshotSlot({ label, detail = 'Visual walkthrough in progress' }) {
+export function ScreenshotSlot({ label, detail = 'Updated screenshots coming next' }) {
   return (
     <div className="group relative min-h-[150px] overflow-hidden rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.64)] p-4">
       <div className="absolute inset-0 opacity-70">
@@ -246,10 +216,10 @@ function EvidenceExplorerPreview() {
     ['Citations', 'Page-level source cards']
   ];
   const secondary = [
-    ['Latency', 'Local MVP'],
-    ['Provider', 'OpenAI-compatible'],
-    ['Model', 'Llama-3.3-70B'],
-    ['Threshold', 'Evidence gate']
+    ['Release', 'v0.3.0 local profile'],
+    ['Provider', 'Optional generation'],
+    ['Embeddings', 'SentenceTransformers'],
+    ['Decision', 'Evidence gate']
   ];
 
   return (
@@ -286,9 +256,9 @@ function ApiPreview() {
       <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">FastAPI Docs</p>
       <div className="mt-4 space-y-3">
         {[
-          ['POST', '/documents/upload', 'Ingest PDF and create chunks'],
-          ['POST', '/query', 'Run retrieval, evidence gate, and response'],
-          ['GET', '/health', 'Readiness check for the service']
+          ['POST', '/api/v1/documents/upload', 'Validate, identify, persist, and index one PDF'],
+          ['POST', '/api/v1/documents/ask', 'Run retrieval, answerability, generation, or safe fallback'],
+          ['GET', '/api/v1/ready', 'Check PostgreSQL and Chroma readiness']
         ].map(([method, path, detail]) => (
           <div key={path} className="grid gap-2 rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-3 sm:grid-cols-[72px_1fr]">
             <span className="font-mono text-xs font-bold text-accent">{method}</span>

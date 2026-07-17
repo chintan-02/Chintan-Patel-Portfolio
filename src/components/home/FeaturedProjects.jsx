@@ -12,25 +12,22 @@ const homeProjectCopy = {
   triageai: {
     title: 'TriageAI / SympDirect',
     value:
-      'Clinical decision-support workflow for ESI care routing with safety-rule escalation, clinician review, and an audit trail.',
-    metrics: ['78.35% accuracy', '0.71% ESI 3→5 safety error']
+      'Review-first clinical decision-support workflow with evidence-linked NLP extraction, ESI 3/4/5 prediction, safety escalation, clinician review, audit evidence, and PDF reporting.'
   },
   resumeiq: {
     value:
-      'Resume intelligence workflow that separates ATS-style scoring, classification, skills extraction, and sentence-quality feedback.',
-    metrics: ['77% / 50% ATS contrast', '20 / 11 skills matched']
+      'Privacy-aware resume intelligence workflow that separates classification, ATS-style signals, semantic matching, skill intelligence, writing quality, and human review.'
   },
   policygpt: {
     value:
-      'Evidence-first RAG workflow for policy PDFs with vector search, citation-backed answers, and unsupported-question fallback.',
-    metrics: ['0 citations on unsupported Q', '0.0000 out-of-scope confidence']
+      'Production-style policy RAG system with durable document identity, calibrated answerability, page citations, provider-resilient fallback, evaluation, and release-like local deployment.'
   }
 };
 
 function HomeProjectCard({ project, index }) {
   const copy = homeProjectCopy[project.slug] ?? {};
   const title = copy.title ?? project.title;
-  const status = project.slug === 'policygpt' ? 'Phase 1 MVP / local, deployment planned' : project.status;
+  const metrics = project.metrics.slice(0, 2).map((metric) => `${metric.value} ${metric.label}`);
 
   return (
     <Reveal delay={index * 0.08}>
@@ -43,7 +40,7 @@ function HomeProjectCard({ project, index }) {
             {project.category}
           </span>
           <span className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.7)] px-3 py-1 text-[11px] font-semibold text-ink-muted">
-            {status}
+            {project.status}
           </span>
         </div>
 
@@ -54,7 +51,7 @@ function HomeProjectCard({ project, index }) {
         <p className="mt-4 text-sm leading-7 text-ink-muted">{copy.value ?? project.problem}</p>
 
         <div className="mt-5 grid gap-3 sm:grid-cols-2">
-          {(copy.metrics ?? project.metrics.slice(0, 2).map((m) => `${m.value} ${m.label}`)).map((metric) => (
+          {metrics.map((metric) => (
             <div key={metric} className="rounded-inset border border-[rgb(var(--accent-rgb)/0.16)] bg-[rgb(var(--accent-rgb)/0.05)] px-4 py-3">
               <p className="font-mono text-sm font-bold leading-5 text-accent">{metric}</p>
             </div>
@@ -84,7 +81,7 @@ export function FeaturedProjects() {
         <SectionHeader
           eyebrow="Featured Projects"
           title="Flagship AI products with architecture thinking."
-          description="Each project is presented like a real system: problem, workflow, features, stack, deployment, and case-study explanation."
+          description="Each project is presented as a real system: problem, workflow, evaluation, safety or responsible-AI boundaries, stack, deployment status, and honest limitations."
         />
         <div className="grid gap-8">
           {orderedProjects.map((project, index) => <HomeProjectCard key={project.slug} project={project} index={index} />)}

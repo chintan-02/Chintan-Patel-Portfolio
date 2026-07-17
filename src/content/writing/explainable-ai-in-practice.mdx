@@ -2,33 +2,95 @@ import { CaseStudyHero, MetricCard } from '../../components/mdx/MDXComponents.js
 
 <CaseStudyHero
   label="Technical Writing"
-  meta="Published July 2026 · 5 min read"
+  meta="Published July 2026 · Updated July 2026 · 5 min read"
   title="What 'Explainable AI' Actually Means in Practice"
-  description="Explainability gets used as one umbrella term, but it solves three different problems depending on the system. Notes from building it three different ways across a healthcare triage model, a resume scorer, and a RAG assistant."
+  description="Explainability solves a different problem in each project: clinical review evidence, transparent resume signals, or source-backed RAG answers and safe refusal."
 />
 
-## It's Not One Technique
+## It is not one technique
 
-"Explainable AI" usually gets talked about as if it's a single tool you bolt onto a model — add SHAP, ship it, done. After building three systems that each needed explainability for a genuinely different reason, I don't think that's accurate. Each one needed something different, because each one was solving a different version of "why should anyone trust this output."
+Explainable AI is often described as a model feature: add SHAP or feature importance and the system becomes explainable.
 
-## TriageAI: Explaining a Score That Has Real Consequences
+That is too narrow.
 
-For a model predicting emergency severity, the question isn't just "why did the model say ESI level 3" — it's "should a clinician trust this enough to act on it, and what happens when the model is wrong." That's why TriageAI isn't just a model with SHAP values attached to it; it's a model plus clinical safety rules that can escalate the output, plus a clinician review step that can override it. SHAP explains *why* the model reached a number. The safety rules and human review exist because explaining a wrong answer doesn't make it a safe one — they're the part of the system that keeps the model's output from being treated as final clinical authority.
+After building three different systems, I found that explainability changes depending on who needs to review the output, what action may follow, and what kind of failure matters.
 
-<MetricCard label="TriageAI's Approach" value="SHAP + safety rules + human override" note="Explainability here isn't the model justifying itself in isolation — it's one layer in a system where a human stays in the loop on the highest-stakes decisions." />
+## TriageAI: explain the model and the workflow around it
 
-## ResumeIQ: Explaining Without a Single Score to Hide Behind
+For ESI care routing, the question is not only “why did the model assign this class?”
 
-ResumeIQ's problem is the opposite shape. There's no single high-stakes prediction to explain — there's a resume, and a job seeker who wants to know *specifically* what to fix. A single opaque "match score" would actually be a worse product here, not just a less explainable one, because it gives someone a number with no actionable next step. So ResumeIQ doesn't really have one black-box score at all — it surfaces ATS-style signals, JD keyword overlap, matched and missing skills, and sentence-quality signals separately, as transparent components rather than one fused number. The explainability requirement shaped the product decision, not just the model output.
+The clinician also needs to know:
 
-## PolicyGPT: Explaining by Refusing to Answer
+- which intake values were used
+- what came from free-text extraction
+- which evidence snippets supported those fields
+- which information was missing
+- what each class probability was
+- whether a safety rule changed the routing result
+- who accepted or overrode the output
+- what evidence was preserved afterward
 
-A RAG assistant answering questions about HR and compliance documents has a different trust problem again — it's not "explain this score," it's "prove this answer is actually grounded in the source document, and tell me clearly when it isn't." That's what the evidence gate and page-level citations are for: every supported answer is traceable to a specific page, and when retrieval doesn't clear the confidence bar, the system says so explicitly instead of generating a plausible-sounding guess. Here, the most important explainability feature isn't a justification attached to an answer — it's the system's honesty about the edge of its own knowledge.
+<MetricCard
+  label="TriageAI's approach"
+  value="Evidence-linked NLP + probabilities + safety rules + human review"
+  note="The reviewed extraction metadata, model output, safety escalation, clinician decision, audit trail, and PDF report form one explainable workflow. Explaining the classifier alone would not make the system safe."
+/>
 
-## The Common Thread
+## ResumeIQ: separate the signals instead of hiding them
 
-Underneath three different implementations, the actual requirement was the same each time: don't make someone take the system's word for it. Show the reasoning where a clinician needs to weigh it, decompose the score where a job seeker needs to act on it, and cite the source — or admit you can't — where the cost of being confidently wrong is high. That's the practical version of "intelligence you can trace": not a single library you import, but a design constraint that changes what the system actually outputs, project to project.
+ResumeIQ has a different trust problem.
 
-## What Explainability Doesn't Guarantee
+A single resume score cannot explain whether the issue is parsing, keywords, semantic alignment, skill visibility, structure, or writing quality.
 
-It's worth being honest about the limit here. SHAP values explain what the model's decision boundary did, not whether the model's training data was representative or fair — those are separate problems that explainability alone doesn't solve. Transparent component scores in ResumeIQ make the *signals* visible, not necessarily complete. And an evidence-gated RAG system can still cite a source document that's outdated or wrong. Explainability tells you how a system reached its output. It doesn't, by itself, guarantee the output is correct — and treating it as if it does would be exactly the kind of false confidence these systems are supposed to avoid.
+ResumeIQ therefore presents these as separate signals:
+
+- baseline role classification
+- keyword overlap
+- semantic similarity
+- matched and missing skills
+- ATS-style structure and content estimates
+- generic or incomplete wording
+- targeted improvement guidance
+
+The explainability decision shaped the product itself. The user receives components they can inspect instead of one supposedly objective hiring number.
+
+## PolicyGPT: prove the evidence or refuse
+
+A policy RAG system needs to answer a different question:
+
+> Does the indexed evidence directly support this response?
+
+PolicyGPT surfaces page citations, excerpts, retrieval diagnostics, answerability reasons, numeric consistency, direct-support state, and provider availability.
+
+If evidence is insufficient, generation is blocked. If evidence is supported but the provider is unavailable, citation-only evidence remains available.
+
+<MetricCard
+  label="PolicyGPT's approach"
+  value="Answerability diagnostics + citations + truthful fallback"
+  note="The most important explainability feature is not a fluent explanation attached to every answer. It is the system's ability to show why evidence was accepted, expose the source, distinguish provider failure, and admit when the documents cannot answer."
+/>
+
+## The common thread
+
+Across all three projects, the design rule is the same:
+
+**Do not make the user take the system's word for it.**
+
+- show clinical evidence and human decisions where safety matters
+- decompose resume signals where users need actionable feedback
+- cite the source or refuse where unsupported generation is risky
+
+That is the practical meaning of “Intelligence you can trace.”
+
+## What explainability does not guarantee
+
+Explainability does not prove that:
+
+- training data is representative or fair
+- a model is clinically validated
+- an ATS-style estimate reflects a real commercial ATS
+- a cited document is current or legally authoritative
+- a confidence score is a guaranteed probability of correctness
+- a system is secure or production-ready
+
+Explainability makes reasoning and evidence more inspectable. Reliability still depends on data quality, evaluation, governance, monitoring, human review, and clearly documented limitations.

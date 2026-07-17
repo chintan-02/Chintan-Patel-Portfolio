@@ -2,40 +2,114 @@ import { CaseStudyHero, MetricCard, ArchitectureBlock } from '../../components/m
 
 <CaseStudyHero
   label="Technical Writing"
-  meta="Published July 2026 · 4 min read"
+  meta="Published July 2026 · Updated July 2026 · 5 min read"
   title="Building an Evidence Gate: How to Stop a RAG System from Hallucinating"
-  description="Most RAG demos retrieve some passages and let the model do its best with whatever comes back. Here's the architecture decision from PolicyGPT that treats retrieval as a gate instead of a suggestion — and the test that actually proves it works."
+  description="How PolicyGPT moved beyond thresholded vector retrieval into calibrated answerability, controlled unsupported states, provider-resilient citation fallback, and a repeatable evaluation workflow."
 />
 
-## The Problem With Naive RAG
+## The problem with naive RAG
 
-The standard retrieval-augmented generation pattern is: embed a question, retrieve the nearest chunks from a vector store, stuff them into a prompt, let the model generate an answer. It works well when the retrieved chunks are actually relevant. The failure mode nobody's demo shows you is what happens when they aren't — when the question is out of scope, or the document simply doesn't cover it. A standard RAG pipeline will still generate something, because nothing in the architecture tells the model it's allowed to say "I don't know." It'll sound exactly as confident being wrong as it does being right.
+The common retrieval-augmented generation pattern is:
 
-For a system answering questions about HR policy and compliance documents, that's not a quality problem, it's a liability problem. A confidently wrong answer about a compliance policy is worse than no answer at all.
+```text
+Embed the question
+→ retrieve the nearest chunks
+→ place them in a prompt
+→ let the model answer
+```
 
-## Treating Retrieval as a Gate, Not a Suggestion
+This works when the retrieved text directly supports the question.
 
-The fix I built into PolicyGPT is architectural, not a prompt trick: retrieval quality is scored *before* generation is allowed to happen at all. The system embeds the question, retrieves candidate chunks, and scores the retrieval confidence against a threshold. Only if that threshold is cleared does the request proceed to the LLM — and even then, the answer has to come back with page-level citations tying it to the source document. If retrieval doesn't clear the bar, the LLM call is skipped or its output is overridden, and the system returns a fallback response instead.
+The dangerous failure appears when the retrieved chunks are only topically related, numerically inconsistent, or unable to answer the request. A language model may still produce fluent prose because nothing in the architecture requires the evidence to prove answerability.
+
+For HR and compliance documents, a plausible but unsupported answer is worse than an explicit refusal.
+
+## Retrieval similarity is not confidence
+
+Vector similarity is a retrieval signal. It is not the probability that an answer is correct.
+
+PolicyGPT evaluates answerability using several signals:
+
+- top and average retrieval strength
+- retrieval margin
+- lexical coverage
+- numeric consistency
+- direct-support detection
+- scope and external-authority risk
+
+Generation is allowed only when the combined evidence state is answer-ready.
 
 <ArchitectureBlock steps={[
-  "Question embedded (SentenceTransformers, all-MiniLM-L6-v2)",
-  "Candidate chunks retrieved from ChromaDB",
-  "Evidence-gate scoring against a confidence threshold",
-  "Below threshold → fallback response, no LLM call relied on",
-  "Above threshold → LLM answer generation, gated and citation-bound",
-  "Answer returned only with page-level citations attached"
+  { title: "Embed question", description: "Local SentenceTransformer query embedding" },
+  { title: "Retrieve candidates", description: "Persistent ChromaDB evidence" },
+  { title: "Inspect support", description: "Scores, lexical coverage, numbers, direct support, and scope risk" },
+  { title: "Apply evidence gate", description: "Supported, provider-degraded, or unsupported" },
+  { title: "Generate when allowed", description: "Groq or OpenAI-compatible provider" },
+  { title: "Return traceable result", description: "Page citations, confidence reasons, or controlled refusal" }
 ]} />
 
-## The Test That Actually Proves It
+## Three truthful outcomes
 
-It's easy to claim a system "won't hallucinate." The way I actually verified it was by asking it something the source documents have no way of answering — a question like a CEO's home address, which obviously isn't in an HR policy PDF. A naive RAG pipeline will often still produce something plausible-sounding here, because there's nothing stopping it from doing so.
+PolicyGPT separates evidence quality from provider availability.
 
-<MetricCard label="Unsupported-Question Test" value="0 citations · 0.0000 confidence" note="The system correctly returned zero citations and a 0.0000 confidence score, triggering the fallback path instead of generating an answer. That's the test that matters — not whether the system answers well on questions it can answer, but what it does on ones it can't." />
+### Supported evidence and provider available
 
-## Why Refusing to Answer Is a Feature
+The system generates a response and attaches page-level citations.
 
-In a compliance or HR context specifically, "I don't have enough information to answer that" is a genuinely better outcome than a fluent, wrong answer — it tells the user to go check the source document or ask a human, instead of acting on something the system made up. Most of the engineering effort in a system like this isn't in making it answer well; it's in making the boundary between "I know" and "I don't know" actually reliable, and then making the system honest about which side of that boundary it's on.
+### Supported evidence and provider unavailable
 
-## What This Doesn't Solve
+The evidence is still answer-ready. Instead of pretending the policy is unsupported, the system returns citation-only evidence and identifies the provider as degraded.
 
-I want to be specific about the limits here, since it's easy to oversell an evidence gate. It doesn't guarantee the *retrieved* evidence is itself correct or current — if the source PDF is outdated, a well-cited answer can still be wrong in a way the gate can't catch. It also doesn't eliminate the need for a real evaluation set; right now the gate's threshold was tuned by hand against a handful of test questions, not a labeled benchmark, which is the honest next step before I'd call this production-ready rather than a working reference implementation.
+### Unsupported evidence
+
+The evidence gate blocks generation and explains that the indexed documents do not provide enough support.
+
+This distinction is important because an LLM outage and missing policy evidence are different operational states.
+
+## The evaluation that replaced spot checks
+
+The original evidence gate was first tested with individual supported and unsupported questions. That was useful, but insufficient.
+
+PolicyGPT v0.3.0 now includes a versioned 16-case benchmark:
+
+- 11 expected-supported questions
+- 5 expected-unsupported questions
+- expected source pages
+- answer concepts
+- difficulty and category labels
+- per-case confidence and retrieval diagnostics
+- repeatable JSON and CSV artifacts
+
+<MetricCard
+  label="Provider-Disabled Release Run"
+  value="100% answer-readiness · 100% expected-page hit rate"
+  note="Across 16 controlled cases, the run recorded 100% fallback accuracy and 0 request errors. Supported questions returned citation-only evidence because generation was intentionally unavailable. Generated-answer quality was therefore not evaluated."
+/>
+
+The benchmark result does not prove production accuracy. It proves that, for this controlled dataset, the system correctly separated supported and unsupported requests, retrieved expected pages, and remained useful without a generation provider.
+
+## Why refusing to answer is a feature
+
+A controlled unsupported response gives the user an actionable boundary:
+
+- inspect the source document
+- reframe the question
+- upload the correct policy
+- escalate to a human owner
+
+That is safer than letting a model fill the gap with plausible language.
+
+## What the evidence gate still does not solve
+
+An evidence gate cannot guarantee that:
+
+- the source document is current
+- the policy itself is correct
+- the retrieved excerpt is interpreted correctly in every context
+- the benchmark represents all future documents
+- citations equal legal or compliance approval
+- the application is secure enough for production use
+
+Trustworthy RAG therefore requires document governance, larger human-reviewed evaluation, access control, monitoring, retention policies, and operational ownership in addition to retrieval and prompting.
+
+The main lesson is that hallucination control is not a single prompt instruction. It is an architecture that makes unsupported evidence, provider failure, citations, and evaluation visible as separate product states.

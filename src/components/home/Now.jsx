@@ -2,33 +2,30 @@ import { Hammer, RefreshCw, GraduationCap, Target } from 'lucide-react';
 import { Badge } from '../ui/Badge.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
 
-// "Now" section — signals momentum for a job search (what I'm building/improving/
-// learning/targeting right now). Sits right before ContactCTA: current focus →
-// let's talk. Real, honest content only — no fabricated "reading/listening" filler.
 const focus = [
   {
     icon: Hammer,
     tag: 'Building',
-    title: 'PolicyGPT Enterprise',
-    text: 'Production-shaped RAG system for HR and compliance document intelligence — FastAPI, vector search, citation-backed answers, and evaluation workflows.'
+    title: 'Portfolio Maintenance System',
+    text: 'Designing a human-reviewed workflow that keeps repository evidence, case studies, GitHub, LinkedIn, resume claims, screenshots, and interview stories synchronized.'
   },
   {
     icon: RefreshCw,
     tag: 'Improving',
     title: 'TriageAI + ResumeIQ',
-    text: 'Refining two deployed AI applications with stronger model evaluation, cleaner UX, better documentation, and portfolio-ready case studies.'
+    text: 'Hardening evaluation, responsible-AI boundaries, documentation, screenshots, and recruiter-facing evidence across the healthcare and resume-intelligence systems.'
   },
   {
     icon: GraduationCap,
     tag: 'Learning',
     title: 'Production ML & GenAI Systems',
-    text: 'Deepening skills in RAG, NLP, model evaluation, Docker, Azure deployment, monitoring, and scalable backend architecture.'
+    text: 'Deepening skills in retrieval evaluation, observability, secure data lifecycles, Docker operations, monitoring, and scalable backend architecture.'
   },
   {
     icon: Target,
     tag: 'Targeting',
     title: 'AI/ML Co-op & New-Grad Roles',
-    text: 'Preparing for AI/ML Engineering, Data Science, Analytics, and Applied Software roles across Canada for Fall 2026 opportunities.'
+    text: 'Preparing for AI/ML Engineering, Data Science, Analytics, Junior MLOps, GenAI/RAG, and Applied Software roles across Canada.'
   }
 ];
 

@@ -5,8 +5,7 @@ import { TechChip } from '../ui/TechChip.jsx';
 import { ProductPreview } from '../ui/VisualProof.jsx';
 
 // Dark-glass project card (Observatory). Metrics row pulls from project.metrics;
-// action buttons render only when the corresponding URL exists (PolicyGPT has no
-// live demo / case study yet).
+// action buttons render only when the corresponding URL exists.
 export function ProjectCard({ project }) {
   const topMetrics = project.metrics?.slice(0, 2) ?? [];
 

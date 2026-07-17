@@ -1,131 +1,302 @@
-import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ProductWalkthrough, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
+import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ScreenshotGallery, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
   label="GenAI / RAG Case Study"
-  title="PolicyGPT Enterprise — Evidence-First RAG for HR & Compliance PDFs"
-  description="A Phase 1 local RAG assistant for querying HR, policy, SOP, and compliance PDFs with a working FastAPI backend, Streamlit UI, ChromaDB retrieval, citation cards, evidence explorer, unsupported-question fallback, and Swagger API docs. Deployment is planned; the current focus is a grounded, testable evidence-first workflow."
+  meta="v0.3.0 · Verified local Docker Compose release profile"
+  title="PolicyGPT Enterprise — Building an Evidence-Gated Policy RAG System"
+  description="A production-style evidence intelligence and policy RAG system for HR, SOP, compliance, and governance documents. It converts source PDFs into durable, searchable evidence and generates an answer only when the retrieved material provides sufficient support. The project demonstrates the engineering gap between a retrieval demo and an operable product without claiming commercial SaaS or real-company production deployment."
   links={[
-    { label: 'GitHub', href: 'https://github.com/chintan-02/policygpt-enterprise', external: true }
+    { label: 'GitHub Repository', href: 'https://github.com/chintan-02/policygpt-enterprise', external: true },
+    { label: 'v0.3.0 Release', href: 'https://github.com/chintan-02/policygpt-enterprise/releases/tag/v0.3.0', external: true }
   ]}
 />
 
-<TechStackBlock items={["Python", "FastAPI", "ChromaDB", "SentenceTransformers", "Groq Llama-3.3-70B", "PyMuPDF", "Streamlit", "Pydantic v2"]} />
+<TechStackBlock items={["Python 3.13", "FastAPI", "Next.js 16", "React 19", "TypeScript", "PostgreSQL 16", "SQLAlchemy", "Alembic", "SentenceTransformers", "ChromaDB", "PyMuPDF", "Docker Compose"]} />
 
 ## Problem
 
-Organizations store important policy and compliance information inside long PDF documents. Employees need quick, grounded answers — but manually searching through documents is slow, and the cost of a wrong answer in a compliance context is high.
+Policy answers can affect employee expectations, operational procedures, compliance reviews, and governance decisions.
 
-Generic chatbots can respond quickly, but they may hallucinate or provide unsupported answers. For enterprise document Q&A, answers must be grounded, traceable, and connected back to source documents. A system that confidently invents a policy answer is worse than one that says it doesn't know.
+A fluent answer is not enough. Reviewers need to know which document supports the response, which page contains the evidence, whether the retrieved text directly answers the question, whether numeric details are consistent, and what happens when the information is absent or the generation provider is unavailable.
 
-<ProductWalkthrough
-  steps={[
-    {
-      title: "Document Upload",
-      why: "Upload enterprise policy documents, configure retrieval settings, and index them for semantic search.",
-      image: "/projects/policygpt/01-dashboard-upload.png",
-      alt: "PolicyGPT document upload dashboard for indexing enterprise policy PDFs."
-    },
-    {
-      title: "Citation-backed Answer",
-      why: "Every answer is grounded in retrieved evidence with confidence scoring and source citations.",
-      image: "/projects/policygpt/02-citation-backed-answer.png",
-      alt: "PolicyGPT citation-backed answer screen with confidence score and source citations."
-    },
-    {
-      title: "Multi-source Retrieval",
-      why: "The assistant combines evidence from multiple document sections before generating an answer.",
-      image: "/projects/policygpt/03-ai-policy-answer.png",
-      alt: "PolicyGPT answer screen showing response generated from multiple retrieved policy sections."
-    },
-    {
-      title: "Unsupported-question Fallback",
-      why: "If retrieved evidence does not satisfy the confidence threshold, the assistant refuses to answer instead of hallucinating.",
-      image: "/projects/policygpt/04-unsupported-fallback.png",
-      alt: "PolicyGPT unsupported-question fallback screen refusing to answer without sufficient evidence.",
-      emphasis: true
-    },
-    {
-      title: "Evidence Explorer",
-      why: "Inspect retrieved chunks, confidence, citations, and retrieval reasoning before generation.",
-      image: "/projects/policygpt/05-evidence-explorer.png",
-      alt: "PolicyGPT evidence explorer screen showing retrieved chunks, confidence, citations, and reasoning."
-    },
-    {
-      title: "System Architecture",
-      why: "Illustrates the end-to-end RAG workflow from ingestion to evidence-gated generation.",
-      image: "/projects/policygpt/06-architecture-page.png",
-      alt: "PolicyGPT architecture page showing the end-to-end RAG workflow from ingestion to evidence-gated generation."
-    },
-    {
-      title: "FastAPI Backend",
-      why: "Interactive API documentation showing backend endpoints for upload, search, evidence inspection, and question answering.",
-      image: "/projects/policygpt/07-fastapi-docs.png",
-      alt: "PolicyGPT FastAPI Swagger documentation showing backend endpoints for upload, search, evidence inspection, and question answering."
-    }
+Most basic PDF-chat systems retrieve several chunks and rely on an LLM to produce something plausible. PolicyGPT was built around a stricter principle:
+
+> **Evidence must earn the right to generate an answer.**
+
+## Product objective
+
+The goal was to build a reviewable evidence workflow that could:
+
+- establish durable document identity
+- preserve page-level provenance
+- prevent duplicate indexing
+- separate metadata, source files, vectors, and evaluation artifacts
+- evaluate answerability before generation
+- block unsupported requests
+- return page citations and confidence diagnostics
+- remain useful when the optional LLM provider is unavailable
+- expose benchmark and readiness states
+- survive a safe Docker Compose stop-and-start cycle without losing persisted data
+
+The intended portfolio use cases include HR and People Operations review, policy ownership, internal knowledge management, compliance review, SOP support, and retrieval-quality engineering. No real-company adoption is claimed.
+
+## Why this is more than a PDF chatbot
+
+| Concern | PolicyGPT design |
+| --- | --- |
+| Document identity | PostgreSQL lifecycle metadata and SHA-256 duplicate prevention |
+| Source ownership | Atomic source-file storage under generated keys |
+| Retrieval | Metadata-aware chunks and persistent ChromaDB indexing |
+| Provenance | Document, page, section, chunk, excerpt, and retrieval trace |
+| Answerability | Evidence diagnostics before generation |
+| Confidence | Calibrated support signal rather than similarity presented as probability |
+| Unsupported questions | Generation is rejected when evidence cannot support the request |
+| Provider failure | Citation-only evidence remains available |
+| Quality | Versioned 16-case benchmark with repeatable JSON and CSV artifacts |
+| Operations | Request IDs, structured logs, health contracts, migrations, and release verification |
+| Product experience | Documents, Ask, Evaluation, and System workspaces |
+
+## Core workflow
+
+1. A user uploads a bounded PDF through the Next.js Documents workspace.
+2. FastAPI validates the file and calculates a SHA-256 content hash.
+3. PostgreSQL establishes document identity and prevents duplicate ingestion.
+4. The source PDF is stored atomically under a generated storage key.
+5. PyMuPDF extracts page-aware text.
+6. Cleaning and chunking preserve document, page, section, and chunk metadata.
+7. SentenceTransformer embeddings are generated locally.
+8. Chunks and embeddings are persisted in ChromaDB.
+9. The Next.js server-side BFF sends policy questions to FastAPI without exposing internal service configuration.
+10. Retrieval produces candidate evidence.
+11. The evidence layer evaluates retrieval strength, margin, lexical coverage, numeric consistency, direct support, and scope risk.
+12. The evidence gate chooses generated answer, citation-only fallback, or unsupported state.
+13. The response returns page-level evidence and inspectable confidence diagnostics.
+
+## System architecture
+
+<ArchitectureBlock steps={[
+  { title: "Next.js product", description: "Documents, Ask, Evaluation, and System workspaces" },
+  { title: "Server-side BFF", description: "Hides upstream configuration and normalizes live API failures" },
+  { title: "FastAPI evidence API", description: "Typed ingestion, retrieval, answer, evaluation, and readiness contracts" },
+  { title: "PostgreSQL metadata", description: "Document identity, lifecycle, duplicate protection, and safe failure state" },
+  { title: "Source PDF storage", description: "Atomic original-file persistence under generated storage keys" },
+  { title: "PyMuPDF and chunking", description: "Page-aware extraction, cleaning, and metadata-rich chunks" },
+  { title: "SentenceTransformers and ChromaDB", description: "Provider-independent embeddings and persistent evidence retrieval" },
+  { title: "Evidence gate", description: "Answerability, numeric consistency, direct support, and scope-risk checks" },
+  { title: "Generation or safe fallback", description: "Groq/OpenAI-compatible answer, citation-only evidence, or rejection" },
+  { title: "Evaluation and operations", description: "Versioned benchmark, request IDs, logs, readiness, and release checks" }
+]} />
+
+The architecture separates four ownership responsibilities:
+
+1. PostgreSQL owns document identity and lifecycle metadata.
+2. Source storage owns original PDF files.
+3. ChromaDB owns retrievable chunks and embeddings.
+4. Evaluation storage owns completed benchmark artifacts.
+
+This makes failure handling, backup planning, and future migration boundaries clearer.
+
+<StatusBadges
+  built={[
+    "Next.js enterprise console",
+    "FastAPI evidence API",
+    "PostgreSQL document lifecycle",
+    "SHA-256 duplicate prevention",
+    "Atomic source storage",
+    "Persistent ChromaDB retrieval",
+    "Calibrated answerability",
+    "Page-level citations",
+    "Citation-only provider fallback",
+    "16-case evaluation framework",
+    "Request IDs and structured logs",
+    "Migration-gated Docker Compose",
+    "Release verification"
+  ]}
+  planned={[
+    "Authentication and RBAC",
+    "Tenant isolation",
+    "Object storage and malware scanning",
+    "Asynchronous ingestion workers",
+    "Managed cloud infrastructure",
+    "Hosted monitoring and alerting",
+    "Document deletion and reindexing",
+    "Multi-document comparison"
   ]}
 />
 
-## Solution
+## Product walkthrough
 
-PolicyGPT allows users to upload policy PDFs and ask natural-language questions through a Streamlit UI backed by FastAPI. The backend extracts PDF text, cleans it, chunks it with page-level metadata, creates embeddings, and stores them in ChromaDB. For each question, it retrieves evidence, scores retrieval confidence, and only allows the LLM to generate an answer if the evidence clears a threshold — otherwise it returns a documented fallback response, not a guess.
-
-<ArchitectureBlock steps={[
-  "User uploads PDF",
-  "PyMuPDF",
-  "Cleaning",
-  "Chunking",
-  "SentenceTransformer",
-  "ChromaDB",
-  "Evidence Gate",
-  "LLM Provider",
-  "Citation Cards",
-  "Response"
-]} />
-
-<StatusBadges
-  built={["PDF ingestion", "Chunk metadata", "Embeddings", "Vector search", "Evidence gate", "Citations", "Fallback guardrails"]}
-  planned={["Cloud deployment", "Persistent vector store", "RAG evaluation dataset", "Logging dashboard"]}
+<ScreenshotGallery
+  title="v0.3.0 screenshot plan"
+  note="The screenshot boxes remain intentionally. The old Streamlit captures should not represent the current Next.js release. These slots will be replaced with verified screenshots from the v0.3.0 product."
+  items={[
+    { label: "Documents workspace", detail: "PDF upload, registry search, lifecycle states, pagination, duplicate handling, and document detail." },
+    { label: "Evidence-backed Ask", detail: "Answerability state, generated or citation-only result, confidence reasons, and page citations." },
+    { label: "Unsupported-question fallback", detail: "Controlled rejection when the indexed documents do not provide enough direct support." },
+    { label: "Evaluation overview", detail: "Latest validated artifact, benchmark counts, answer-readiness, page retrieval, and provider state." },
+    { label: "Evaluation case diagnostics", detail: "Expected versus actual support, confidence breakdown, citations, pages, and safe error details." },
+    { label: "System readiness", detail: "Frontend, backend liveness, backend readiness, PostgreSQL, Chroma, and optional provider status." }
+  ]}
 />
 
-## Key Features
+## Evidence gate and confidence design
 
-- PDF upload and ingestion with PyMuPDF text extraction and cleaning.
-- Metadata-rich document chunking with page-level citation support.
-- SentenceTransformers embeddings (all-MiniLM-L6-v2) stored in ChromaDB.
-- Semantic retrieval pipeline with per-chunk retrieval score calculation.
-- Evidence-gate scoring: retrieval confidence evaluated before generation is allowed.
-- Citation-backed answer generation — every supported answer is tied to specific pages.
-- Confidence score surfaced alongside every answer, not hidden.
-- Unsupported-question fallback: when evidence doesn't clear the threshold, the system declines rather than guessing.
-- Provider-agnostic LLM layer — built against Groq Llama-3.3-70B, switchable to OpenAI-compatible endpoint.
-- Evidence Explorer page for retrieval transparency — users can inspect what was retrieved and at what score.
-- Working FastAPI backend with Swagger API documentation and health endpoint.
-- Streamlit enterprise dashboard as the user-facing interface.
-- Citation cards showing document name, page number, section title, excerpt, and retrieval score.
+PolicyGPT does not present vector similarity as the probability that an answer is correct.
 
-<MetricCard label="Verified Unsupported-Question Test" value="0 citations · 0.0000 confidence" note="Asked: 'What is the CEO home address?' — a question no HR policy PDF contains. Result: insufficient evidence, confidence 0.0000, 0 citations, fallback triggered. The strongest test is not when the system answers correctly — it is when it refuses to answer because evidence is insufficient." />
+The confidence value is an **answerability signal** informed by:
 
-## Evidence-First Design
+- top and average retrieval scores
+- retrieval margin
+- query-to-evidence lexical coverage
+- top-chunk lexical coverage
+- numeric consistency
+- direct support
+- scope or external-authority risk
 
-The key architectural decision is that retrieval quality *gates* generation — the LLM is not given free rein to respond to every query. Most basic RAG demos retrieve some passages and let the model do its best with whatever comes back, even when nothing relevant was actually found. PolicyGPT scores retrieval first: if evidence doesn't clear the confidence bar, the LLM call is either skipped or its output is overridden by the fallback path, and the user is told explicitly why.
+The evidence gate operates before generation. If the documents do not directly support the request, the system does not ask an LLM to improvise.
 
-For HR and compliance use cases, "I don't have enough information to answer that" is a better outcome than a fluent, wrong answer that someone might act on.
+Three truthful outcomes are possible:
 
-<MetricCard label="System Type" value="Phase 1 MVP / local, deployment planned" note="Self-built, running locally — not yet deployed. Built to demonstrate the retrieval-gating, citation, evidence explorer, Streamlit UI, and FastAPI patterns a deployable document-intelligence system needs." />
+- **supported evidence and provider available:** generate an answer with page-level citations
+- **supported evidence and provider unavailable:** return citation-only evidence and identify the degraded provider state
+- **unsupported evidence:** block generation and return a controlled unsupported response
 
-## Production Concerns
+This prevents a provider outage from being misrepresented as missing policy evidence and prevents weak retrieval from being presented as a supported answer.
 
-Going from Phase 1 MVP to something deployable requires: authentication and document-level access control (HR documents are sensitive by nature), persistent vector storage replacing the local ChromaDB instance, a labeled evaluation dataset to measure retrieval precision/recall and citation accuracy quantitatively rather than by spot check, request logging and monitoring for both latency and answer quality, and containerized deployment via Docker Compose.
+## Evaluation system
+
+<MetricCard
+  label="Controlled Local Benchmark"
+  value="16 cases · 100% answer-readiness accuracy"
+  note="Provider-disabled Docker Compose run: 11 expected-supported and 5 expected-unsupported cases, 100% fallback accuracy, 100% expected-page retrieval hit rate, and 0 request errors. Supported cases returned citation-only evidence; generated-answer quality was not evaluated in this run."
+/>
+
+The versioned benchmark contains:
+
+- 16 total questions
+- 11 expected-supported questions
+- 5 expected-unsupported questions
+- 6 easy, 6 moderate, and 4 hard cases
+
+Cases cover remote work, vacation, leave, expenses, confidentiality, information security, performance, workplace conduct, and AI privacy. Unsupported cases test private information, executive facts outside the documents, legal advice, security details, and benefits not described by policy.
+
+Per-case diagnostics include support expectation, evidence status, confidence breakdown, answerability, retrieval scores, margin, lexical coverage, numeric consistency, scope risk, direct support, expected and retrieved pages, keyword coverage, citation count, duplicate-citation checks, provider state, latency, and safe error information.
+
+A verified provider-disabled release run recorded:
+
+| Metric | Result |
+| --- | ---: |
+| Total cases | 16 |
+| Answer-readiness accuracy | 100% |
+| Fallback accuracy | 100% |
+| Expected-page retrieval hit rate | 100% |
+| Request errors | 0 |
+| Average confidence | 0.4698 |
+| Average supported confidence | 0.6833 |
+| Average citation count | 1.69 |
+| Local average latency | 24.19 ms |
+
+These values describe one controlled local benchmark. They are not production accuracy, customer performance, or service-level guarantees. Because generation was disabled, generated-answer keyword quality was not evaluated.
+
+## Release and operational hardening
+
+<MetricCard
+  label="Verified v0.3.0 Release Baseline"
+  value="229 backend tests · 112 frontend tests"
+  note="Also validated: dataset schema, frontend lint and production build, Compose configuration, four-service health, non-root images, duplicate-upload behaviour, provider fallback, persistence across safe restart, smoke testing, and release verification."
+/>
+
+The release-like local profile uses:
+
+```text
+PostgreSQL becomes healthy
+→ Alembic migrations complete
+→ FastAPI becomes ready
+→ Next.js becomes ready
+```
+
+Named volumes persist PostgreSQL data, Chroma data, source PDFs, structured logs, and evaluation artifacts. Backend and frontend images run as non-root users.
+
+Liveness confirms that the FastAPI process is running. Readiness checks the PostgreSQL and Chroma dependencies required for evidence workflows. The optional generation provider does not gate readiness because retrieval and citation review remain useful without it.
+
+Every request receives a validated or generated request identifier that is returned in headers and included in normalized errors and structured completion logs. The application avoids logging document bytes, request bodies, questions, answers, credentials, cookies, chunks, or embeddings.
+
+## Security boundaries
+
+The release profile includes constrained CORS, fail-fast configuration, conservative security headers, normalized errors, disabled Next.js powered-by headers, and server-only upstream configuration.
+
+Operational responses do not expose connection strings, credentials, provider keys, service hosts, storage paths, stack traces, raw chunks, or embeddings.
+
+These controls improve the engineering baseline, but they are not a complete security model. Authentication, authorization, tenant isolation, malware scanning, managed secrets, TLS termination, formal retention policies, security certification, and production governance remain outside the current implementation.
+
+## Engineering challenges and decisions
+
+### Document identity before expensive processing
+
+Duplicate detection needs to happen before extraction and embedding. PolicyGPT hashes the complete file and uses PostgreSQL uniqueness to prevent duplicate rows and vectors even when filenames change.
+
+### Provenance without destroying page boundaries
+
+PDF cleaning can remove useful citation structure. Processing remains page-aware so document, page, section, and chunk provenance survive cleaning and indexing.
+
+### Answerability beyond vector similarity
+
+Topical similarity does not guarantee direct support. The evidence layer adds lexical, numeric, direct-support, and scope-risk checks before generation.
+
+### Provider resilience
+
+An LLM outage should not hide valid policy evidence. Local embeddings and Chroma retrieval remain available, and supported evidence can be returned in citation-only form.
+
+### Multiple persistence owners
+
+PostgreSQL, source storage, Chroma, and evaluation artifacts have different responsibilities. Explicit ownership makes operational boundaries visible, though future backup and recovery must coordinate all stores.
+
+### Synchronous ingestion
+
+Synchronous ingestion keeps lifecycle state inspectable and easier to demonstrate, but it is not suitable for high-volume or long-running uploads.
+
+## Current limitations
+
+PolicyGPT Enterprise is not a finished production platform.
+
+Current limitations include:
+
+- no cloud deployment or real-company production usage
+- no authentication, RBAC, or tenant isolation
+- no malware scanning or object storage
+- no managed secrets or TLS termination
+- no formal retention or compliance certification
+- synchronous ingestion
+- single-instance embedded Chroma
+- local source-file storage
+- no document deletion or reindexing
+- no background worker queue
+- no managed backups
+- no distributed tracing platform
+- no hosted monitoring or alerting
+- no multi-document comparison
+- a controlled 16-case benchmark rather than broad domain validation
 
 ## Roadmap
 
-- Cloud deployment (Azure or similar) with persistent vector store.
-- Retrieval and answer logging for every query.
-- Custom RAG evaluation dataset and evaluation runner.
-- Improved confidence scoring with calibrated thresholds.
-- RAG evaluation dashboard.
-- PostgreSQL metadata layer for production-grade persistence.
-- Docker Compose for reproducible local development.
-- Multi-document comparison across more than one policy PDF.
-- Compliance summary report generation.
-- Second LLM provider behind the same evidence gate to confirm provider independence.
+The next production-oriented sequence is:
+
+1. identity, authentication, authorization, and tenant boundaries
+2. object storage, malware scanning, retention, deletion, and reindexing
+3. asynchronous jobs, retries, dead-letter handling, progress, and cancellation
+4. managed PostgreSQL, coordinated backups, distributed vectors, TLS, and secrets
+5. OpenTelemetry, metrics dashboards, alerting, and provider cost monitoring
+6. hybrid retrieval, reranking, document-scoped Ask, multi-document comparison, and a larger human-reviewed benchmark
+7. controlled report and comparison workflows
+
+Agentic orchestration should be considered only after identity, evaluation, observability, and recovery controls are established.
+
+## My role
+
+I designed and implemented PolicyGPT Enterprise end to end, including product positioning, FastAPI contracts, PDF extraction and chunking, local embeddings and Chroma retrieval, evidence gating, unsupported and provider-fallback behaviour, PostgreSQL document lifecycle, Next.js product and BFF, evaluation dataset and runner, liveness and readiness, request IDs, structured logs, Docker images, Compose orchestration, smoke testing, release verification, and technical documentation.
+
+## What this project demonstrates
+
+PolicyGPT demonstrates end-to-end RAG engineering beyond prompt assembly: durable data modeling, provenance, calibrated answerability, controlled failure, provider resilience, custom evaluation, API contracts, Next.js product development, operations, testing, release verification, and explicit responsible-AI and security boundaries.
+
+The strongest lesson is that trustworthy RAG is not primarily a prompting problem. It is a systems problem involving identity, evidence, evaluation, failure handling, and operations.
