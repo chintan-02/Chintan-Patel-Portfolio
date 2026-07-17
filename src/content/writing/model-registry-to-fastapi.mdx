@@ -1,0 +1,254 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 8 min read"
+  title="From Notebook to FastAPI: Building a Reproducible Model Registry"
+  description="Why a trained model file is not a deployment contract, and how I separated experiments, source-of-truth training, preprocessing artifacts, thresholds, metrics, and backend readiness in TriageAI."
+/>
+
+<TechStackBlock items={["LightGBM", "FastAPI", "Joblib", "JSON Contracts", "Model Registry", "pytest", "Readiness Checks"]} />
+
+## A model file is not enough
+
+A notebook can produce a strong test result and still be impossible to reproduce safely in an application.
+
+The runtime also needs to know:
+
+- exact feature names
+- exact feature order
+- categorical encoding
+- numeric imputation
+- label mapping
+- threshold policy
+- calibration mode
+- model version
+- expected class order
+- verified metrics
+- artifact compatibility
+
+If any of these differ between training and inference, the application may return a plausible but incorrect result.
+
+That is why TriageAI treats the registry—not the notebook output alone—as the backend source of truth.
+
+## Three different kinds of truth
+
+I separated the project into three responsibilities:
+
+```text
+Experiment archive
+→ records what I tried
+
+Final source-of-truth notebook
+→ records what I selected and why
+
+Runtime model registry
+→ defines exactly what FastAPI loads
+```
+
+This prevents an older model, temporary validation file, or notebook-local object from being mistaken for the deployed candidate.
+
+## The registry contract
+
+The final registry contains:
+
+```text
+model_registry/esi_345_lightgbm_v2/
+├── artifact_manifest.json
+├── esi_345_deployment_config.json
+├── esi_345_label_mapping.json
+├── esi_345_lightgbm_v2_feature_list.json
+├── esi_345_lightgbm_v2_model.txt
+├── esi_345_lightgbm_v2_preprocessing_artifacts.joblib
+├── esi_345_lightgbm_v2_threshold_config.json
+└── reports/
+    └── lightgbm_v2_test_metrics.json
+```
+
+Each artifact has one owner.
+
+### Model
+
+The LightGBM text file stores the trained tree ensemble.
+
+### Feature list
+
+The feature-list JSON preserves all **273 runtime features in order**.
+
+### Preprocessing artifacts
+
+The Joblib bundle preserves imputation, encoding, and feature-policy objects required to reproduce training-time transformation.
+
+### Label mapping
+
+The label contract defines the class order:
+
+```text
+ESI_3
+ESI_4
+ESI_5
+```
+
+### Threshold configuration
+
+This file records the decision policy and the choice to retain raw LightGBM probabilities.
+
+### Deployment configuration
+
+The deployment metadata identifies the runtime model version and scope.
+
+### Metrics report
+
+The test-metrics artifact keeps the published evaluation evidence close to the deployed registry.
+
+### Manifest
+
+The manifest allows validation that expected files exist and belong to the same artifact set.
+
+## Runtime loading flow
+
+<ArchitectureBlock steps={[
+  { title: "Application startup", description: "FastAPI initializes the model service" },
+  { title: "Manifest validation", description: "Required registry files are checked" },
+  { title: "Load preprocessing", description: "Encoders, medians, and feature policy are restored" },
+  { title: "Load feature contract", description: "273 ordered features are registered" },
+  { title: "Load model and labels", description: "LightGBM artifact and ESI class order are restored" },
+  { title: "Load threshold policy", description: "Decision configuration and probability mode are applied" },
+  { title: "Readiness response", description: "Backend reports model source, version, classes, and feature count" },
+  { title: "Prediction", description: "Request data is transformed under the same runtime contract" }
+]} />
+
+## Why feature order matters
+
+Tree models expect the same meaning at every feature position.
+
+Suppose training used:
+
+```text
+[age, heart_rate, oxygen_low, arrival_walk_in]
+```
+
+but runtime produced:
+
+```text
+[heart_rate, age, arrival_walk_in, oxygen_low]
+```
+
+The model would not know that the values had moved. It would still produce a prediction.
+
+That is more dangerous than a loud error because the output can look valid.
+
+The registry therefore validates and reindexes runtime inputs against the saved feature list.
+
+## Readiness is part of model safety
+
+A process can be alive even when the model is not usable.
+
+TriageAI separates:
+
+- process health
+- database readiness
+- model-registry readiness
+
+The readiness contract can expose information such as:
+
+- model source
+- model version
+- feature count
+- class order
+- threshold configuration status
+- placeholder or final-registry state
+
+This helps the frontend and operators distinguish a working API process from a usable prediction system.
+
+<MetricCard
+  label="Runtime Feature Contract"
+  value="273 ordered features"
+  note="The backend loads the final LightGBM registry, preprocessing artifacts, class mapping, threshold policy, and verified metadata rather than reconstructing them independently."
+/>
+
+## Protecting against silent fallbacks
+
+A portfolio application should not quietly switch from a verified model to a placeholder and present the result as equivalent.
+
+The backend therefore identifies whether validated final-registry artifacts are available.
+
+A model-status contract can surface:
+
+- final registry loaded
+- fallback or placeholder state
+- version mismatch
+- missing artifact
+- readiness failure
+
+That makes the deployment state visible rather than hiding it behind a successful HTTP response.
+
+## Testing the registry
+
+Registry tests should verify:
+
+- all required files exist
+- feature count is correct
+- class order is correct
+- model version is expected
+- preprocessing loads successfully
+- threshold configuration is valid
+- metrics file is readable
+- prediction input is reindexed correctly
+- malformed or missing artifacts fail safely
+- readiness reports the real state
+
+The project also keeps archived validation artifacts separate from runtime files so a test fixture cannot accidentally become the production source.
+
+## Why notebook cleanup matters
+
+Cleaning the notebook structure was not cosmetic.
+
+Without a clear folder policy, names such as “final,” “final_v2,” and “final_checked” can become ambiguous.
+
+The final layout communicates:
+
+- which notebook is authoritative
+- which notebooks are historical
+- which artifacts are runtime dependencies
+- which files are validation-only
+- what the backend actually loads
+
+That improves onboarding, code review, debugging, and interview explanation.
+
+## Model registry versus MLflow
+
+A lightweight file-based registry is appropriate for this project because:
+
+- there is one selected local runtime model
+- artifacts need to be versioned with the repository
+- FastAPI needs deterministic startup
+- the deployment is local/demo rather than multi-team production
+
+A larger production environment may add MLflow or another model-management platform for experiment tracking, approvals, lineage, promotion, and rollback.
+
+The important principle remains the same:
+
+> The deployed model must be identifiable together with every transformation and decision rule required to reproduce it.
+
+## The engineering lesson
+
+Moving from a notebook to an application is not a file-copy step.
+
+It requires a contract across:
+
+```text
+data schema
++ preprocessing
++ feature order
++ model
++ labels
++ thresholds
++ metrics
++ version
++ readiness
+```
+
+The registry made that contract explicit.
+
+That is what turns model training into reproducible ML engineering.

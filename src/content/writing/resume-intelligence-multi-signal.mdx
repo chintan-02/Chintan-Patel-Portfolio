@@ -1,0 +1,259 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 8 min read"
+  title="Why ResumeIQ Uses Multiple Signals Instead of One ATS Score"
+  description="How I designed ResumeIQ to separate parsing, role classification, keyword coverage, semantic matching, skill gaps, writing quality, privacy, and human review rather than hiding everything behind one unexplained percentage."
+/>
+
+<TechStackBlock items={["NLP", "TF-IDF", "Scikit-learn", "Semantic Similarity", "Skill Extraction", "Streamlit", "FastAPI", "Responsible AI"]} />
+
+## One score creates false certainty
+
+Many resume tools display a single number such as:
+
+```text
+ATS score: 82%
+```
+
+That looks simple, but it hides several different questions:
+
+- Was the document parsed correctly?
+- Is the predicted role plausible?
+- Which required skills were detected?
+- Which skills are missing?
+- Are important job-description phrases absent?
+- Is semantic meaning aligned even when exact words differ?
+- Is the writing specific and measurable?
+- Are structural sections complete?
+- Should a recruiter trust the score as a hiring decision?
+
+ResumeIQ was designed around a different principle:
+
+> Separate the signals so a person can inspect what each one means.
+
+## The multi-signal workflow
+
+<ArchitectureBlock steps={[
+  { title: "Document parsing", description: "PDF, DOCX, or TXT is extracted and normalized" },
+  { title: "Baseline classification", description: "TF-IDF and a local classifier estimate role category" },
+  { title: "Skill intelligence", description: "Detected skills are normalized into a consistent taxonomy" },
+  { title: "Keyword matching", description: "Exact job-description coverage is measured" },
+  { title: "Semantic matching", description: "Meaning-level alignment supplements exact overlap" },
+  { title: "Structure and writing", description: "Sections, achievements, wording, and completeness are reviewed" },
+  { title: "Privacy-aware display", description: "Common identifiers can be masked in demonstration views" },
+  { title: "Human review", description: "Candidate or recruiter interprets the evidence" }
+]} />
+
+Each layer answers a different question.
+
+Combining them into one opaque score would make the product easier to market but harder to trust.
+
+## Parsing is a model-quality dependency
+
+ResumeIQ supports:
+
+- PDF
+- DOCX
+- TXT
+
+Extraction quality affects every downstream result.
+
+A missing section may mean:
+
+- the resume truly omitted it
+- the parser failed
+- a complex layout changed reading order
+- a scanned document contains no extractable text
+
+The system therefore treats parsing and normalization as an engineering stage rather than assuming the input is perfect.
+
+## Baseline classification is one signal
+
+The local classification pipeline demonstrates:
+
+- text preprocessing
+- TF-IDF feature construction
+- supervised classification
+- local inference
+- model registration
+- confidence presentation
+
+It estimates a likely role or category.
+
+It does not determine whether a candidate is suitable for a job.
+
+Headline accuracy is intentionally not promoted until leakage, split quality, duplication, class balance, calibration, and independent validation are fully reviewed.
+
+That is a stronger portfolio decision than advertising an unusually high number without investigating why.
+
+## Keyword and semantic matching solve different problems
+
+Exact keyword matching is useful because many job descriptions explicitly name technologies, certifications, or domain terms.
+
+But exact matching can miss equivalent language.
+
+For example:
+
+```text
+job description: PostgreSQL
+resume: Postgres
+```
+
+or:
+
+```text
+job description: natural language processing
+resume: NLP
+```
+
+Skill normalization and semantic similarity help connect related wording.
+
+The product therefore reports both:
+
+- direct keyword coverage
+- semantic alignment
+
+Neither is treated as an official commercial ATS score.
+
+## Skill intelligence makes gaps actionable
+
+The skill pipeline normalizes related terms into a consistent taxonomy.
+
+This supports:
+
+- detected-skill summaries
+- matched skills
+- missing skills
+- role-alignment review
+- batch candidate comparison
+
+A candidate can see what appears to be missing instead of receiving only a lower score.
+
+A recruiter can inspect the evidence rather than accepting an automatic ranking.
+
+## Writing quality is not “AI detection”
+
+ResumeIQ reviews patterns such as:
+
+- generic statements
+- weak action verbs
+- repetitive wording
+- missing measurable outcomes
+- vague responsibility descriptions
+- incomplete section structure
+- overly templated sentences
+
+These are improvement signals.
+
+They are not proof that text was written by AI, and suggested rewrites are not automatically applied.
+
+The user remains responsible for accuracy and authenticity.
+
+## Batch review still requires human responsibility
+
+The project includes foundations for:
+
+- comparing multiple resumes against one job description
+- sortable fit signals
+- reviewer notes
+- shortlist status
+- structured review records
+
+These capabilities can support workflow organization.
+
+They should not become fully automated employment decisions.
+
+<MetricCard
+  label="Product Design"
+  value="Multiple evidence signals · human decision"
+  note="ResumeIQ separates classification, ATS-style structure, keyword overlap, semantic similarity, skill gaps, writing quality, and reviewer workflow. It does not present one score as hiring truth."
+/>
+
+## Privacy-safe demonstrations
+
+Resume documents contain personal information.
+
+Where supported, privacy-safe display mode masks common identifiers such as:
+
+- names
+- email addresses
+- phone numbers
+- location details
+
+This reduces accidental exposure during portfolio demonstrations.
+
+It is not presented as complete enterprise de-identification, encrypted document governance, or regulatory compliance.
+
+## Responsible-AI boundaries
+
+ResumeIQ does not:
+
+- make hiring decisions
+- recommend employment actions automatically
+- score protected characteristics
+- claim a commercial ATS integration
+- claim production fairness
+- prove authorship through “AI detection”
+- treat the baseline classifier as authoritative
+- send resume content to an external provider without explicit future safeguards
+
+The current responsible-AI views use synthetic or demonstration data where fairness concepts are shown.
+
+## Engineering foundations around the Streamlit product
+
+The working product is supported by foundations including:
+
+- FastAPI contracts
+- health, readiness, and version endpoints
+- SQLite and SQLAlchemy persistence
+- a local model registry
+- structured logging
+- Docker Compose
+- pytest
+- GitHub Actions
+- an optional local recruiter-copilot foundation
+- safe prompt preview without an external GenAI call
+- fallback behaviour when the optional backend is unavailable
+
+This distinction matters:
+
+```text
+working user feature
+≠ production-validated hiring platform
+```
+
+## What I would validate next
+
+The next rigorous evaluation should include:
+
+- document-parsing test sets
+- duplicate-aware and leakage-safe data splits
+- per-class classification metrics
+- confidence calibration
+- keyword and semantic matching benchmarks
+- human review of skill normalization
+- robustness across resume formats
+- subgroup and fairness analysis using appropriately governed data
+- reviewer agreement studies
+- privacy and retention controls
+
+## The engineering lesson
+
+Resume intelligence is not one model and not one score.
+
+It is a chain of imperfect signals:
+
+```text
+parser quality
++ classification
++ keyword evidence
++ semantic evidence
++ skill normalization
++ writing review
++ privacy handling
++ human judgment
+```
+
+Making those parts visible creates a more honest and useful product than compressing them into a number that users cannot explain.

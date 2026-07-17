@@ -267,18 +267,292 @@ html.lenis, html.lenis body { height: auto; }
 @keyframes twBlink { 0%,100%{opacity:1} 50%{opacity:0} }
 .tw-cursor { animation: twBlink .9s step-end infinite; }
 
-/* page prose (dark) */
-.prose-ai h1,
-.prose-ai h2,
-.prose-ai h3 { font-family: var(--font-display); color: var(--text); font-weight: 600; }
-.prose-ai h1 { font-size: clamp(2.4rem, 5vw, 4.2rem); line-height: 1.02; margin-bottom: 1rem; }
-.prose-ai h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); line-height: 1.12; margin-top: 3.5rem; margin-bottom: 1rem; }
-.prose-ai h3 { font-size: 1.25rem; margin-top: 2rem; margin-bottom: .65rem; }
-.prose-ai p { color: var(--muted); font-size: 1.05rem; line-height: 1.85; margin: 1rem 0; }
-.prose-ai ul { margin: 1.2rem 0; padding-left: 1.2rem; color: var(--muted); }
-.prose-ai li { margin: .55rem 0; line-height: 1.7; }
-.prose-ai strong { color: var(--text); }
-.prose-ai code { border-radius: .55rem; background: var(--accent-soft); padding: .12rem .38rem; color: var(--color-accent-strong); font-size: .92em; }
+/* ============================================================
+   EDITORIAL MDX SYSTEM
+   One stable rendering contract for case studies and articles.
+   Tables, code, lists, quotations, long paths and headings all
+   inherit these rules automatically.
+   ============================================================ */
+.prose-ai {
+  min-width: 0;
+  color: var(--color-ink-muted);
+}
+
+.prose-ai > * {
+  min-width: 0;
+}
+
+.prose-ai > h1,
+.prose-ai > h2,
+.prose-ai > h3,
+.prose-ai > h4 {
+  max-width: 78ch;
+  margin-left: auto;
+  margin-right: auto;
+  scroll-margin-top: 7rem;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.prose-ai > h1 {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  font-size: clamp(2.35rem, 5vw, 4.2rem);
+  line-height: 1.02;
+}
+
+.prose-ai > h2 {
+  margin-top: clamp(3.5rem, 7vw, 5rem);
+  margin-bottom: 1rem;
+  font-size: clamp(1.8rem, 3vw, 2.45rem);
+  line-height: 1.12;
+}
+
+.prose-ai > h2::before {
+  display: block;
+  width: 2.75rem;
+  height: 1px;
+  margin-bottom: 1rem;
+  background: linear-gradient(90deg, var(--color-accent), transparent);
+  content: "";
+}
+
+.prose-ai > h3 {
+  margin-top: 2.35rem;
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.25;
+}
+
+.prose-ai > h4 {
+  margin-top: 1.8rem;
+  margin-bottom: 0.6rem;
+  font-size: 1.08rem;
+  line-height: 1.35;
+}
+
+.prose-ai > p,
+.prose-ai > ul,
+.prose-ai > ol,
+.prose-ai > blockquote,
+.prose-ai > pre,
+.prose-ai > hr {
+  max-width: 78ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prose-ai p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  color: var(--color-ink-muted);
+  font-size: 1.025rem;
+  line-height: 1.85;
+}
+
+.prose-ai strong {
+  color: var(--color-ink);
+  font-weight: 700;
+}
+
+.prose-ai em {
+  color: rgb(var(--ink-rgb)/0.82);
+}
+
+.prose-ai ul,
+.prose-ai ol {
+  margin-top: 1.15rem;
+  margin-bottom: 1.35rem;
+  padding-left: 1.45rem;
+  color: var(--color-ink-muted);
+}
+
+.prose-ai ul {
+  list-style: disc;
+}
+
+.prose-ai ol {
+  list-style: decimal;
+}
+
+.prose-ai li {
+  margin: 0.55rem 0;
+  padding-left: 0.25rem;
+  line-height: 1.75;
+}
+
+.prose-ai li::marker {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.prose-ai li > ul,
+.prose-ai li > ol {
+  margin-top: 0.45rem;
+  margin-bottom: 0.45rem;
+}
+
+.prose-ai blockquote {
+  margin-top: 1.6rem;
+  margin-bottom: 1.6rem;
+  border: 1px solid rgb(var(--accent-rgb)/0.2);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-card);
+  background: rgb(var(--accent-rgb)/0.06);
+  padding: 1rem 1.2rem;
+}
+
+.prose-ai blockquote p {
+  margin: 0;
+  color: rgb(var(--ink-rgb)/0.82);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.prose-ai :not(pre) > code {
+  border: 1px solid rgb(var(--accent-rgb)/0.13);
+  border-radius: 0.45rem;
+  background: rgb(var(--accent-rgb)/0.1);
+  padding: 0.12rem 0.36rem;
+  color: var(--color-accent-strong);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.prose-ai pre {
+  margin-top: 1.5rem;
+  margin-bottom: 1.75rem;
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background:
+    linear-gradient(180deg, rgb(var(--surface2-rgb)/0.9), rgb(var(--surface-rgb)/0.94));
+  padding: 1.05rem 1.15rem;
+  box-shadow: inset 0 1px 0 rgb(var(--ink-rgb)/0.035);
+  scrollbar-color: rgb(var(--accent-rgb)/0.38) transparent;
+}
+
+.prose-ai pre code {
+  display: block;
+  min-width: max-content;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: rgb(var(--ink-rgb)/0.82);
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.75;
+  white-space: pre;
+}
+
+.mdx-table-shell {
+  width: 100%;
+  margin: 1.75rem auto;
+  overflow-x: auto;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+  background: rgb(var(--surface-rgb)/0.8);
+  box-shadow: var(--shadow-card);
+  scrollbar-color: rgb(var(--accent-rgb)/0.38) transparent;
+}
+
+.mdx-table-shell:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.prose-ai table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  color: var(--color-ink-muted);
+  font-size: 0.94rem;
+  line-height: 1.6;
+}
+
+.prose-ai thead {
+  background: rgb(var(--accent-rgb)/0.08);
+}
+
+.prose-ai th {
+  padding: 0.9rem 1rem;
+  color: var(--color-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.prose-ai td {
+  border-top: 1px solid var(--color-line);
+  padding: 0.9rem 1rem;
+  vertical-align: top;
+}
+
+.prose-ai tbody tr {
+  transition: background-color var(--dur-fast) ease;
+}
+
+.prose-ai tbody tr:hover {
+  background: rgb(var(--ink-rgb)/0.025);
+}
+
+.prose-ai hr {
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  border: 0;
+  border-top: 1px solid var(--color-line);
+}
+
+.prose-ai figure {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.prose-ai figcaption {
+  margin-top: 0.75rem;
+  color: var(--color-ink-faint);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .prose-ai p {
+    font-size: 1rem;
+    line-height: 1.78;
+  }
+
+  .prose-ai > h2 {
+    margin-top: 3.5rem;
+  }
+
+  .prose-ai pre {
+    padding: 0.9rem 1rem;
+  }
+
+  .prose-ai pre code {
+    font-size: 0.82rem;
+  }
+
+  .mdx-table-shell {
+    border-radius: 0.875rem;
+  }
+
+  .prose-ai th,
+  .prose-ai td {
+    padding: 0.8rem 0.85rem;
+  }
+}
 
 /* custom interactive cursor (Observatory) — amber dot + lagging ring that
    blooms over clickable elements. JS gates this to fine-pointer + motion-ok

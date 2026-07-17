@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, FileSearch, Image, Layers3 } from 'lucide-react';
+import { ArrowDown, FileSearch, Image, Layers3 } from 'lucide-react';
 
 const previewConfig = {
   triageai: {
@@ -316,34 +316,55 @@ export function VisualFlow({ title = 'Architecture Flow', steps = [] }) {
   if (!steps.length) return null;
 
   return (
-    <div className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.85)] p-5 shadow-card backdrop-blur-sm">
-      <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{title}</p>
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:flex xl:flex-wrap xl:items-stretch">
+    <section className="my-10 overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.86)] p-4 shadow-card backdrop-blur-sm sm:p-6">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <span className="grid h-9 w-9 place-items-center rounded-inset border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
+            <FileSearch className="h-4 w-4" />
+          </span>
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">
+            {title}
+          </p>
+        </div>
+        <span className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.58)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+          {steps.length} stages
+        </span>
+      </div>
+
+      <ol className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => {
           const display = getFlowStep(step);
 
           return (
-            <div key={`${display.title}-${index}`} className="flex min-w-0 flex-col gap-3 xl:flex-row xl:items-center">
-              <div className="flex min-h-[92px] min-w-0 items-start gap-3 rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4 sm:h-full xl:w-[190px] xl:max-w-[210px]">
-                <FileSearch className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                <div className="min-w-0">
-                  <p className="text-sm font-bold leading-5 text-ink [overflow-wrap:anywhere]">{display.title}</p>
-                  {display.description && (
-                    <p className="mt-1.5 text-xs font-medium leading-5 text-ink-muted [overflow-wrap:anywhere]">{display.description}</p>
-                  )}
-                </div>
+            <li
+              key={`${display.title}-${index}`}
+              className="group relative min-h-[148px] overflow-hidden rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4 transition-colors hover:border-[rgb(var(--accent-rgb)/0.3)]"
+            >
+              <div
+                className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[rgb(var(--accent-rgb)/0.38)] to-transparent opacity-0 transition-opacity group-hover:opacity-100"
+                aria-hidden="true"
+              />
+              <div className="flex items-start justify-between gap-3">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[rgb(var(--accent-rgb)/0.22)] bg-[rgb(var(--accent-rgb)/0.08)] font-mono text-[11px] font-bold text-accent">
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                  Stage
+                </span>
               </div>
-              {index < steps.length - 1 && (
-                <div className="flex justify-center text-accent xl:justify-start" aria-hidden="true">
-                  <ArrowDown className="h-4 w-4 xl:hidden" />
-                  <ArrowRight className="hidden h-4 w-4 xl:block" />
-                </div>
+              <h3 className="mt-4 text-base font-bold leading-6 text-ink [overflow-wrap:anywhere]">
+                {display.title}
+              </h3>
+              {display.description && (
+                <p className="mt-2 text-sm font-medium leading-6 text-ink-muted [overflow-wrap:anywhere]">
+                  {display.description}
+                </p>
               )}
-            </div>
+            </li>
           );
         })}
-      </div>
-    </div>
+      </ol>
+    </section>
   );
 }
 

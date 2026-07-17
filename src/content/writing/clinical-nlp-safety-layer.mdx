@@ -1,0 +1,259 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published July 2026 · 9 min read"
+  title="Designing a Review-First Clinical NLP Safety Layer"
+  description="How I converted clinician free-text notes into editable intake fields, evidence snippets, safety cues, and missing-data warnings—without building a diagnostic chatbot or auto-running prediction."
+/>
+
+<TechStackBlock items={["FastAPI", "React", "TypeScript", "Rule-Based NLP", "Pydantic", "Audit Logging", "ReportLab", "pytest"]} />
+
+## The problem was not “add NLP”
+
+Clinical notes contain useful intake information, but sending free text directly into a model creates several safety and product problems:
+
+- extracted values may be wrong
+- absent measurements may be silently invented
+- a clinician may not know which phrase produced a field
+- prediction may run before anyone reviews the extraction
+- raw notes can leak into logs or reports
+- a fluent interface can be mistaken for diagnostic authority
+
+For TriageAI, the correct objective was narrower:
+
+> Convert free text into reviewable structured intake evidence before prediction.
+
+The feature is not a chatbot, does not diagnose, does not recommend treatment, and does not finalize an ESI level.
+
+## Why I chose deterministic extraction first
+
+A generative model could parse notes, but it would introduce provider dependency, non-determinism, prompt behaviour, and harder-to-test failure modes.
+
+The first production-minded layer therefore uses explainable rules and patterns for a defined clinical intake vocabulary.
+
+It extracts:
+
+- age
+- gender
+- chief complaint
+- symptoms
+- heart rate
+- systolic and diastolic blood pressure
+- respiratory rate
+- oxygen saturation
+- temperature
+- configured safety cues
+- missing critical fields
+- evidence snippets
+
+Every response includes:
+
+```text
+requires_clinician_review = true
+```
+
+The service does not claim that extracted fields are verified truth.
+
+## The review-first architecture
+
+<ArchitectureBlock steps={[
+  { title: "Free-text note", description: "Clinician note or transcript" },
+  { title: "Deterministic extraction", description: "Patterns identify demographics, symptoms, and vitals" },
+  { title: "Evidence linking", description: "Each field retains supporting source text" },
+  { title: "Safety and missingness", description: "Configured cues and absent vital fields are surfaced" },
+  { title: "Editable React review", description: "Clinician accepts or corrects extracted values" },
+  { title: "Explicit confirmation", description: "Prediction remains blocked until review is confirmed" },
+  { title: "Prediction and audit", description: "Reviewed metadata—not raw note text—is attached to the assessment" },
+  { title: "Detail, audit, and PDF", description: "Evidence remains inspectable after the decision" }
+]} />
+
+## Evidence snippets are part of the contract
+
+A field without provenance is difficult to review.
+
+Instead of returning only:
+
+```json
+{
+  "age": 62,
+  "o2": 91
+}
+```
+
+the service also returns evidence records that identify the text responsible for each extraction.
+
+That allows the UI to show:
+
+```text
+Age: 62
+Evidence: “62-year-old”
+
+Oxygen saturation: 91
+Evidence: “O2 91%”
+```
+
+The reviewer can compare the structured value with its source before using it.
+
+## Missing information is reported—not invented
+
+Clinical notes often omit measurements.
+
+The extraction layer explicitly returns missing fields such as:
+
+- respiratory rate
+- oxygen saturation
+- blood pressure
+- heart rate
+- temperature
+
+This behaviour matters because an absent value should not become a normal value through assumption.
+
+The UI can then request completion before prediction or make the incompleteness visible to the reviewer.
+
+## Safety cues support escalation, not diagnosis
+
+Configured cues include examples such as:
+
+- chest pain
+- shortness of breath
+- low oxygen
+- low blood pressure
+- tachycardia
+- stroke-like wording
+- unresponsiveness
+- seizure
+- suicidal ideation
+- pregnancy with abdominal pain
+- severe trauma
+- fever in an older adult
+
+These cues do not diagnose a condition or assign a final ESI level.
+
+They tell the workflow that a reviewer should pay attention and that explicit safety logic may need to act around the model.
+
+## The React review gate
+
+The frontend flow was designed to prevent a dangerous shortcut.
+
+The user must:
+
+1. paste or load a clinical note
+2. request extraction
+3. inspect the extracted fields
+4. edit incorrect or incomplete values
+5. review safety cues and missing fields
+6. check an explicit confirmation
+7. only then run ESI decision support
+
+The extraction action does not automatically call the prediction endpoint.
+
+This is a product-safety decision, not only a UI preference.
+
+## Audit metadata without storing the raw note
+
+After review, the prediction request can include structured NLP audit metadata such as:
+
+- reviewed status
+- extraction source
+- reviewed fields
+- safety cues
+- missing fields
+- evidence snippets
+- disclaimer
+
+The implementation intentionally avoids persisting:
+
+- raw clinician note text
+- NLP-generated diagnosis
+- treatment recommendations
+- an NLP-derived ESI decision
+
+This preserves useful traceability while limiting unnecessary sensitive text.
+
+## Evidence remains visible after prediction
+
+The reviewed extraction is not discarded once the model runs.
+
+It is displayed in:
+
+- Assessment Detail
+- the Audit Trail interface
+- the backend-generated PDF summary
+
+That creates a connected evidence chain:
+
+```text
+source phrase
+→ extracted field
+→ clinician review
+→ structured prediction input
+→ model and safety result
+→ clinician decision
+→ audit and report
+```
+
+<MetricCard
+  label="Completed Clinical NLP Flow"
+  value="Extraction → review → audit → PDF"
+  note="The implementation includes backend extraction, editable React review before prediction, reviewed audit metadata, assessment and audit views, PDF evidence, and a repeatable end-to-end demo scenario."
+/>
+
+## Testing the safety contract
+
+The tests cover more than whether a regex finds a number.
+
+They verify behaviours such as:
+
+- recognized demographics and symptoms
+- vital-sign extraction
+- evidence snippets
+- safety-cue detection
+- missing-field reporting
+- mandatory review flag
+- no automatic prediction
+- reviewed audit persistence
+- UI rendering
+- PDF evidence content
+- preservation of safe wording
+- end-to-end demonstration flow
+
+The important question is not only “did extraction work?”
+
+It is also:
+
+> Did the system preserve review, provenance, and boundaries from the note through the final report?
+
+## What this design does not solve
+
+This layer is intentionally bounded.
+
+It does not provide:
+
+- broad clinical language understanding
+- negation handling for every note style
+- validated medical named-entity recognition
+- diagnosis or treatment reasoning
+- autonomous ESI assignment
+- multilingual clinical extraction
+- production privacy or regulatory validation
+
+Future challenger work could evaluate clinical language models or richer NLP approaches, but only if they preserve deterministic review, evidence traceability, missing-data behaviour, latency, and safety testing.
+
+## The engineering lesson
+
+The strongest NLP feature was not the extraction rule itself.
+
+It was the workflow around it:
+
+- evidence is shown
+- missing information is explicit
+- fields remain editable
+- prediction is not automatic
+- review is required
+- raw text is not unnecessarily persisted
+- the reviewed result remains auditable
+
+In high-stakes AI, a useful NLP system is not just one that extracts information.
+
+It is one that makes uncertainty and human responsibility visible.

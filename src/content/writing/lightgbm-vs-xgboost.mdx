@@ -1,78 +1,322 @@
-import { CaseStudyHero, MetricCard, ArchitectureBlock } from '../../components/mdx/MDXComponents.jsx';
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
   label="Technical Writing"
-  meta="Published July 2026 · Updated July 2026 · 5 min read"
-  title="Why I Chose LightGBM Over XGBoost for TriageAI"
-  description="A model-selection write-up from the TriageAI build: the ESI 3/4/5 scope, the risk-weighted metrics I used, and the final registry evidence behind the decision."
+  meta="Published July 2026 · Updated July 2026 · 12 min read"
+  title="Building TriageAI’s ESI 3/4/5 Model: Why LightGBM Won"
+  description="An end-to-end account of how I scoped the clinical task, created a leakage-safe pipeline, engineered 273 runtime features, compared model families, tuned safety-sensitive decisions, evaluated calibration, and packaged the final LightGBM registry for FastAPI."
 />
 
-## The setup
+<TechStackBlock items={["Python", "Pandas", "Scikit-learn", "LightGBM", "XGBoost", "Neural Networks", "Model Evaluation", "FastAPI"]} />
 
-The source dataset contains 366,890 emergency-department records and 972 columns. After scoping the deployment model to ESI 3, ESI 4, and ESI 5, the final modeling subset contained 257,306 records and the runtime feature builder produced 273 model features.
+## The real modelling question
 
-For structured tabular data, gradient-boosted trees were the natural starting point. The real question was not simply “LightGBM or XGBoost?” It was “which candidate gives the best balance of overall performance, class-level behaviour, and safety-sensitive downgrade risk?”
+TriageAI is a clinical decision-support workflow for emergency intake and ESI care routing. It does not diagnose patients or replace clinician judgment.
 
-The comparison included LightGBM, XGBoost, Random Forest, a Dense Neural Network, an RNN, and a GRU. The sequence models were useful challengers, but the structured tabular problem did not gain enough from sequence architectures to justify their additional complexity.
+The modelling goal was deliberately narrower: classify **ESI 3, ESI 4, and ESI 5** cases while keeping higher-acuity safety handling explicit in the surrounding workflow.
 
-## Why accuracy was not the deciding metric
+That framing changed the question from:
 
-The final model predicts three classes, but those classes are not equally important.
+> Which algorithm gives the highest accuracy?
 
-A model can improve overall accuracy while making more unsafe ESI 3-to-ESI 5 downgrades. That would be a worse system even if the headline number looked better.
+to:
 
-I therefore compared candidates using:
+> Which candidate gives the best balance of class-level performance, unsafe-downgrade control, reproducibility, explainability, and deployment simplicity?
 
-- macro F1
-- weighted F1
-- ESI 5 F1
-- class-level confusion patterns
-- unsafe ESI 3-to-ESI 5 downgrade rate
-- deployment complexity and reproducibility
+The source dataset contained **366,890 emergency-department records and 972 source columns**. After restricting the deployment scope to ESI 3/4/5, the modelling subset contained **257,306 records**. The final runtime feature contract contained **273 features**.
+
+<ArchitectureBlock steps={[
+  { title: "Source audit", description: "366,890 records and 972 source columns" },
+  { title: "Deployment scope", description: "257,306 ESI 3/4/5 records" },
+  { title: "Leakage-safe split", description: "Train, validation, and test separated before fitting preprocessing" },
+  { title: "Feature contract", description: "273 final runtime features" },
+  { title: "Candidate bake-off", description: "Tree ensembles, neural baselines, and sequence challengers" },
+  { title: "Risk-aware selection", description: "Performance, unsafe downgrades, calibration, and deployment fit" },
+  { title: "Runtime registry", description: "Model, preprocessing, thresholds, labels, metrics, and manifest" }
+]} />
+
+## 1. Understanding the data before training
+
+The first phase was exploratory analysis, not model fitting.
+
+I examined:
+
+- class distribution across ESI 3, 4, and 5
+- missing-value patterns
+- vital-sign distributions
+- arrival mode and operational context
+- age and complaint patterns
+- duplicate or leakage-prone fields
+- clinically important confusion directions
+
+The classes were imbalanced, with ESI 3 much more common than ESI 5. That meant a model could achieve acceptable accuracy while still underperforming on the minority class.
+
+I therefore treated accuracy as one useful measure—not the final selection rule.
+
+## 2. Defining the evaluation contract
+
+The final comparison used:
+
+- **Accuracy** for overall correctness
+- **Macro F1** for balanced performance across all three classes
+- **Weighted F1** for class-frequency-aware performance
+- **ESI 5 F1** for the minority class
+- **Confusion patterns** for directional errors
+- **Unsafe ESI 3 → ESI 5 downgrade rate** as a safety-sensitive metric
+- **Deployment complexity** and reproducibility
+
+The unsafe downgrade rate mattered because a true ESI 3 case classified as ESI 5 represents a more consequential error than many other misclassifications.
+
+A higher-accuracy candidate was not automatically better if it increased this downgrade risk.
+
+## 3. Building a leakage-safe pipeline
+
+I rebuilt the workflow around a strict separation:
+
+```text
+Raw records
+→ train / validation / test split
+→ fit preprocessing on training data only
+→ transform validation and test
+→ train candidate models
+→ tune decision policy on validation data
+→ evaluate the final candidate once on test data
+```
+
+This ordering matters.
+
+If imputation, encoding, scaling, vocabulary construction, or threshold selection uses information from validation or test data, the final metrics can become overly optimistic.
+
+I also removed or avoided context-sensitive fields that were not appropriate for the intended workflow, including variables that could introduce fairness, trust, or governance concerns without a clear clinical justification.
+
+The purpose was not to claim that bias had been eliminated. It was to reduce avoidable risk and keep the model contract more defensible.
+
+## 4. Engineering clinically meaningful features
+
+The source columns were transformed into a smaller runtime contract that the backend could reproduce.
+
+Feature engineering included signals such as:
+
+- missing-vital indicators
+- abnormal-vital flags
+- shock index
+- pulse pressure
+- mean arterial pressure
+- complaint groupings such as cardiac, respiratory, abdominal, trauma, neurological, and infection-related categories
+- encoded arrival and operational context
+
+Missingness was not treated only as a technical nuisance. In clinical records, the absence of a measurement can itself reflect workflow behaviour.
+
+The final design therefore combined safe imputation with missing-value indicators so the model could distinguish “measured and normal” from “not recorded.”
+
+## 5. Choosing preprocessing deliberately
+
+Different candidate families required different preprocessing.
+
+### One-hot encoding
+
+Categorical values were converted into binary features rather than arbitrary integer codes. This avoided creating false numeric order between categories such as walk-in, ambulance, or other arrival modes.
+
+### Median imputation
+
+Numeric medians were fitted only on training data and then applied consistently to validation, test, and runtime inputs.
+
+### Scaling
+
+Scaling was used for neural-network experiments because gradient-based models are sensitive to feature magnitude. LightGBM did not require the same scaling step.
+
+### Tokenization
+
+Tokenization supported RNN and GRU experiments using chief-complaint text. It was not required by the final LightGBM runtime.
+
+### Class weighting
+
+Class weighting helped the candidate models pay more attention to underrepresented ESI 5 examples.
+
+These choices were saved as part of the deployment contract rather than being left only inside a notebook.
+
+## 6. Comparing model families
+
+The bake-off included:
+
+| Candidate | Why it was tested |
+|---|---|
+| LightGBM | Strong fit for high-dimensional tabular data |
+| XGBoost | Competitive boosted-tree baseline |
+| Random Forest | Interpretable traditional ensemble baseline |
+| Dense Neural Network | Structured-data neural baseline |
+| Simple RNN | Sequence modelling for complaint text |
+| GRU hybrid | Combined structured and text-sequence experiment |
+| Ensemble experiments | Tested whether combining candidates improved the safety/performance balance |
+
+The neural and sequence models were valuable experiments, but they did not provide enough improvement to justify their additional preprocessing, tuning, latency, and explanation complexity.
+
+Chief-complaint text was relatively short, while the strongest information remained structured and tabular.
+
+## 7. Why LightGBM won
+
+LightGBM produced the strongest practical combination of:
+
+- overall test performance
+- macro and weighted F1
+- ESI 5 behaviour
+- low unsafe-downgrade risk
+- efficient inference
+- compatibility with sparse, one-hot encoded features
+- straightforward artifact loading
+- explanation-ready feature importance
+
+XGBoost was a serious candidate, but the final decision was not based on brand preference. LightGBM fit this dataset and deployment workflow better.
 
 <MetricCard
   label="Final LightGBM V2 Registry"
   value="78.32% accuracy · 0.68% unsafe downgrade rate"
-  note="Macro F1: 70.37%. Weighted F1: 78.88%. ESI 5 F1: 54.70%. Runtime scope: ESI 3/4/5 with 273 features. Higher-acuity ESI 1/2 handling remains explicit safety logic rather than an unsupported classifier claim."
+  note="Macro F1: 70.37%. Weighted F1: 78.88%. ESI 5 F1: 54.70%. Runtime scope: ESI 3/4/5 with 273 features."
 />
 
-## What separated the candidates
+## 8. Safety-sensitive decision tuning
 
-LightGBM and XGBoost were close enough on raw accuracy that choosing only from that number would have been weak engineering.
+The final candidate used a tuned ESI 5 decision policy rather than blindly accepting every raw class maximum.
 
-LightGBM provided the stronger final combination of:
+The source-of-truth training workflow recorded:
 
-- weighted and macro F1
-- ESI 5 behaviour
-- lower unsafe downgrade risk
-- efficient training and inference for high-dimensional tabular features
-- a straightforward text-model artifact for the FastAPI registry
+```text
+ESI 5 decision threshold = 0.60
+ESI 5 class-weight multiplier = 0.75
+```
 
-Calibration was evaluated, but the raw LightGBM probabilities were retained because the calibrated challengers did not preserve all configured guardrails.
+The purpose was to balance minority-class recognition with protection against unsafe ESI 3-to-ESI 5 downgrades.
 
-<ArchitectureBlock steps={[
-  { title: "Source audit", description: "366,890 rows and 972 source columns" },
-  { title: "Deployment scope", description: "257,306 ESI 3/4/5 records" },
-  { title: "Feature contract", description: "273 final runtime features" },
-  { title: "Candidate bake-off", description: "LightGBM, XGBoost, Random Forest, Dense NN, RNN, and GRU" },
-  { title: "Risk-aware evaluation", description: "Macro/weighted F1, ESI 5 F1, and unsafe downgrade rate" },
-  { title: "Final registry", description: "LightGBM V2 artifacts, thresholds, labels, and verified metrics" }
-]} />
+Threshold tuning happened on validation data. The final reported metrics came from the held-out test evaluation.
 
-## Why the model does not predict ESI 1 or ESI 2
+This separation prevented the test set from becoming another tuning dataset.
 
-The deployment model is intentionally scoped to the classes for which the final evaluation evidence is strongest.
+## 9. Evaluating calibration without deploying it blindly
 
-Higher-acuity cases are handled through transparent safety rules and clinician review. This keeps the machine-learning claim precise and makes safety escalation visible instead of burying it inside a poorly supported rare-class prediction.
+I evaluated:
 
-## What I would do next
+- raw LightGBM probabilities
+- Platt calibration
+- isotonic calibration
 
-The next model-quality work would focus on:
+The calibrated candidates improved probability-quality measures such as Brier score or log loss, but probability quality was not the only deployment requirement.
 
-- additional external or temporally separated validation
-- calibration and confidence interpretation under changing data
-- subgroup and error analysis
-- model-drift monitoring
-- challenger experiments only when they improve measured safety or maintainability
+A calibrated candidate also had to preserve:
 
-The general lesson is not that LightGBM always beats XGBoost. The lesson is that the evaluation metric must reflect the real cost of being wrong, and the final architecture must be honest about what the model is and is not qualified to predict.
+- Macro F1
+- ESI 5 F1
+- unsafe-downgrade controls
+
+The calibrated alternatives did not preserve all configured guardrails, particularly minority-class decision performance. The final registry therefore retained:
+
+```text
+Probability mode = raw LightGBM probabilities
+Deploy calibrated probabilities = false
+```
+
+This was an important engineering lesson: a better calibration metric does not automatically make a better decision-support model.
+
+## 10. Packaging a complete runtime registry
+
+Saving only the model file would not have been enough.
+
+The runtime registry includes:
+
+```text
+model_registry/esi_345_lightgbm_v2/
+├── artifact_manifest.json
+├── esi_345_deployment_config.json
+├── esi_345_label_mapping.json
+├── esi_345_lightgbm_v2_feature_list.json
+├── esi_345_lightgbm_v2_model.txt
+├── esi_345_lightgbm_v2_preprocessing_artifacts.joblib
+├── esi_345_lightgbm_v2_threshold_config.json
+└── reports/
+    └── lightgbm_v2_test_metrics.json
+```
+
+Together, these files define:
+
+- exact feature names and order
+- imputation and encoding behaviour
+- label mapping
+- threshold rules
+- probability mode
+- model version
+- verified metrics
+- artifact integrity
+
+A backend using a different feature order or preprocessing policy can produce incorrect predictions even when the model file is valid.
+
+## 11. Separating source of truth from experiments
+
+The final checked notebook lives under:
+
+```text
+notebooks/FINAL_SOURCE_OF_TRUTH/
+ESI_345_FINAL_DEPLOYMENT_LIGHTGBM_V2_SAFETY_TUNED_FINAL_VERDICT_CHECKED.ipynb
+```
+
+Earlier EDA, training, comparison, and challenger notebooks are preserved under experiment archives.
+
+This separation prevents an old experiment from being mistaken for the deployed runtime source.
+
+It also makes the project easier to explain:
+
+```text
+experiments answer: what did I try?
+source of truth answers: what was selected?
+model registry answers: what does the backend load?
+```
+
+## 12. Connecting the model to the full workflow
+
+The model is one component of a broader review-first system:
+
+```text
+Clinical note or structured intake
+→ clinician-reviewed structured fields
+→ reproducible feature builder
+→ LightGBM ESI 3/4/5 prediction
+→ explicit safety-rule escalation
+→ probability and explanation view
+→ clinician accept / override / needs review
+→ server-side audit trail
+→ PDF decision-support summary
+```
+
+The model does not independently claim ESI 1 or ESI 2 competence.
+
+Higher-acuity handling remains visible through safety logic and clinician oversight rather than being hidden inside an unsupported classifier claim.
+
+## 13. What the final selection demonstrates
+
+This work demonstrates several modelling decisions that matter beyond one algorithm comparison:
+
+- start with the decision risk, not the model name
+- separate data before fitting preprocessing
+- evaluate minority-class behaviour explicitly
+- inspect directional confusion, not only aggregate metrics
+- tune thresholds on validation data
+- evaluate calibration without sacrificing operational guardrails
+- preserve every runtime dependency in a versioned registry
+- connect model outputs to review, audit, and reporting workflows
+- document limitations clearly
+
+## Current boundaries
+
+The reported metrics describe one controlled test evaluation.
+
+They do not establish:
+
+- prospective clinical validation
+- external hospital generalization
+- production safety
+- regulatory approval
+- real-world clinical effectiveness
+
+Future work should include temporally separated validation, external-site evaluation, subgroup analysis, drift monitoring, and formal clinical governance.
+
+The final lesson is not that LightGBM always beats XGBoost.
+
+The lesson is that model selection should reflect the real cost of being wrong—and that the chosen model must remain reproducible, reviewable, and bounded inside the system that uses it.
