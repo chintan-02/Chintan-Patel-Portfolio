@@ -4,7 +4,7 @@ export const siteMeta = {
   location: 'Calgary, AB · Canada',
   email: 'patel.chintan380@gmail.com',
   github: 'https://github.com/chintan-02',
-  linkedin: 'https://www.linkedin.com/in/chintan-patel-987765129/',
+  linkedin: 'https://www.linkedin.com/in/chintan-patel-ai/',
   portfolio: 'https://chintan-patel-ai.netlify.app/',
   resume: '/Chintan_Patel_Resume.pdf',
   availability: 'Open to AI/ML Engineering, Data Science, Analytics, and Applied Software roles in Canada.'
