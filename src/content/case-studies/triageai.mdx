@@ -1,8 +1,8 @@
-import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ScreenshotGallery, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
+import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ProductWalkthrough, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
   label="Healthcare AI Case Study"
-  meta="Verified local workflow · Clinical NLP safety layer completed"
+  meta="Demo freeze complete · 96 backend tests · 52 frontend tests"
   title="TriageAI — ESI Clinical Intake & Care Routing Assistant"
   description="A review-first healthcare AI decision-support workflow that converts structured intake or clinician notes into auditable ESI care-routing support. It combines evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, transparent safety escalation, clinician review or override, server-side audit evidence, dashboard workflows, and backend-generated PDF summaries."
   links={[
@@ -42,6 +42,27 @@ After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 
   { title: "Database, audit, and PDF", description: "Server-side traceability and decision-support summary" }
 ]} />
 
+<figure className="my-10 overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] shadow-card">
+  <a
+    href="/images/case-studies/triageai/13-system-architecture.png"
+    target="_blank"
+    rel="noreferrer"
+    aria-label="Open the TriageAI system architecture diagram at full size"
+    className="block overflow-hidden"
+  >
+    <img
+      src="/images/case-studies/triageai/13-system-architecture.png"
+      alt="TriageAI system architecture showing clinician-reviewed intake flowing through FastAPI, 273-feature LightGBM decision support, safety escalation, persistence, audit trail, and PDF reporting"
+      loading="lazy"
+      decoding="async"
+      className="h-auto w-full bg-white object-contain"
+    />
+  </a>
+  <figcaption className="border-t border-line px-4 py-3 text-xs font-medium leading-5 text-ink-faint">
+    Exported system architecture. Open the diagram to inspect the complete review-first workflow.
+  </figcaption>
+</figure>
+
 <StatusBadges
   built={[
     "React + FastAPI workflow",
@@ -52,31 +73,74 @@ After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 
     "Clinician accept/override",
     "Reviewed NLP audit evidence",
     "Assessment detail and dashboard",
-    "Backend PDF evidence",
+    "Final PDF decision-support reporting",
+    "Model Monitoring with registry metrics",
+    "Final screenshot set",
+    "Final synthetic product walkthrough",
     "Automated workflow validation"
   ]}
   planned={[
-    "Final screenshot set",
     "Production authentication and RBAC",
-    "Managed PostgreSQL deployment",
+    "Managed PostgreSQL",
     "Secure cloud secrets",
-    "Monitoring and observability",
-    "Formal clinical validation"
+    "Formal clinical validation",
+    "Controlled production monitoring"
   ]}
 />
 
 ## Product walkthrough
 
-<ScreenshotGallery
-  title="Updated screenshots coming next"
-  note="These slots preserve the final case-study hierarchy. Each will be replaced with a verified capture from the current React and FastAPI workflow; no legacy Streamlit image will be presented as the current product."
-  items={[
-    { label: "Clinical note extraction", detail: "Free-text note, extracted fields, evidence snippets, safety cues, and missing information." },
-    { label: "Clinician review before prediction", detail: "Editable extracted values and explicit review confirmation." },
-    { label: "Prediction and safety escalation", detail: "Class probabilities, confidence, configured safety triggers, and final routing support." },
-    { label: "Assessment detail", detail: "Persisted intake, model output, clinician decision, and reviewed NLP metadata." },
-    { label: "Audit evidence", detail: "Traceable extraction-review and clinician-action events." },
-    { label: "PDF decision-support summary", detail: "Backend-generated report with reviewed NLP evidence and safe wording." }
+<ProductWalkthrough
+  title="Review-first product walkthrough"
+  steps={[
+    {
+      title: "Command Center",
+      why: "Gives reviewers one operational view of stored assessments, pending clinician reviews, safety escalations, routing outcomes, and model connectivity.",
+      image: "/images/case-studies/triageai/01-command-center.png",
+      alt: "TriageAI Command Center showing assessment totals, pending reviews, safety escalations, recent assessments, and final ESI distribution"
+    },
+    {
+      title: "Clinical note intake",
+      why: "Supports free-text note entry as an intake path while keeping extraction and clinician confirmation as explicit next steps.",
+      image: "/images/case-studies/triageai/02-new-intake-note.png",
+      alt: "TriageAI new intake screen with the clinical note entry workflow and controls for extracting structured intake fields"
+    },
+    {
+      title: "Evidence-linked NLP extraction",
+      why: "Makes extracted fields, source evidence, safety cues, and missing information visible before any prediction can run.",
+      image: "/images/case-studies/triageai/03-nlp-review-evidence.png",
+      alt: "Clinical Intake NLP Safety Layer showing extracted demographics, symptoms, vital signs, safety cues, missing information, and supporting note evidence"
+    },
+    {
+      title: "Reviewed structured intake",
+      why: "Lets the clinician correct structured values and explicitly confirm the reviewed intake rather than treating extraction as verified truth.",
+      image: "/images/case-studies/triageai/04-reviewed-structured-intake.png",
+      alt: "TriageAI structured intake form populated from a clinical note with editable patient details, symptoms, vital signs, and review confirmation"
+    },
+    {
+      title: "Prediction and safety escalation",
+      why: "Separates model probabilities from transparent safety-rule escalation so the output remains decision support, not an autonomous clinical decision.",
+      image: "/images/case-studies/triageai/05-prediction-result.png",
+      alt: "TriageAI prediction result showing ESI class probabilities, model confidence, safety escalation details, and decision-support wording"
+    },
+    {
+      title: "Clinician sign-off",
+      why: "Keeps the clinician responsible for accepting, overriding, or requesting further review, with a documented reason when needed.",
+      image: "/images/case-studies/triageai/06-clinician-review.png",
+      alt: "TriageAI clinician review screen with accept, override, and further-review decision controls"
+    },
+    {
+      title: "Auditability and PDF reporting",
+      why: "Turns the reviewed intake, model output, safety context, and clinician decision into a durable decision-support summary.",
+      image: "/images/case-studies/triageai/10-pdf-summary.png",
+      alt: "TriageAI PDF decision-support summary containing reviewed intake data, model output, safety context, and clinician decision"
+    },
+    {
+      title: "Model monitoring",
+      why: "Surfaces the loaded registry version, evaluation metrics, feature contract, and decision threshold for operational inspection.",
+      image: "/images/case-studies/triageai/11-model-monitoring.png",
+      alt: "TriageAI model monitoring screen showing the loaded model registry, evaluation metrics, 273-feature contract, and 0.60 decision threshold"
+    }
   ]}
 />
 
@@ -108,6 +172,19 @@ Reviewed NLP audit metadata includes the reviewed status, source, extracted fiel
 The source dataset contains 366,890 emergency-department records and 972 columns. The final ESI 3/4/5 modeling subset contains 257,306 records.
 
 The model was selected after comparison with XGBoost, Random Forest, a Dense Neural Network, an RNN, and a GRU. Selection considered weighted and macro F1, class-level behavior, ESI 5 performance, and unsafe ESI 3-to-ESI 5 downgrades rather than raw accuracy alone.
+
+## Final software validation
+
+- **Backend:** 96 tests passed
+- **Frontend:** 14 test files, 52 tests passed
+- **React production build:** passed
+- **Docker Compose build and full-stack validation:** passed
+- **`/health` and `/ready`:** passed
+- **Final model registry:** loaded
+- **Feature count:** 273
+- **Decision threshold:** 0.60
+
+These results validate the software and local review-first workflow. They are not clinical validation and do not establish safety or effectiveness in patient care.
 
 ## Human-in-the-loop design
 
@@ -171,7 +248,6 @@ Current limitations include local SQLite persistence, demonstration authenticati
 
 Next steps are:
 
-- replace the remaining screenshot slots with verified React captures
 - harden authentication and role boundaries
 - move professional deployment persistence to PostgreSQL
 - add secure secrets and cloud storage controls
