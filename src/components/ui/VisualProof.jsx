@@ -1,4 +1,5 @@
 import { ArrowDown, FileSearch, Image, Layers3 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const previewConfig = {
   triageai: {
@@ -59,26 +60,44 @@ export function ProductPreview({ project, slug, title, className = '' }) {
         <div className="relative z-10">
           <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">{config.eyebrow}</p>
           <h4 className="mt-2 font-display text-xl font-semibold tracking-[-0.02em] text-ink">{displayTitle}</h4>
-          <div className="mt-5 rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-5">
-            <div className="rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-5">
-              <div className="flex items-center gap-3">
-                <span className="inline-flex h-9 w-9 items-center justify-center rounded-inset border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
-                  <Image className="h-4 w-4" />
-                </span>
-                <div>
-                  <p className="font-display text-lg font-semibold text-ink">Updated screenshots coming next</p>
-                  <p className="mt-1 text-sm leading-6 text-ink-muted">{config.mainMeta}</p>
+          {key === 'triageai' ? (
+            <div className="mt-5 overflow-hidden rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-2 sm:p-3">
+              <Link
+                to="/case-studies/triageai"
+                aria-label="Open the TriageAI case study"
+                className="block overflow-hidden rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)]"
+              >
+                <img
+                  src="/images/case-studies/triageai/01-command-center.png"
+                  alt="TriageAI Command Center showing clinical intake workflow and assessment overview"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-auto w-full object-contain"
+                />
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-5 rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-5">
+              <div className="rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-5">
+                <div className="flex items-center gap-3">
+                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-inset border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
+                    <Image className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="font-display text-lg font-semibold text-ink">Updated screenshots coming next</p>
+                    <p className="mt-1 text-sm leading-6 text-ink-muted">{config.mainMeta}</p>
+                  </div>
+                </div>
+                <div className="mt-5 grid gap-2 sm:grid-cols-3">
+                  {[config.leftTitle, config.mainTitle, config.rightTitle].map((label) => (
+                    <div key={label} className="rounded-inset border border-line bg-[rgb(var(--surface-rgb)/0.5)] px-3 py-2">
+                      <p className="text-xs font-semibold leading-5 text-ink-muted">{label}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
-              <div className="mt-5 grid gap-2 sm:grid-cols-3">
-                {[config.leftTitle, config.mainTitle, config.rightTitle].map((label) => (
-                  <div key={label} className="rounded-inset border border-line bg-[rgb(var(--surface-rgb)/0.5)] px-3 py-2">
-                    <p className="text-xs font-semibold leading-5 text-ink-muted">{label}</p>
-                  </div>
-                ))}
-              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
@@ -153,13 +172,13 @@ export function ProductWalkthrough({ title = 'Product Walkthrough', steps = [] }
   if (!steps.length) return null;
 
   return (
-    <div className="my-10 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.82)] p-5 shadow-card">
+    <div className="my-10 min-w-0 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.82)] p-5 shadow-card">
       <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{title}</p>
       <div className="mt-6 space-y-4">
         {steps.map((step, index) => (
           <div key={step.title}>
-            <div className={`grid gap-4 rounded-card border bg-[rgb(var(--surface2-rgb)/0.58)] p-4 lg:grid-cols-[220px_1fr] ${step.emphasis ? 'border-[rgb(var(--accent-rgb)/0.36)]' : 'border-line'}`}>
-              <div>
+            <div className={`grid min-w-0 gap-4 rounded-card border bg-[rgb(var(--surface2-rgb)/0.58)] p-4 lg:grid-cols-[220px_minmax(0,1fr)] ${step.emphasis ? 'border-[rgb(var(--accent-rgb)/0.36)]' : 'border-line'}`}>
+              <div className="min-w-0">
                 <span className="inline-flex h-9 w-9 items-center justify-center rounded-inset border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] font-mono text-xs font-bold text-accent">
                   {index + 1}
                 </span>
@@ -192,7 +211,7 @@ export function ProductWalkthrough({ title = 'Product Walkthrough', steps = [] }
 
 function ScreenshotFigure({ image, title, alt, emphasis = false }) {
   return (
-    <figure className={`overflow-hidden rounded-panel border bg-[rgb(var(--surface-rgb)/0.88)] shadow-card ${emphasis ? 'border-[rgb(var(--accent-rgb)/0.36)]' : 'border-line'}`}>
+    <figure className={`min-w-0 overflow-hidden rounded-panel border bg-[rgb(var(--surface-rgb)/0.88)] shadow-card ${emphasis ? 'border-[rgb(var(--accent-rgb)/0.36)]' : 'border-line'}`}>
       <a href={image} target="_blank" rel="noreferrer" aria-label={`Open ${title} screenshot`} className="block overflow-hidden">
         <img
           src={image}
