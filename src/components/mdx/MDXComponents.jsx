@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '../ui/Button.jsx';
 import { TechChip } from '../ui/TechChip.jsx';
 import {
+  ExpandableImage,
   ProductPreview,
   ProductWalkthrough,
   ScreenshotGallery,
@@ -9,7 +10,14 @@ import {
   VisualFlow
 } from '../ui/VisualProof.jsx';
 
-export { ProductPreview, ProductWalkthrough, ScreenshotGallery, StatusBadges, VisualFlow };
+export {
+  ExpandableImage,
+  ProductPreview,
+  ProductWalkthrough,
+  ScreenshotGallery,
+  StatusBadges,
+  VisualFlow
+};
 
 export function MetricCard({ label, value, note }) {
   return (
@@ -46,7 +54,17 @@ export function ResponsiveTable({ children, ...props }) {
   );
 }
 
-export function CaseStudyHero({ label, title, description, meta, links = [] }) {
+export function CaseStudyHero({
+  label,
+  title,
+  description,
+  meta,
+  badges = [],
+  links = [],
+  image,
+  imageAlt,
+  imageCaption
+}) {
   return (
     <div className="glass-panel mb-12 rounded-hero p-6 sm:p-8 lg:p-10">
       <p className="font-mono text-xs font-bold uppercase tracking-[0.24em] text-accent sm:text-sm">
@@ -56,6 +74,18 @@ export function CaseStudyHero({ label, title, description, meta, links = [] }) {
         <p className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-faint sm:text-xs sm:tracking-[0.18em]">
           {meta}
         </p>
+      )}
+      {badges.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2" aria-label="Project release and status">
+          {badges.map((badge) => (
+            <span
+              key={badge}
+              className="rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent sm:text-[11px]"
+            >
+              {badge}
+            </span>
+          ))}
+        </div>
       )}
       <h1 className="mt-5 max-w-4xl text-balance font-display text-[clamp(2.25rem,5vw,4.2rem)] font-semibold leading-[1.02] tracking-[-0.045em] text-ink">
         {title}
@@ -76,6 +106,23 @@ export function CaseStudyHero({ label, title, description, meta, links = [] }) {
             </Button>
           ))}
         </div>
+      )}
+      {image && (
+        <figure className="mt-8 overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.86)] shadow-card">
+          <ExpandableImage
+            src={image}
+            alt={imageAlt}
+            label={imageCaption ?? `${title} product screenshot`}
+            loading="eager"
+            fetchPriority="high"
+            imageClassName="h-auto max-h-[680px] w-full bg-[rgb(var(--surface2-rgb)/0.8)] object-contain object-top"
+          />
+          {imageCaption && (
+            <figcaption className="border-t border-line px-4 py-3.5 text-left text-sm font-medium leading-6 text-ink-muted">
+              {imageCaption}
+            </figcaption>
+          )}
+        </figure>
       )}
     </div>
   );

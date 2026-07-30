@@ -8,6 +8,7 @@ import { ProductPreview } from '../ui/VisualProof.jsx';
 // action buttons render only when the corresponding URL exists.
 export function ProjectCard({ project }) {
   const topMetrics = project.metrics?.slice(0, 2) ?? [];
+  const proofStrip = project.proofStrip ?? [];
 
   return (
     <article className="group relative overflow-hidden card card-hover p-4 sm:p-5">
@@ -36,7 +37,21 @@ export function ProjectCard({ project }) {
 
         <p className="max-w-[78ch] text-[0.95rem] leading-7 text-ink-muted">{project.description}</p>
 
-        {topMetrics.length > 0 && (
+        {proofStrip.length > 0 ? (
+          <div
+            className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4"
+            aria-label={`${project.title} proof`}
+          >
+            {proofStrip.map((proof) => (
+              <div
+                key={proof}
+                className="rounded-inset border border-[rgb(var(--accent-rgb)/0.16)] bg-[rgb(var(--accent-rgb)/0.05)] px-3 py-3"
+              >
+                <p className="font-mono text-xs font-bold leading-5 text-accent">{proof}</p>
+              </div>
+            ))}
+          </div>
+        ) : topMetrics.length > 0 && (
           <div className="grid grid-cols-2 gap-3 lg:max-w-xl">
             {topMetrics.map((m) => (
               <div key={m.label} className="rounded-inset border border-[rgb(var(--accent-rgb)/0.16)] bg-[rgb(var(--accent-rgb)/0.05)] px-4 py-3">

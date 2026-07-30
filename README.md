@@ -149,7 +149,7 @@ Verified v0.3.0 evidence:
 
 > The benchmark values describe one controlled local provider-disabled run. Supported cases returned citation-only evidence, so generated-answer quality was not evaluated. This is not a cloud-production or real-company deployment claim.
 
-[Case Study](https://chintan-patel-ai.netlify.app/case-studies/policygpt) ·
+[Case Study](https://chintan-patel-ai.netlify.app/case-studies/policygpt-enterprise) ·
 [Repository](https://github.com/chintan-02/policygpt-enterprise)
 
 ---
@@ -334,7 +334,7 @@ Rendered long-form content
 | `/projects` | Flagship project overview |
 | `/case-studies` | Case-study index |
 | `/case-studies/triageai` | TriageAI case study |
-| `/case-studies/policygpt` | PolicyGPT Enterprise case study |
+| `/case-studies/policygpt-enterprise` | PolicyGPT Enterprise case study |
 | `/case-studies/resumeiq` | ResumeIQ case study |
 | `/writing` | Technical writing index |
 | `/writing/:slug` | Individual technical article |

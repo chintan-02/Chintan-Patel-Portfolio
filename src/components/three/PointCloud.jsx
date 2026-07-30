@@ -103,7 +103,7 @@ export function PointCloud() {
     g.setAttribute('position', new THREE.BufferAttribute(positions, 3));
     g.setAttribute('color', new THREE.BufferAttribute(colors, 3));
     return { geometry: g, sprite: makeSprite() };
-  }, [count, theme]);
+  }, [count, palette.core, palette.depth, palette.edge]);
 
   useFrame((state, delta) => {
     if (!ref.current) return;

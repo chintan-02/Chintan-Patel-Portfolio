@@ -1,20 +1,74 @@
-import { lazy, Suspense } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { lazy, Suspense, useEffect } from 'react';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { projects } from '../data/projects.js';
+import { siteMeta } from '../data/siteMeta.js';
 import { NotFound } from './NotFound.jsx';
 
 const studies = {
   triageai: lazy(() => import('../content/case-studies/triageai.mdx')),
   resumeiq: lazy(() => import('../content/case-studies/resumeiq.mdx')),
-  policygpt: lazy(() => import('../content/case-studies/policygpt.mdx'))
+  'policygpt-enterprise': lazy(() => import('../content/case-studies/policygpt.mdx'))
 };
 
 function ContentFallback() {
   return <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Loading case study</p>;
 }
 
+function setMetaContent(selector, content) {
+  const element = document.head.querySelector(selector);
+  if (!element) return null;
+
+  const previous = element.getAttribute('content');
+  element.setAttribute('content', content);
+  return () => element.setAttribute('content', previous ?? '');
+}
+
+function useCaseStudyMetadata(project) {
+  useEffect(() => {
+    if (!project?.seo) return undefined;
+
+    const baseUrl = siteMeta.portfolio.replace(/\/$/, '');
+    const canonicalUrl = `${baseUrl}${project.caseStudyUrl}`;
+    const imageUrl = project.seo.image?.startsWith('http')
+      ? project.seo.image
+      : `${baseUrl}${project.seo.image}`;
+    const previousTitle = document.title;
+    const canonical = document.head.querySelector('link[rel="canonical"]');
+    const previousCanonical = canonical?.getAttribute('href');
+    const restorers = [
+      setMetaContent('meta[name="description"]', project.seo.description),
+      setMetaContent('meta[property="og:title"]', project.seo.title),
+      setMetaContent('meta[property="og:description"]', project.seo.description),
+      setMetaContent('meta[property="og:type"]', 'article'),
+      setMetaContent('meta[property="og:url"]', canonicalUrl),
+      setMetaContent('meta[property="og:image"]', imageUrl),
+      setMetaContent('meta[name="twitter:title"]', project.seo.title),
+      setMetaContent('meta[name="twitter:description"]', project.seo.description),
+      setMetaContent('meta[name="twitter:image"]', imageUrl)
+    ].filter(Boolean);
+
+    document.title = project.seo.title;
+    canonical?.setAttribute('href', canonicalUrl);
+
+    return () => {
+      document.title = previousTitle;
+      if (canonical && previousCanonical) canonical.setAttribute('href', previousCanonical);
+      restorers.forEach((restore) => restore());
+    };
+  }, [project]);
+}
+
 export function CaseStudy() {
   const { slug } = useParams();
+  const canonicalSlug = slug === 'policygpt' ? 'policygpt-enterprise' : slug;
+  const project = projects.find((item) => item.caseStudyUrl === `/case-studies/${canonicalSlug}`);
+  useCaseStudyMetadata(project);
+
+  if (slug === 'policygpt') {
+    return <Navigate to="/case-studies/policygpt-enterprise" replace />;
+  }
+
   const Study = studies[slug];
 
   if (!Study) return <NotFound />;

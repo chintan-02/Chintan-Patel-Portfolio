@@ -1,4 +1,5 @@
-import { ArrowDown, FileSearch, Image, Layers3 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowDown, FileSearch, Image, Layers3, Maximize2, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const previewConfig = {
@@ -76,6 +77,22 @@ export function ProductPreview({ project, slug, title, className = '' }) {
                 />
               </Link>
             </div>
+          ) : key === 'policygpt' ? (
+            <div className="mt-5 overflow-hidden rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-2 sm:p-3">
+              <Link
+                to="/case-studies/policygpt-enterprise"
+                aria-label="Open the PolicyGPT Enterprise case study"
+                className="block max-h-[430px] overflow-hidden rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)]"
+              >
+                <img
+                  src="/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png"
+                  alt="PolicyGPT Enterprise citation-backed remote-work policy answer with confidence and page-level evidence"
+                  loading="lazy"
+                  decoding="async"
+                  className="h-auto w-full object-contain object-top"
+                />
+              </Link>
+            </div>
           ) : (
             <div className="mt-5 rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-5">
               <div className="rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-5">
@@ -104,24 +121,6 @@ export function ProductPreview({ project, slug, title, className = '' }) {
   );
 }
 
-function PreviewPanel({ title, rows = [] }) {
-  return (
-    <div className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
-      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">{title}</p>
-      <div className="mt-4 space-y-3">
-        {rows.map((row, index) => (
-          <div key={row} className="flex items-center gap-3 rounded-inset border border-line bg-[rgb(var(--surface-rgb)/0.56)] px-3 py-2.5">
-            <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-[rgb(var(--accent-rgb)/0.1)] font-mono text-[10px] font-bold text-accent">
-              {index + 1}
-            </span>
-            <span className="text-sm font-semibold text-ink-muted">{row}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function ScreenshotSlot({ label, detail = 'Updated screenshots coming next' }) {
   return (
     <div className="group relative min-h-[150px] overflow-hidden rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.64)] p-4">
@@ -144,8 +143,23 @@ export function ScreenshotSlot({ label, detail = 'Updated screenshots coming nex
   );
 }
 
-export function ScreenshotGallery({ title = 'Product Proof', note, items = [] }) {
+export function ScreenshotGallery({
+  title = 'Product Proof',
+  note,
+  items = [],
+  columns,
+  showBadge
+}) {
   if (!items.length) return null;
+  const hasOnlyImages = items.every((item) => item.image);
+  const shouldShowBadge = showBadge ?? !hasOnlyImages;
+  const columnCount = columns ?? Math.min(items.length, 3);
+  const gridClass = {
+    1: 'grid-cols-1',
+    2: 'grid-cols-1 sm:grid-cols-2',
+    3: 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+  }[columnCount] ?? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+  const gapClass = columnCount === 1 && items.length > 1 ? 'gap-6' : 'gap-4';
 
   return (
     <div className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.78)] p-5 shadow-card backdrop-blur-sm">
@@ -154,14 +168,18 @@ export function ScreenshotGallery({ title = 'Product Proof', note, items = [] })
           <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{title}</p>
           {note && <p className="mt-2 max-w-2xl text-sm leading-7 text-ink-muted">{note}</p>}
         </div>
-        <span className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
-          <Layers3 className="h-3.5 w-3.5" />
-          Replaceable assets
-        </span>
+        {shouldShowBadge && (
+          <span className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+            <Layers3 className="h-3.5 w-3.5" />
+            {hasOnlyImages ? 'Repository capture' : 'Replaceable assets'}
+          </span>
+        )}
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className={`grid ${gapClass} ${gridClass}`}>
         {items.map((item) => (
-          <ScreenshotSlot key={item.label} {...item} />
+          item.image
+            ? <ScreenshotFigure key={item.label} image={item.image} title={item.label} alt={item.alt} emphasis={item.emphasis} />
+            : <ScreenshotSlot key={item.label} {...item} />
         ))}
       </div>
     </div>
@@ -209,19 +227,116 @@ export function ProductWalkthrough({ title = 'Product Walkthrough', steps = [] }
   );
 }
 
+export function ExpandableImage({
+  src,
+  alt,
+  label,
+  loading = 'lazy',
+  fetchPriority,
+  imageClassName = ''
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef(null);
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') setIsOpen(false);
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        closeRef.current?.focus();
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleKeyDown);
+    closeRef.current?.focus();
+    const trigger = triggerRef.current;
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', handleKeyDown);
+      trigger?.focus();
+    };
+  }, [isOpen]);
+
+  return (
+    <>
+      <button
+        ref={triggerRef}
+        type="button"
+        onClick={() => setIsOpen(true)}
+        onKeyDown={(event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            setIsOpen(true);
+          }
+        }}
+        aria-label={`Expand ${label}`}
+        className="group/image relative block w-full overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+      >
+        <img
+          src={src}
+          alt={alt}
+          loading={loading}
+          decoding="async"
+          fetchPriority={fetchPriority}
+          className={imageClassName}
+        />
+        <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/70 px-3 py-1.5 text-[11px] font-semibold text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity group-hover/image:opacity-100 group-focus-visible/image:opacity-100">
+          <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
+          Expand
+        </span>
+      </button>
+
+      {isOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${label} expanded image`}
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setIsOpen(false);
+          }}
+          className="fixed inset-0 z-[100] grid place-items-center overflow-auto bg-black/90 p-4 backdrop-blur-md sm:p-8"
+        >
+          <div className="relative w-full max-w-[min(96vw,1600px)]">
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="absolute right-2 top-2 z-10 inline-flex items-center gap-2 rounded-full border border-white/25 bg-black/75 px-3 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur-sm transition-colors hover:bg-black focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+              Close
+            </button>
+            <img
+              src={src}
+              alt={alt}
+              className="max-h-[calc(100vh-7rem)] w-full rounded-panel bg-white object-contain shadow-2xl"
+            />
+            <p className="mx-auto mt-3 max-w-4xl text-center text-sm leading-6 text-white/80">
+              {label}
+            </p>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
 function ScreenshotFigure({ image, title, alt, emphasis = false }) {
   return (
     <figure className={`min-w-0 overflow-hidden rounded-panel border bg-[rgb(var(--surface-rgb)/0.88)] shadow-card ${emphasis ? 'border-[rgb(var(--accent-rgb)/0.36)]' : 'border-line'}`}>
-      <a href={image} target="_blank" rel="noreferrer" aria-label={`Open ${title} screenshot`} className="block overflow-hidden">
-        <img
-          src={image}
-          alt={alt ?? `${title} screenshot`}
-          loading="lazy"
-          decoding="async"
-          className="w-full bg-[rgb(var(--surface2-rgb)/0.8)] object-contain transition-transform duration-500 hover:scale-[1.01]"
-        />
-      </a>
-      <figcaption className="border-t border-line px-4 py-3 text-xs font-medium leading-5 text-ink-faint">
+      <ExpandableImage
+        src={image}
+        alt={alt ?? `${title} screenshot`}
+        label={title}
+        imageClassName="h-auto w-full bg-[rgb(var(--surface2-rgb)/0.8)] object-contain transition-transform duration-500 group-hover/image:scale-[1.01]"
+      />
+      <figcaption className="border-t border-line px-4 py-3.5 text-sm font-medium leading-6 text-ink-muted">
         {title}
       </figcaption>
     </figure>
@@ -333,6 +448,9 @@ function getFlowStep(step) {
 
 export function VisualFlow({ title = 'Architecture Flow', steps = [] }) {
   if (!steps.length) return null;
+  const gridClass = steps.length <= 6
+    ? 'sm:grid-cols-2 lg:grid-cols-3'
+    : 'sm:grid-cols-2 lg:grid-cols-4';
 
   return (
     <section className="my-10 overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.86)] p-4 shadow-card backdrop-blur-sm sm:p-6">
@@ -350,7 +468,7 @@ export function VisualFlow({ title = 'Architecture Flow', steps = [] }) {
         </span>
       </div>
 
-      <ol className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <ol className={`mt-5 grid gap-3 ${gridClass}`}>
         {steps.map((step, index) => {
           const display = getFlowStep(step);
 

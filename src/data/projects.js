@@ -76,12 +76,12 @@ export const projects = [
   },
   {
     slug: 'policygpt',
-    category: 'GenAI / RAG',
+    category: 'GenAI · RAG · AI Systems Engineering',
     title: 'PolicyGPT Enterprise',
-    subtitle: 'Production-Style Evidence Intelligence for Policy Documents',
-    status: 'v0.3.0 · verified local Docker Compose release',
+    subtitle: 'Building an Evidence-Gated Policy RAG System',
+    status: 'Local release profile · Not cloud deployed',
     description:
-      'Production-style evidence intelligence and policy RAG system with Next.js, FastAPI, PostgreSQL document identity, ChromaDB retrieval, calibrated answerability, page citations, provider-resilient fallback, custom evaluation, and release-like local deployment.',
+      'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation and exposes page-level citations, confidence diagnostics, benchmark evaluation and operational health through a Next.js console.',
     problem:
       'Policy answers are consequential. A fluent response without provenance is difficult to review, and raw vector similarity does not prove that retrieved text directly supports a question. PolicyGPT makes identity, evidence, answerability, failure states, and readiness part of the product contract.',
     stack: [
@@ -107,10 +107,22 @@ export const projects = [
       'Request IDs & Structured Logs'
     ],
     metrics: [
-      { value: '16', label: 'Controlled benchmark cases' },
-      { value: '100%', label: 'Answer-readiness accuracy' },
+      { value: 'v0.3.0', label: 'Verified local release' },
+      { value: '16', label: 'Case benchmark' },
       { value: '229', label: 'Backend tests' },
       { value: '112', label: 'Frontend tests' }
+    ],
+    proofStrip: [
+      'v0.3.0',
+      '16-case benchmark',
+      '229 backend tests',
+      '112 frontend tests'
+    ],
+    evaluationMetrics: [
+      { value: '100%', label: 'Answer-readiness accuracy' },
+      { value: '100%', label: 'Unsupported / fallback accuracy' },
+      { value: '100%', label: 'Expected-page retrieval hit rate' },
+      { value: '0', label: 'Request errors' }
     ],
     screenshots: [
       {
@@ -146,7 +158,14 @@ export const projects = [
     ],
     liveUrl: null,
     githubUrl: 'https://github.com/chintan-02/policygpt-enterprise',
-    caseStudyUrl: '/case-studies/policygpt',
+    releaseUrl: 'https://github.com/chintan-02/policygpt-enterprise/releases/tag/v0.3.0',
+    caseStudyUrl: '/case-studies/policygpt-enterprise',
+    seo: {
+      title: 'PolicyGPT Enterprise | Evidence-Gated Policy RAG Case Study',
+      description:
+        'PolicyGPT Enterprise is a production-style policy RAG system with FastAPI, Next.js, ChromaDB, PostgreSQL, citations, confidence scoring, evaluation and Docker Compose.',
+      image: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png'
+    },
     accent: 'from-amber-400 to-violet-400'
   },
   {
@@ -225,4 +244,9 @@ export const projects = [
   }
 ];
 
-export const projectFilters = ['All', 'Healthcare AI', 'NLP / Resume Intelligence', 'GenAI / RAG'];
+export const projectFilters = [
+  'All',
+  'Healthcare AI',
+  'NLP / Resume Intelligence',
+  'GenAI · RAG · AI Systems Engineering'
+];

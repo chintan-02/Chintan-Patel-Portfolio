@@ -169,7 +169,7 @@ export function About() {
           <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
             <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-ink">The path here</h2>
             <Link to="/#now" className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-faint transition-colors hover:text-accent">
-              See what I'm building right now <ArrowRight className="h-3.5 w-3.5" />
+              See what I&apos;m building right now <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </Reveal>

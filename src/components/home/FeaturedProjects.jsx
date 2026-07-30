@@ -42,10 +42,12 @@ const homeProjectProof = {
   },
   policygpt: {
     value:
-      'Production-style policy RAG system with durable document identity, calibrated answerability, page citations, provider-resilient fallback, custom evaluation, and release-like local orchestration.',
+      'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation and exposes page-level citations, confidence diagnostics, benchmark evaluation and operational health through a Next.js console.',
     metrics: [
-      { value: '16', label: 'Controlled benchmark cases' },
-      { value: '4', label: 'Compose services' }
+      { value: 'v0.3.0', label: 'Local release profile' },
+      { value: '16', label: 'Benchmark cases' },
+      { value: '229', label: 'Backend tests' },
+      { value: '112', label: 'Frontend tests' }
     ],
     evidence: [
       'SHA-256 document identity',
@@ -53,7 +55,7 @@ const homeProjectProof = {
       'Provider-safe fallback'
     ],
     stack: ['Next.js', 'FastAPI', 'PostgreSQL', 'ChromaDB', 'SentenceTransformers', 'Docker Compose'],
-    scope: 'Verified local release profile · no cloud-production claim'
+    scope: 'Local release profile · Not cloud deployed'
   }
 };
 

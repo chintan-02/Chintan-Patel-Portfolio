@@ -1,8 +1,9 @@
-import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ProductWalkthrough, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
+import { ArchitectureBlock, CaseStudyHero, ExpandableImage, MetricCard, ProductWalkthrough, StatusBadges, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
   label="Healthcare AI Case Study"
   meta="Demo freeze complete · 96 backend tests · 52 frontend tests"
+  badges={["Clinical decision-support workflow prototype", "Human review required"]}
   title="TriageAI — ESI Clinical Intake & Care Routing Assistant"
   description="A review-first healthcare AI decision-support workflow that converts structured intake or clinician notes into auditable ESI care-routing support. It combines evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, transparent safety escalation, clinician review or override, server-side audit evidence, dashboard workflows, and backend-generated PDF summaries."
   links={[
@@ -31,6 +32,12 @@ The NLP layer extracts demographics, symptoms, vital signs, safety cues, missing
 
 After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 3/4/5 model, applies transparent safety rules, stores the assessment, and returns confidence and class probabilities. The clinician can accept, override, or mark the case for further review. Reviewed NLP evidence and clinician actions are persisted in the audit workflow and included in the backend-generated PDF summary.
 
+<aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.07)] p-5">
+  <div className="text-sm leading-7 text-ink-muted">
+    <strong className="text-ink">My engineering scope:</strong> clinical data preparation, model-registry integration, deterministic evidence-linked NLP, React and FastAPI workflows, safety-rule escalation, clinician review, persistence, audit evidence, PDF reporting and automated validation. The result is a local clinical decision-support workflow prototype—not a diagnostic or clinically validated system.
+  </div>
+</aside>
+
 <ArchitectureBlock steps={[
   { title: "Clinical note or structured intake", description: "Patient context, symptoms, and vital signs" },
   { title: "Evidence-linked NLP extraction", description: "Fields, source snippets, safety cues, and missing information" },
@@ -43,22 +50,13 @@ After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 
 ]} />
 
 <figure className="my-10 overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] shadow-card">
-  <a
-    href="/images/case-studies/triageai/13-system-architecture.png"
-    target="_blank"
-    rel="noreferrer"
-    aria-label="Open the TriageAI system architecture diagram at full size"
-    className="block overflow-hidden"
-  >
-    <img
-      src="/images/case-studies/triageai/13-system-architecture.png"
-      alt="TriageAI system architecture showing clinician-reviewed intake flowing through FastAPI, 273-feature LightGBM decision support, safety escalation, persistence, audit trail, and PDF reporting"
-      loading="lazy"
-      decoding="async"
-      className="h-auto w-full bg-white object-contain"
-    />
-  </a>
-  <figcaption className="border-t border-line px-4 py-3 text-xs font-medium leading-5 text-ink-faint">
+  <ExpandableImage
+    src="/images/case-studies/triageai/13-system-architecture.png"
+    alt="TriageAI system architecture showing clinician-reviewed intake flowing through FastAPI, 273-feature LightGBM decision support, safety escalation, persistence, audit trail, and PDF reporting"
+    label="Exported TriageAI system architecture"
+    imageClassName="h-auto w-full bg-white object-contain"
+  />
+  <figcaption className="border-t border-line px-4 py-3.5 text-sm font-medium leading-6 text-ink-muted">
     Exported system architecture. Open the diagram to inspect the complete review-first workflow.
   </figcaption>
 </figure>
@@ -144,6 +142,21 @@ After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 
   ]}
 />
 
+## Evidence and audit lifecycle
+
+The review workflow preserves evidence before and after prediction so the final decision can be inspected as a sequence, not just as a model label.
+
+<ArchitectureBlock
+  title="Evidence-to-audit lifecycle"
+  steps={[
+    { title: "Extracted intake evidence", description: "Structured fields, source snippets, safety cues and missing information" },
+    { title: "Clinician review", description: "Editable values are corrected and explicitly confirmed before prediction" },
+    { title: "Model and safety output", description: "ESI 3/4/5 probabilities remain separate from explicit escalation rules" },
+    { title: "Clinician decision", description: "Accept, override or needs-review action with reviewer responsibility" },
+    { title: "Audit and PDF", description: "Reviewed evidence, actions and decision-support summary persist server-side" }
+  ]}
+/>
+
 ## Clinical Intake NLP Safety Layer
 
 The NLP layer is deterministic and evidence-linked rather than an unrestricted medical chatbot.
@@ -169,20 +182,49 @@ Reviewed NLP audit metadata includes the reviewed status, source, extracted fiel
   note="Verified final metrics: Macro F1 70.37%, Weighted F1 78.88%, ESI 5 F1 54.70%. The runtime registry uses 273 features and raw LightGBM probabilities. The model is scoped to ESI 3/4/5; ESI 1/2 escalation is handled through explicit safety logic and clinician review."
 />
 
+<section className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.8)] p-5 shadow-card sm:p-6">
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Evaluation source of truth</p>
+  <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {[
+      ["Final model registry", "LightGBM V2 is the loaded runtime and evaluation source of truth."],
+      ["Feature contract", "273 features define the verified runtime input identity."],
+      ["Decision threshold", "0.60 is the configured decision threshold."],
+      ["Evaluated scope", "The classifier is evaluated for ESI 3, ESI 4 and ESI 5."],
+      ["Safety escalation", "ESI 1/2 escalation remains explicit safety logic outside the classifier."],
+      ["Clinical validation", "No formal clinical validation or patient-care effectiveness claim."]
+    ].map(([title, detail]) => (
+      <article key={title} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
+        <h3 className="text-sm font-bold leading-6 text-ink">{title}</h3>
+        <p className="mt-2 text-sm leading-6 text-ink-muted">{detail}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
 The source dataset contains 366,890 emergency-department records and 972 columns. The final ESI 3/4/5 modeling subset contains 257,306 records.
 
 The model was selected after comparison with XGBoost, Random Forest, a Dense Neural Network, an RNN, and a GRU. Selection considered weighted and macro F1, class-level behavior, ESI 5 performance, and unsafe ESI 3-to-ESI 5 downgrades rather than raw accuracy alone.
 
 ## Final software validation
 
-- **Backend:** 96 tests passed
-- **Frontend:** 14 test files, 52 tests passed
-- **React production build:** passed
-- **Docker Compose build and full-stack validation:** passed
-- **`/health` and `/ready`:** passed
-- **Final model registry:** loaded
-- **Feature count:** 273
-- **Decision threshold:** 0.60
+<section className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.8)] p-5 shadow-card sm:p-6">
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Verified local software checks</p>
+  <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+    {[
+      ["96", "Backend tests passed"],
+      ["52", "Frontend tests passed across 14 files"],
+      ["Passed", "React production build"],
+      ["Passed", "Docker Compose build and full-stack validation"],
+      ["Passed", "/health check"],
+      ["Passed", "/ready check"]
+    ].map(([value, label]) => (
+      <div key={label} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
+        <p className="font-display text-2xl font-bold tracking-[-0.04em] text-ink">{value}</p>
+        <p className="mt-2 text-xs font-semibold leading-5 text-ink-muted">{label}</p>
+      </div>
+    ))}
+  </div>
+</section>
 
 These results validate the software and local review-first workflow. They are not clinical validation and do not establish safety or effectiveness in patient care.
 

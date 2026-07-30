@@ -1,302 +1,592 @@
-import { CaseStudyHero, TechStackBlock, ArchitectureBlock, MetricCard, ScreenshotGallery, StatusBadges } from '../../components/mdx/MDXComponents.jsx';
+import { ArchitectureBlock, CaseStudyHero, ScreenshotGallery, StatusBadges, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+import { Button } from '../../components/ui/Button.jsx';
 
 <CaseStudyHero
-  label="GenAI / RAG Case Study"
-  meta="v0.3.0 · Verified local Docker Compose release profile"
-  title="PolicyGPT Enterprise — Building an Evidence-Gated Policy RAG System"
-  description="A production-style evidence intelligence and policy RAG system for HR, SOP, compliance, and governance documents. It converts source PDFs into durable, searchable evidence and generates an answer only when the retrieved material provides sufficient support. The project demonstrates the engineering gap between a retrieval demo and an operable product without claiming commercial SaaS or real-company production deployment."
+  label="GenAI · RAG · AI Systems Engineering"
+  meta="Production-style evidence intelligence and policy RAG system."
+  badges={["v0.3.0", "Local release profile"]}
+  title="PolicyGPT Enterprise: Building an Evidence-Gated Policy RAG System"
+  description="A production-style evidence intelligence and policy RAG system with traceable citations, calibrated answerability, measurable evaluation and release-like operations."
   links={[
     { label: 'GitHub Repository', href: 'https://github.com/chintan-02/policygpt-enterprise', external: true },
     { label: 'v0.3.0 Release', href: 'https://github.com/chintan-02/policygpt-enterprise/releases/tag/v0.3.0', external: true }
   ]}
+  image="/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png"
+  imageAlt="PolicyGPT Enterprise answer to a remote-work policy question with calibrated confidence and page-level citations"
+  imageCaption="Evidence-backed remote-work policy answer with calibrated confidence and page-level source citations."
 />
-
-<TechStackBlock items={["Python 3.13", "FastAPI", "Next.js 16", "React 19", "TypeScript", "PostgreSQL 16", "SQLAlchemy", "Alembic", "SentenceTransformers", "ChromaDB", "PyMuPDF", "Docker Compose"]} />
 
 ## Problem
 
-Policy answers can affect employee expectations, operational procedures, compliance reviews, and governance decisions.
+Enterprise policy answers need to be traceable to the documents that support them. Retrieval similarity alone cannot establish that a passage directly answers a question, and weak evidence must not produce speculative prose.
 
-A fluent answer is not enough. Reviewers need to know which document supports the response, which page contains the evidence, whether the retrieved text directly answers the question, whether numeric details are consistent, and what happens when the information is absent or the generation provider is unavailable.
+The system also needs to keep provider outages distinct from unsupported questions. Reviewers must be able to inspect document lifecycle state, page-level evidence, evaluation results and operational readiness instead of trusting an opaque chat response.
 
-Most basic PDF-chat systems retrieve several chunks and rely on an LLM to produce something plausible. PolicyGPT was built around a stricter principle:
+## Solution
 
-> **Evidence must earn the right to generate an answer.**
+PolicyGPT validates and registers policy PDFs with persistent identity, extracts page-aware text, creates metadata-rich chunks and indexes retrievable evidence in ChromaDB. Every question passes through an answerability gate before optional generation.
 
-## Product objective
+Supported results attach page-level citations and interpretable confidence diagnostics. Missing evidence produces a controlled unsupported response, while provider failure preserves answer-ready evidence through citation-only fallback. Evaluation artifacts and readiness views make quality and operational state inspectable.
 
-The goal was to build a reviewable evidence workflow that could:
+It is an independent portfolio engineering project with a local Docker Compose release profile—not a generic PDF chatbot, a commercially adopted product or a cloud-production system. Intended review contexts include HR, policy ownership, compliance, governance, SOP operations and RAG engineering evaluation; they are not claims of real-company usage.
 
-- establish durable document identity
-- preserve page-level provenance
-- prevent duplicate indexing
-- separate metadata, source files, vectors, and evaluation artifacts
-- evaluate answerability before generation
-- block unsupported requests
-- return page citations and confidence diagnostics
-- remain useful when the optional LLM provider is unavailable
-- expose benchmark and readiness states
-- survive a safe Docker Compose stop-and-start cycle without losing persisted data
+<aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.07)] p-5">
+  <div className="text-sm leading-7 text-ink-muted">
+    <strong className="text-ink">My engineering scope:</strong> end-to-end RAG architecture, ingestion, retrieval, evidence gating, confidence diagnostics, FastAPI services, PostgreSQL lifecycle metadata, the Next.js console, evaluation workflows, tests and Docker Compose release engineering. The verified baseline includes a 16-case benchmark, 229 backend tests and 112 frontend tests; authentication, tenancy and managed cloud deployment remain explicit boundaries.
+  </div>
+</aside>
 
-The intended portfolio use cases include HR and People Operations review, policy ownership, internal knowledge management, compliance review, SOP support, and retrieval-quality engineering. No real-company adoption is claimed.
-
-## Why this is more than a PDF chatbot
-
-| Concern | PolicyGPT design |
+| Reliability need | PolicyGPT Enterprise contract |
 | --- | --- |
-| Document identity | PostgreSQL lifecycle metadata and SHA-256 duplicate prevention |
-| Source ownership | Atomic source-file storage under generated keys |
-| Retrieval | Metadata-aware chunks and persistent ChromaDB indexing |
-| Provenance | Document, page, section, chunk, excerpt, and retrieval trace |
-| Answerability | Evidence diagnostics before generation |
-| Confidence | Calibrated support signal rather than similarity presented as probability |
-| Unsupported questions | Generation is rejected when evidence cannot support the request |
-| Provider failure | Citation-only evidence remains available |
-| Quality | Versioned 16-case benchmark with repeatable JSON and CSV artifacts |
-| Operations | Request IDs, structured logs, health contracts, migrations, and release verification |
-| Product experience | Documents, Ask, Evaluation, and System workspaces |
+| Durable document identity | PostgreSQL UUID, lifecycle record and SHA-256 identity |
+| Evidence decision | Answerability assessment before optional generation |
+| Reviewable provenance | Document, page, section, chunk and excerpt |
+| Unsupported questions | Controlled rejection with no unsupported generation |
+| Provider failure | Citation-only evidence with explicit degraded state |
+| Evaluation | Versioned 16-case supported/unsupported benchmark |
+| Operations | Migrations, liveness, readiness, request IDs and release verification |
 
-## Core workflow
+## Technology stack
 
-1. A user uploads a bounded PDF through the Next.js Documents workspace.
-2. FastAPI validates the file and calculates a SHA-256 content hash.
-3. PostgreSQL establishes document identity and prevents duplicate ingestion.
-4. The source PDF is stored atomically under a generated storage key.
-5. PyMuPDF extracts page-aware text.
-6. Cleaning and chunking preserve document, page, section, and chunk metadata.
-7. SentenceTransformer embeddings are generated locally.
-8. Chunks and embeddings are persisted in ChromaDB.
-9. The Next.js server-side BFF sends policy questions to FastAPI without exposing internal service configuration.
-10. Retrieval produces candidate evidence.
-11. The evidence layer evaluates retrieval strength, margin, lexical coverage, numeric consistency, direct support, and scope risk.
-12. The evidence gate chooses generated answer, citation-only fallback, or unsupported state.
-13. The response returns page-level evidence and inspectable confidence diagnostics.
+<div className="my-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  {[
+    ["API", ["FastAPI", "Pydantic v2", "Python", "SQLAlchemy", "Alembic"]],
+    ["RAG", ["SentenceTransformers", "PyMuPDF", "Vector Search", "Evidence Gating", "Confidence Scoring"]],
+    ["Persistence", ["PostgreSQL", "ChromaDB", "Atomic Source Storage"]],
+    ["Generation", ["Groq", "OpenAI-compatible API", "Citation-only Fallback"]],
+    ["Frontend", ["Next.js", "React", "TypeScript", "shadcn / Base UI"]],
+    ["Operations", ["Docker Compose", "structlog", "Health Checks", "Named Volumes"]],
+    ["Testing", ["pytest", "Vitest", "RAG Evaluation", "Release Verification"]]
+  ].map(([layer, technologies]) => (
+    <section key={layer} className="rounded-card border border-line bg-[rgb(var(--surface-rgb)/0.76)] p-4 shadow-card">
+      <h3 className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-accent">{layer}</h3>
+      <TechStackBlock items={technologies} />
+    </section>
+  ))}
+</div>
 
-## System architecture
+Primary skills demonstrated:
 
-<ArchitectureBlock steps={[
-  { title: "Next.js product", description: "Documents, Ask, Evaluation, and System workspaces" },
-  { title: "Server-side BFF", description: "Hides upstream configuration and normalizes live API failures" },
-  { title: "FastAPI evidence API", description: "Typed ingestion, retrieval, answer, evaluation, and readiness contracts" },
-  { title: "PostgreSQL metadata", description: "Document identity, lifecycle, duplicate protection, and safe failure state" },
-  { title: "Source PDF storage", description: "Atomic original-file persistence under generated storage keys" },
-  { title: "PyMuPDF and chunking", description: "Page-aware extraction, cleaning, and metadata-rich chunks" },
-  { title: "SentenceTransformers and ChromaDB", description: "Provider-independent embeddings and persistent evidence retrieval" },
-  { title: "Evidence gate", description: "Answerability, numeric consistency, direct support, and scope-risk checks" },
-  { title: "Generation or safe fallback", description: "Groq/OpenAI-compatible answer, citation-only evidence, or rejection" },
-  { title: "Evaluation and operations", description: "Versioned benchmark, request IDs, logs, readiness, and release checks" }
-]} />
+<TechStackBlock items={["RAG", "LLM Engineering", "FastAPI", "Next.js", "ChromaDB", "PostgreSQL", "SentenceTransformers", "Docker Compose", "RAG Evaluation", "Observability"]} />
 
-The architecture separates four ownership responsibilities:
+## Architecture flow
 
-1. PostgreSQL owns document identity and lifecycle metadata.
-2. Source storage owns original PDF files.
-3. ChromaDB owns retrievable chunks and embeddings.
-4. Evaluation storage owns completed benchmark artifacts.
+<ArchitectureBlock
+  title="Evidence-controlled policy workflow"
+  steps={[
+    { title: "Validate and register", description: "Bounded PDF checks, SHA-256 identity, PostgreSQL lifecycle and safe source storage" },
+    { title: "Extract and chunk", description: "Page-aware cleaning with document, page, section and chunk metadata" },
+    { title: "Embed and index", description: "Local SentenceTransformer embeddings persisted in ChromaDB" },
+    { title: "Retrieve evidence", description: "Candidate passages returned with page-level provenance and retrieval diagnostics" },
+    { title: "Gate answerability", description: "Evidence decision runs before optional provider generation" },
+    { title: "Return and observe", description: "Citations, safe fallback, evaluation artifacts, request IDs and readiness state" }
+  ]}
+/>
 
-This makes failure handling, backup planning, and future migration boundaries clearer.
+The ownership boundaries are explicit: PostgreSQL owns identity and lifecycle, source storage owns original PDFs, ChromaDB owns retrievable evidence, and the evaluation workflow owns completed benchmark artifacts.
+
+## RAG pipeline
+
+<div className="my-8 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+  {[
+    ["Ingestion", "Validate the PDF, calculate SHA-256, establish the PostgreSQL lifecycle record and store the source atomically."],
+    ["Indexing", "Extract and clean page-aware text, create metadata-rich chunks, embed locally and persist records in ChromaDB."],
+    ["Retrieval", "Embed the question and retrieve candidate passages with document, page, section, chunk and score metadata."],
+    ["Answerability", "Combine retrieval strength with coverage, numeric consistency, direct support and scope-risk checks."],
+    ["Generation", "Call the optional provider only when the evidence gate permits it; otherwise preserve a safe outcome."],
+    ["Citation attachment", "Return reviewable excerpts with document, page, section and retrieval diagnostics alongside the result."]
+  ].map(([title, detail], index) => (
+    <article key={title} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.6)] p-4">
+      <span className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-accent">{String(index + 1).padStart(2, "0")}</span>
+      <h3 className="mt-3 text-base font-bold text-ink">{title}</h3>
+      <p className="mt-2 text-sm leading-7 text-ink-muted">{detail}</p>
+    </article>
+  ))}
+</div>
+
+Similarity is an engineering signal used inside this workflow. It is not a probability that an answer is correct.
+
+## Controlled upload workflow
+
+Synchronous ingestion keeps lifecycle progress inspectable in the verified local release profile. The system validates the file and establishes durable identity before extraction or embedding work begins.
+
+<ScreenshotGallery
+  title="Controlled ingestion workflow"
+  items={[
+    {
+      label: "Controlled PDF-ingestion workflow connecting persistent metadata, source storage, extraction, embedding generation, and synchronous evidence indexing.",
+      image: "/images/case-studies/policygpt/12-policygpt-upload-workflow.png",
+      alt: "PolicyGPT Enterprise PDF upload workflow showing validation requirements and the metadata, storage, extraction, embedding, and indexing stages"
+    }
+  ]}
+/>
+
+## PostgreSQL document registry
+
+PostgreSQL is the source of truth for safe document identity and lifecycle metadata:
+
+- document UUID
+- original and safe filename metadata
+- SHA-256 content identity
+- generated storage key
+- lifecycle status and processing stage
+- page, character and chunk counts
+- embedding model and Chroma collection metadata
+- safe failure details
+- created, updated, indexed and failure timestamps
+
+<ScreenshotGallery
+  title="Persistent document registry"
+  items={[
+    {
+      label: "Persistent document registry connecting PostgreSQL lifecycle metadata, original PDF storage, and ChromaDB evidence indexing.",
+      image: "/images/case-studies/policygpt/04-policygpt-document-registry.png",
+      alt: "PolicyGPT Enterprise document registry with PostgreSQL lifecycle records, indexed status, PDF metadata, and document actions"
+    }
+  ]}
+/>
+
+<div className="my-8 grid gap-3 md:grid-cols-3">
+  <div className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
+    <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent">PostgreSQL</p>
+    <p className="mt-2 text-sm leading-7 text-ink-muted">Identity, lifecycle, counts and safe operational metadata.</p>
+  </div>
+  <div className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
+    <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent">Source storage</p>
+    <p className="mt-2 text-sm leading-7 text-ink-muted">Original PDF assets stored separately under generated keys.</p>
+  </div>
+  <div className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
+    <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent">ChromaDB</p>
+    <p className="mt-2 text-sm leading-7 text-ink-muted">Page-aware chunks, metadata and vector evidence.</p>
+  </div>
+</div>
+
+## Document lifecycle detail
+
+Source files and vector evidence remain separate persisted assets. Together with PostgreSQL they form one logical ingestion record, so a future backup must coordinate all three.
+
+<ScreenshotGallery
+  title="Document lifecycle detail"
+  items={[
+    {
+      label: "Safe document-detail view showing persistent metadata, vector indexing configuration, and the complete ingestion lifecycle.",
+      image: "/images/case-studies/policygpt/05-policygpt-document-detail.png",
+      alt: "PolicyGPT Enterprise document detail showing persistent metadata, vector indexing configuration, processing stages, and completed ingestion lifecycle"
+    }
+  ]}
+/>
+
+## Citation and evidence design
+
+Page-level evidence is the primary review object. Generated prose is useful only after the system has established direct support.
+
+<article className="my-8 overflow-hidden rounded-panel border border-[rgb(var(--accent-rgb)/0.32)] bg-[rgb(var(--surface-rgb)/0.86)] shadow-card">
+  <header className="flex flex-wrap items-start justify-between gap-4 border-b border-line bg-[rgb(var(--accent-rgb)/0.07)] p-5">
+    <div>
+      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">Citation 1</p>
+      <h3 className="mt-2 text-lg font-bold text-ink">sample_hr_policy.pdf</h3>
+    </div>
+    <span className="rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-xs font-bold text-accent">
+      Page 5
+    </span>
+  </header>
+  <div className="grid gap-4 p-5 sm:grid-cols-[minmax(0,1fr)_160px]">
+    <div>
+      <p className="text-xs font-bold uppercase tracking-[0.12em] text-ink-faint">3. Remote and Hybrid Work</p>
+      <blockquote className="mt-3 border-l-2 border-accent pl-4 text-sm leading-7 text-ink-muted">
+        Employees approved for remote work must maintain a safe, private and reliable workspace. Approved ergonomic or productivity items may be reimbursed up to CAD 300 with receipts and prior approval.
+      </blockquote>
+    </div>
+    <div className="rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.64)] p-4">
+      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-ink-faint">Retrieval score</p>
+      <p className="mt-2 font-display text-2xl font-bold text-ink">0.6217</p>
+      <p className="mt-2 text-xs leading-5 text-ink-muted">A retrieval input—not guaranteed certainty.</p>
+    </div>
+  </div>
+</article>
+
+## Evidence and answerability diagnostics
+
+The evidence view exposes the factors behind the answerability decision alongside the retrieved passages, so a reviewer can inspect both support quality and provenance.
+
+<ScreenshotGallery
+  title="Evidence and answerability diagnostics"
+  items={[
+    {
+      label: "Explainable answerability diagnostics showing retrieval strength, lexical coverage, direct support, scope risk, provider state, and page-level evidence.",
+      image: "/images/case-studies/policygpt/02-policygpt-evidence-confidence-diagnostics.png",
+      alt: "PolicyGPT Enterprise evidence panel with retrieval strength, lexical coverage, direct support, scope risk, provider state, and page-level citations"
+    }
+  ]}
+/>
+
+## Unsupported-answer safety
+
+The same retrieval path can produce three intentionally different outcomes:
+
+<div className="my-8 grid gap-4 lg:grid-cols-3">
+  <article className="rounded-panel border border-[rgb(var(--accent-rgb)/0.34)] bg-[rgb(var(--accent-rgb)/0.08)] p-5 shadow-card">
+    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">01 · Supported</span>
+    <h3 className="mt-3 text-lg font-bold text-ink">Evidence passes, provider available</h3>
+    <p className="mt-3 text-sm leading-7 text-ink-muted">Generate an evidence-bound answer and attach page-level citations and diagnostics.</p>
+  </article>
+  <article className="rounded-panel border border-[rgb(var(--violet-rgb)/0.32)] bg-[rgb(var(--violet-rgb)/0.08)] p-5 shadow-card">
+    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-muted">02 · Degraded</span>
+    <h3 className="mt-3 text-lg font-bold text-ink">Evidence passes, provider unavailable</h3>
+    <p className="mt-3 text-sm leading-7 text-ink-muted">Return citation-only evidence and identify the provider failure without calling the question unsupported.</p>
+  </article>
+  <article className="rounded-panel border border-line bg-[rgb(var(--surface2-rgb)/0.72)] p-5 shadow-card">
+    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">03 · Rejected</span>
+    <h3 className="mt-3 text-lg font-bold text-ink">Evidence does not support the question</h3>
+    <p className="mt-3 text-sm leading-7 text-ink-muted">Block generation and return a controlled unsupported response instead of speculative prose.</p>
+  </article>
+</div>
+
+This separation prevents weak evidence and provider outages from collapsing into the same ambiguous “no answer” state.
+
+<ScreenshotGallery
+  title="Unsupported-answer guardrail"
+  items={[
+    {
+      label: "Controlled unsupported-answer state that blocks generation when indexed policies provide no usable evidence.",
+      image: "/images/case-studies/policygpt/03-policygpt-unsupported-answer-fallback.png",
+      alt: "PolicyGPT Enterprise unsupported-answer state showing insufficient evidence, blocked generation, and a safe fallback message"
+    }
+  ]}
+/>
+
+## Confidence design
+
+Confidence is an interpretable answerability signal—not guaranteed certainty, an LLM self-rating or a claim that the generated answer is correct.
+
+It is informed by:
+
+- top retrieval score
+- average retrieval score
+- retrieval margin
+- lexical coverage
+- numeric consistency
+- direct support
+- scope risk
+
+The final decision uses these diagnostics to explain why evidence was accepted or rejected. A high similarity score alone cannot override numeric contradictions, missing direct support or an external-authority question outside the indexed documents.
+
+<ScreenshotGallery
+  title="Confidence scoring"
+  items={[
+    {
+      label: "Interpretable answerability diagnostics combining retrieval strength, policy-term coverage, direct support, numeric consistency, and scope-risk checks.",
+      image: "/images/case-studies/policygpt/08-policygpt-confidence-diagnostics.png",
+      alt: "PolicyGPT Enterprise confidence diagnostics with retrieval strength, policy-term coverage, direct support, numeric consistency, and scope-risk factors"
+    }
+  ]}
+/>
+
+## Evaluation
+
+<div className="my-8 grid gap-3 sm:grid-cols-3">
+  {[
+    ["16", "Benchmark cases"],
+    ["11", "Expected-supported"],
+    ["5", "Expected-unsupported"]
+  ].map(([value, label]) => (
+    <div key={label} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.64)] p-4 text-center">
+      <p className="font-display text-3xl font-bold tracking-[-0.04em] text-ink">{value}</p>
+      <p className="mt-2 text-xs font-semibold text-ink-muted">{label}</p>
+    </div>
+  ))}
+</div>
+
+<div className="my-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+  {[
+    ["100%", "Answer-readiness accuracy"],
+    ["100%", "Unsupported / fallback accuracy"],
+    ["100%", "Expected-page retrieval hit rate"],
+    ["0", "Request errors"]
+  ].map(([value, label]) => (
+    <div key={label} className="rounded-card border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.07)] p-4">
+      <p className="font-display text-2xl font-bold tracking-[-0.04em] text-ink">{value}</p>
+      <p className="mt-2 text-xs font-semibold leading-5 text-ink-muted">{label}</p>
+    </div>
+  ))}
+</div>
+
+<aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.32)] bg-[rgb(var(--accent-rgb)/0.08)] p-5">
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-accent">Controlled local benchmark—not production accuracy.</p>
+  <div className="mt-3 text-sm leading-7 text-ink-muted">
+    The verified run disabled the generation provider. Supported questions therefore returned citation-only evidence. The run verified answer-readiness, unsupported and fallback behaviour, expected-page retrieval and request reliability; it did not verify generated-answer quality.
+  </div>
+</aside>
+
+<ScreenshotGallery
+  title="Evaluation dashboard"
+  showBadge
+  items={[
+    {
+      label: "Controlled RAG benchmark showing retrieval quality, unsupported-answer safety, provider availability, and production-style quality gates.",
+      image: "/images/case-studies/policygpt/06-policygpt-evaluation-overview.png",
+      alt: "PolicyGPT Enterprise evaluation overview showing benchmark metrics, retrieval quality, unsupported-answer safety, provider availability, and quality gates"
+    }
+  ]}
+/>
+
+## Supported and unsupported cases
+
+The case-level view keeps supported and unsupported expectations inspectable instead of reducing the benchmark to one aggregate score. Each capture is full width so confidence, gate state and fallback behavior remain readable.
+
+<ScreenshotGallery
+  title="Supported benchmark cases"
+  columns={1}
+  items={[
+    {
+      label: "Supported remote-work benchmark cases with answer-ready evidence, passed safety gates, calibrated confidence, and citation-only provider fallback.",
+      image: "/images/case-studies/policygpt/07a-policygpt-supported-evaluation-cases.png",
+      alt: "PolicyGPT Enterprise supported evaluation cases with answer-ready evidence, confidence, safety gates, citations, and provider fallback status"
+    },
+    {
+      label: "Five unsupported benchmark cases correctly rejected with insufficient evidence, no generation, and validated safe fallback behavior.",
+      image: "/images/case-studies/policygpt/07b-policygpt-unsupported-evaluation-cases.png",
+      alt: "PolicyGPT Enterprise unsupported evaluation cases showing five correct rejections, insufficient evidence, no generation, and safe fallback validation"
+    }
+  ]}
+/>
+
+## Provider reliability
+
+Provider state is reported separately from evidence quality. In the provider-disabled benchmark, supported cases remained answer-ready and returned citation-only evidence; unsupported cases were still rejected before generation.
+
+<ScreenshotGallery
+  title="Provider-resilient results"
+  items={[
+    {
+      label: "Provider-reliability diagnostics showing that evidence retrieval remained answer-ready while citation-only fallback preserved usable results during generation unavailability.",
+      image: "/images/case-studies/policygpt/09-policygpt-provider-reliability.png",
+      alt: "PolicyGPT Enterprise provider-reliability diagnostics showing answer-ready retrieval and citation-only fallback while generation is unavailable"
+    }
+  ]}
+/>
+
+## Evaluation artifacts
+
+Completed evaluation runs preserve the dataset identity and execution configuration needed to interpret and reproduce the results. The UI exposes the full case coverage and downloadable artifacts rather than presenting metrics without their run context.
+
+<ScreenshotGallery
+  title="Versioned evaluation run"
+  items={[
+    {
+      label: "Versioned evaluation artifact with reproducible dataset identity, complete benchmark coverage, execution configuration, and downloadable JSON/CSV results.",
+      image: "/images/case-studies/policygpt/11-policygpt-evaluation-run-details.png",
+      alt: "PolicyGPT Enterprise evaluation run details with dataset version, benchmark coverage, execution settings, and JSON and CSV download controls"
+    }
+  ]}
+/>
+
+## Docker and operations
+
+The v0.3.0 baseline is release-like local orchestration, not a production deployment.
+
+<ArchitectureBlock
+  title="Dependency-aware startup"
+  steps={[
+    { title: "PostgreSQL healthy", description: "Database health gate passes" },
+    { title: "Alembic migration completes", description: "Schema authority exits successfully" },
+    { title: "FastAPI ready", description: "PostgreSQL and Chroma readiness checks pass" },
+    { title: "Next.js ready", description: "The server-side BFF confirms backend readiness" }
+  ]}
+/>
+
+The local release profile includes:
+
+- non-root backend and frontend containers
+- stable named volumes for PostgreSQL, Chroma, source PDFs, logs and evaluation artifacts
+- request IDs returned in headers and included in structured completion logs
+- separate process liveness and dependency readiness
+- normalized API errors that exclude internal configuration and raw exceptions
+- conservative security headers and server-only upstream configuration
+- smoke testing, preflight checks and release verification
+
+The optional generation provider does not gate readiness because retrieval and citation review remain useful in citation-only mode.
+
+## System readiness
+
+<ScreenshotGallery
+  title="System readiness"
+  showBadge
+  items={[
+    {
+      label: "Dependency-aware system status separating process liveness, PostgreSQL and ChromaDB readiness, provider configuration, and honest production boundaries.",
+      image: "/images/case-studies/policygpt/10-policygpt-system-readiness.png",
+      alt: "PolicyGPT Enterprise system status separating frontend and API liveness, PostgreSQL and ChromaDB readiness, provider configuration, and deployment boundaries"
+    }
+  ]}
+/>
+
+## UI/UX
+
+The Next.js enterprise console is organized around four product areas:
+
+<div className="my-8 grid gap-4 sm:grid-cols-2">
+  {[
+    ["Documents", "Upload PDFs, inspect registry records, lifecycle state, duplicate handling and document details."],
+    ["Ask", "Compose a policy question and review answerability, answer state, evidence, citations and diagnostics."],
+    ["Evaluation", "Inspect the latest validated benchmark, case outcomes, confidence factors and provider reliability."],
+    ["System", "Review frontend, backend, PostgreSQL, Chroma and optional-provider readiness without exposing internal URLs."]
+  ].map(([title, detail]) => (
+    <article key={title} className="rounded-card border border-line bg-[rgb(var(--surface-rgb)/0.76)] p-5 shadow-card">
+      <h3 className="text-lg font-bold text-ink">{title}</h3>
+      <p className="mt-2 text-sm leading-7 text-ink-muted">{detail}</p>
+    </article>
+  ))}
+</div>
+
+The interface distinguishes processing, ready, failed, unsupported, provider unavailable and dependency unavailable states. This prevents a loading state, ingestion failure, evidence rejection and optional-provider outage from appearing equivalent.
+
+## Built vs planned
 
 <StatusBadges
   built={[
-    "Next.js enterprise console",
     "FastAPI evidence API",
-    "PostgreSQL document lifecycle",
-    "SHA-256 duplicate prevention",
-    "Atomic source storage",
-    "Persistent ChromaDB retrieval",
-    "Calibrated answerability",
+    "Next.js enterprise console",
+    "PostgreSQL document metadata",
+    "Local source PDF storage",
+    "ChromaDB evidence indexing",
     "Page-level citations",
-    "Citation-only provider fallback",
-    "16-case evaluation framework",
-    "Request IDs and structured logs",
-    "Migration-gated Docker Compose",
-    "Release verification"
+    "Evidence gate and unsupported fallback",
+    "Interpretable confidence diagnostics",
+    "Controlled evaluation benchmark",
+    "Provider-failure diagnostics",
+    "Structured logging and request IDs",
+    "Docker Compose release profile",
+    "Liveness and readiness checks"
   ]}
   planned={[
-    "Authentication and RBAC",
+    "Authentication and authorization",
     "Tenant isolation",
-    "Object storage and malware scanning",
-    "Asynchronous ingestion workers",
-    "Managed cloud infrastructure",
-    "Hosted monitoring and alerting",
-    "Document deletion and reindexing",
-    "Multi-document comparison"
+    "Managed secrets",
+    "Hosted monitoring",
+    "Backups and TLS termination",
+    "Background ingestion workers",
+    "Multi-replica coordination",
+    "Managed cloud deployment"
   ]}
 />
 
-## Product walkthrough
+## Testing and validation
 
-<ScreenshotGallery
-  title="v0.3.0 screenshot plan"
-  note="The screenshot boxes remain intentionally. The old Streamlit captures should not represent the current Next.js release. These slots will be replaced with verified screenshots from the v0.3.0 product."
-  items={[
-    { label: "Documents workspace", detail: "PDF upload, registry search, lifecycle states, pagination, duplicate handling, and document detail." },
-    { label: "Evidence-backed Ask", detail: "Answerability state, generated or citation-only result, confidence reasons, and page citations." },
-    { label: "Unsupported-question fallback", detail: "Controlled rejection when the indexed documents do not provide enough direct support." },
-    { label: "Evaluation overview", detail: "Latest validated artifact, benchmark counts, answer-readiness, page retrieval, and provider state." },
-    { label: "Evaluation case diagnostics", detail: "Expected versus actual support, confidence breakdown, citations, pages, and safe error details." },
-    { label: "System readiness", detail: "Frontend, backend liveness, backend readiness, PostgreSQL, Chroma, and optional provider status." }
-  ]}
-/>
+The verified repository baseline includes:
 
-## Evidence gate and confidence design
+<div className="my-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+  {[
+    ["229", "Backend tests"],
+    ["112", "Frontend tests"],
+    ["16 cases", "Benchmark validation"],
+    ["Passed", "Frontend lint"],
+    ["Passed", "Production build"],
+    ["Verified", "Docker Compose health and release workflow"]
+  ].map(([value, label]) => (
+    <div key={label} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
+      <p className="font-display text-2xl font-bold tracking-[-0.04em] text-ink">{value}</p>
+      <p className="mt-2 text-xs font-semibold text-ink-muted">{label}</p>
+    </div>
+  ))}
+</div>
 
-PolicyGPT does not present vector similarity as the probability that an answer is correct.
+Validation also covers dataset schema, duplicate-upload behaviour, provider fallback, non-root images, health-gated startup, persistence across a safe Compose restart, smoke testing and release verification.
 
-The confidence value is an **answerability signal** informed by:
+These are repository validation facts. They are not customer metrics, production usage, a service-level claim or proof of commercial adoption.
 
-- top and average retrieval scores
-- retrieval margin
-- query-to-evidence lexical coverage
-- top-chunk lexical coverage
-- numeric consistency
-- direct support
-- scope or external-authority risk
+## Engineering challenges
 
-The evidence gate operates before generation. If the documents do not directly support the request, the system does not ask an LLM to improvise.
+<div className="my-8 grid gap-4 md:grid-cols-2">
+  {[
+    ["Preserving page provenance during PDF cleaning", "Keep extraction and cleanup page-aware so document, page, section and chunk identity survive indexing."],
+    ["Duplicate prevention before embedding", "Hash the complete file and enforce PostgreSQL uniqueness before extraction and vector writes."],
+    ["Partial ingestion failures", "Persist visible lifecycle stages, compensate for incomplete work and expose safe failure details."],
+    ["Answerability versus similarity", "Add lexical, numeric, direct-support and scope-risk checks rather than treating one vector score as truth."],
+    ["Provider failure", "Retry transient failures, then return citation-only evidence without hiding valid retrieval."],
+    ["Multiple persistence owners", "Assign identity to PostgreSQL, sources to file storage, evidence to Chroma and results to evaluation storage."],
+    ["Dependency-aware startup", "Gate migrations, backend readiness and frontend readiness in explicit order while keeping liveness lightweight."]
+  ].map(([challenge, solution]) => (
+    <article key={challenge} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-5">
+      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">Challenge</p>
+      <h3 className="mt-3 text-base font-bold leading-6 text-ink">{challenge}</h3>
+      <p className="mt-4 font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">Solution</p>
+      <p className="mt-2 text-sm leading-7 text-ink-muted">{solution}</p>
+    </article>
+  ))}
+</div>
 
-Three truthful outcomes are possible:
+## Engineering decisions
 
-- **supported evidence and provider available:** generate an answer with page-level citations
-- **supported evidence and provider unavailable:** return citation-only evidence and identify the degraded provider state
-- **unsupported evidence:** block generation and return a controlled unsupported response
+### Why gate evidence before calling the provider?
 
-This prevents a provider outage from being misrepresented as missing policy evidence and prevents weak retrieval from being presented as a supported answer.
+Generation is optional and runs only after retrieved evidence passes the answerability decision. This keeps weak evidence from becoming fluent but unsupported prose.
 
-## Evaluation system
+### Why separate PostgreSQL from ChromaDB?
 
-<MetricCard
-  label="Controlled Local Benchmark"
-  value="16 cases · 100% answer-readiness accuracy"
-  note="Provider-disabled Docker Compose run: 11 expected-supported and 5 expected-unsupported cases, 100% fallback accuracy, 100% expected-page retrieval hit rate, and 0 request errors. Supported cases returned citation-only evidence; generated-answer quality was not evaluated in this run."
-/>
+Document identity, lifecycle and operational metadata have different responsibilities from vector retrieval evidence. Keeping those ownership boundaries explicit makes ingestion state, duplicate prevention and recovery easier to reason about.
 
-The versioned benchmark contains:
+### Why separate provider failure from unsupported evidence?
 
-- 16 total questions
-- 11 expected-supported questions
-- 5 expected-unsupported questions
-- 6 easy, 6 moderate, and 4 hard cases
+A provider outage does not erase valid retrieved evidence. When evidence remains answer-ready, citation-only fallback preserves a useful and honest result instead of misclassifying the question as unsupported.
 
-Cases cover remote work, vacation, leave, expenses, confidentiality, information security, performance, workplace conduct, and AI privacy. Unsupported cases test private information, executive facts outside the documents, legal advice, security details, and benefits not described by policy.
+### Why is confidence not an LLM self-rating?
 
-Per-case diagnostics include support expectation, evidence status, confidence breakdown, answerability, retrieval scores, margin, lexical coverage, numeric consistency, scope risk, direct support, expected and retrieved pages, keyword coverage, citation count, duplicate-citation checks, provider state, latency, and safe error information.
+The confidence signal is derived from observable retrieval and evidence diagnostics, including strength, coverage, numeric consistency, direct support and scope risk. It does not ask a language model to grade its own answer.
 
-A verified provider-disabled release run recorded:
+## Current limitations and roadmap
 
-| Metric | Result |
-| --- | ---: |
-| Total cases | 16 |
-| Answer-readiness accuracy | 100% |
-| Fallback accuracy | 100% |
-| Expected-page retrieval hit rate | 100% |
-| Request errors | 0 |
-| Average confidence | 0.4698 |
-| Average supported confidence | 0.6833 |
-| Average citation count | 1.69 |
-| Local average latency | 24.19 ms |
+PolicyGPT Enterprise is not a finished production platform. Current limitations are intentionally visible:
 
-These values describe one controlled local benchmark. They are not production accuracy, customer performance, or service-level guarantees. Because generation was disabled, generated-answer keyword quality was not evaluated.
-
-## Release and operational hardening
-
-<MetricCard
-  label="Verified v0.3.0 Release Baseline"
-  value="229 backend tests · 112 frontend tests"
-  note="Also validated: dataset schema, frontend lint and production build, Compose configuration, four-service health, non-root images, duplicate-upload behaviour, provider fallback, persistence across safe restart, smoke testing, and release verification."
-/>
-
-The release-like local profile uses:
-
-```text
-PostgreSQL becomes healthy
-→ Alembic migrations complete
-→ FastAPI becomes ready
-→ Next.js becomes ready
-```
-
-Named volumes persist PostgreSQL data, Chroma data, source PDFs, structured logs, and evaluation artifacts. Backend and frontend images run as non-root users.
-
-Liveness confirms that the FastAPI process is running. Readiness checks the PostgreSQL and Chroma dependencies required for evidence workflows. The optional generation provider does not gate readiness because retrieval and citation review remain useful without it.
-
-Every request receives a validated or generated request identifier that is returned in headers and included in normalized errors and structured completion logs. The application avoids logging document bytes, request bodies, questions, answers, credentials, cookies, chunks, or embeddings.
-
-## Security boundaries
-
-The release profile includes constrained CORS, fail-fast configuration, conservative security headers, normalized errors, disabled Next.js powered-by headers, and server-only upstream configuration.
-
-Operational responses do not expose connection strings, credentials, provider keys, service hosts, storage paths, stack traces, raw chunks, or embeddings.
-
-These controls improve the engineering baseline, but they are not a complete security model. Authentication, authorization, tenant isolation, malware scanning, managed secrets, TLS termination, formal retention policies, security certification, and production governance remain outside the current implementation.
-
-## Engineering challenges and decisions
-
-### Document identity before expensive processing
-
-Duplicate detection needs to happen before extraction and embedding. PolicyGPT hashes the complete file and uses PostgreSQL uniqueness to prevent duplicate rows and vectors even when filenames change.
-
-### Provenance without destroying page boundaries
-
-PDF cleaning can remove useful citation structure. Processing remains page-aware so document, page, section, and chunk provenance survive cleaning and indexing.
-
-### Answerability beyond vector similarity
-
-Topical similarity does not guarantee direct support. The evidence layer adds lexical, numeric, direct-support, and scope-risk checks before generation.
-
-### Provider resilience
-
-An LLM outage should not hide valid policy evidence. Local embeddings and Chroma retrieval remain available, and supported evidence can be returned in citation-only form.
-
-### Multiple persistence owners
-
-PostgreSQL, source storage, Chroma, and evaluation artifacts have different responsibilities. Explicit ownership makes operational boundaries visible, though future backup and recovery must coordinate all stores.
-
-### Synchronous ingestion
-
-Synchronous ingestion keeps lifecycle state inspectable and easier to demonstrate, but it is not suitable for high-volume or long-running uploads.
-
-## Current limitations
-
-PolicyGPT Enterprise is not a finished production platform.
-
-Current limitations include:
-
-- no cloud deployment or real-company production usage
-- no authentication, RBAC, or tenant isolation
-- no malware scanning or object storage
-- no managed secrets or TLS termination
-- no formal retention or compliance certification
+- no cloud deployment
+- no authentication or authorization
+- no tenant isolation
 - synchronous ingestion
-- single-instance embedded Chroma
-- local source-file storage
-- no document deletion or reindexing
-- no background worker queue
+- embedded single-instance Chroma
+- local source storage
+- no malware scanning
+- no managed secrets
 - no managed backups
-- no distributed tracing platform
-- no hosted monitoring or alerting
-- no multi-document comparison
-- a controlled 16-case benchmark rather than broad domain validation
+- no hosted monitoring
+- no document deletion or reindexing
+- no production usage claim
 
-## Roadmap
+Additional production work would require TLS termination, retention and governance controls, recovery testing, broader domain validation and formal security review.
 
-The next production-oriented sequence is:
+The next work is ordered by risk and operational dependency:
 
-1. identity, authentication, authorization, and tenant boundaries
-2. object storage, malware scanning, retention, deletion, and reindexing
-3. asynchronous jobs, retries, dead-letter handling, progress, and cancellation
-4. managed PostgreSQL, coordinated backups, distributed vectors, TLS, and secrets
-5. OpenTelemetry, metrics dashboards, alerting, and provider cost monitoring
-6. hybrid retrieval, reranking, document-scoped Ask, multi-document comparison, and a larger human-reviewed benchmark
-7. controlled report and comparison workflows
+1. authentication, authorization and tenant isolation
+2. object storage and malware scanning
+3. asynchronous ingestion
+4. deletion and reindexing
+5. managed PostgreSQL and backups
+6. telemetry and alerting
+7. hybrid search and reranking
+8. larger human-reviewed evaluation
+9. multi-document comparison
+10. compliance-report workflows
+11. query routing or LangGraph only when justified
 
-Agentic orchestration should be considered only after identity, evaluation, observability, and recovery controls are established.
-
-## My role
-
-I designed and implemented PolicyGPT Enterprise end to end, including product positioning, FastAPI contracts, PDF extraction and chunking, local embeddings and Chroma retrieval, evidence gating, unsupported and provider-fallback behaviour, PostgreSQL document lifecycle, Next.js product and BFF, evaluation dataset and runner, liveness and readiness, request IDs, structured logs, Docker images, Compose orchestration, smoke testing, release verification, and technical documentation.
+Agentic orchestration comes after identity, evaluation, observability and recovery controls—not before them.
 
 ## What this project demonstrates
 
-PolicyGPT demonstrates end-to-end RAG engineering beyond prompt assembly: durable data modeling, provenance, calibrated answerability, controlled failure, provider resilience, custom evaluation, API contracts, Next.js product development, operations, testing, release verification, and explicit responsible-AI and security boundaries.
+I designed and implemented PolicyGPT Enterprise end to end. The project demonstrates production-style RAG architecture, evidence gating, page-level citation provenance, PostgreSQL and vector-store coordination, interpretable confidence diagnostics, safe unsupported and provider-failure fallbacks, versioned evaluation design, request-level observability and Docker Compose deployment engineering.
 
-The strongest lesson is that trustworthy RAG is not primarily a prompting problem. It is a systems problem involving identity, evidence, evaluation, failure handling, and operations.
+The strongest engineering result is the explicit system boundary: it is a verified local release profile with inspectable evidence and evaluation—not a commercial SaaS product, a cloud production deployment or proof of real-company adoption.
+
+<section className="my-10 rounded-hero border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] p-6 shadow-card sm:p-8">
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Inspect the implementation</p>
+  <h3 className="mt-3 font-display text-2xl font-bold tracking-[-0.03em] text-ink sm:text-3xl">Evidence, evaluation and release engineering—open for review.</h3>
+  <div className="mt-4 max-w-2xl text-base leading-8 text-ink-muted">
+    Inspect the source code, evaluation framework, operational documentation and verified local release workflow.
+  </div>
+  <div className="mt-6 flex flex-wrap gap-3">
+    <Button href="https://github.com/chintan-02/policygpt-enterprise" external variant="onDarkAccent">
+      View GitHub Repository
+    </Button>
+    <Button href="https://github.com/chintan-02/policygpt-enterprise/releases/tag/v0.3.0" external variant="onDark">
+      Explore v0.3.0 Release
+    </Button>
+  </div>
+</section>
