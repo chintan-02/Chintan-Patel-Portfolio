@@ -18,7 +18,7 @@ const variants = {
   // literal white so it stays correctly visible in both the dark and light themes.
   onDark: 'bg-transparent text-ink border border-[rgb(var(--ink-rgb)/0.35)] hover:bg-[rgb(var(--ink-rgb)/0.1)] hover:border-[rgb(var(--ink-rgb)/0.6)] hover:-translate-y-0.5',
   // AMBER primary for DARK backgrounds — dark text on amber (brand, high-contrast)
-  onDarkAccent: 'bg-accent text-[#0A0A0F] border border-accent shadow-[0_10px_30px_rgb(var(--accent-rgb)/0.2)] hover:bg-accent-strong hover:border-accent-strong hover:-translate-y-0.5'
+  onDarkAccent: 'bg-accent text-[#0A0A0F] visited:text-[#0A0A0F] hover:bg-[#F0B98E] hover:border-accent-strong hover:text-[#0A0A0F] focus-visible:text-[#0A0A0F] focus-visible:outline-ink [&>svg]:text-[#0A0A0F] border border-accent shadow-[0_10px_30px_rgb(var(--accent-rgb)/0.2)] hover:-translate-y-0.5'
 };
 
 export function Button({ href, children, variant = 'primary', className, external = false, icon = true, download = false, ...props }) {
