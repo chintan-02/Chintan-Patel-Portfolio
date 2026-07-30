@@ -582,14 +582,35 @@ The strongest engineering result is the explicit system boundary: it is a verifi
     Inspect the source code, evaluation framework, operational documentation and verified local release workflow.
   </div>
   <div className="mt-6 flex flex-wrap gap-3">
-    <Button
+    <a
       href="https://github.com/chintan-02/policygpt-enterprise"
-      external
-      variant="onDarkAccent"
-      style={{ color: '#0A0A0F' }}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="Open PolicyGPT Enterprise GitHub repository in a new tab"
+      className="inline-flex items-center justify-center gap-2 rounded-card border border-accent bg-accent px-5 py-3 text-sm font-bold shadow-[0_10px_30px_rgb(var(--accent-rgb)/0.2)] transition-all duration-200 ease-out-soft hover:-translate-y-0.5 hover:border-[#F0B98E] hover:bg-[#F0B98E] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+      style={{
+        color: '#0A0A0F',
+        WebkitTextFillColor: '#0A0A0F',
+      }}
     >
-      View GitHub Repository
-    </Button>
+      <span
+        style={{
+          color: '#0A0A0F',
+          WebkitTextFillColor: '#0A0A0F',
+        }}
+      >
+        View GitHub Repository
+      </span>
+      <span
+        aria-hidden="true"
+        style={{
+          color: '#0A0A0F',
+          WebkitTextFillColor: '#0A0A0F',
+        }}
+      >
+        ↗
+      </span>
+    </a>
     <Button href="https://github.com/chintan-02/policygpt-enterprise/releases/tag/v0.3.0" external variant="onDark">
       Explore v0.3.0 Release
     </Button>
