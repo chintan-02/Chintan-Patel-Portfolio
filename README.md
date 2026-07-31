@@ -13,7 +13,7 @@
 
 [Live Portfolio](https://chintan-patel-ai.netlify.app/) ·
 [GitHub Profile](https://github.com/chintan-02) ·
-[LinkedIn](https://www.linkedin.com/in/chintan-patel-987765129/)
+[LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
 
 </div>
 
@@ -68,7 +68,7 @@ The portfolio targets opportunities in:
 |---|---|
 | Portfolio | [chintan-patel-ai.netlify.app](https://chintan-patel-ai.netlify.app/) |
 | GitHub | [github.com/chintan-02](https://github.com/chintan-02) |
-| LinkedIn | [linkedin.com/in/chintan-patel-987765129](https://www.linkedin.com/in/chintan-patel-987765129/) |
+| LinkedIn | [linkedin.com/in/chintan-patel-ai](https://www.linkedin.com/in/chintan-patel-ai/) |
 
 The site is deployed through Netlify as a client-side React application.
 
@@ -831,7 +831,7 @@ The portfolio itself is a deployed frontend application and project communicatio
 Applied AI/ML Engineer based in Calgary, Alberta, Canada.
 
 - [Portfolio](https://chintan-patel-ai.netlify.app/)
-- [LinkedIn](https://www.linkedin.com/in/chintan-patel-987765129/)
+- [LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
 - [GitHub](https://github.com/chintan-02)
 - [Email](mailto:patel.chintan380@gmail.com)
 

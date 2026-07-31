@@ -9,7 +9,7 @@ import { siteMeta } from '../data/siteMeta.js';
 export function Contact() {
   const items = [
     { label: 'Email', value: siteMeta.email, href: `mailto:${siteMeta.email}`, icon: Mail, ariaLabel: `Email ${siteMeta.name}` },
-    { label: 'LinkedIn', value: 'linkedin.com/in/chintan-patel-987765129', href: siteMeta.linkedin, icon: BrandLinkedin, ariaLabel: 'Open Chintan Patel LinkedIn profile' },
+    { label: 'LinkedIn', value: siteMeta.linkedin.replace('https://www.', '').replace(/\/$/, ''), href: siteMeta.linkedin, icon: BrandLinkedin, ariaLabel: 'Open Chintan Patel LinkedIn profile' },
     { label: 'GitHub', value: 'github.com/chintan-02', href: siteMeta.github, icon: BrandGithub, ariaLabel: 'Open Chintan Patel GitHub profile' },
     { label: 'Location', value: siteMeta.location, href: null, icon: MapPin }
   ];
