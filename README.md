@@ -74,6 +74,23 @@ The site is deployed through Netlify as a client-side React application.
 
 ---
 
+## Portfolio operations
+
+- Production deployment uses Netlify, with private Netlify Web Analytics based
+  on aggregate CDN request logs; no client-side analytics library is added.
+- Netlify prerendering should remain enabled and verified so SPA route metadata
+  is visible to crawlers.
+- Netlify supplies production security headers and a report-only CSP while
+  browser compatibility is validated before enforcement.
+- `/privacy` explains analytics, external links, email, and public downloads.
+- A keyboard skip link targets the main page content, and a root error boundary
+  provides safe reload and homepage recovery actions.
+- GitHub Actions runs install, lint, build, and whitespace checks. Dependabot
+  checks npm and GitHub Actions dependencies weekly without automatic merging.
+- Run the complete local validation with `npm run check`.
+
+---
+
 ## Flagship Projects
 
 ### TriageAI / SympDirect
@@ -340,6 +357,7 @@ Rendered long-form content
 | `/writing/:slug` | Individual technical article |
 | `/about` | Professional background and current focus |
 | `/contact` | Contact methods and opportunity context |
+| `/privacy` | Privacy and aggregate analytics disclosure |
 | `*` | Custom not-found page |
 
 ---

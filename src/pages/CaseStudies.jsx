@@ -36,14 +36,14 @@ export function CaseStudies() {
                       </div>
                       <div className="hidden lg:flex lg:flex-col lg:gap-2">
                         {p.liveUrl && (
-                          <a href={p.liveUrl} target="_blank" rel="noreferrer"
+                          <a href={p.liveUrl} target="_blank" rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
                             className="text-xs font-bold text-accent transition hover:text-accent-strong">
                             Live demo ↗
                           </a>
                         )}
                         {p.githubUrl && (
-                          <a href={p.githubUrl} target="_blank" rel="noreferrer"
+                          <a href={p.githubUrl} target="_blank" rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
                             className="text-xs font-bold text-ink-muted transition hover:text-ink">
                             GitHub ↗

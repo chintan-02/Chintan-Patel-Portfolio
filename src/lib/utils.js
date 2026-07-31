@@ -7,7 +7,7 @@ export function cn(...classes) {
 export function externalProps(label = 'external link') {
   return {
     target: '_blank',
-    rel: 'noreferrer',
+    rel: 'noopener noreferrer',
     'aria-label': label
   };
 }

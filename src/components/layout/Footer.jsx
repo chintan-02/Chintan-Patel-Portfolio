@@ -1,4 +1,5 @@
 import { Mail } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { BrandGithub, BrandLinkedin } from '../ui/BrandIcons.jsx';
 import { siteMeta } from '../../data/siteMeta.js';
 import { externalProps } from '../../lib/utils.js';
@@ -10,6 +11,12 @@ export function Footer() {
         <div>
           <p className="font-display text-lg font-bold tracking-[-0.04em] text-ink">Chintan Patel</p>
           <p className="mt-1 text-sm text-ink-faint">Applied AI/ML Engineer · Data Science · Production ML Systems</p>
+          <Link
+            to="/privacy"
+            className="mt-3 inline-flex text-xs font-semibold text-ink-faint transition-colors hover:text-accent"
+          >
+            Privacy
+          </Link>
         </div>
         <div className="flex items-center gap-3 text-ink-muted">
           <a href={`mailto:${siteMeta.email}`} className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.7)] p-3 transition hover:border-[rgb(var(--accent-rgb)/0.4)] hover:text-ink" aria-label="Email">

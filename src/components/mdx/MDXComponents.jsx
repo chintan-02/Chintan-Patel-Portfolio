@@ -142,7 +142,7 @@ export const mdxComponents = {
       <a
         className="font-semibold text-accent underline decoration-[rgb(var(--accent-rgb)/0.3)] underline-offset-4"
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         {...props}
       />
     );

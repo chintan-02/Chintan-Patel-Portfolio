@@ -64,7 +64,7 @@ export function Contact() {
                 href={item.href}
                 key={item.label}
                 target={item.href.startsWith('mailto:') ? undefined : '_blank'}
-                rel={item.href.startsWith('mailto:') ? undefined : 'noreferrer'}
+                rel={item.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
                 aria-label={item.ariaLabel}
                 className="group block rounded-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
               >
@@ -85,7 +85,7 @@ export function Contact() {
           <Link to="/case-studies/triageai" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
             TriageAI Case Study
           </Link>
-          <a href={siteMeta.github} target="_blank" rel="noreferrer" aria-label="Open Chintan Patel GitHub profile" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
+          <a href={siteMeta.github} target="_blank" rel="noopener noreferrer" aria-label="Open Chintan Patel GitHub profile" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
             GitHub
           </a>
         </div>

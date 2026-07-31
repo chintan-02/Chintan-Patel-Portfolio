@@ -88,9 +88,9 @@ export function Hero() {
         </motion.div>
 
         <motion.div variants={item} className="mt-6 flex justify-center gap-5 font-mono text-[12px] tracking-[0.04em] text-ink-faint md:justify-start">
-          <a href={siteMeta.github} target="_blank" rel="noreferrer" className="transition-colors hover:text-accent">GitHub ↗</a>
+          <a href={siteMeta.github} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-accent">GitHub ↗</a>
           <span className="text-ink-faint/40">·</span>
-          <a href={siteMeta.linkedin} target="_blank" rel="noreferrer" className="transition-colors hover:text-accent">LinkedIn ↗</a>
+          <a href={siteMeta.linkedin} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-accent">LinkedIn ↗</a>
         </motion.div>
       </motion.div>
 

@@ -1,19 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <script>
-      (function () {
-        try {
-          if (localStorage.getItem('theme') === 'light') {
-            document.documentElement.setAttribute('data-theme', 'light');
-            document.addEventListener('DOMContentLoaded', function () {
-              var meta = document.querySelector('meta[name="theme-color"]');
-              if (meta) meta.setAttribute('content', '#F6F1E9');
-            });
-          }
-        } catch (e) {}
-      })();
-    </script>
+    <script src="/theme-init.js"></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0A0A0F" />
@@ -21,6 +9,7 @@
     <meta name="description" content="Chintan Patel's applied AI/ML engineering portfolio: evaluated healthcare ML, privacy-aware resume intelligence, and a v0.3.0 evidence-first policy RAG system with reviewable outputs and honest deployment boundaries." />
     <meta name="keywords" content="Applied AI/ML Engineer, Machine Learning, NLP, RAG, GenAI, Python, FastAPI, React, Next.js, PostgreSQL, Docker, Azure, Calgary, Canada, Data Science, TriageAI, ResumeIQ, PolicyGPT" />
     <meta name="author" content="Chintan Patel" />
+    <meta name="robots" content="index, follow" />
 
     <link rel="canonical" href="https://chintan-patel-ai.netlify.app/" />
 
@@ -28,7 +17,7 @@
     <meta property="og:description" content="Evaluated, explainable, deployable AI systems across healthcare ML, privacy-aware NLP, and evidence-first enterprise RAG." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://chintan-patel-ai.netlify.app/" />
-    <meta property="og:image" content="https://chintan-patel-ai.netlify.app/og-image.svg" />
+    <meta property="og:image" content="https://chintan-patel-ai.netlify.app/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:site_name" content="Chintan Patel Portfolio" />
@@ -37,7 +26,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Chintan Patel | Applied AI/ML Engineer" />
     <meta name="twitter:description" content="Healthcare ML, privacy-aware NLP, evidence-first RAG, FastAPI, React/Next.js, evaluation, and deployment engineering." />
-    <meta name="twitter:image" content="https://chintan-patel-ai.netlify.app/og-image.svg" />
+    <meta name="twitter:image" content="https://chintan-patel-ai.netlify.app/og-image.png" />
 
     <link rel="icon" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />

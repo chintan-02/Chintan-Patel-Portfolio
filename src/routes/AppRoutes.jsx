@@ -10,6 +10,7 @@ const Writing = lazy(() => import('../pages/Writing.jsx').then((module) => ({ de
 const Article = lazy(() => import('../pages/Article.jsx').then((module) => ({ default: module.Article })));
 const About = lazy(() => import('../pages/About.jsx').then((module) => ({ default: module.About })));
 const Contact = lazy(() => import('../pages/Contact.jsx').then((module) => ({ default: module.Contact })));
+const Privacy = lazy(() => import('../pages/Privacy.jsx').then((module) => ({ default: module.Privacy })));
 const NotFound = lazy(() => import('../pages/NotFound.jsx').then((module) => ({ default: module.NotFound })));
 
 function RouteFallback() {
@@ -33,6 +34,7 @@ export function AppRoutes() {
           <Route path="/writing/:slug" element={<Article />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

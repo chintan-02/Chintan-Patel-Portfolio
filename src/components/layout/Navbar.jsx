@@ -107,9 +107,9 @@ export function Navbar() {
                 </NavLink>
               ))}
               <div className="mt-2 flex gap-2 border-t border-line pt-3">
-                <a href={siteMeta.github} target="_blank" rel="noreferrer"
+                <a href={siteMeta.github} target="_blank" rel="noopener noreferrer"
                   className="flex-1 rounded-xl py-2.5 text-center text-xs font-bold text-ink-muted ring-1 ring-line hover:text-ink">GitHub</a>
-                <a href={siteMeta.linkedin} target="_blank" rel="noreferrer"
+                <a href={siteMeta.linkedin} target="_blank" rel="noopener noreferrer"
                   className="flex-1 rounded-xl py-2.5 text-center text-xs font-bold text-ink-muted ring-1 ring-line hover:text-ink">LinkedIn</a>
                 <a href={`mailto:${siteMeta.email}`}
                   className="flex-1 rounded-xl py-2.5 text-center text-xs font-bold text-ink-muted ring-1 ring-line hover:text-ink">Email</a>

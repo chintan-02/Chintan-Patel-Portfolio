@@ -100,6 +100,16 @@ export function Article() {
             )}
           </nav>
         )}
+
+        <div className="mt-6 flex justify-center">
+          <Link
+            to="/writing"
+            className="group inline-flex items-center gap-2 rounded-lg border border-line bg-[rgb(var(--surface2-rgb)/0.7)] px-4 py-2 text-sm font-semibold text-ink-muted transition-all hover:-translate-x-0.5 hover:border-accent hover:text-accent"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
+            Back to all writing
+          </Link>
+        </div>
       </div>
     </section>
   );
