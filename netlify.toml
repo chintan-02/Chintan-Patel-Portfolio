@@ -3,6 +3,11 @@
   publish = "dist"
 
 [[redirects]]
+  from = "/case-studies/policygpt"
+  to = "/case-studies/policygpt-enterprise"
+  status = 301
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

@@ -78,8 +78,8 @@ The site is deployed through Netlify as a client-side React application.
 
 - Production deployment uses Netlify, with private Netlify Web Analytics based
   on aggregate CDN request logs; no client-side analytics library is added.
-- Netlify prerendering should remain enabled and verified so SPA route metadata
-  is visible to crawlers.
+- Production builds generate targeted static HTML entry files for the three
+  flagship case-study routes so their metadata is visible before React runs.
 - Netlify supplies production security headers and a report-only CSP while
   browser compatibility is validated before enforcement.
 - `/privacy` explains analytics, external links, email, and public downloads.
@@ -88,6 +88,39 @@ The site is deployed through Netlify as a client-side React application.
 - GitHub Actions runs install, lint, build, and whitespace checks. Dependabot
   checks npm and GitHub Actions dependencies weekly without automatic merging.
 - Run the complete local validation with `npm run check`.
+
+### Crawler-visible case-study metadata
+
+After Vite creates `dist/index.html`, the production build copies its exact
+application shell and replaces only crawler metadata for:
+
+- `dist/case-studies/triageai/index.html`
+- `dist/case-studies/policygpt-enterprise/index.html`
+- `dist/case-studies/resumeiq/index.html`
+
+This is targeted static HTML generation for crawler-visible metadata. It is not
+server-side rendering or whole-site prerendering. React's route metadata remains
+active for client-side navigation.
+
+Build and validate locally:
+
+```bash
+npm run build
+npm run validate:meta
+```
+
+After deployment, inspect the metadata returned without browser JavaScript:
+
+```bash
+curl -sL https://chintan-patel-ai.netlify.app/case-studies/triageai | rg '<title>|canonical|og:url|og:image|twitter:image'
+curl -sL https://chintan-patel-ai.netlify.app/case-studies/policygpt-enterprise | rg '<title>|canonical|og:url|og:image|twitter:image'
+curl -sL https://chintan-patel-ai.netlify.app/case-studies/resumeiq | rg '<title>|canonical|og:url|og:image|twitter:image'
+curl -I https://chintan-patel-ai.netlify.app/case-studies/policygpt
+```
+
+For LinkedIn, open [Post Inspector](https://www.linkedin.com/post-inspector/),
+submit each canonical case-study URL, choose **Inspect** or **Re-inspect**, and
+confirm the route-specific title, description, image, and final canonical URL.
 
 ---
 
