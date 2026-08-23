@@ -109,14 +109,14 @@ export const projects = [
     metrics: [
       { value: 'v0.3.0', label: 'Verified local release' },
       { value: '16', label: 'Case benchmark' },
-      { value: '229', label: 'Backend tests' },
-      { value: '112', label: 'Frontend tests' }
+      { value: '230', label: 'Backend tests' },
+      { value: '128', label: 'Frontend tests' }
     ],
     proofStrip: [
       'v0.3.0',
       '16-case benchmark',
-      '229 backend tests',
-      '112 frontend tests'
+      '230 backend tests',
+      '128 frontend tests'
     ],
     evaluationMetrics: [
       { value: '100%', label: 'Answer-readiness accuracy' },

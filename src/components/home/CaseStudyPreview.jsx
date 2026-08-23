@@ -23,7 +23,7 @@ const caseStudyFocus = {
     summary:
       'How document identity, evidence gating, calibrated answerability, provider resilience, evaluation, and local release engineering work together.',
     topics: ['Evidence architecture', '16-case evaluation', 'Release reliability'],
-    proof: '229 backend · 112 frontend tests'
+    proof: '230 backend · 128 frontend tests'
   }
 };
 

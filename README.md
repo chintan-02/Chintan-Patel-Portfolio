@@ -194,8 +194,8 @@ Verified v0.3.0 evidence:
 | Controlled benchmark cases | **16** |
 | Answer-readiness accuracy | **100%** |
 | Expected-page retrieval hit rate | **100%** |
-| Backend tests | **229** |
-| Frontend tests | **112** |
+| Backend tests | **230** |
+| Frontend tests | **128** |
 
 > The benchmark values describe one controlled local provider-disabled run. Supported cases returned citation-only evidence, so generated-answer quality was not evaluated. This is not a cloud-production or real-company deployment claim.
 

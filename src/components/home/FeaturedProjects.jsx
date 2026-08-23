@@ -46,8 +46,8 @@ const homeProjectProof = {
     metrics: [
       { value: 'v0.3.0', label: 'Local release profile' },
       { value: '16', label: 'Benchmark cases' },
-      { value: '229', label: 'Backend tests' },
-      { value: '112', label: 'Frontend tests' }
+      { value: '230', label: 'Backend tests' },
+      { value: '128', label: 'Frontend tests' }
     ],
     evidence: [
       'SHA-256 document identity',
