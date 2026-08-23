@@ -12,28 +12,27 @@ const ICON_TILE = 'border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-acce
 const timeline = [
   {
     icon: GraduationCap,
-    period: '2013 – 2021',
-    title: 'Foundation years, India',
-    detail: 'Bachelor of Engineering (Computer Science) at Gujarat Technological University — programming, databases, and software fundamentals, plus early web projects. The broader foundation before moving into industry client work.'
+    period: '2013 – 2019',
+    title: 'Computer Science foundation, India',
+    detail: 'Completed a Bachelor of Engineering in Computer Science and Engineering through Gujarat Technological University at ITM Universe, building a foundation in programming, databases, software engineering, and web development.'
   },
   {
     icon: Briefcase,
     period: '2021 – 2024',
     title: 'Web development in industry',
-    detail: 'Worked as a web developer and then led client projects at Dreamview Technology — building production websites and web apps with real clients, deadlines, and delivery pressure.'
+    detail: 'Worked as a web developer and later delivered client projects through Dreamview Technology, building websites and web applications around real requirements, deadlines, deployment, and post-release support.'
   },
   {
     icon: MapPin,
     period: '2025',
     title: 'Moved to Canada',
-    detail: 'Post-Graduate Certificate in Supply Chain & Logistics at MacEwan University, Edmonton. Built a systems-thinking lens on operations, data flows, and process optimization — a foundation that now directly informs how I approach ML for operational domains.'
+    detail: 'Completed a Professional Development Certificate in Supply Chain Management & Logistics through MacEwan University’s School of Continuing Education, strengthening my understanding of operational data, process flows, inventory, analytics, and risk.'
   },
   {
     icon: Rocket,
-    period: '2026 – Present',
-    title: 'Integrated AI at SAIT, Calgary',
-    detail: 'Post-Diploma in Integrated Artificial Intelligence. Building end-to-end AI systems: TriageAI for review-first clinical decision support, ResumeIQ for privacy-aware resume intelligence, and PolicyGPT Enterprise for evidence-gated policy RAG. Focused on Python, FastAPI, React and Next.js, SQL, Docker, evaluation, and responsible AI.',
-    current: true
+    period: 'Jan 2026 – Aug 2026',
+    title: 'Integrated Artificial Intelligence at SAIT',
+    detail: 'Completed SAIT’s Post-Diploma Certificate in Integrated Artificial Intelligence, developing end-to-end experience across machine learning, NLP, computer vision, responsible AI, cloud computing, model evaluation, APIs, deployment, and capstone development.'
   }
 ];
 
@@ -79,13 +78,13 @@ export function About() {
               </h1>
               <div className="mt-6 space-y-4 text-[1rem] leading-8 text-ink-muted">
                 <p>
-                  My path runs from Computer Science in India to client-facing web products, then to Canada for supply chain training and a Post-Diploma in Integrated Artificial Intelligence at SAIT in Calgary.
+                  My path runs from Computer Science and client-facing web development in India to professional supply-chain training in Canada and SAIT’s Post-Diploma Certificate in Integrated Artificial Intelligence in Calgary.
                 </p>
                 <p>
                   That mix shapes how I build applied ML systems: software engineering keeps the work usable and maintainable, supply chain gives me a lens on operational data and decision workflows, and AI brings the modeling layer into practical products.
                 </p>
                 <p>
-                  I am looking for AI/ML Engineering, Data Science, Analytics, and Applied Software roles in Canada — especially where explainable, traceable systems matter.
+                  I am looking for Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, and AI-focused software-development opportunities across Canada — especially where explainable and traceable systems matter.
                 </p>
               </div>
 
@@ -246,7 +245,7 @@ export function About() {
               Open to the right opportunity.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-8 text-ink-muted">
-              AI/ML Engineering, Data Science, Analytics, and Applied Software roles in Canada. If this looks like a fit, the fastest next step is a quick email or a look at the résumé.
+              Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, and AI-focused software-development opportunities across Canada. If this looks like a fit, the fastest next step is a quick email or a look at the résumé.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button href={`mailto:${siteMeta.email}`} variant="onDarkAccent">Email me</Button>
