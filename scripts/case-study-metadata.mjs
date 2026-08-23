@@ -45,11 +45,11 @@ export const CASE_STUDY_ROUTES = [
     canonical: `${SITE_URL}/case-studies/resumeiq`,
     robots: 'index, follow',
     ogType: 'article',
-    image: `${SITE_URL}/og-image.png`,
-    imageWidth: '1200',
-    imageHeight: '630',
+    image: `${SITE_URL}/images/resumeiq-og.png`,
+    imageWidth: '2904',
+    imageHeight: '1574',
     imageType: 'image/png',
-    imageAlt: 'Chintan Patel Applied AI and machine learning engineering portfolio',
+    imageAlt: 'ResumeIQ privacy-aware resume intelligence and job application dashboard',
     twitterCard: 'summary_large_image'
   }
 ];
