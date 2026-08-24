@@ -1,30 +1,228 @@
-import { CaseStudyHero, MetricCard } from '../../components/mdx/MDXComponents.jsx';
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
   label="Technical Writing"
-  meta="Published July 2026 · 3 min read"
-  title="How I Evaluate ML Models Beyond Accuracy"
-  description="A practical explanation of why accuracy alone can be misleading and how precision, recall, F1-score, confusion matrix, and business risk change model evaluation."
+  meta="Published July 2026 · Updated August 2026 · 9 min read"
+  title="Evaluating Applied ML Systems Beyond Accuracy"
+  description="A risk-aligned evaluation framework covering baselines, leakage-safe splits, class-level metrics, calibration, uncertainty, subgroup behaviour, operational tests, and release gates across applied ML products."
 />
 
-## Accuracy Is Not Enough
+<TechStackBlock items={["Model Evaluation", "Scikit-learn", "Calibration", "Error Analysis", "Responsible AI", "Release Gates", "Monitoring", "Human Review"]} />
 
-Accuracy tells us how often the model was correct overall. That is useful, but it can be dangerous when classes are imbalanced. For example, if 95% of cases are low-risk, a model can look accurate while failing to catch important high-risk cases.
+## Evaluation starts with the decision
 
-A concrete example: in TriageAI, the overall score matters, but the more important question is whether the model creates unsafe routing errors. A model that improves accuracy while sending more urgent ESI 3 cases toward ESI 5 would be a worse system, not a better one. That is why I look at class-level behavior, confusion patterns, and safety-weighted errors instead of treating one headline number as the whole story.
+A model metric has no meaning without the decision the system supports.
 
-## What I Check First
+Before selecting accuracy, F1, recall, or any other score, I define:
 
-- Class distribution before training.
-- Train/test split quality.
-- Confusion matrix by class.
-- Precision, recall, and F1-score.
-- Errors that create the highest real-world risk.
+- who will use the output
+- what action may follow
+- which errors create the most harm
+- whether a human can review or override the result
+- how quickly reliable labels become available
+- what the model is explicitly not allowed to decide
 
-<MetricCard label="Rule of Thumb" value="Evaluate risk, not just score" note="A model with slightly lower accuracy may be safer if it catches more important cases." />
+This changes evaluation from “which model has the highest score?” to “which system meets the release requirements for this workflow?”
 
-## Production Thinking
+## Start with data and a baseline
 
-After deployment, evaluation does not stop. I would monitor input drift, prediction distribution, confidence trends, latency, error patterns, and real user feedback. For a resume workflow, that might mean watching whether new resume formats or AI-generated wording change parsing quality. For a RAG system, it means tracking unsupported-question fallbacks, citation coverage, retrieval confidence, and answer latency.
+Model comparison is not credible if the evaluation data leaks information from training or if the model is never compared with a simple baseline.
 
-The production question is not only “did it work on the test set?” but “is it still reliable on new data, with new users, under real usage patterns?” That is where monitoring, logging, review loops, and periodic evaluation become part of the model system rather than an afterthought.
+My first checks are:
+
+1. class and subgroup distributions
+2. missingness and impossible values
+3. duplicates and near-duplicates
+4. leakage through post-outcome fields or target proxies
+5. whether related records cross train/test boundaries
+6. whether a random, grouped, temporal, or site-based split matches deployment
+
+Then I establish an appropriate baseline. Depending on the task, that may be:
+
+- majority-class prediction
+- a deterministic rule
+- logistic regression or another simple model
+- the current production model
+- the existing human or operational workflow
+
+Without a baseline, a complex model can look impressive while adding little practical value.
+
+<MetricCard
+  label="Evaluation principle"
+  value="Beat a relevant baseline under the right split"
+  note="A strong score under a leaky or unrealistic split is weaker evidence than a modest gain under deployment-like conditions."
+/>
+
+## Accuracy is only one view
+
+Accuracy describes the proportion of correct predictions, but it hides which classes and error directions produced that number.
+
+For classification, I inspect:
+
+| Metric | Question it helps answer | Common failure |
+| --- | --- | --- |
+| Precision | When the model predicts a class, how often is it correct? | Can look strong while missing many true cases |
+| Recall | How many true cases did the model find? | Can be increased by generating too many false positives |
+| Per-class F1 | How balanced are precision and recall for each class? | Still hides the operational cost of different errors |
+| Macro F1 | Does performance remain reasonable across classes? | Gives rare and common classes equal weight regardless of workflow impact |
+| Weighted F1 | What is performance after accounting for class frequency? | Can hide weak minority-class performance |
+| Confusion matrix | Which exact error directions occur? | Requires domain interpretation, not only visual inspection |
+
+For ranking, retrieval, regression, or generation workflows, different metrics are needed. Evaluation should match the actual output contract rather than reusing classification metrics everywhere.
+
+## TriageAI: evaluate error direction, not only count
+
+TriageAI’s classifier is scoped to ESI 3, ESI 4, and ESI 5. ESI 1/2 escalation remains explicit safety logic outside the classifier, and every output remains subject to clinician review.
+
+The final portfolio baseline reports:
+
+- accuracy: 78.32%
+- macro F1: 70.37%
+- weighted F1: 78.88%
+- ESI 5 F1: 54.70%
+- observed unsafe ESI 3→5 rate: 0.68%
+
+These metrics describe the project’s held-out evaluation and are not evidence of prospective clinical validation or patient-care effectiveness.
+
+The important lesson is that two models with similar accuracy can create very different risk. An urgent ESI 3 case shifted toward ESI 5 is not equivalent to every other classification error. I therefore inspect the full confusion matrix and track safety-sensitive error directions separately.
+
+The surrounding workflow also needs evaluation:
+
+- do safety rules escalate the intended cases?
+- can a clinician see the model and rule contribution?
+- can the clinician accept or override?
+- is the final decision auditable?
+- does report generation preserve the reviewed result?
+
+## Calibration: confidence must be tested
+
+A probability output is not automatically trustworthy confidence.
+
+I check whether predictions grouped near 0.8 are correct approximately 80% of the time using:
+
+- reliability diagrams
+- Brier score
+- expected calibration error
+- class-level calibration views
+
+Platt scaling or isotonic calibration may improve reliability, but calibration is not automatically deployed. A calibrated variant still needs to preserve class-level performance and safety constraints. If it improves a calibration plot while harming an important error direction, it should not replace the existing model.
+
+## Thresholds are product decisions
+
+Decision thresholds trade precision, recall, coverage, review burden, and risk.
+
+Instead of selecting a threshold only because it maximizes a global score, I would evaluate candidate thresholds against explicit gates:
+
+```text
+minimum class-level recall
+maximum safety-sensitive error rate
+acceptable review volume
+acceptable abstention or fallback rate
+stable calibration
+```
+
+Threshold configuration must be versioned with the model registry so notebook experiments and API behaviour cannot silently diverge.
+
+## Quantify uncertainty in the evaluation itself
+
+A point estimate such as 78.32% looks precise, but it is still an estimate from one dataset.
+
+For a stronger evaluation I would report:
+
+- exact test-set size
+- support for every class
+- bootstrap confidence intervals
+- results across repeated or grouped splits when appropriate
+- sensitivity to threshold and random seed
+- performance on a later or external dataset
+
+Small evaluation sets need especially careful language. PolicyGPT’s checked-in 16-case benchmark, for example, is useful for controlled regression testing but is not a statistically representative estimate of production RAG accuracy.
+
+## Subgroup and fairness analysis
+
+An aggregate score can hide uneven performance. Where attributes are legally and ethically appropriate to evaluate, I would compare:
+
+- support and missingness by subgroup
+- class-level precision and recall
+- calibration
+- safety-sensitive errors
+- abstention, fallback, and override rates
+
+Small samples must be protected and labelled. A large percentage difference based on a few records should not be presented as a stable finding. Protected attributes should not be collected or retained merely to decorate a dashboard; fairness evaluation needs a defined purpose, governance, and privacy controls.
+
+## ResumeIQ: labels and leakage require caution
+
+ResumeIQ intentionally does not publish a headline classifier accuracy. Resume datasets can contain duplicated templates, synthetic examples, category overlap, and wording patterns that leak labels.
+
+A credible evaluation would require:
+
+- deduplication before splitting
+- grouped or template-aware splits
+- per-class precision, recall, and F1
+- confusion-matrix and error analysis
+- confidence calibration
+- semantic-matching benchmarks
+- human review of recommendation quality
+
+An ATS-style score or semantic similarity is a decision-support signal—not recruiter approval, employability, or hiring probability.
+
+## PolicyGPT: evaluate the complete RAG contract
+
+RAG quality is not one answer-quality number. I separate:
+
+- expected-page retrieval
+- evidence readiness
+- supported-question handling
+- unsupported-question rejection
+- citation preservation
+- provider fallback behaviour
+- generated-answer quality when generation is enabled
+- latency and cost
+
+The current 16-case PolicyGPT benchmark contains supported and unsupported questions and is valuable as a versioned functional regression suite. It should be expanded before any production-quality claim, and a run with generation disabled cannot validate generated-answer content.
+
+## Operational evaluation belongs in the release gate
+
+A strong offline model can still fail as a product. Before release, I also test:
+
+- schema and preprocessing compatibility
+- API contract behaviour
+- readiness and dependency failures
+- latency under realistic payloads
+- memory and resource usage
+- provider outage and degraded states
+- logging without sensitive-data leakage
+- rollback and model-version visibility
+
+These tests connect data science to software reliability.
+
+<ArchitectureBlock
+  title="Evidence required for a release decision"
+  steps={[
+    { title: "Versioned data", description: "Use a deployment-like split with leakage and duplicate controls" },
+    { title: "Relevant baseline", description: "Compare against a simple model, rule, existing model, or workflow" },
+    { title: "Risk-aligned metrics", description: "Review class-level errors, calibration, thresholds, uncertainty, and subgroups" },
+    { title: "Operational validation", description: "Test API contracts, latency, failure states, logging, and rollback" },
+    { title: "Release decision", description: "Document limitations and require human approval before promotion" }
+  ]}
+/>
+
+## Monitoring continues the evaluation
+
+Post-release monitoring should compare current behaviour with the reviewed baseline:
+
+- schema and missingness
+- feature and text distributions
+- prediction and confidence distributions
+- latency and error rates
+- fallback and abstention rates
+- human corrections and overrides
+- delayed task performance when reliable labels arrive
+
+A monitoring alert is a request to investigate. It is not automatic proof that the model must be retrained.
+
+## Final lesson
+
+The strongest model is not necessarily the one with the highest headline score. It is the one that beats a relevant baseline, remains understandable under class-level and risk-aligned analysis, behaves honestly when uncertain, survives operational testing, and stays inside clearly documented boundaries.
+
+Evaluation is not a final chart in a notebook. It is the evidence used to decide whether a system should be released, monitored, revised, or stopped.
