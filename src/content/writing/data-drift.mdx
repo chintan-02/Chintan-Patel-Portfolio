@@ -1,26 +1,206 @@
-import { CaseStudyHero, MetricCard } from '../../components/mdx/MDXComponents.jsx';
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
   label="Technical Writing"
-  meta="Published July 2026 · 3 min read"
-  title="Data Drift Explained for Production ML"
-  description="A short production-minded explanation of how real-world data changes after deployment and why monitoring is necessary."
+  meta="Published July 2026 · Updated August 2026 · 8 min read"
+  title="Designing Drift Monitoring for Production ML Systems"
+  description="A practical monitoring design for detecting input, prediction, concept, and workflow drift across TriageAI, ResumeIQ, and evidence-gated RAG—without treating every distribution change as a retraining trigger."
 />
 
-## What Is Data Drift?
+<TechStackBlock items={["Data Drift", "Model Monitoring", "Drift Metrics", "PostgreSQL", "Release Gates", "Human Review", "Responsible AI"]} />
 
-Data drift happens when new production data starts looking different from the data used to train the model. The model may still run, but its predictions can become less reliable.
+## Drift is a system problem, not one chart
 
-## Simple Example
+A model can keep returning valid JSON while becoming less useful.
 
-A resume classifier trained on old resumes may perform worse when new AI-generated resumes, new job titles, and new skill keywords become common. The input text distribution changed, so the model needs monitoring and possibly retraining.
+The API remains healthy. Latency stays low. No exception appears in the logs. But the data arriving today may no longer resemble the data used during development, the relationship between inputs and outcomes may have changed, or users may be interacting with the workflow differently.
 
-## What To Monitor
+That is why production monitoring needs more than uptime. I separate drift into four questions:
 
-- Input feature distributions.
-- Prediction distribution over time.
-- Confidence scores.
-- Error patterns from user feedback.
-- Changes in business or domain behavior.
+1. **Input drift:** did the incoming data change?
+2. **Prediction drift:** did the model's output distribution change?
+3. **Concept or performance drift:** did the relationship between inputs and correct outcomes change?
+4. **Workflow drift:** did user behaviour, review patterns, or upstream processing change?
 
-<MetricCard label="Production Lesson" value="Models age after deployment" note="Monitoring is what turns a model from a notebook artifact into a maintainable system." />
+These signals are related, but they are not interchangeable. A change in input distribution is evidence to investigate—not automatic proof that a model is wrong.
+
+## Establish a reference before monitoring
+
+Drift cannot be measured without a reference window. For each monitored feature or signal, I would store:
+
+- the reference dataset version
+- the observation period
+- preprocessing and feature-schema versions
+- sample size
+- missing-value rates
+- expected category ranges
+- prediction and confidence distributions
+- subgroup definitions that are safe and appropriate to monitor
+
+The current window must also be large enough to support interpretation. Alerting on five new records creates noise; waiting for several months may hide a real failure. Window size should reflect traffic, label delay, domain risk, and how quickly intervention is possible.
+
+```text
+Reference window
+→ current observation window
+→ schema and quality checks
+→ distribution comparison
+→ operational and review signals
+→ investigation
+→ retraining decision only when evidence supports it
+```
+
+## Monitor data quality before statistical drift
+
+Many apparent model problems begin as data-pipeline problems. Before calculating population stability or divergence scores, I would check:
+
+- required fields missing or renamed
+- unexpected categories
+- unit changes
+- impossible numeric values
+- duplicate records
+- parsing failures
+- text-length and language changes
+- feature-order or preprocessing-version mismatches
+
+These checks are deterministic, easy to explain, and often more actionable than a general drift score.
+
+<MetricCard
+  label="First monitoring rule"
+  value="Validate the contract before the distribution"
+  note="A schema break, unit mismatch, or parser failure should be investigated before interpreting statistical drift."
+/>
+
+## Choose metrics by feature type
+
+No single drift metric fits every signal.
+
+| Signal | Useful checks | Important limitation |
+| --- | --- | --- |
+| Numeric feature | PSI, Wasserstein distance, KS statistic, quantile shifts | Statistical significance can grow with sample size even when operational impact is small |
+| Categorical feature | frequency change, unseen-category rate, Jensen-Shannon divergence | Rare categories can produce unstable percentages |
+| Text input | document length, vocabulary shift, embedding-centroid distance, parser failure rate | Embedding drift is not proof of lower task performance |
+| Predictions | class distribution, confidence distribution, rejection rate | Output drift may reflect a legitimate population change |
+| Workflow | override rate, retry rate, missing-field corrections, fallback rate | Human behaviour and product changes can affect the signal |
+
+Thresholds should be calibrated with historical windows rather than copied from a generic monitoring tutorial. I would also require a minimum sample size and repeated breaches before escalating a warning.
+
+## TriageAI: monitor safety and review behaviour
+
+TriageAI is a review-first ESI care-routing decision-support workflow. Monitoring should therefore include the model and the safety workflow around it.
+
+Useful signals include:
+
+- changes in age and vital-sign distributions
+- missing-vital and missing-field rates
+- ESI 3/4/5 prediction distribution
+- confidence and margin distributions
+- explicit ESI 1/2 safety-rule activation rate
+- clinician accept and override rates
+- direction of overrides
+- unsafe downgrade patterns when reviewed labels are available
+- NLP extraction correction rate
+
+An increase in clinician overrides could indicate model drift, but it could also reflect a new site, a policy change, or differences in reviewer practice. The alert should create an investigation queue, not silently retrain or replace the model.
+
+Clinical monitoring also requires subgroup analysis where legally, ethically, and statistically appropriate. Small subgroup counts must be protected from disclosure and should not be over-interpreted.
+
+## ResumeIQ: monitor parsers and language shift
+
+ResumeIQ is exposed to rapid text-distribution changes. New resume templates, AI-generated phrasing, emerging job titles, and changing skill terminology can affect the workflow before a classifier metric visibly fails.
+
+I would monitor:
+
+- PDF/DOCX/TXT parsing success by format
+- empty or unusually short extraction rates
+- section-detection coverage
+- unseen job-title and skill-token rates
+- role-prediction distribution
+- classifier confidence distribution
+- semantic-similarity distribution
+- user corrections and recommendation rejection rates
+
+Because hiring outcomes are delayed and affected by many external factors, ResumeIQ should not use interview or hiring results as a simplistic automatic label. Human-reviewed evaluation sets and periodic error analysis are safer than claiming that one downstream outcome proves model quality.
+
+## PolicyGPT: retrieval drift is different
+
+RAG systems have additional sources of change:
+
+- new document versions
+- different policy language
+- extraction or chunking changes
+- embedding-model changes
+- altered retrieval thresholds
+- new question patterns
+- provider outages or model-version changes
+
+For PolicyGPT, I would track expected-page hit rate, supported-question readiness, unsupported-question rejection, citation coverage, retrieval-score distribution, lexical coverage, provider-fallback rate, and response latency.
+
+The checked-in 16-case benchmark is useful as a controlled regression suite, but it is not large enough to estimate production accuracy. It should be expanded using reviewed cases collected from realistic policy workflows before being used for operational claims.
+
+## Alerting without creating alarm fatigue
+
+A production alert should say what changed and what action is expected.
+
+```text
+Warning
+  Current missing-vitals rate exceeded the reviewed baseline
+  Minimum sample size met
+  Breach observed in three consecutive windows
+  Prediction distribution also changed
+
+Action
+  Inspect ingestion logs and recent source changes
+  Review affected records
+  Compare performance when labels become available
+```
+
+I would use three states:
+
+- **Observe:** a signal moved, but evidence is insufficient for intervention.
+- **Investigate:** repeated or multi-signal drift requires human review.
+- **Block or roll back:** a schema, safety, or release-contract failure creates immediate risk.
+
+## Retraining is not the default response
+
+Retraining should require evidence that the current model no longer meets an agreed release gate. A controlled retraining workflow would include:
+
+1. approved and versioned new labels
+2. leakage and duplicate checks
+3. comparison against the current champion
+4. class-level and subgroup evaluation
+5. calibration review
+6. safety and operational regression tests
+7. reproducible model-registry artifacts
+8. human approval before promotion
+
+If the root cause is a parser bug, schema change, or broken unit conversion, retraining would hide the problem rather than solve it.
+
+## A minimal implementation path
+
+For a portfolio-scale deployment, I would start with a daily monitoring job that reads privacy-safe aggregates and writes a versioned report to PostgreSQL or object storage. Prometheus/Grafana or a lightweight dashboard could display:
+
+- data-quality failures
+- drift signals by feature group
+- prediction and fallback trends
+- review and override trends
+- p50/p95 latency
+- current model, preprocessing, and dataset versions
+
+Raw clinical notes, resumes, policy questions, and protected attributes should not be copied into monitoring logs by default. Monitoring data needs its own retention and access policy.
+
+<ArchitectureBlock
+  title="Monitoring and response loop"
+  steps={[
+    { title: "Versioned reference", description: "Store reviewed data-quality, distribution, prediction, and workflow baselines" },
+    { title: "Current aggregates", description: "Collect privacy-safe operational metrics over a minimum observation window" },
+    { title: "Multi-signal checks", description: "Compare schema, quality, drift, prediction, and review behaviour" },
+    { title: "Human investigation", description: "Inspect upstream changes, affected records, and available outcomes" },
+    { title: "Controlled response", description: "Fix the pipeline, adjust the workflow, retrain, or roll back only when evidence supports it" }
+  ]}
+/>
+
+## Final lesson
+
+Drift monitoring is not a dashboard that declares a model healthy or unhealthy. It is an evidence system that connects data quality, distributions, task performance, operational behaviour, and human review.
+
+The strongest monitoring design is conservative: it detects change early, explains why an alert fired, protects sensitive data, and prevents automatic retraining from turning an uncertain signal into an unreviewed production decision.
