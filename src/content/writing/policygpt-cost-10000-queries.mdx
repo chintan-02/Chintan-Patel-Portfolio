@@ -1,0 +1,143 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Technical Writing"
+  meta="Published August 2026 · 10 min read"
+  title="What It Would Cost to Run PolicyGPT for 10,000 Queries"
+  description="A transparent cost model for running an evidence-gated policy RAG workload, covering token usage, local embeddings, model selection, infrastructure, fallback behaviour, observability, and the assumptions behind every estimate."
+/>
+
+<TechStackBlock items={["RAG Cost Modelling", "OpenAI API", "SentenceTransformers", "FastAPI", "PostgreSQL", "ChromaDB", "Docker Compose", "Observability"]} />
+
+## Why estimate cost before deployment?
+
+A RAG system can look inexpensive during development because local testing uses a small document set, low traffic, and sometimes a free provider tier. Production economics are different.
+
+Costs can come from:
+
+- model input and output tokens
+- embedding generation
+- application compute
+- PostgreSQL and vector storage
+- document ingestion and re-indexing
+- logs, metrics, backups, and data transfer
+- retries, provider failures, and inefficient retrieval
+- engineering and operational support
+
+This article estimates what it could cost to process **10,000 PolicyGPT queries**. It is a planning model, not an invoice or a claim that PolicyGPT currently serves production traffic.
+
+PolicyGPT is presently a portfolio engineering project with a verified local Docker Compose release. The cloud configurations below are hypothetical deployment scenarios.
+
+## PolicyGPT’s current cost-relevant architecture
+
+PolicyGPT uses:
+
+- Next.js for the review interface
+- FastAPI for document and question-answering APIs
+- PostgreSQL for document lifecycle metadata
+- ChromaDB for persistent vector retrieval
+- SentenceTransformers for local embeddings
+- an evidence gate before optional answer generation
+- page-level citations
+- controlled unsupported-question rejection
+- citation-only fallback when generation is unavailable
+- structured logs and request IDs
+- Docker Compose for the local release
+
+Because embeddings are generated locally with SentenceTransformers, this model does not include a per-token embedding API charge. Embedding still consumes CPU time and memory, but that consumption is included in the infrastructure estimate.
+
+<ArchitectureBlock
+  title="Cost path for one PolicyGPT query"
+  steps={[
+    { title: "Receive question", description: "Validate the request and assign a request ID" },
+    { title: "Create local embedding", description: "Run the SentenceTransformer model on application compute" },
+    { title: "Retrieve evidence", description: "Search ChromaDB and load document metadata from PostgreSQL" },
+    { title: "Evaluate answerability", description: "Inspect retrieval strength, lexical coverage, numbers, direct support, and scope risk" },
+    { title: "Choose an outcome", description: "Generate an answer, return citation-only evidence, or reject the unsupported request" },
+    { title: "Record operational evidence", description: "Log latency, evidence state, provider state, citations, and errors without retaining unnecessary sensitive text" }
+  ]}
+/>
+
+## Workload assumptions
+
+The estimate uses the following explicit assumptions:
+
+| Assumption | Value |
+| --- | ---: |
+| Total questions | 10,000 |
+| Workload period | 30 days |
+| Average questions per day | 333 |
+| Average model input per generated answer | 2,000 tokens |
+| Average model output per generated answer | 300 tokens |
+| Total input if all questions use generation | 20 million tokens |
+| Total output if all questions use generation | 3 million tokens |
+| Query embeddings | Local SentenceTransformer |
+| Document corpus | Small-to-medium internal policy collection |
+| Currency | USD |
+| Taxes | Excluded |
+| Engineering labour | Excluded |
+
+The 2,000-token input budget includes the system instructions, user question, retrieved policy excerpts, citation metadata, and evidence-gate context sent to the generation provider.
+
+Actual usage should be measured from provider response metadata rather than estimated from character counts.
+
+## Scenario 1: citation-only local operation
+
+PolicyGPT can remain useful without an external generation model. When evidence is answer-ready but the provider is unavailable, it can return the relevant excerpts and page citations.
+
+In this mode:
+
+- query embeddings remain local
+- retrieval remains local
+- the evidence gate still runs
+- no generation API tokens are purchased
+- users receive evidence rather than a synthesized answer
+
+If the system runs on an existing developer machine, the incremental cloud bill can be close to zero, excluding electricity, maintenance, backups, and the value of the hardware.
+
+That is suitable for development and controlled demonstrations. It is not equivalent to a secure, highly available production deployment.
+
+## Scenario 2: one small cloud server
+
+For an illustrative self-managed deployment, the Next.js frontend, FastAPI service, PostgreSQL, ChromaDB, and local embedding model could run on one Linux server.
+
+A safer starting point than a 2 GB instance is approximately:
+
+- 2 virtual CPUs
+- 8 GB RAM
+- 160 GB SSD storage
+- Docker Compose
+- HTTPS reverse proxy
+- scheduled backups
+- resource and uptime monitoring
+
+An AWS Lightsail Linux instance with 8 GB RAM is listed at approximately **$44 per month** with public IPv4. Pricing varies by region and can change, so this is an illustrative baseline rather than a vendor recommendation. See the [official AWS Lightsail instance pricing documentation](https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-bundles.html).
+
+<MetricCard
+  label="Illustrative Base Infrastructure"
+  value="$44/month"
+  note="One self-managed 8 GB Linux instance. This does not include managed database separation, high availability, dedicated backup storage, enterprise monitoring, a web application firewall, support, or engineering labour."
+/>
+
+A single-server design keeps the estimate understandable, but it also creates a single point of failure. A production system handling confidential policies would normally separate services and add security, backup, recovery, and availability controls.
+
+## Scenario 3: generation with GPT-5 mini
+
+As of August 2026, OpenAI lists GPT-5 mini at:
+
+- **$0.25 per million input tokens**
+- **$2.00 per million output tokens**
+
+Current rates should always be checked on the [official GPT-5 mini model page](https://developers.openai.com/api/docs/models/gpt-5-mini) before approving a budget.
+
+For 10,000 generated answers:
+
+```text
+Input cost
+20 million tokens × $0.25 per million = $5.00
+
+Output cost
+3 million tokens × $2.00 per million = $6.00
+
+Estimated generation cost
+$5.00 + $6.00 = $11.00
