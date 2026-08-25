@@ -141,3 +141,184 @@ Output cost
 
 Estimated generation cost
 $5.00 + $6.00 = $11.00
+
+````
+
+Adding the estimated **$44 monthly infrastructure baseline** gives:
+
+```text
+Estimated total with GPT-5 mini
+$44 infrastructure + $11 model usage = $55 per month
+````
+
+## Comparing model choices
+
+The same workload changes substantially depending on the generation model.
+
+| Model        | Input cost | Output cost | Estimated model cost | Estimated total |
+| ------------ | ---------: | ----------: | -------------------: | --------------: |
+| GPT-5 mini   |      $5.00 |       $6.00 |               $11.00 |          $55.00 |
+| GPT-5.4 mini |     $15.00 |      $13.50 |               $28.50 |          $72.50 |
+| GPT-5.4      |     $50.00 |      $45.00 |               $95.00 |         $139.00 |
+
+### GPT-5.4 mini calculation
+
+At $0.75 per million input tokens and $4.50 per million output tokens:
+
+```text
+Input: 20M × $0.75 = $15.00
+Output: 3M × $4.50 = $13.50
+
+Estimated model cost
+$15.00 + $13.50 = $28.50
+
+Estimated monthly total
+$44.00 + $28.50 = $72.50
+```
+
+### GPT-5.4 calculation
+
+At $2.50 per million input tokens and $15.00 per million output tokens:
+
+```text
+Input: 20M × $2.50 = $50.00
+Output: 3M × $15.00 = $45.00
+
+Estimated model cost
+$50.00 + $45.00 = $95.00
+
+Estimated monthly total
+$44.00 + $95.00 = $139.00
+```
+
+These figures are planning estimates, not quotations. Actual cost depends on prompt length, retrieved context, response length, cached input, retry behaviour, regional processing, and the model selected at runtime.
+
+## Why evidence gating can reduce cost
+
+PolicyGPT does not need to call a generation model for every request.
+
+The answerability layer can reject unsupported questions when retrieval does not provide adequate evidence. A rejected request may still consume API, retrieval, embedding, and logging resources, but it can avoid unnecessary generation tokens.
+
+For example, assume that 20% of 10,000 requests are rejected before generation:
+
+```text
+Requests received: 10,000
+Requests sent to generation: 8,000
+Generation calls avoided: 2,000
+```
+
+If token usage scales proportionally, the GPT-5 mini model estimate could fall from approximately $11.00 to about $8.80.
+
+That saving is useful, but the more important benefit is reliability: the system avoids producing an answer when the retrieved evidence does not support one.
+
+## Costs not included
+
+This estimate intentionally excludes several expenses that a production deployment may require:
+
+* engineering and maintenance time
+* authentication and identity management
+* backups and disaster recovery
+* security monitoring and vulnerability management
+* document OCR or commercial parsing services
+* private networking and regional data-residency premiums
+* observability platforms
+* external reranking APIs
+* support, compliance, and incident response
+* load testing and penetration testing
+
+These omissions matter. A small technical deployment can be inexpensive while the complete operational system still requires meaningful engineering and governance investment.
+
+## Latency and capacity considerations
+
+Cost is only one deployment constraint. At 10,000 monthly queries, average traffic is low, but production traffic is rarely uniform.
+
+The system should still be tested for:
+
+* concurrent uploads and queries
+* database connection limits
+* vector-search latency
+* model-provider timeouts
+* retry amplification
+* large-document ingestion
+* response streaming
+* queueing and back-pressure
+* degraded operation during provider failure
+
+PolicyGPT already separates readiness checks, retrieval, evidence assessment, generation, and fallback behaviour. That separation makes it easier to measure where latency and cost are introduced.
+
+## Logging without storing unnecessary content
+
+Operational measurement should record enough information to diagnose behaviour without unnecessarily preserving sensitive policy text or user questions.
+
+Useful fields include:
+
+* request ID
+* document identifiers and versions
+* retrieved page and chunk identifiers
+* retrieval scores
+* answerability decision
+* selected provider and model
+* input and output token counts
+* latency by processing stage
+* fallback state
+* final request status
+
+Raw prompts, complete documents, and generated answers should not automatically be retained indefinitely. Retention must follow the organization’s privacy, security, and audit requirements.
+
+## What should be measured in a real deployment
+
+Before treating this estimate as a budget, I would run a representative workload and measure:
+
+1. average input tokens per supported request
+2. average output tokens per generated answer
+3. percentage of unsupported questions rejected before generation
+4. cache-hit rate
+5. retrieval and generation latency
+6. retry and provider-failure rates
+7. document-ingestion volume
+8. database and vector-store growth
+9. logging volume and retention
+10. peak concurrent traffic
+
+These measurements would replace assumptions with observed evidence.
+
+## Practical planning range
+
+For the stated assumptions, a reasonable monthly planning range is:
+
+```text
+Lower-cost configuration:
+Approximately $55 per month with GPT-5 mini
+
+Balanced configuration:
+Approximately $72.50 per month with GPT-5.4 mini
+
+Higher-capability configuration:
+Approximately $139 per month with GPT-5.4
+```
+
+A production budget should include additional contingency for traffic growth, retries, monitoring, backups, and provider-price changes.
+
+## Final perspective
+
+For 10,000 monthly queries, model inference is not necessarily the largest expense. Infrastructure, observability, security, maintenance, and governance can matter more than token charges.
+
+The correct design is therefore not simply to choose the cheapest model. It is to:
+
+* retrieve only the evidence required
+* reject unsupported requests before generation
+* limit unnecessary context
+* measure token use and latency
+* log decisions without retaining excessive sensitive data
+* select the smallest model that satisfies the evaluated quality threshold
+
+That is the production lesson behind this estimate: cost control should be designed into the evidence workflow rather than added after deployment.
+
+## Pricing references
+
+Pricing should be rechecked before making a purchasing decision because provider rates can change.
+
+* [OpenAI GPT-5 mini model and pricing](https://developers.openai.com/api/docs/models/gpt-5-mini)
+* [OpenAI GPT-5.4 mini model and pricing](https://developers.openai.com/api/docs/models/gpt-5.4-mini)
+* [OpenAI GPT-5.4 model and pricing](https://developers.openai.com/api/docs/models/gpt-5.4)
+* [AWS Pricing Calculator](https://calculator.aws/)
