@@ -1,4 +1,4 @@
-import { CheckCircle2, FileText, RadioTower } from 'lucide-react';
+import { Bot, CheckCircle2, FileText, RadioTower } from 'lucide-react';
 import { projects } from '../../data/projects.js';
 import { SectionHeader } from '../ui/SectionHeader.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
@@ -7,12 +7,13 @@ import { Button } from '../ui/Button.jsx';
 import { BrandGithub } from '../ui/BrandIcons.jsx';
 
 const homeOrder = ['triageai', 'resumeiq', 'policygpt'];
+const supportingProjectSlug = 'product-finder-ai-agent';
 
 const homeProjectProof = {
   triageai: {
     title: 'TriageAI / SympDirect',
     value:
-      'Review-first clinical decision-support workflow with evidence-linked NLP extraction, ESI 3/4/5 prediction, transparent safety escalation, clinician review, audit evidence, and backend PDF reporting.',
+      'Review-first clinical decision-support workflow with evidence-linked NLP extraction, ESI 3/4/5 prediction, transparent safety escalation, clinician review, audit evidence, and PDF reporting.',
     metrics: [
       { value: '78.32%', label: 'Test accuracy' },
       { value: '0.68%', label: 'Unsafe ESI 3→5 rate' }
@@ -29,7 +30,7 @@ const homeProjectProof = {
     value:
       'Privacy-aware resume intelligence workflow that separates parsing, classification, ATS-style compatibility, semantic matching, skill intelligence, writing quality, and human review.',
     metrics: [
-      { value: '3', label: 'Resume formats' },
+      { value: 'PDF · DOCX · TXT', label: 'Supported formats' },
       { value: 'Human', label: 'Review required' }
     ],
     evidence: [
@@ -44,7 +45,7 @@ const homeProjectProof = {
     value:
       'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation and exposes page-level citations, confidence diagnostics, benchmark evaluation and operational health through a Next.js console.',
     metrics: [
-      { value: 'v0.3.0', label: 'Local release profile' },
+      { value: 'Docker Compose', label: 'Verified local release' },
       { value: '16', label: 'Benchmark cases' },
       { value: '230', label: 'Backend tests' },
       { value: '128', label: 'Frontend tests' }
@@ -55,7 +56,7 @@ const homeProjectProof = {
       'Provider-safe fallback'
     ],
     stack: ['Next.js', 'FastAPI', 'PostgreSQL', 'ChromaDB', 'SentenceTransformers', 'Docker Compose'],
-    scope: 'Local release profile · Not cloud deployed'
+    scope: 'Verified local release · Not cloud deployed'
   }
 };
 
@@ -161,10 +162,56 @@ function HomeProjectCard({ project, index }) {
   );
 }
 
+function SupportingProjectCard({ project }) {
+  return (
+    <Reveal delay={0.12}>
+      <article className="card card-hover mt-8 p-5 sm:p-6">
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-3">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-card border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
+                <Bot className="h-4 w-4" />
+              </div>
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
+                Additional Deployed Project
+              </p>
+              <span className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.7)] px-3 py-1 text-[11px] font-semibold text-ink-muted">
+                {project.status}
+              </span>
+            </div>
+
+            <h3 className="mt-4 font-display text-xl font-bold tracking-[-0.02em] text-ink sm:text-2xl">
+              {project.title}
+            </h3>
+            <p className="mt-3 max-w-4xl text-sm leading-7 text-ink-muted">
+              {project.description}
+            </p>
+            <div className="mt-4 flex flex-wrap gap-2">
+              {project.stack.map((tech) => <TechChip key={tech}>{tech}</TechChip>)}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-3 lg:flex-col">
+            <Button href={project.githubUrl} external icon={false} variant="onDark">
+              <BrandGithub className="h-4 w-4" />
+              GitHub
+            </Button>
+            <Button href={project.liveUrl} external icon={false} variant="onDarkAccent">
+              <RadioTower className="h-4 w-4" />
+              Live Demo
+            </Button>
+          </div>
+        </div>
+      </article>
+    </Reveal>
+  );
+}
+
 export function FeaturedProjects() {
   const orderedProjects = homeOrder
     .map((slug) => projects.find((project) => project.slug === slug))
     .filter(Boolean);
+  const supportingProject = projects.find((project) => project.slug === supportingProjectSlug);
 
   return (
     <section className="px-6 py-16 sm:px-6 lg:px-8" id="projects">
@@ -179,6 +226,7 @@ export function FeaturedProjects() {
             <HomeProjectCard key={project.slug} project={project} index={index} />
           ))}
         </div>
+        {supportingProject && <SupportingProjectCard project={supportingProject} />}
       </div>
     </section>
   );

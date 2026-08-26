@@ -14,6 +14,10 @@ const emphasizedSkills = new Set([
   'SentenceTransformers',
   'ChromaDB',
   'Evidence Gating',
+  'Google ADK',
+  'Agent Tool Calling',
+  'Deterministic Validation',
+  'Structured Outputs',
   'FastAPI',
   'React',
   'Next.js',
@@ -21,6 +25,7 @@ const emphasizedSkills = new Set([
   'Docker Compose',
   'GitHub Actions',
   'Azure App Service',
+  'Google Cloud Run',
   'pytest',
   'Structured Logging',
   'Health & Readiness'
@@ -33,7 +38,7 @@ export function SkillsSystem() {
         <SectionHeader
           eyebrow="Technical System"
           title="Skills organized as an end-to-end AI product stack."
-          description="The stack reflects technologies and engineering practices demonstrated across TriageAI, ResumeIQ, and PolicyGPT—from data contracts and model evaluation to evidence-grounded product workflows, release checks, and operational reliability."
+          description="The stack reflects technologies and engineering practices demonstrated across TriageAI, ResumeIQ, PolicyGPT, and Product Finder—from data contracts and model evaluation to evidence-grounded product workflows, agent tool use, release checks, and operational reliability."
         />
 
         <div className="space-y-4">

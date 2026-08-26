@@ -72,6 +72,19 @@ export const skillLayers = [
       'Models and retrieval pipelines are delivered through typed APIs, review-first interfaces, dashboards, reports, and visible loading, error, and fallback states.'
   },
   {
+    layer: 'Agents & Tool Use',
+    label: 'Interpret requests, execute constraints',
+    skills: [
+      'Google ADK',
+      'Agent Tool Calling',
+      'Deterministic Validation',
+      'Structured Outputs',
+      'Google Cloud Run'
+    ],
+    note:
+      'Grounded agent workflows interpret natural-language intent, call structured tools, validate deterministic constraints, and return reviewable outputs through a deployed API workflow.'
+  },
+  {
     layer: 'Delivery & Reliability',
     label: 'Test, release, observe',
     skills: [

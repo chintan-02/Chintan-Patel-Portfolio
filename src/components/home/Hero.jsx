@@ -35,13 +35,13 @@ export function Hero() {
         animate="show"
         className="relative z-10 mx-auto w-full max-w-[1200px] text-center md:text-left"
       >
-        <motion.div variants={item} className="flex justify-center md:justify-start">
-          <span className="inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.08)] px-4 py-2 font-mono text-[11px] font-medium tracking-[0.06em] text-accent">
-            <span className="relative flex h-2 w-2">
+        <motion.div variants={item} className="flex min-w-0 justify-center md:justify-start">
+          <span className="inline-flex max-w-full items-start gap-2.5 rounded-2xl border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.08)] px-4 py-2 text-center font-mono text-[11px] font-medium leading-5 tracking-[0.04em] text-accent sm:rounded-full md:text-left">
+            <span className="relative mt-1.5 flex h-2 w-2 shrink-0">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
             </span>
-            Available for Fall 2026 co-op / internship · AI/ML Engineering, Data Science, Analytics, and Applied Software roles · Canada
+            Open to new-graduate and junior roles · Applied AI/ML, Machine Learning, GenAI/RAG, NLP, AI-focused Software, Junior MLOps · Canada
           </span>
         </motion.div>
 

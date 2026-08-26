@@ -12,7 +12,7 @@ const previewConfig = {
     mainValue: 'ESI 3 / 4 / 5',
     mainMeta: 'Clinician confirmation + safety-rule escalation',
     rightTitle: 'Traceability',
-    rightRows: ['Clinician decision', 'Audit evidence', 'Backend PDF summary']
+    rightRows: ['Clinician decision', 'Audit evidence', 'PDF reporting']
   },
   resumeiq: {
     eyebrow: 'Privacy-aware resume intelligence',

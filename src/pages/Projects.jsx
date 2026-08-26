@@ -4,6 +4,8 @@ import { ProjectCard } from '../components/projects/ProjectCard.jsx';
 import { Reveal } from '../components/ui/Reveal.jsx';
 
 export function Projects() {
+  const flagshipProjects = projects.filter((project) => project.caseStudyUrl);
+
   return (
     <section className="px-6 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1100px]">
@@ -13,7 +15,7 @@ export function Projects() {
           description="A focused portfolio of AI/ML applications with production-minded architecture, model workflow, APIs, explainability, and deployment."
         />
         <div className="grid gap-8">
-          {projects.map((project, index) => (
+          {flagshipProjects.map((project, index) => (
             <Reveal key={project.slug} delay={index * 0.08}>
               <ProjectCard project={project} />
             </Reveal>

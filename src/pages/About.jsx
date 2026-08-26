@@ -12,7 +12,7 @@ const ICON_TILE = 'border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-acce
 const timeline = [
   {
     icon: GraduationCap,
-    period: '2013 – 2019',
+    period: 'August 2019',
     title: 'Computer Science foundation, India',
     detail: 'Completed a Bachelor of Engineering in Computer Science and Engineering through Gujarat Technological University at ITM Universe, building a foundation in programming, databases, software engineering, and web development.'
   },
@@ -24,13 +24,13 @@ const timeline = [
   },
   {
     icon: MapPin,
-    period: '2025',
+    period: 'January 2025 – December 2025',
     title: 'Moved to Canada',
     detail: 'Completed a Professional Development Certificate in Supply Chain Management & Logistics through MacEwan University’s School of Continuing Education, strengthening my understanding of operational data, process flows, inventory, analytics, and risk.'
   },
   {
     icon: Rocket,
-    period: 'Jan 2026 – Aug 2026',
+    period: 'January 2026 – August 2026',
     title: 'Integrated Artificial Intelligence at SAIT',
     detail: 'Completed SAIT’s Post-Diploma Certificate in Integrated Artificial Intelligence, developing end-to-end experience across machine learning, NLP, computer vision, responsible AI, cloud computing, model evaluation, APIs, deployment, and capstone development.'
   }

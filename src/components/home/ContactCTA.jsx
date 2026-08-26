@@ -20,7 +20,7 @@ export function ContactCTA() {
           </div>
         </div>
         <div className="mt-8 flex flex-wrap gap-3 border-t border-line pt-6">
-          <Button href="/case-studies/triageai" variant="onDark" className="px-4 py-2.5" icon={false}>TriageAI</Button>
+          <Button href="/case-studies" variant="onDark" className="px-4 py-2.5" icon={false}>Case Studies</Button>
           <Button href="/projects" variant="onDark" className="px-4 py-2.5" icon={false}>Projects</Button>
           <Button href={siteMeta.resume} download variant="onDark" className="px-4 py-2.5" icon={false}>Resume</Button>
         </div>

@@ -23,7 +23,8 @@ const capabilities = [
 const systemDomains = [
   'Healthcare decision support',
   'Privacy-aware resume intelligence',
-  'Evidence-grounded policy RAG'
+  'Evidence-grounded policy RAG',
+  'Grounded AI-agent workflows'
 ];
 
 export function About() {
@@ -39,7 +40,7 @@ export function About() {
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.65fr]">
           <Reveal className="card p-6 sm:p-7">
             <p className="text-lg leading-9 text-ink-muted">
-              I am a Computer Science graduate completing a postgraduate certificate in Integrated Artificial Intelligence at SAIT in Calgary. My work spans healthcare ML, privacy-aware resume intelligence, and enterprise RAG—from preprocessing and evaluation to APIs, persistence, frontend workflows, testing, and release validation.
+              I am a Computer Science and Engineering graduate who completed SAIT’s Post-Diploma Certificate in Integrated Artificial Intelligence in August 2026. My work spans healthcare decision support, privacy-aware resume intelligence, evidence-grounded enterprise RAG, and grounded AI-agent workflows—from preprocessing and evaluation to APIs, persistence, frontend workflows, testing, and release validation.
             </p>
             <p className="mt-5 text-lg leading-9 text-ink-muted">
               I am most interested in systems where model or retrieval output must be explainable, evidence-backed, reviewable, and honest about uncertainty, failure states, and limitations.
@@ -56,7 +57,7 @@ export function About() {
                   System focus
                 </p>
                 <h3 className="mt-2 font-display text-xl font-bold tracking-[-0.02em] text-ink">
-                  Three domains, one engineering approach
+                  Four domains, one engineering approach
                 </h3>
               </div>
             </div>

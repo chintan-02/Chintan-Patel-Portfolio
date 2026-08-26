@@ -9,7 +9,7 @@ import { useTheme } from '../../lib/themeStore.jsx';
    Points are sampled from three loosely-overlapping Gaussian clusters.
    In the hero they read as one diffuse amber manifold (raw embedding
    space). Each point remembers its home cluster (homePos) so later
-   sections can splay the clusters apart = the three domains. That
+   sections can splay the three visual clusters apart. That
    "data → structure" behaviour is what the models actually do; the
    visual is meaningful, not decorative.
 ------------------------------------------------------------------ */
@@ -52,8 +52,8 @@ const CLUSTERS = [
 // bronze/plum tones with normal blending instead, so points read as solid
 // warm dust rather than disappearing into the page.
 const PALETTES = {
-  dark: { core: '#E8A87C', edge: '#FFF3E6', depth: '#8B7FE8', blending: THREE.AdditiveBlending, opacity: 0.92 },
-  light: { core: '#B8763E', edge: '#7D4D26', depth: '#6B5BC4', blending: THREE.NormalBlending, opacity: 0.85 }
+  dark: { core: '#E8A87C', edge: '#FFF3E6', depth: '#8B7FE8', blending: THREE.AdditiveBlending, opacity: 0.58 },
+  light: { core: '#B8763E', edge: '#7D4D26', depth: '#6B5BC4', blending: THREE.NormalBlending, opacity: 0.5 }
 };
 
 export function PointCloud() {

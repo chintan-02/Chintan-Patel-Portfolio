@@ -29,7 +29,7 @@ export const projects = [
       'Clinician Review & Override',
       'Reviewed NLP Audit Evidence',
       'Dashboard & Assessment Detail',
-      'Backend PDF Summary'
+      'PDF Reporting'
     ],
     metrics: [
       { value: '78.32%', label: 'Accuracy' },
@@ -79,7 +79,7 @@ export const projects = [
     category: 'GenAI · RAG · AI Systems Engineering',
     title: 'PolicyGPT Enterprise',
     subtitle: 'Building an Evidence-Gated Policy RAG System',
-    status: 'Local release profile · Not cloud deployed',
+    status: 'Verified local release · Not cloud deployed',
     description:
       'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation and exposes page-level citations, confidence diagnostics, benchmark evaluation and operational health through a Next.js console.',
     problem:
@@ -107,13 +107,13 @@ export const projects = [
       'Request IDs & Structured Logs'
     ],
     metrics: [
-      { value: 'v0.3.0', label: 'Verified local release' },
+      { value: 'Docker Compose', label: 'Verified local release' },
       { value: '16', label: 'Case benchmark' },
       { value: '230', label: 'Backend tests' },
       { value: '128', label: 'Frontend tests' }
     ],
     proofStrip: [
-      'v0.3.0',
+      'Docker Compose',
       '16-case benchmark',
       '230 backend tests',
       '128 frontend tests'
@@ -241,6 +241,27 @@ export const projects = [
     githubUrl: 'https://github.com/chintan-02/smart-resume-classifier',
     caseStudyUrl: '/case-studies/resumeiq',
     accent: 'from-amber-400 to-rose-400'
+  },
+  {
+    slug: 'product-finder-ai-agent',
+    category: 'AI Agents',
+    title: 'Product Finder AI Agent',
+    subtitle: 'Grounded Product Search with Deterministic Tools',
+    status: 'Deployed · Google Cloud Run + Netlify',
+    description:
+      'Grounded product-search agent using Google ADK with deterministic Python filtering for category, price, product name, and availability constraints.',
+    stack: [
+      'Google ADK',
+      'Python',
+      'FastAPI',
+      'React',
+      'Docker',
+      'Google Cloud Run'
+    ],
+    githubUrl: 'https://github.com/chintan-02/product-finder-adk-agent',
+    liveUrl: 'https://product-finder-adk-chintan.netlify.app/',
+    caseStudyUrl: null,
+    accent: 'from-amber-400 to-orange-400'
   }
 ];
 
@@ -248,5 +269,6 @@ export const projectFilters = [
   'All',
   'Healthcare AI',
   'NLP / Resume Intelligence',
-  'GenAI · RAG · AI Systems Engineering'
+  'GenAI · RAG · AI Systems Engineering',
+  'AI Agents'
 ];

@@ -6,26 +6,26 @@ const focus = [
   {
     icon: SearchCheck,
     tag: 'Building',
-    title: 'PolicyGPT Retrieval & Evaluation',
-    text: 'Expanding retrieval experiments, provider-enabled answer-quality evaluation, and deployment planning while preserving citations, evidence gating, and unsupported-question controls.'
+    title: 'RegImpact AI',
+    text: 'Building a regulatory-change intelligence and human-review workflow with scheduled ingestion, document versioning, change detection, control mapping, reviewer approval, and audit evidence.'
   },
   {
     icon: RefreshCw,
     tag: 'Improving',
-    title: 'TriageAI + ResumeIQ Product Evidence',
-    text: 'Completing real screenshots, reliability checks, documentation, and recruiter-facing evidence across the healthcare and resume-intelligence workflows.'
+    title: 'Portfolio Release & Project Evidence',
+    text: 'Strengthening deployment evidence, screenshots, evaluation artifacts, documentation, and recruiter-facing summaries across the portfolio.'
   },
   {
     icon: CloudCog,
     tag: 'Learning',
-    title: 'Production ML, RAG & MLOps',
-    text: 'Deepening skills in observability, secure data lifecycles, managed cloud services, monitoring, Docker operations, and scalable backend architecture.'
+    title: 'Agentic AI, MLOps & Cloud Reliability',
+    text: 'Deepening agentic workflows, background processing, RBAC, observability, CI/CD, infrastructure as code, and Azure deployment.'
   },
   {
     icon: GraduationCap,
     tag: 'Targeting',
-    title: 'AI/ML Co-op, Internship & New-Grad Roles',
-    text: 'Preparing for AI/ML Engineering, Data Science, Analytics, Junior MLOps, GenAI/RAG, and Applied Software opportunities across Canada.'
+    title: 'New-Grad & Junior AI/ML Roles',
+    text: 'Targeting Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, AI-focused Software Development, and Junior MLOps opportunities across Canada.'
   }
 ];
 
@@ -40,7 +40,7 @@ export function Now() {
               What I&apos;m focused on right now.
             </h2>
             <p className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-ink-faint">
-              Last updated: July 2026
+              Last updated: August 2026
             </p>
           </div>
 

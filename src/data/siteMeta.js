@@ -7,7 +7,7 @@ export const siteMeta = {
   linkedin: 'https://www.linkedin.com/in/chintan-patel-ai/',
   portfolio: 'https://chintan-patel-ai.netlify.app/',
   resume: '/Chintan_Patel_Resume.pdf',
-  availability: 'Open to AI/ML Engineering, Data Science, Analytics, and Applied Software roles in Canada.'
+  availability: 'Open to new-graduate and junior opportunities across Canada in Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, AI-focused Software Development, and Junior MLOps.'
 };
 
 export const proofPoints = [

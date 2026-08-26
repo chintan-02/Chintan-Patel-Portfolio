@@ -16,7 +16,7 @@ export function Contact() {
 
   const context = [
     { icon: MapPin, label: 'Based in', value: 'Calgary, Alberta · Canada' },
-    { icon: Compass, label: 'Open to', value: 'AI/ML Engineering, Data Science, Analytics, Junior MLOps, GenAI/RAG, and Applied Software roles · Canada' },
+    { icon: Compass, label: 'Open to', value: 'New-graduate and junior Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, AI-focused Software Development, and Junior MLOps roles · Canada' },
     { icon: Clock, label: 'Response time', value: 'Usually within 24 hours' }
   ];
 
@@ -25,8 +25,8 @@ export function Contact() {
       <div className="mx-auto max-w-5xl">
         <SectionHeader
           eyebrow="Contact"
-          title="Open to AI/ML Engineering, Data Science, Analytics, and Applied Software roles."
-          description="Best fit: roles where machine learning, NLP or RAG, data workflows, APIs, evaluation, and production-minded software come together."
+          title="Open to new-graduate and junior AI/ML opportunities across Canada."
+          description={siteMeta.availability}
           align="center"
         />
 
@@ -82,8 +82,8 @@ export function Contact() {
           <Link to="/projects" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
             View Projects
           </Link>
-          <Link to="/case-studies/triageai" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
-            TriageAI Case Study
+          <Link to="/case-studies" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
+            Case Studies
           </Link>
           <a href={siteMeta.github} target="_blank" rel="noopener noreferrer" aria-label="Open Chintan Patel GitHub profile" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
             GitHub
