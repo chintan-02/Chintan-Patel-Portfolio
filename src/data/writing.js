@@ -1,5 +1,13 @@
 export const writingItems = [
   {
+    slug: 'regimpact-azure-deployment',
+    title: 'Seven Hours to Green: What Deploying RegImpact AI to Azure Taught Me',
+    description: 'A real deployment postmortem covering OIDC federation, two-phase Bicep provisioning, immutable images, pgvector migrations, Azure control-plane failures, and verifiable release evidence.',
+    meta: 'Published September 2026 · 12 min read',
+    tags: ['Azure', 'MLOps', 'CI/CD'],
+    route: '/writing/regimpact-azure-deployment'
+  },
+  {
     slug: 'policygpt-cost-10000-queries',
     title: 'What It Would Cost to Run PolicyGPT for 10,000 Queries',
     description: 'A transparent cost model for running an evidence-gated RAG system across local infrastructure, hosted deployment, retrieval, generation, logging, and operational safeguards.',

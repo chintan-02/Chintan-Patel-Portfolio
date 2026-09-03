@@ -6,6 +6,7 @@ import { Reveal } from '../ui/Reveal.jsx';
 import { TechChip } from '../ui/TechChip.jsx';
 
 const featuredArticles = [
+  { slug: 'regimpact-azure-deployment', project: 'RegImpact AI', focus: 'Azure delivery' },
   { slug: 'lightgbm-vs-xgboost', project: 'TriageAI', focus: 'Safety-tuned ML' },
   { slug: 'rag-evaluation-beyond-demo', project: 'PolicyGPT', focus: 'RAG evaluation' },
   { slug: 'resume-intelligence-multi-signal', project: 'ResumeIQ', focus: 'Responsible NLP' }
@@ -26,7 +27,7 @@ export function WritingPreview() {
           <SectionHeader
             eyebrow="Technical Thinking"
             title="One engineering decision from each flagship system."
-            description="The homepage writing selection represents all three projects: safety-sensitive model selection in TriageAI, inspectable RAG evaluation in PolicyGPT, and multi-signal responsible design in ResumeIQ."
+            description="The homepage writing selection now spans four systems: reliable Azure delivery in RegImpact AI, safety-sensitive model selection in TriageAI, inspectable RAG evaluation in PolicyGPT, and multi-signal responsible design in ResumeIQ."
           />
           <Link
             to="/writing"
@@ -37,7 +38,7 @@ export function WritingPreview() {
           </Link>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-3">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {articles.map((article, index) => (
             <Reveal key={article.slug} delay={index * 0.07}>
               <Link

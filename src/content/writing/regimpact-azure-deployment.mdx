@@ -1,0 +1,191 @@
+import { CaseStudyHero, MetricCard, ArchitectureBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Deployment Postmortem"
+  meta="Published September 2026 · 12 min read"
+  title="Seven Hours to Green: What Deploying RegImpact AI to Azure Taught Me"
+  description="A real deployment postmortem covering GitHub OIDC, two-phase Bicep provisioning, immutable images, pgvector migrations, Azure control-plane failures, and the evidence that turned a green check into a verifiable release."
+/>
+
+## A green local build was only the beginning
+
+RegImpact AI already worked locally. The API, web application, PostgreSQL database, Redis-backed workers, migrations, and tests all passed. That did not mean the system was deployable.
+
+The Azure staging release took almost seven hours of investigation across several attempts. Each failure exposed a different boundary: identity, infrastructure semantics, token lifetime, image delivery, database capability, or control-plane concurrency.
+
+This was the most useful part of the work. I was no longer debugging one application. I was debugging a distributed delivery system whose components failed independently and reported evidence in different places.
+
+The final release was a production-style staging deployment—not a claim of production readiness. It included:
+
+- a FastAPI service and Next.js web application
+- dispatcher, scheduler, and worker processes
+- PostgreSQL 17 with pgvector and Redis
+- Azure Container Registry and Azure Container Apps
+- Key Vault, Blob Storage, Application Insights, and Log Analytics
+- GitHub Actions authentication through OpenID Connect
+- protected deployment approval, migrations, health checks, and retained evidence
+
+<MetricCard
+  label="Verified Azure Release"
+  value="v0.5.0 · 17 Azure resources · every deployment gate passed"
+  note="The final workflow completed in 11 minutes 27 seconds and produced a commit-addressed evidence artifact."
+/>
+
+## The deployment design
+
+I deliberately separated infrastructure creation from application promotion. The workflow first creates or reconciles shared dependencies, builds immutable images, stages workloads at zero replicas, runs the database migration, and only then promotes the application.
+
+<ArchitectureBlock steps={[
+  { title: "Approve staging", description: "A protected GitHub environment requires a human deployment review" },
+  { title: "Authenticate", description: "GitHub exchanges an OIDC assertion for short-lived Azure access" },
+  { title: "Provision foundation", description: "Bicep reconciles identity, data, registry, secrets, and observability resources" },
+  { title: "Publish immutable images", description: "API and web images are tagged with the exact Git commit SHA" },
+  { title: "Migrate before traffic", description: "Workloads remain at zero replicas until Alembic succeeds" },
+  { title: "Promote and prove", description: "Container Apps scale up, readiness is checked, and evidence is retained" }
+]} />
+
+```text
+protected approval
+→ OIDC login
+→ foundation deployment
+→ commit-addressed image build
+→ zero-replica staging
+→ database migration
+→ workload promotion
+→ readiness verification
+→ deployment evidence
+```
+
+This sequence makes the migration a release gate rather than a side effect of application startup. It also keeps a failed schema change from receiving user traffic.
+
+## What failed—and what each failure taught me
+
+The failures were not random. They formed a map of assumptions that had never been tested against the real Azure control plane.
+
+| Failure | Incorrect assumption | Engineering correction |
+| --- | --- | --- |
+| Entra app registration was blocked | Subscription ownership implied permission to create directory applications | Used an Azure user-assigned managed identity and federated GitHub credential instead |
+| OIDC returned `AADSTS700213` | The subject would always use the human-readable repository name | Inspected the actual assertion and matched Azure federation to GitHub's immutable repository identity subject |
+| Azure resource providers were unavailable | A new subscription was ready for every resource type | Added provider registration and deployment preflight checks |
+| Key Vault rejected purge protection | Setting `enablePurgeProtection` to `false` was equivalent to leaving it disabled | Omitted the property for staging and enabled it only where the irreversible production decision is intentional |
+| Log Analytics rejected 14-day retention | Any positive retention period was valid | Selected the `PerGB2018` workspace SKU and its supported 30-day minimum |
+| ACR login failed after provisioning | One OIDC login would remain valid through a long infrastructure deployment | Refreshed the short-lived Azure session immediately before registry operations |
+| Alembic failed on `CREATE EXTENSION vector` | Installing the pgvector package in the application was enough | Allow-listed `VECTOR` through the PostgreSQL `azure.extensions` configuration before migration |
+| Promotion returned `ServerIsBusy` | Reapplying every foundation configuration during promotion was harmless | Restricted the PostgreSQL extension configuration to the foundation phase |
+
+## The hardest part: finding the failing layer
+
+The migration failure looked like an image problem at first. The Container Apps replica remained in `PullingImage`, the log-stream command returned `ContainerNotFound`, and the job eventually failed without a useful message in the GitHub step.
+
+The important move was to stop treating the workflow's final exit code as the root cause.
+
+I checked the system layer by layer:
+
+1. Was the GitHub runner still authenticated to Azure?
+2. Did the image exist in Azure Container Registry?
+3. Did the workload identity have `AcrPull` at the correct registry scope?
+4. Did the replica actually pull and start the container?
+5. Did the process exit because the application failed?
+6. What did Log Analytics record after the short-lived replica disappeared?
+
+The registry role was correct. Azure system logs eventually showed that the image had pulled successfully. The application traceback then revealed the real failure: Azure PostgreSQL had not allow-listed pgvector.
+
+That changed the diagnosis from “Container Apps cannot pull the image” to “the migration process starts and exits because the database rejects an extension.” The symptoms belonged to different layers.
+
+## The pgvector fix needed two changes, not one
+
+The immediate operational command proved the hypothesis:
+
+```text
+azure.extensions = VECTOR
+```
+
+After that setting was applied, the migration job succeeded. But a console fix is not infrastructure as code, so I encoded the configuration in Bicep:
+
+```bicep
+resource postgresExtensions 'Microsoft.DBforPostgreSQL/flexibleServers/configurations@2024-08-01' = if (!deployWorkloads) {
+  parent: postgres
+  name: 'azure.extensions'
+  properties: {
+    value: 'VECTOR'
+    source: 'user-override'
+  }
+}
+```
+
+The condition is as important as the value. The workflow deploys Bicep twice: first for the foundation and later for workload promotion. Reapplying the PostgreSQL setting during promotion collided with another server operation and returned `ServerIsBusy`. Limiting the configuration to the foundation phase preserved idempotence without introducing a second control-plane write.
+
+This was the deepest engineering lesson of the deployment: declarative infrastructure can still encode unsafe timing. A valid resource definition is not automatically a safe deployment sequence.
+
+## Security and release controls
+
+The deployment avoids long-lived Azure credentials. GitHub Actions requests a short-lived OIDC token for the protected `staging` environment, and Azure accepts only the configured repository and environment subject.
+
+The release also enforces several practical controls:
+
+- staging deployment requires an explicit reviewer approval
+- only the `main` branch can deploy to the environment
+- container images use the full Git commit SHA as the tag
+- the API remains internal while the web application exposes a narrow readiness proxy
+- the public readiness response contains only status and version
+- staging demo authentication remains disabled
+- secrets stay in GitHub environment secrets and Azure Key Vault
+
+Refreshing OIDC before the registry step was a useful reminder: short-lived credentials improve security, but workflows must be designed around their lifetime.
+
+## A green check is not enough
+
+The final workflow did more than finish without an error. It verified the migration, checked every Container App revision, called the public readiness endpoint, tested the protected operations route, and uploaded an evidence artifact.
+
+<MetricCard
+  label="Traceable Evidence"
+  value="Commit SHA → image tag → workflow run → JSON artifact"
+  note="The retained record links the deployed code to migration status, ready revisions, public readiness, resource group, and deployment timestamp."
+/>
+
+For the final v0.5.0 deployment:
+
+- GitHub Actions run `33695340705` completed successfully
+- image tag `3b3d90ade4b75c845395a390b00cd3d0ba20d1d0` matched the release commit
+- the migration job reported `Succeeded`
+- API, web, worker, dispatcher, and scheduler revisions reported `Succeeded`
+- `/api/platform/readiness` returned `{"status":"ready","version":"0.5.0"}`
+- the operations route redirected unauthenticated traffic to `/login`
+- the evidence artifact was retained under the same commit identity
+
+This made the release independently inspectable instead of relying on screenshots or memory.
+
+## What I would improve next
+
+The staging release is a strong engineering milestone, but it also defines the remaining production boundary.
+
+Before production, I would:
+
+- add bounded retry and backoff for transient Azure `ServerIsBusy` responses
+- split foundation, data capability, and workload resources into smaller Bicep modules
+- add a preflight that verifies required PostgreSQL extensions before migration
+- update GitHub Actions versions to remove the Node.js 20 deprecation warning
+- introduce private networking and tighter egress controls
+- replace staging authentication assumptions with Entra workforce identity
+- add enterprise malware scanning, restore drills, and managed Redis evaluation
+- connect deployment evidence to an explicit rollback rehearsal
+
+I also configured a CA$20 monthly staging budget with alerts. Azure budgets are notifications, not hard spending caps, and Cost Management data arrives with delay, so cost control still requires active review and resource lifecycle discipline.
+
+## What this deployment changed in my engineering practice
+
+The most valuable lesson was not a particular Azure command. It was learning to separate symptoms from causes across identity, control plane, registry, runtime, application, and database layers.
+
+I now treat cloud deployment as a software system with its own design requirements:
+
+- identity claims are data and must be inspected, not guessed
+- cloud defaults and SKU constraints belong in tests and preflight checks
+- token lifetime is part of workflow architecture
+- migrations need ordering, isolation, and observable outcomes
+- declarative infrastructure still needs concurrency-aware sequencing
+- release evidence should be generated by the workflow that performed the release
+- “staging succeeded” and “production is approved” are deliberately different claims
+
+Seven hours of failures produced something more valuable than a one-time successful deployment: a repeatable, auditable path from source commit to a healthy Azure environment.
+
+The deployment workflow and implementation are available in the [RegImpact AI repository](https://github.com/chintan-02/regimpact-ai). The successful [v0.5.0 Azure workflow run](https://github.com/chintan-02/regimpact-ai/actions/runs/33695340705) records the final end-to-end result.
