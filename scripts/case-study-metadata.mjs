@@ -3,6 +3,22 @@ export const HOMEPAGE_CANONICAL = `${SITE_URL}/`;
 
 export const CASE_STUDY_ROUTES = [
   {
+    route: '/case-studies/regimpact-ai',
+    output: 'dist/case-studies/regimpact-ai/index.html',
+    title: 'RegImpact AI | Regulatory Change & Controls Assurance Case Study',
+    description:
+      'RegImpact AI case study covering evidence-linked regulatory change detection, hybrid retrieval, control mapping, human approval, asynchronous processing, observability, infrastructure as code, and a verified Azure staging release.',
+    canonical: `${SITE_URL}/case-studies/regimpact-ai`,
+    robots: 'index, follow',
+    ogType: 'article',
+    image: `${SITE_URL}/og-image.png`,
+    imageWidth: '1200',
+    imageHeight: '630',
+    imageType: 'image/png',
+    imageAlt: 'RegImpact AI regulatory change and controls assurance engineering case study',
+    twitterCard: 'summary_large_image'
+  },
+  {
     route: '/case-studies/triageai',
     output: 'dist/case-studies/triageai/index.html',
     title: 'TriageAI — Clinical Intake & ESI Care Routing | Chintan Patel',
