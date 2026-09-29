@@ -7,6 +7,15 @@ export const projects = [
     status: 'v0.5.0 · Verified Azure staging release',
     featured: true,
     featuredOrder: 1,
+    homepage: {
+      displayTitle: 'RegImpact AI',
+      metrics: [
+        { value: 'v0.5.0', label: 'Verified Azure staging release' },
+        { value: 'OIDC + Bicep', label: 'Repeatable cloud delivery' }
+      ],
+      stack: ['FastAPI', 'Next.js', 'PostgreSQL + pgvector', 'Redis', 'Azure Container Apps'],
+      scope: 'Verified Azure Canada Central staging release · production remains intentionally unapproved'
+    },
     homepageVisual: {
       type: 'evidence',
       eyebrow: 'Verified Azure delivery',
@@ -93,6 +102,15 @@ export const projects = [
     status: 'Verified local workflow · clinical NLP complete',
     featured: true,
     featuredOrder: 2,
+    homepage: {
+      displayTitle: 'TriageAI / SympDirect',
+      metrics: [
+        { value: '70.37%', label: 'Macro F1' },
+        { value: '0.68%', label: 'Unsafe ESI 3→5 rate' }
+      ],
+      stack: ['React', 'FastAPI', 'LightGBM', 'SQLAlchemy', 'pytest'],
+      scope: 'Verified local React + FastAPI workflow · clinical decision support only'
+    },
     homepageVisual: {
       type: 'image',
       src: '/images/case-studies/triageai/05-prediction-result.png',
@@ -180,6 +198,15 @@ export const projects = [
     status: 'v0.3.0 · Verified local release · Not cloud deployed',
     featured: true,
     featuredOrder: 3,
+    homepage: {
+      displayTitle: 'PolicyGPT Enterprise',
+      metrics: [
+        { value: '16', label: 'Controlled benchmark cases' },
+        { value: '358', label: 'Automated tests' }
+      ],
+      stack: ['Next.js', 'FastAPI', 'PostgreSQL', 'ChromaDB', 'Docker Compose'],
+      scope: 'v0.3.0 verified local release · not cloud deployed'
+    },
     homepageVisual: {
       type: 'image',
       src: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png',
