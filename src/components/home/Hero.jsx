@@ -35,7 +35,7 @@ export function Hero() {
           variants={item}
           className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-accent"
         >
-          Applied AI Engineer · Calgary, Canada
+          {siteMeta.title} · {siteMeta.specialization} · Canada
         </motion.p>
 
         <motion.h1
