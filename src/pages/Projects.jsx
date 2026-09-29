@@ -4,7 +4,9 @@ import { ProjectCard } from '../components/projects/ProjectCard.jsx';
 import { Reveal } from '../components/ui/Reveal.jsx';
 
 export function Projects() {
-  const flagshipProjects = projects\n    .filter((project) => project.featured)\n    .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99));
+  const flagshipProjects = projects
+    .filter((project) => project.featured)
+    .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99));
 
   return (
     <section className="px-6 py-16 sm:px-6 lg:px-8">
