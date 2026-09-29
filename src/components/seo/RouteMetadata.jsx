@@ -28,17 +28,17 @@ const CASE_STUDY_IMAGES = {
 };
 
 const HOME_DESCRIPTION =
-  "Chintan Patel's applied AI/ML engineering portfolio: evaluated healthcare ML, privacy-aware resume intelligence, and a v0.3.0 evidence-first policy RAG system with reviewable outputs and honest deployment boundaries.";
+  "Chintan Patel's Applied AI Engineering portfolio: RegImpact AI with verified Azure staging delivery, evaluated healthcare ML, evidence-gated RAG, agentic workflows, and full-stack AI systems.";
 const PROJECTS_DESCRIPTION =
-  'A focused portfolio of AI/ML applications with production-minded architecture, model workflow, APIs, explainability, and deployment.';
+  'Applied AI systems spanning ML, RAG, agentic workflows, full-stack product engineering, cloud delivery, evaluation, and operational reliability.';
 const CASE_STUDIES_DESCRIPTION =
   'Full system breakdowns covering problem framing, data pipelines, model decisions, evaluation, deployment architecture, limitations, and next engineering steps.';
 const WRITING_DESCRIPTION =
   'Technical notes explaining ML concepts, project decisions, model evaluation, responsible AI, and production concerns.';
 const ABOUT_DESCRIPTION =
-  'Learn how Chintan Patel combines software engineering, operational systems thinking, and applied AI/ML work in Calgary, Alberta.';
+  'Learn how Chintan Patel combines software engineering, ML, RAG, full-stack product development, and cloud delivery as an Applied AI Engineer in Calgary, Alberta.';
 const CONTACT_DESCRIPTION =
-  'Contact Chintan Patel about AI/ML Engineering, Data Science, Analytics, and Applied Software opportunities in Canada.';
+  'Contact Chintan Patel about Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer opportunities in Canada.';
 const PRIVACY_DESCRIPTION =
   'How the Chintan Patel portfolio uses private, aggregate Netlify Web Analytics and handles external links, email, and public downloads.';
 const NOT_FOUND_DESCRIPTION =
@@ -84,7 +84,7 @@ function homeStructuredData() {
       '@context': 'https://schema.org',
       '@type': 'ProfilePage',
       '@id': `${BASE_URL}/#profile-page`,
-      name: 'Chintan Patel | Applied AI/ML Engineer',
+      name: 'Chintan Patel | Applied AI Engineer',
       url: absoluteUrl('/'),
       mainEntity: { '@id': PERSON_ID },
       isPartOf: { '@id': WEBSITE_ID }
@@ -191,7 +191,7 @@ function metadataForPath(pathname) {
 
   if (path === '/') {
     return {
-      title: 'Chintan Patel | Applied AI/ML Engineer',
+      title: 'Chintan Patel | Applied AI Engineer',
       description: HOME_DESCRIPTION,
       canonical: absoluteUrl('/'),
       ...image,
@@ -201,11 +201,11 @@ function metadataForPath(pathname) {
 
   const staticPages = {
     '/projects': {
-      title: 'AI/ML Projects | Chintan Patel',
+      title: 'Applied AI Projects | Chintan Patel',
       description: PROJECTS_DESCRIPTION
     },
     '/case-studies': {
-      title: 'AI/ML Case Studies | Chintan Patel',
+      title: 'AI Engineering Case Studies | Chintan Patel',
       description: CASE_STUDIES_DESCRIPTION
     },
     '/writing': {
@@ -213,11 +213,11 @@ function metadataForPath(pathname) {
       description: WRITING_DESCRIPTION
     },
     '/about': {
-      title: 'About Chintan Patel | Applied AI/ML Engineer',
+      title: 'About Chintan Patel | Applied AI Engineer',
       description: ABOUT_DESCRIPTION
     },
     '/contact': {
-      title: 'Contact Chintan Patel | Applied AI/ML Engineer',
+      title: 'Contact Chintan Patel | Applied AI Engineer',
       description: CONTACT_DESCRIPTION
     },
     '/privacy': {

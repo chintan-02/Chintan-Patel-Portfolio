@@ -1,14 +1,130 @@
 export const projects = [
   {
+    slug: 'regimpact-ai',
+    category: 'Regulatory AI · AI Systems Engineering',
+    title: 'RegImpact AI',
+    subtitle: 'Regulatory Change Impact & Controls Assurance Platform',
+    status: 'v0.5.0 · Verified Azure staging release',
+    featured: true,
+    featuredOrder: 1,
+    homepage: {
+      displayTitle: 'RegImpact AI',
+      metrics: [
+        { value: 'v0.5.0', label: 'Verified Azure staging release' },
+        { value: 'OIDC + Bicep', label: 'Repeatable cloud delivery' }
+      ],
+      stack: ['FastAPI', 'Next.js', 'PostgreSQL + pgvector', 'Redis', 'Azure Container Apps'],
+      scope: 'Verified Azure Canada Central staging release · production remains intentionally unapproved'
+    },
+    homepageVisual: {
+      type: 'evidence',
+      eyebrow: 'Verified Azure delivery',
+      title: 'From source commit to healthy staging workloads',
+      items: [
+        'Protected staging environment · Azure Canada Central',
+        'OIDC-authenticated GitHub Actions delivery',
+        'Migration-gated promotion with API, web, worker, dispatcher, and scheduler healthy',
+        'Immutable deployment evidence retained for v0.5.0'
+      ]
+    },
+    description:
+      'Evidence-linked regulatory intelligence platform that versions source documents, detects section-level changes, extracts obligation candidates, retrieves relevant controls, and routes uncertain or consequential findings to authorized reviewers.',
+    problem:
+      'Regulatory change is not just a search problem. Teams need to prove what changed, which obligations were inferred, which controls may be affected, who reviewed the proposal, and why a decision was accepted or rejected.',
+    contribution:
+      'Engineered the FastAPI and Next.js platform, PostgreSQL and pgvector retrieval layer, asynchronous Redis/Dramatiq workloads, human-review workflow, observability, infrastructure as code, and verified Azure staging delivery.',
+    outcome:
+      'Released v0.5.0 to a protected Azure Canada Central staging environment with OIDC-based CI/CD, migration-gated promotion, healthy API/web/worker/dispatcher/scheduler workloads, readiness verification, and immutable deployment evidence.',
+    stack: [
+      'Python',
+      'FastAPI',
+      'Next.js',
+      'TypeScript',
+      'PostgreSQL',
+      'pgvector',
+      'Redis',
+      'Dramatiq',
+      'Azure Container Apps',
+      'Bicep',
+      'GitHub Actions',
+      'Docker'
+    ],
+    features: [
+      'Versioned Regulatory Ingestion',
+      'Section-Level Change Detection',
+      'Evidence-Linked Obligation Analysis',
+      'Hybrid Full-Text + Vector Retrieval',
+      'Control Mapping',
+      'Policy-Gated Human Review',
+      'Tenant-Aware RBAC',
+      'Structured Logs, Metrics & Tracing'
+    ],
+    metrics: [
+      { value: 'v0.5.0', label: 'Verified staging release' },
+      { value: '5', label: 'Healthy application workloads' },
+      { value: 'OIDC', label: 'GitHub-to-Azure delivery' },
+      { value: 'Bicep', label: 'Infrastructure as code' }
+    ],
+    proofStrip: [
+      'Azure staging verified',
+      'PostgreSQL + pgvector',
+      'OIDC + Bicep',
+      'Human approval gates'
+    ],
+    pipeline: [
+      'Regulatory Sources',
+      'Scheduled Ingestion',
+      'Immutable Versions',
+      'Section Change Detection',
+      'Obligation Analysis',
+      'Hybrid Retrieval',
+      'Control Mapping',
+      'Policy Gates',
+      'Authorized Review',
+      'Audit Trail'
+    ],
+    liveUrl: null,
+    githubUrl: 'https://github.com/chintan-02/regimpact-ai',
+    releaseUrl: 'https://github.com/chintan-02/regimpact-ai/releases/tag/v0.5.0',
+    caseStudyUrl: '/case-studies/regimpact-ai',
+    seo: {
+      title: 'RegImpact AI | Regulatory Change & Controls Assurance Case Study',
+      description:
+        'RegImpact AI is an evidence-linked regulatory intelligence platform with hybrid retrieval, human approval, asynchronous processing, observability, infrastructure as code, and a verified Azure staging release.'
+    },
+    accent: 'from-amber-400 to-cyan-400'
+  },
+  {
     slug: 'triageai',
     category: 'Healthcare AI',
     title: 'TriageAI',
     subtitle: 'Clinical Intake & ESI Care Routing Assistant',
     status: 'Verified local workflow · clinical NLP complete',
+    featured: true,
+    featuredOrder: 2,
+    homepage: {
+      displayTitle: 'TriageAI / SympDirect',
+      metrics: [
+        { value: '70.37%', label: 'Macro F1' },
+        { value: '0.68%', label: 'Unsafe ESI 3→5 rate' }
+      ],
+      stack: ['React', 'FastAPI', 'LightGBM', 'SQLAlchemy', 'pytest'],
+      scope: 'Verified local React + FastAPI workflow · clinical decision support only'
+    },
+    homepageVisual: {
+      type: 'image',
+      src: '/images/case-studies/triageai/05-prediction-result.png',
+      alt: 'TriageAI prediction result showing LightGBM probabilities, routing recommendation, and safety-aware decision support',
+      caption: 'Prediction result with model probabilities, recommendation, and safety-aware routing context.'
+    },
     description:
       'Review-first healthcare AI decision-support workflow combining structured intake, evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, transparent safety escalation, clinician review, audit evidence, dashboard workflows, and backend-generated PDF summaries.',
     problem:
       'Emergency intake requires more than a model label. Clinical notes and structured data must be reviewable, higher-risk signals need transparent escalation, clinicians must remain the final authority, and every meaningful action should be traceable.',
+    contribution:
+      'Built the ML inference path, FastAPI services, React workflow, evidence-linked NLP extraction, safety escalation rules, clinician review flow, audit trail, and backend-generated PDF reporting.',
+    outcome:
+      'Evaluated the final LightGBM V2 workflow on the ESI 3/4/5 scope with 78.32% accuracy, 70.37% Macro F1, 54.70% ESI 5 F1, and a 0.68% unsafe ESI 3-to-5 downgrade rate.',
     stack: [
       'Python',
       'FastAPI',
@@ -78,12 +194,33 @@ export const projects = [
     slug: 'policygpt',
     category: 'GenAI · RAG · AI Systems Engineering',
     title: 'PolicyGPT Enterprise',
-    subtitle: 'Building an Evidence-Gated Policy RAG System',
-    status: 'Verified local release · Not cloud deployed',
+    subtitle: 'Evidence-Gated Policy RAG System',
+    status: 'v0.3.0 · Verified local release · Not cloud deployed',
+    featured: true,
+    featuredOrder: 3,
+    homepage: {
+      displayTitle: 'PolicyGPT Enterprise',
+      metrics: [
+        { value: '16', label: 'Controlled benchmark cases' },
+        { value: '358', label: 'Automated tests' }
+      ],
+      stack: ['Next.js', 'FastAPI', 'PostgreSQL', 'ChromaDB', 'Docker Compose'],
+      scope: 'v0.3.0 verified local release · not cloud deployed'
+    },
+    homepageVisual: {
+      type: 'image',
+      src: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png',
+      alt: 'PolicyGPT Enterprise citation-backed policy answer with confidence diagnostics and page-level evidence',
+      caption: 'Citation-backed answer with calibrated confidence and page-level evidence.'
+    },
     description:
-      'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation and exposes page-level citations, confidence diagnostics, benchmark evaluation and operational health through a Next.js console.',
+      'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation, and exposes page-level citations, confidence diagnostics, benchmark evaluation, and operational health through a Next.js console.',
     problem:
       'Policy answers are consequential. A fluent response without provenance is difficult to review, and raw vector similarity does not prove that retrieved text directly supports a question. PolicyGPT makes identity, evidence, answerability, failure states, and readiness part of the product contract.',
+    contribution:
+      'Built the ingestion architecture, evidence API, retrieval and evidence-gating logic, answerability diagnostics, Next.js console, PostgreSQL document lifecycle, controlled evaluation workflow, and release-like Docker Compose environment.',
+    outcome:
+      'Verified a 16-question benchmark covering supported and unsupported requests, page-level evidence, controlled fallback behavior, and operational readiness without presenting the small benchmark as production accuracy.',
     stack: [
       'Next.js',
       'React',
@@ -169,15 +306,64 @@ export const projects = [
     accent: 'from-amber-400 to-violet-400'
   },
   {
+    slug: 'product-finder-ai-agent',
+    category: 'AI Agents',
+    title: 'Product Finder AI Agent',
+    subtitle: 'Grounded Product Search with Deterministic Tools',
+    status: 'Deployed · Google Cloud Run + Netlify',
+    featured: true,
+    featuredOrder: 4,
+    description:
+      'Grounded product-search agent using Google ADK with deterministic Python filtering for category, price, product name, and availability constraints.',
+    problem:
+      'Natural-language product search is useful only when the model cannot invent catalogue facts or perform unreliable numeric filtering.',
+    contribution:
+      'Built a single Google ADK agent for intent interpretation while keeping authoritative category and price filtering in deterministic Python services exposed through FastAPI.',
+    outcome:
+      'Deployed the containerized backend to Google Cloud Run and the React frontend to Netlify, with the Gemini key stored in Google Secret Manager and verified production frontend-to-backend interaction.',
+    stack: [
+      'Google ADK',
+      'Gemini',
+      'Python',
+      'FastAPI',
+      'React',
+      'Docker',
+      'Google Cloud Run',
+      'Google Secret Manager'
+    ],
+    features: [
+      'Single-Agent Tool Orchestration',
+      'Deterministic Product Filtering',
+      'Structured Tool Results',
+      'FastAPI Validation',
+      'Non-Root Docker Container',
+      'Secret Manager Integration'
+    ],
+    metrics: [
+      { value: 'Cloud Run', label: 'Backend deployment' },
+      { value: 'Netlify', label: 'Frontend deployment' }
+    ],
+    githubUrl: 'https://github.com/chintan-02/product-finder-adk-agent',
+    liveUrl: 'https://product-finder-adk-chintan.netlify.app/',
+    caseStudyUrl: null,
+    accent: 'from-amber-400 to-orange-400'
+  },
+  {
     slug: 'resumeiq',
     category: 'NLP / Resume Intelligence',
     title: 'ResumeIQ',
     subtitle: 'Privacy-Aware Resume Intelligence Platform',
     status: 'Azure demo · active engineering project',
+    featured: true,
+    featuredOrder: 5,
     description:
       'Privacy-aware NLP decision-support platform for multi-format resume parsing, baseline role classification, ATS-style compatibility signals, semantic job-description matching, skill intelligence, writing-quality review, batch comparison, and human recruiter workflows.',
     problem:
       'Candidates and reviewers often receive opaque resume scores without knowing which skills, keywords, structural issues, or writing patterns influenced the result. ResumeIQ separates these signals and presents them for transparent human interpretation.',
+    contribution:
+      'Built multi-format parsing, NLP preprocessing, baseline classification, job-description matching, skill intelligence, recruiter-review workflows, FastAPI foundations, persistence, Docker/CI foundations, and an Azure-hosted portfolio demonstration.',
+    outcome:
+      'Created a working multi-signal resume intelligence workflow while explicitly separating implemented capabilities from experimental foundations and avoiding unverified headline model-accuracy claims.',
     stack: [
       'Python',
       'Streamlit',
@@ -241,34 +427,14 @@ export const projects = [
     githubUrl: 'https://github.com/chintan-02/smart-resume-classifier',
     caseStudyUrl: '/case-studies/resumeiq',
     accent: 'from-amber-400 to-rose-400'
-  },
-  {
-    slug: 'product-finder-ai-agent',
-    category: 'AI Agents',
-    title: 'Product Finder AI Agent',
-    subtitle: 'Grounded Product Search with Deterministic Tools',
-    status: 'Deployed · Google Cloud Run + Netlify',
-    description:
-      'Grounded product-search agent using Google ADK with deterministic Python filtering for category, price, product name, and availability constraints.',
-    stack: [
-      'Google ADK',
-      'Python',
-      'FastAPI',
-      'React',
-      'Docker',
-      'Google Cloud Run'
-    ],
-    githubUrl: 'https://github.com/chintan-02/product-finder-adk-agent',
-    liveUrl: 'https://product-finder-adk-chintan.netlify.app/',
-    caseStudyUrl: null,
-    accent: 'from-amber-400 to-orange-400'
   }
 ];
 
 export const projectFilters = [
   'All',
+  'Regulatory AI · AI Systems Engineering',
   'Healthcare AI',
-  'NLP / Resume Intelligence',
   'GenAI · RAG · AI Systems Engineering',
-  'AI Agents'
+  'AI Agents',
+  'NLP / Resume Intelligence'
 ];

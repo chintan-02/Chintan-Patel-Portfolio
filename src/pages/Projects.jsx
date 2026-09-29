@@ -4,15 +4,17 @@ import { ProjectCard } from '../components/projects/ProjectCard.jsx';
 import { Reveal } from '../components/ui/Reveal.jsx';
 
 export function Projects() {
-  const flagshipProjects = projects.filter((project) => project.caseStudyUrl);
+  const flagshipProjects = projects
+    .filter((project) => project.featured)
+    .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99));
 
   return (
     <section className="px-6 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1100px]">
         <SectionHeader
           eyebrow="Projects"
-          title="AI projects presented as product systems."
-          description="A focused portfolio of AI/ML applications with production-minded architecture, model workflow, APIs, explainability, and deployment."
+          title="Applied AI systems with verified engineering depth."
+          description="A focused portfolio spanning ML, RAG, agentic workflows, full-stack AI products, cloud delivery, evaluation, and operational reliability."
         />
         <div className="grid gap-8">
           {flagshipProjects.map((project, index) => (

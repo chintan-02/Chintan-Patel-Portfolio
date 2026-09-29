@@ -40,7 +40,7 @@ export function About() {
         <div className="grid gap-5 lg:grid-cols-[1.35fr_.65fr]">
           <Reveal className="card p-6 sm:p-7">
             <p className="text-lg leading-9 text-ink-muted">
-              I am a Computer Science and Engineering graduate who completed SAIT’s Post-Diploma Certificate in Integrated Artificial Intelligence in August 2026. My work spans healthcare decision support, privacy-aware resume intelligence, evidence-grounded enterprise RAG, and grounded AI-agent workflows—from preprocessing and evaluation to APIs, persistence, frontend workflows, testing, and release validation.
+              I am a Computer Science and Engineering graduate who completed SAIT’s Post-Diploma Certificate in Integrated Artificial Intelligence in August 2026. My work spans regulatory intelligence, healthcare decision support, evidence-grounded enterprise RAG, and grounded AI-agent workflows—from preprocessing and evaluation to APIs, persistence, frontend workflows, cloud delivery, testing, and release validation.
             </p>
             <p className="mt-5 text-lg leading-9 text-ink-muted">
               I am most interested in systems where model or retrieval output must be explainable, evidence-backed, reviewable, and honest about uncertainty, failure states, and limitations.
@@ -77,7 +77,7 @@ export function About() {
               <div className="flex items-start gap-3">
                 <Target className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                 <p className="text-xs font-medium leading-6 text-ink-faint">
-                  Target roles: AI/ML Engineering, Data Science, GenAI/RAG, Applied Software, and Junior MLOps.
+                  Target roles: Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer.
                 </p>
               </div>
             </div>

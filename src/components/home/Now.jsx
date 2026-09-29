@@ -24,8 +24,8 @@ const focus = [
   {
     icon: GraduationCap,
     tag: 'Targeting',
-    title: 'New-Grad & Junior AI/ML Roles',
-    text: 'Targeting Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, AI-focused Software Development, and Junior MLOps opportunities across Canada.'
+    title: 'Applied AI Engineering Roles',
+    text: 'Targeting Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer opportunities across Canada.'
   }
 ];
 
@@ -40,7 +40,7 @@ export function Now() {
               What I&apos;m focused on right now.
             </h2>
             <p className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-ink-faint">
-              Last updated: August 2026
+              Last updated: September 2026
             </p>
           </div>
 

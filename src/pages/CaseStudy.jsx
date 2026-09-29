@@ -5,6 +5,7 @@ import { projects } from '../data/projects.js';
 import { NotFound } from './NotFound.jsx';
 
 const studies = {
+  'regimpact-ai': lazy(() => import('../content/case-studies/regimpact.mdx')),
   triageai: lazy(() => import('../content/case-studies/triageai.mdx')),
   resumeiq: lazy(() => import('../content/case-studies/resumeiq.mdx')),
   'policygpt-enterprise': lazy(() => import('../content/case-studies/policygpt.mdx'))

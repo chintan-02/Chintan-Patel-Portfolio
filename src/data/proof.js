@@ -1,8 +1,7 @@
-// Single source of truth for the headline proof numbers used in the Hero
+// Single source of truth for the headline proof used in the Hero
 // and echoed on the About page.
 export const proof = [
-  { value: '3', label: 'flagship AI systems' },
-  { value: '366K+', label: 'records evaluated in offline testing' },
-  { value: '0.68%', label: 'unsafe ESI 3→5 rate' },
-  { value: '16', label: 'RAG benchmark cases' }
+  { value: 'v0.5.0', label: 'verified Azure staging release' },
+  { value: '366K+', label: 'clinical source records' },
+  { value: 'Azure + GCP', label: 'verified cloud delivery' }
 ];

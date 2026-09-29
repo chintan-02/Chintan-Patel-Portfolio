@@ -10,7 +10,7 @@ export function Footer() {
       <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
         <div>
           <p className="font-display text-lg font-bold tracking-[-0.04em] text-ink">Chintan Patel</p>
-          <p className="mt-1 text-sm text-ink-faint">Applied AI/ML Engineer · Data Science · Production ML Systems</p>
+          <p className="mt-1 text-sm text-ink-faint">Applied AI Engineer · ML · RAG · Full-Stack AI Systems</p>
           <Link
             to="/privacy"
             className="mt-3 inline-flex text-xs font-semibold text-ink-faint transition-colors hover:text-accent"
