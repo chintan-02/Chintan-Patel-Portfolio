@@ -7,6 +7,11 @@ export const projects = [
     status: 'v0.5.0 · Verified Azure staging release',
     featured: true,
     featuredOrder: 1,
+    proofHighlight: {
+      value: 'v0.5.0',
+      label: 'Azure staging release',
+      detail: 'OIDC + Bicep + migration-gated promotion'
+    },
     homepage: {
       displayTitle: 'RegImpact AI',
       metrics: [
@@ -102,6 +107,11 @@ export const projects = [
     status: 'Verified local workflow · clinical NLP complete',
     featured: true,
     featuredOrder: 2,
+    proofHighlight: {
+      value: '0.68%',
+      label: 'Unsafe ESI 3→5 rate',
+      detail: 'Safety-sensitive model evaluation'
+    },
     homepage: {
       displayTitle: 'TriageAI / SympDirect',
       metrics: [
@@ -198,6 +208,11 @@ export const projects = [
     status: 'v0.3.0 · Verified local release · Not cloud deployed',
     featured: true,
     featuredOrder: 3,
+    proofHighlight: {
+      value: '358',
+      label: 'Automated tests',
+      detail: '230 backend + 128 frontend'
+    },
     homepage: {
       displayTitle: 'PolicyGPT Enterprise',
       metrics: [
@@ -313,6 +328,19 @@ export const projects = [
     status: 'Deployed · Google Cloud Run + Netlify',
     featured: true,
     featuredOrder: 4,
+    proofHighlight: {
+      value: 'Cloud Run',
+      label: 'Verified backend deployment',
+      detail: 'Netlify frontend + Secret Manager'
+    },
+    homepage: {
+      metrics: [
+        { value: 'Cloud Run', label: 'Backend deployment' },
+        { value: 'Netlify', label: 'Frontend deployment' }
+      ],
+      stack: ['Google ADK', 'Gemini', 'FastAPI', 'React', 'Cloud Run'],
+      scope: 'Live portfolio deployment · deterministic Python owns authoritative filtering'
+    },
     description:
       'Grounded product-search agent using Google ADK with deterministic Python filtering for category, price, product name, and availability constraints.',
     problem:
@@ -356,6 +384,14 @@ export const projects = [
     status: 'Azure demo · active engineering project',
     featured: true,
     featuredOrder: 5,
+    homepage: {
+      metrics: [
+        { value: '3', label: 'Resume formats supported' },
+        { value: 'Human', label: 'Final review required' }
+      ],
+      stack: ['Python', 'FastAPI', 'Streamlit', 'scikit-learn', 'Azure'],
+      scope: 'Azure-hosted portfolio demo · not an automated hiring decision system'
+    },
     description:
       'Privacy-aware NLP decision-support platform for multi-format resume parsing, baseline role classification, ATS-style compatibility signals, semantic job-description matching, skill intelligence, writing-quality review, batch comparison, and human recruiter workflows.',
     problem:
