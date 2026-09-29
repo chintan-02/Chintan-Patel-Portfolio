@@ -1,4 +1,4 @@
-import { ArrowUpRight, RadioTower } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, RadioTower } from 'lucide-react';
 import { projects } from '../../data/projects.js';
 import { SectionHeader } from '../ui/SectionHeader.jsx';
 import { Reveal } from '../ui/Reveal.jsx';
@@ -37,17 +37,72 @@ const homeProjectProof = {
   }
 };
 
+function ProjectVisual({ project }) {
+  const visual = project.homepageVisual;
+  if (!visual) return null;
+
+  if (visual.type === 'image') {
+    return (
+      <figure className="overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface2-rgb)/0.5)]">
+        <div className="overflow-hidden border-b border-line bg-[rgb(var(--base-rgb)/0.6)] p-2 sm:p-3">
+          <img
+            src={visual.src}
+            alt={visual.alt}
+            loading="lazy"
+            decoding="async"
+            className="aspect-[16/9] w-full rounded-inset object-cover object-top"
+          />
+        </div>
+        <figcaption className="px-4 py-3 text-xs leading-5 text-ink-faint">
+          {visual.caption}
+        </figcaption>
+      </figure>
+    );
+  }
+
+  if (visual.type === 'evidence') {
+    return (
+      <div className="rounded-panel border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.045)] p-6 sm:p-7">
+        <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+          {visual.eyebrow}
+        </p>
+        <h4 className="mt-3 font-display text-2xl font-bold tracking-[-0.03em] text-ink">
+          {visual.title}
+        </h4>
+        <div className="mt-6 space-y-4">
+          {visual.items.map((item) => (
+            <div key={item} className="flex gap-3">
+              <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+              <p className="text-sm leading-6 text-ink-muted">{item}</p>
+            </div>
+          ))}
+        </div>
+        <p className="mt-6 border-t border-line pt-5 text-xs leading-5 text-ink-faint">
+          Product screenshots are intentionally withheld until fresh v0.5.0 staging captures are sanitized.
+        </p>
+      </div>
+    );
+  }
+
+  return null;
+}
+
 function HomeProjectCard({ project, index }) {
   const proof = homeProjectProof[project.slug] ?? {};
   const title = proof.title ?? project.title;
   const metrics = proof.metrics ?? project.metrics?.slice(0, 2) ?? [];
   const stack = proof.stack ?? project.stack?.slice(0, 5) ?? [];
+  const reverse = index % 2 === 1;
 
   return (
     <Reveal delay={index * 0.08}>
-      <article className="border-t border-line py-10 sm:py-12">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-12">
-          <div className="min-w-0">
+      <article className="border-t border-line py-12 sm:py-16">
+        <div className="grid gap-9 lg:grid-cols-2 lg:items-center lg:gap-14">
+          <div className={reverse ? 'lg:order-2' : undefined}>
+            <ProjectVisual project={project} />
+          </div>
+
+          <div className={reverse ? 'lg:order-1' : undefined}>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
                 Selected work {String(index + 1).padStart(2, '0')}
@@ -60,18 +115,33 @@ function HomeProjectCard({ project, index }) {
             </h3>
             <p className="mt-2 text-sm font-semibold text-accent">{project.subtitle}</p>
 
-            <p className="mt-6 max-w-3xl text-[1rem] leading-8 text-ink-muted">
-              {project.problem}
-            </p>
+            <p className="mt-6 text-[1rem] leading-8 text-ink-muted">{project.problem}</p>
 
-            <div className="mt-6 max-w-3xl">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">My contribution</p>
+            <div className="mt-6">
+              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">
+                My contribution
+              </p>
               <p className="mt-2 text-sm leading-7 text-ink-muted">{project.contribution}</p>
+            </div>
+
+            <div className="mt-7 grid grid-cols-2 gap-5 border-y border-line py-5">
+              {metrics.map((metric) => (
+                <div key={`${metric.value}-${metric.label}`}>
+                  <p className="font-display text-2xl font-bold tracking-[-0.04em] text-ink sm:text-3xl">
+                    {metric.value}
+                  </p>
+                  <p className="mt-1 text-xs font-semibold leading-5 text-ink-muted">{metric.label}</p>
+                </div>
+              ))}
             </div>
 
             <div className="mt-6 flex flex-wrap gap-2">
               {stack.map((tech) => <TechChip key={tech}>{tech}</TechChip>)}
             </div>
+
+            <p className="mt-5 text-xs font-medium leading-6 text-ink-faint">
+              {proof.scope ?? project.status}
+            </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
               {project.caseStudyUrl ? (
@@ -97,27 +167,6 @@ function HomeProjectCard({ project, index }) {
               )}
             </div>
           </div>
-
-          <aside className="lg:border-l lg:border-line lg:pl-8">
-            <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">
-              Verified proof
-            </p>
-            <div className="mt-5 space-y-6">
-              {metrics.map((metric) => (
-                <div key={`${metric.value}-${metric.label}`}>
-                  <p className="font-display text-3xl font-bold tracking-[-0.04em] text-ink">
-                    {metric.value}
-                  </p>
-                  <p className="mt-1 text-xs font-semibold leading-5 text-ink-muted">
-                    {metric.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <p className="mt-7 border-t border-line pt-5 text-xs font-medium leading-6 text-ink-faint">
-              {proof.scope ?? project.status}
-            </p>
-          </aside>
         </div>
       </article>
     </Reveal>
