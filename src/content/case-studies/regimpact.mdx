@@ -1,0 +1,326 @@
+import { ArchitectureBlock, CaseStudyHero, MetricCard, StatusBadges, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Regulatory AI Case Study"
+  meta="v0.5.0 · Verified Azure staging release · immutable deployment evidence"
+  badges={["Analyst-assurance platform", "Human approval required", "Production intentionally unapproved"]}
+  title="RegImpact AI — Regulatory Change Impact & Controls Assurance"
+  description="An evidence-linked regulatory intelligence platform that versions source documents, detects section-level changes, identifies obligation candidates, retrieves relevant controls, and routes uncertain or consequential findings to authorized reviewers."
+  links={[
+    { label: 'GitHub', href: 'https://github.com/chintan-02/regimpact-ai', external: true },
+    { label: 'v0.5.0 Release', href: 'https://github.com/chintan-02/regimpact-ai/releases/tag/v0.5.0', external: true },
+    { label: 'Azure Release Evidence', href: 'https://github.com/chintan-02/regimpact-ai/actions/runs/33695340705', external: true }
+  ]}
+/>
+
+<TechStackBlock items={["Python 3.12", "FastAPI", "Next.js", "TypeScript", "PostgreSQL", "pgvector", "Redis", "Dramatiq", "Azure Container Apps", "Blob Storage", "Key Vault", "Bicep", "GitHub Actions", "Docker"]} />
+
+## Problem
+
+Regulatory change is not just a document-search problem.
+
+A useful system must preserve evidence of **what changed**, show **which obligation was inferred**, identify **which internal controls may be affected**, record **who reviewed the proposal**, and preserve **why the final decision was accepted, rejected, deferred, or confirmed unmapped**.
+
+RegImpact was therefore designed as an **analyst-assurance platform**, not a regulatory chatbot, legal-advice service, or autonomous compliance decision-maker.
+
+<aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.07)] p-5">
+  <div className="text-sm leading-7 text-ink-muted">
+    <strong className="text-ink">My engineering scope:</strong> FastAPI and Next.js application delivery, PostgreSQL and pgvector retrieval, versioned ingestion, asynchronous processing, human-review workflows, RBAC and tenant boundaries, observability, Bicep infrastructure, GitHub OIDC delivery, controlled migrations, and verified Azure staging release evidence.
+  </div>
+</aside>
+
+## Product workflow
+
+<ArchitectureBlock steps={[
+  { title: "Regulatory sources", description: "Monitored documents enter through scheduled, guarded retrieval" },
+  { title: "Immutable versions", description: "Normalized content identity and source lineage are preserved" },
+  { title: "Section change detection", description: "Added, modified, and removed sections are identified deterministically" },
+  { title: "Obligation analysis", description: "Evidence-linked candidates expose confidence and source support" },
+  { title: "Hybrid retrieval", description: "Full-text and pgvector signals are fused for control discovery" },
+  { title: "Control mapping", description: "Ranked candidates expose ambiguity, evidence, and lineage" },
+  { title: "Policy gates", description: "Insufficient evidence or consequential actions require explicit review" },
+  { title: "Authorized reviewer", description: "Accepted, rejected, deferred, or unmapped decisions require rationale" },
+  { title: "Audit trail", description: "Decision history remains durable and append-only" }
+]} />
+
+A representative workflow is a regulator changing an incident-reporting deadline. RegImpact identifies the old and new clauses, retrieves the internal control that still reflects the previous deadline, cites both sources, and presents the impact proposal for review. The system does not silently modify the control.
+
+## Architecture
+
+RegImpact is a modular monolith with independently executed web, API, worker, dispatcher, scheduler, and migration workloads.
+
+<ArchitectureBlock steps={[
+  { title: "Next.js analyst console", description: "Reviewer-facing workflows and protected operational views" },
+  { title: "FastAPI service", description: "Typed APIs, domain logic, policy gates, authentication, and workflow state" },
+  { title: "PostgreSQL + pgvector", description: "System of record, lineage, workflow state, audit events, lexical and vector retrieval" },
+  { title: "Blob Storage", description: "Immutable source-document bytes and content-addressed artifacts" },
+  { title: "Redis + Dramatiq", description: "Asynchronous jobs, retries, leases, dispatcher, scheduler, and dead-letter handling" },
+  { title: "Application Insights + Log Analytics", description: "Structured operational telemetry and trace correlation" }
+]} />
+
+PostgreSQL owns tenants, metadata, lineage, workflow state, and audit events. Blob Storage owns immutable source bytes. Search indexes and embeddings are treated as derived projections that can be rebuilt.
+
+## Retrieval and decision design
+
+The current release deliberately favors explainable, testable components for high-consequence decisions.
+
+- PostgreSQL full-text search provides lexical retrieval.
+- pgvector cosine similarity provides semantic retrieval.
+- Reciprocal-rank fusion combines the two result sets.
+- Results remain tenant-scoped and preserve citation and embedding-model lineage.
+- Obligation candidates expose evidence and explainable confidence features.
+- Control mappings preserve ranked candidates, ambiguity, unmapped states, and evaluation lineage.
+- Low-confidence or policy-sensitive outcomes route to authorized human review.
+
+The design principle is:
+
+> **Models propose; policy gates constrain; authorized people decide.**
+
+## Human review and governance
+
+Human authority is not an optional UI layer. It is part of the workflow contract.
+
+Review decisions support:
+
+- accepted
+- rejected
+- deferred
+- confirmed unmapped
+
+Rationale is mandatory, stale-update protection prevents silently overwriting newer decisions, and creator/approver separation prevents one actor from unilaterally proposing and approving a consequential change.
+
+<StatusBadges
+  built={[
+    "Persisted policy-gated workflow",
+    "Authorized reviewer decisions",
+    "Mandatory rationale",
+    "Creator / approver separation",
+    "Tenant-aware RBAC",
+    "Append-only audit history",
+    "Insufficient-evidence blocking"
+  ]}
+  planned={[
+    "Enterprise workforce identity",
+    "Private production networking",
+    "Formal production operating approval"
+  ]}
+/>
+
+## Security and reliability
+
+The implemented security boundary includes:
+
+- database-backed users with admin, analyst, and viewer roles
+- scrypt password hashing
+- short-lived signed tokens
+- HTTP-only cookies
+- tenant isolation
+- server-validated actor and tenant identity
+- controlled URL retrieval with SSRF-oriented protections
+- signature-verified PDF/HTML intake and strict document limits
+- non-development fail-closed malware-scanning boundary
+
+The reliability model includes:
+
+- transactional outbox
+- Redis/Dramatiq workers
+- idempotent jobs
+- retries and leases
+- dead-letter state
+- startup, liveness, and readiness probes
+- structured JSON logs
+- request, trace, tenant, and actor correlation
+- W3C trace context
+- metrics, Application Insights, and Log Analytics
+
+## Azure delivery architecture
+
+<ArchitectureBlock steps={[
+  { title: "GitHub Actions + OIDC", description: "Passwordless deployment identity into protected staging" },
+  { title: "Bicep validation and deployment", description: "Infrastructure is compiled and deployed from versioned code" },
+  { title: "Commit-addressed container images", description: "API, web, worker, dispatcher, and scheduler images are published immutably" },
+  { title: "Zero-replica staging", description: "Workloads are staged before database promotion" },
+  { title: "Migration job", description: "regimpact-staging-migrate must succeed before application promotion" },
+  { title: "Workload promotion", description: "Application workloads are promoted only after migration success" },
+  { title: "Readiness verification", description: "Public readiness confirms version and dependency reachability" },
+  { title: "Evidence retention", description: "Deployment evidence is captured and retained as a GitHub artifact" }
+]} />
+
+## Verified v0.5.0 release
+
+<div className="my-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+  {[
+    ["v0.5.0", "Released version"],
+    ["5", "Healthy application workloads"],
+    ["76", "API tests passed"],
+    ["ready", "Final readiness status"]
+  ].map(([value, label]) => (
+    <div key={label} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.64)] p-5">
+      <p className="font-display text-3xl font-bold tracking-[-0.04em] text-ink">{value}</p>
+      <p className="mt-2 text-xs font-semibold leading-5 text-ink-muted">{label}</p>
+    </div>
+  ))}
+</div>
+
+The verified release evidence records:
+
+- successful GitHub Actions run **33695340705**
+- immutable deployment commit **3b3d90ade4b75c845395a390b00cd3d0ba20d1d0**
+- protected GitHub `staging` environment
+- Azure region **Canada Central**
+- successful `regimpact-staging-migrate` job
+- healthy API, web, worker, dispatcher, and scheduler Container Apps
+- public readiness response `{"status":"ready","version":"0.5.0"}`
+- retained artifact `deployment-evidence-3b3d90ade4b75c845395a390b00cd3d0ba20d1d0`
+
+<MetricCard
+  label="Release boundary"
+  value="Verified staging, not production"
+  note="The release validates repeatable Azure delivery and operational readiness. Production remains intentionally unapproved pending additional identity, networking, malware-scanning, recovery, and Kubernetes validation."
+/>
+
+## Deployment lessons
+
+The successful release was reached by fixing several independent Azure integration failures rather than treating deployment as one opaque event.
+
+### Log Analytics retention
+
+The original staging retention value was unsupported for the selected workspace contract. The configuration was aligned to the supported SKU and retention requirements.
+
+### Key Vault purge protection
+
+Azure does not allow purge protection to be reverted from enabled to disabled. Non-production deployment logic was changed to omit the property instead of trying to write `false`.
+
+### OIDC token lifetime
+
+A long infrastructure deployment exhausted the original Azure session before registry operations. The workflow now refreshes the Azure session immediately before ACR login.
+
+### pgvector enablement
+
+PostgreSQL Flexible Server requires the `VECTOR` extension to be allow-listed before Alembic can create pgvector objects.
+
+### Two-phase promotion
+
+Reapplying PostgreSQL configuration during workload promotion caused a `ServerIsBusy` collision. The two-phase deployment now applies extension configuration during the foundation phase only.
+
+These fixes are encoded in infrastructure and workflow code, making the successful result repeatable rather than a one-off console procedure.
+
+## Product visuals
+
+Fresh sanitized v0.5.0 staging captures are intentionally still pending.
+
+The repository already defines the approved capture sequence:
+
+1. operations overview
+2. source registry
+3. old-versus-new change evidence
+4. obligation review
+5. control mapping
+6. reviewer decision and audit history
+7. Azure release evidence
+
+The capture standard requires synthetic demonstration records, removal of credentials and tenant/subscription identifiers, consistent 1440×900 framing, and optimized PNG or WebP assets. Until those files exist, this case study does not render broken or invented screenshots.
+
+## Built vs planned
+
+<StatusBadges
+  built={[
+    "Versioned regulatory ingestion",
+    "Deterministic section-level change detection",
+    "Evidence-linked obligation candidates",
+    "Sentence-transformer embeddings",
+    "Hybrid lexical + vector retrieval",
+    "Control mapping and ranking",
+    "Policy-gated human review",
+    "RBAC and tenant isolation",
+    "Transactional outbox and async workers",
+    "Structured logs, metrics, and tracing",
+    "Azure Container Apps staging",
+    "Bicep infrastructure as code",
+    "GitHub OIDC delivery",
+    "Immutable deployment evidence"
+  ]}
+  planned={[
+    "Genuine fine-tuned regulatory-clause classifier training and promotion",
+    "LangGraph orchestration in v0.7",
+    "Backup / restore / rollback and failure-injection exercises in v0.8",
+    "AKS / Kubernetes runtime validation in v1.0",
+    "Enterprise workforce identity and private production networking"
+  ]}
+/>
+
+## Capability boundary
+
+The repository deliberately separates delivered engineering from roadmap items.
+
+| Capability | Current status |
+| --- | --- |
+| Sentence-transformer embeddings and hybrid retrieval | Implemented |
+| Evaluated deterministic obligation extraction | Implemented |
+| Persisted policy-gated workflow with human approval | Implemented |
+| Fine-tuned regulatory-clause classifier | Corpus governance and rights-review controls exist; approval, annotation, training, evaluation, and promotion remain required |
+| LangGraph orchestration | Planned for v0.7; not implemented |
+| AKS / Kubernetes runtime | Planned for v1.0; not implemented |
+
+## Current limitations
+
+RegImpact is not approved for production use.
+
+Current production boundaries include:
+
+- private networking still required
+- enterprise malware scanning still required
+- Entra workforce identity still required
+- restore drills and broader recovery validation still required
+- Azure Managed Redis remains a production consideration
+- Kubernetes runtime validation is not yet complete
+- fresh sanitized staging screenshots are still pending
+- the future classifier is not yet a trained and promoted production model
+
+These are deliberate boundaries, not hidden gaps.
+
+## What this project demonstrates
+
+RegImpact demonstrates applied AI engineering beyond a notebook or chatbot:
+
+- evidence-linked regulatory intelligence
+- deterministic and semantic retrieval
+- asynchronous backend workflows
+- human-authority design
+- security and tenant boundaries
+- observability
+- infrastructure as code
+- OIDC-based cloud delivery
+- migration-gated release engineering
+- immutable deployment evidence
+- explicit separation of implemented and planned capabilities
+
+The strongest engineering result is not a single model metric. It is the end-to-end system boundary: **evidence is preserved, automation is constrained, authorized people remain accountable, and the deployed staging release is independently inspectable.**
+
+<section className="my-10 rounded-hero border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] p-6 shadow-card sm:p-8">
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Inspect the implementation</p>
+  <h3 className="mt-3 font-display text-2xl font-bold tracking-[-0.03em] text-ink sm:text-3xl">
+    Regulatory intelligence, human review, and cloud release engineering—open for inspection.
+  </h3>
+  <p className="mt-4 max-w-2xl text-base leading-8 text-ink-muted">
+    Review the source code, release audit, architecture, operational documentation, and immutable Azure deployment evidence.
+  </p>
+  <div className="mt-6 flex flex-wrap gap-3">
+    <a
+      href="https://github.com/chintan-02/regimpact-ai"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center justify-center gap-2 rounded-card border border-accent bg-accent px-5 py-3 text-sm font-bold text-[#0A0A0F] shadow-[0_10px_30px_rgb(var(--accent-rgb)/0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#F0B98E]"
+    >
+      View GitHub Repository ↗
+    </a>
+    <a
+      href="https://github.com/chintan-02/regimpact-ai/blob/main/docs/release-audit-v0.5.md"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center justify-center gap-2 rounded-card border border-[rgb(var(--ink-rgb)/0.35)] px-5 py-3 text-sm font-bold text-ink transition-all duration-200 hover:-translate-y-0.5 hover:border-[rgb(var(--ink-rgb)/0.6)] hover:bg-[rgb(var(--ink-rgb)/0.1)]"
+    >
+      Read Release Audit ↗
+    </a>
+  </div>
+</section>
