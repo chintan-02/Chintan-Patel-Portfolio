@@ -29,7 +29,7 @@ export function Navbar() {
           </span>
           <span className="grid">
             <span className="text-sm font-extrabold leading-none text-ink">Chintan Patel</span>
-            <span className="mt-1 text-[11px] font-semibold text-ink-faint">Applied AI/ML Engineer</span>
+            <span className="mt-1 text-[11px] font-semibold text-ink-faint">Applied AI Engineer</span>
           </span>
         </Link>
 
