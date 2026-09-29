@@ -1,6 +1,7 @@
 export const siteMeta = {
   name: 'Chintan Patel',
   title: 'Applied AI Engineer',
+  specialization: 'Full-Stack AI Systems',
   location: 'Calgary, AB · Canada',
   email: 'patel.chintan380@gmail.com',
   github: 'https://github.com/chintan-02',
