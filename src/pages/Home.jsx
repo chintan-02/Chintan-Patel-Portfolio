@@ -13,8 +13,8 @@ export function Home() {
   return (
     <>
       <Hero />
-      <About />
       <FeaturedProjects />
+      <About />
       <SkillsSystem />
       <CaseStudyPreview />
       <WritingPreview />
