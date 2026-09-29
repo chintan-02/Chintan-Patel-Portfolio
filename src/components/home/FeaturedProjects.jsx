@@ -96,9 +96,13 @@ function HomeProjectCard({ project, index }) {
 }
 
 function SupportingProjectCard({ project, index }) {
+  const homepage = project.homepage ?? {};
+  const metrics = homepage.metrics ?? project.metrics?.slice(0, 2) ?? [];
+  const stack = homepage.stack ?? project.stack?.slice(0, 5) ?? [];
+
   return (
     <Reveal delay={index * 0.06}>
-      <article className="group h-full border-t border-line py-7">
+      <article className="group h-full border-t border-line py-8">
         <div className="flex h-full flex-col">
           <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
             More engineering work
@@ -109,9 +113,28 @@ function SupportingProjectCard({ project, index }) {
           <p className="mt-2 text-sm font-semibold text-accent">{project.subtitle}</p>
           <p className="mt-4 text-sm leading-7 text-ink-muted">{project.description}</p>
 
+          {metrics.length > 0 && (
+            <div className="mt-6 grid grid-cols-2 gap-4 border-y border-line py-4">
+              {metrics.map((metric) => (
+                <div key={`${metric.value}-${metric.label}`}>
+                  <p className="font-display text-xl font-bold tracking-[-0.03em] text-ink">
+                    {metric.value}
+                  </p>
+                  <p className="mt-1 text-[11px] font-semibold leading-5 text-ink-muted">
+                    {metric.label}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+
           <div className="mt-5 flex flex-wrap gap-2">
-            {project.stack.slice(0, 5).map((tech) => <TechChip key={tech}>{tech}</TechChip>)}
+            {stack.map((tech) => <TechChip key={tech}>{tech}</TechChip>)}
           </div>
+
+          {homepage.scope && (
+            <p className="mt-5 text-xs leading-6 text-ink-faint">{homepage.scope}</p>
+          )}
 
           <div className="mt-auto flex flex-wrap gap-3 pt-7">
             <Button href={project.githubUrl} external icon={false} variant="onDark">
