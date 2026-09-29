@@ -77,7 +77,12 @@ export const projects = [
     liveUrl: null,
     githubUrl: 'https://github.com/chintan-02/regimpact-ai',
     releaseUrl: 'https://github.com/chintan-02/regimpact-ai/releases/tag/v0.5.0',
-    caseStudyUrl: null,
+    caseStudyUrl: '/case-studies/regimpact-ai',
+    seo: {
+      title: 'RegImpact AI | Regulatory Change & Controls Assurance Case Study',
+      description:
+        'RegImpact AI is an evidence-linked regulatory intelligence platform with hybrid retrieval, human approval, asynchronous processing, observability, infrastructure as code, and a verified Azure staging release.'
+    },
     accent: 'from-amber-400 to-cyan-400'
   },
   {
