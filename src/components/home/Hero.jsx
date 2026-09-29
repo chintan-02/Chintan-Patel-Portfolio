@@ -6,10 +6,6 @@ import { siteMeta } from '../../data/siteMeta.js';
 import { proof } from '../../data/proof.js';
 import { EASE } from '../../lib/motion.js';
 
-/* Cinematic hero. No opaque background — the fixed 3D scene shows through, with a
-   soft scrim behind the text so it always stays legible over the point cloud.
-   Funnel: availability → hook headline → concrete positioning → what I build →
-   real proof → actions. */
 export function Hero() {
   const reduce = useReducedMotion();
 
@@ -35,67 +31,51 @@ export function Hero() {
         animate="show"
         className="relative z-10 mx-auto w-full max-w-[1200px] text-center md:text-left"
       >
-        <motion.div variants={item} className="flex min-w-0 justify-center md:justify-start">
-          <span className="inline-flex max-w-full items-start gap-2.5 rounded-2xl border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.08)] px-4 py-2 text-center font-mono text-[11px] font-medium leading-5 tracking-[0.04em] text-accent sm:rounded-full md:text-left">
-            <span className="relative mt-1.5 flex h-2 w-2 shrink-0">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
-            </span>
-            Applied AI Engineer · ML, RAG, Agents & Full-Stack AI Systems · Canada
-          </span>
-        </motion.div>
+        <motion.p
+          variants={item}
+          className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-accent"
+        >
+          Applied AI Engineer · Calgary, Canada
+        </motion.p>
 
         <motion.h1
           variants={item}
-          className="mt-6 font-display-serif text-[clamp(2.5rem,6.5vw,5.2rem)] font-normal leading-[1.03] tracking-[-0.02em] text-ink"
+          className="mt-5 max-w-[920px] font-display-serif text-[clamp(2.8rem,7vw,5.8rem)] font-normal leading-[1.01] tracking-[-0.035em] text-ink"
         >
-          Intelligence you can <span className="italic text-accent">trace</span>.
+          I build AI systems you can trust in <span className="italic text-accent">production</span>.
         </motion.h1>
 
         <motion.p
           variants={item}
-          className="mt-5 font-display text-[clamp(1.1rem,2vw,1.45rem)] font-semibold tracking-[-0.01em] text-ink"
+          className="mx-auto mt-6 max-w-[720px] text-[clamp(1rem,1.65vw,1.25rem)] leading-[1.75] text-ink-muted md:mx-0"
         >
-          Applied AI Engineer building evaluated ML, RAG, and agentic systems across product, cloud, and human-review workflows.
-        </motion.p>
-
-        <motion.p
-          variants={item}
-          className="mx-auto mt-4 max-w-[660px] text-[1rem] leading-[1.7] text-ink-muted md:mx-0"
-        >
-          I build practical AI products with Python, FastAPI, React and Next.js, SQL, model and retrieval evaluation, human-review workflows, Docker, and cloud deployment.
+          Building evaluated ML, RAG, and agentic systems—from data and APIs to product interfaces, cloud deployment, and operational reliability.
         </motion.p>
 
         <motion.div
           variants={item}
-          className="mt-7 flex flex-wrap justify-center gap-x-5 gap-y-2 font-mono text-[13px] text-ink-faint md:justify-start"
+          className="mt-7 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-ink-faint md:justify-start"
         >
           {proof.map((p, i) => (
             <span key={p.label} className="inline-flex items-center gap-2">
-              {i > 0 && <span className="mr-3 hidden text-ink-faint/50 sm:inline">·</span>}
-              <span className="font-semibold text-accent">{p.value}</span>
+              {i > 0 && <span className="mr-2 hidden text-ink-faint/40 sm:inline">·</span>}
+              <span className="font-semibold text-ink">{p.value}</span>
               <span>{p.label}</span>
             </span>
           ))}
         </motion.div>
 
-        <motion.div variants={item} className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
-          <Button href="/projects" variant="onDark">View Projects</Button>
-          <Button href={siteMeta.resume} variant="onDarkAccent" download icon={false}>
+        <motion.div variants={item} className="mt-9 flex flex-wrap justify-center gap-3 md:justify-start">
+          <Button href="/projects" variant="onDarkAccent">View Selected Work</Button>
+          <Button href={siteMeta.resume} variant="onDark" download icon={false}>
             <FileDown className="h-4 w-4" />
-            Download Resume
+            Download Résumé
           </Button>
-        </motion.div>
-
-        <motion.div variants={item} className="mt-6 flex justify-center gap-5 font-mono text-[12px] tracking-[0.04em] text-ink-faint md:justify-start">
-          <a href={siteMeta.github} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-accent">GitHub ↗</a>
-          <span className="text-ink-faint/40">·</span>
-          <a href={siteMeta.linkedin} target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-accent">LinkedIn ↗</a>
         </motion.div>
       </motion.div>
 
       <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
-        <ScrollCue target="about" />
+        <ScrollCue target="projects" />
       </div>
     </section>
   );
