@@ -41,7 +41,7 @@ export function Hero() {
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
               <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
             </span>
-            Open to new-graduate and junior roles · Applied AI/ML, Machine Learning, GenAI/RAG, NLP, AI-focused Software, Junior MLOps · Canada
+            Applied AI Engineer · ML, RAG, Agents & Full-Stack AI Systems · Canada
           </span>
         </motion.div>
 
@@ -56,7 +56,7 @@ export function Hero() {
           variants={item}
           className="mt-5 font-display text-[clamp(1.1rem,2vw,1.45rem)] font-semibold tracking-[-0.01em] text-ink"
         >
-          Applied AI/ML Engineer building evaluated, explainable, deployable AI systems across healthcare, NLP, and enterprise RAG.
+          Applied AI Engineer building evaluated ML, RAG, and agentic systems across product, cloud, and human-review workflows.
         </motion.p>
 
         <motion.p
