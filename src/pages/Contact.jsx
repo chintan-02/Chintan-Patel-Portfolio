@@ -16,7 +16,7 @@ export function Contact() {
 
   const context = [
     { icon: MapPin, label: 'Based in', value: 'Calgary, Alberta · Canada' },
-    { icon: Compass, label: 'Open to', value: 'New-graduate and junior Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, AI-focused Software Development, and Junior MLOps roles · Canada' },
+    { icon: Compass, label: 'Open to', value: 'Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer roles · Canada' },
     { icon: Clock, label: 'Response time', value: 'Usually within 24 hours' }
   ];
 
@@ -25,7 +25,7 @@ export function Contact() {
       <div className="mx-auto max-w-5xl">
         <SectionHeader
           eyebrow="Contact"
-          title="Open to new-graduate and junior AI/ML opportunities across Canada."
+          title="Open to Applied AI engineering opportunities across Canada."
           description={siteMeta.availability}
           align="center"
         />
