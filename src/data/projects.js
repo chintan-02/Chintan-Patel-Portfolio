@@ -4,32 +4,32 @@ export const projects = [
     category: 'Regulatory AI · AI Systems Engineering',
     title: 'RegImpact AI',
     subtitle: 'Regulatory Change Impact & Controls Assurance Platform',
-    status: 'v0.5.0 · Verified Azure staging release',
+    status: 'v0.5.0 verified Azure release · ephemeral staging now default',
     featured: true,
     featuredOrder: 1,
     proofHighlight: {
-      value: 'v0.5.0',
-      label: 'Azure staging release',
-      detail: 'OIDC + Bicep + migration-gated promotion'
+      value: 'Ephemeral',
+      label: 'Azure staging lifecycle',
+      detail: 'Provision → validate → preserve evidence → teardown'
     },
     homepage: {
       displayTitle: 'RegImpact AI',
       metrics: [
         { value: 'v0.5.0', label: 'Verified Azure staging release' },
-        { value: 'OIDC + Bicep', label: 'Repeatable cloud delivery' }
+        { value: 'Ephemeral', label: 'Cost-aware staging lifecycle' }
       ],
       stack: ['FastAPI', 'Next.js', 'PostgreSQL + pgvector', 'Redis', 'Azure Container Apps'],
-      scope: 'Verified Azure Canada Central staging release · production remains intentionally unapproved'
+      scope: 'Verified Azure Canada Central release evidence · staging now tears down by default · production remains intentionally unapproved'
     },
     homepageVisual: {
       type: 'evidence',
-      eyebrow: 'Verified Azure delivery',
-      title: 'From source commit to healthy staging workloads',
+      eyebrow: 'Verified Azure delivery + FinOps',
+      title: 'Production-shaped validation without idle cloud spend',
       items: [
         'Protected staging environment · Azure Canada Central',
-        'OIDC-authenticated GitHub Actions delivery',
-        'Migration-gated promotion with API, web, worker, dispatcher, and scheduler healthy',
-        'Immutable deployment evidence retained for v0.5.0'
+        'OIDC-authenticated GitHub Actions + Bicep delivery',
+        'Scheduler and dispatcher redesigned as bounded Container Apps Jobs',
+        'Default lifecycle: validate, retain evidence, then tear down staging'
       ]
     },
     description:
@@ -37,9 +37,9 @@ export const projects = [
     problem:
       'Regulatory change is not just a search problem. Teams need to prove what changed, which obligations were inferred, which controls may be affected, who reviewed the proposal, and why a decision was accepted or rejected.',
     contribution:
-      'Engineered the FastAPI and Next.js platform, PostgreSQL and pgvector retrieval layer, asynchronous Redis/Dramatiq workloads, human-review workflow, observability, infrastructure as code, and verified Azure staging delivery.',
+      'Engineered the FastAPI and Next.js platform, PostgreSQL and pgvector retrieval layer, asynchronous Redis/Dramatiq workloads, human-review workflow, observability, infrastructure as code, verified Azure staging delivery, and the later cost-aware staging redesign.',
     outcome:
-      'Released v0.5.0 to a protected Azure Canada Central staging environment with OIDC-based CI/CD, migration-gated promotion, healthy API/web/worker/dispatcher/scheduler workloads, readiness verification, and immutable deployment evidence.',
+      'Released v0.5.0 to protected Azure staging with OIDC-based CI/CD and immutable evidence, then redesigned staging around bounded background jobs, reduced log ingestion, and automatic teardown after validation to eliminate unnecessary idle infrastructure.',
     stack: [
       'Python',
       'FastAPI',
@@ -66,13 +66,13 @@ export const projects = [
     ],
     metrics: [
       { value: 'v0.5.0', label: 'Verified staging release' },
-      { value: '5', label: 'Healthy application workloads' },
+      { value: '3 + 3', label: 'Apps + scheduled jobs in current staging topology' },
       { value: 'OIDC', label: 'GitHub-to-Azure delivery' },
-      { value: 'Bicep', label: 'Infrastructure as code' }
+      { value: 'Ephemeral', label: 'Default staging lifecycle' }
     ],
     proofStrip: [
       'Azure staging verified',
-      'PostgreSQL + pgvector',
+      'Ephemeral staging lifecycle',
       'OIDC + Bicep',
       'Human approval gates'
     ],
@@ -95,7 +95,7 @@ export const projects = [
     seo: {
       title: 'RegImpact AI | Regulatory Change & Controls Assurance Case Study',
       description:
-        'RegImpact AI is an evidence-linked regulatory intelligence platform with hybrid retrieval, human approval, asynchronous processing, observability, infrastructure as code, and a verified Azure staging release.'
+        'RegImpact AI is an evidence-linked regulatory intelligence platform with hybrid retrieval, human approval, asynchronous processing, infrastructure as code, verified Azure release evidence, and cost-aware ephemeral staging.'
     },
     accent: 'from-amber-400 to-cyan-400'
   },

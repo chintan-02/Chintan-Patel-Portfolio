@@ -2,7 +2,7 @@ import { ArchitectureBlock, CaseStudyHero, MetricCard, StatusBadges, TechStackBl
 
 <CaseStudyHero
   label="Regulatory AI Case Study"
-  meta="v0.5.0 · Verified Azure staging release · immutable deployment evidence"
+  meta="v0.5.0 verified Azure release · immutable evidence · ephemeral staging now default"
   badges={["Analyst-assurance platform", "Human approval required", "Production intentionally unapproved"]}
   title="RegImpact AI — Regulatory Change Impact & Controls Assurance"
   description="An evidence-linked regulatory intelligence platform that versions source documents, detects section-level changes, identifies obligation candidates, retrieves relevant controls, and routes uncertain or consequential findings to authorized reviewers."
@@ -47,14 +47,15 @@ A representative workflow is a regulator changing an incident-reporting deadline
 
 ## Architecture
 
-RegImpact is a modular monolith with independently executed web, API, worker, dispatcher, scheduler, and migration workloads.
+RegImpact is a modular monolith with independently executed web, API, worker, dispatcher, scheduler, and migration workloads. The verified v0.5.0 release used five Container Apps; the current staging design keeps API, web, and worker as apps while dispatcher and scheduler run as bounded scheduled Container Apps Jobs.
 
 <ArchitectureBlock steps={[
   { title: "Next.js analyst console", description: "Reviewer-facing workflows and protected operational views" },
   { title: "FastAPI service", description: "Typed APIs, domain logic, policy gates, authentication, and workflow state" },
   { title: "PostgreSQL + pgvector", description: "System of record, lineage, workflow state, audit events, lexical and vector retrieval" },
   { title: "Blob Storage", description: "Immutable source-document bytes and content-addressed artifacts" },
-  { title: "Redis + Dramatiq", description: "Asynchronous jobs, retries, leases, dispatcher, scheduler, and dead-letter handling" },
+  { title: "Redis + Dramatiq", description: "Asynchronous worker queue, retries, leases, and dead-letter handling" },
+  { title: "Scheduled control-plane jobs", description: "Dispatcher and source scheduler run as bounded Container Apps Jobs instead of idle 24/7 containers" },
   { title: "Application Insights + Log Analytics", description: "Structured operational telemetry and trace correlation" }
 ]} />
 
@@ -138,13 +139,45 @@ The reliability model includes:
 <ArchitectureBlock steps={[
   { title: "GitHub Actions + OIDC", description: "Passwordless deployment identity into protected staging" },
   { title: "Bicep validation and deployment", description: "Infrastructure is compiled and deployed from versioned code" },
-  { title: "Commit-addressed container images", description: "API, web, worker, dispatcher, and scheduler images are published immutably" },
-  { title: "Zero-replica staging", description: "Workloads are staged before database promotion" },
+  { title: "Commit-addressed container images", description: "API and web images are published immutably and reused by worker/jobs" },
+  { title: "Zero-replica staging", description: "Application workloads are staged before database promotion" },
   { title: "Migration job", description: "regimpact-staging-migrate must succeed before application promotion" },
-  { title: "Workload promotion", description: "Application workloads are promoted only after migration success" },
-  { title: "Readiness verification", description: "Public readiness confirms version and dependency reachability" },
-  { title: "Evidence retention", description: "Deployment evidence is captured and retained as a GitHub artifact" }
+  { title: "Runtime validation", description: "API, web, worker, dispatcher job, scheduler job, and dependencies are verified" },
+  { title: "Evidence retention", description: "Deployment evidence and pre-delete resource inventory are retained as GitHub artifacts" },
+  { title: "Automatic teardown", description: "Staging is deleted after successful validation unless an operator explicitly keeps it online" }
 ]} />
+
+## Cloud cost & staging architecture
+
+The first verified Azure release proved that the system could be deployed repeatably, but it also exposed an operational issue: a production-shaped staging environment can accumulate cost even when nobody is actively using it.
+
+Azure cost analysis showed a continuous-spend pattern across always-on Container Apps, managed Redis, PostgreSQL, and telemetry. Instead of treating that as a billing-only problem, I changed the execution and deployment model.
+
+<ArchitectureBlock steps={[
+  { title: "Provision temporary staging", description: "Create the full Azure resource group from Bicep only when validation is needed" },
+  { title: "Run migrations", description: "Database schema changes complete before application promotion" },
+  { title: "Validate the complete system", description: "Exercise public readiness, internal API dependencies, background workloads, and version checks" },
+  { title: "Capture evidence", description: "Retain immutable deployment evidence and a pre-delete resource inventory" },
+  { title: "Tear down by default", description: "Delete the staging resource group unless keep_staging_online=true is explicitly selected" }
+]} />
+
+The current cost-aware design also changes how background control-plane work runs:
+
+- **Scheduler:** a bounded Container Apps Job runs every 15 minutes, matching the minimum supported source polling interval.
+- **Dispatcher:** a bounded Container Apps Job runs every minute and drains a limited number of transactional-outbox batches before exiting.
+- **Worker:** remains a Redis/Dramatiq queue consumer because that execution model is still correct for asynchronous jobs.
+- **PostgreSQL:** staging stays on the Burstable B1ms profile with no high availability or geo-redundant backup, and the server is deleted with the temporary environment.
+- **Redis:** remains Basic C0 only for short-lived staging because Dramatiq currently depends on Redis.
+- **Observability:** high-volume Container Apps console/system log streaming is disabled in ephemeral staging while application telemetry remains available.
+- **Frontend:** remains a Container App because Next.js performs server-side calls to an internal-only FastAPI endpoint; moving it to static hosting would require a larger security and runtime redesign.
+
+The objective was not simply to make Azure cheaper. It was to preserve **real deployment evidence, migration safety, background processing, observability, and internal API boundaries** while removing idle infrastructure that had no portfolio or operational value.
+
+<MetricCard
+  label="FinOps result"
+  value="Ephemeral by default"
+  note="Staging now follows provision → migrate → validate → preserve evidence → teardown. Keeping Azure staging online is an explicit operator decision rather than the default."
+/>
 
 ## Verified v0.5.0 release
 
@@ -162,16 +195,18 @@ The reliability model includes:
   ))}
 </div>
 
-The verified release evidence records:
+The verified v0.5.0 release evidence records:
 
 - successful GitHub Actions run **33695340705**
 - immutable deployment commit **3b3d90ade4b75c845395a390b00cd3d0ba20d1d0**
 - protected GitHub `staging` environment
 - Azure region **Canada Central**
 - successful `regimpact-staging-migrate` job
-- healthy API, web, worker, dispatcher, and scheduler Container Apps
+- healthy API, web, worker, dispatcher, and scheduler Container Apps in the **historical v0.5.0 topology**
 - public readiness response `{"status":"ready","version":"0.5.0"}`
 - retained artifact `deployment-evidence-3b3d90ade4b75c845395a390b00cd3d0ba20d1d0`
+
+The post-release cost-control redesign is intentionally described separately from that immutable release evidence. Current `main` uses three Container Apps plus scheduled dispatcher/scheduler jobs and tears down staging by default after validation.
 
 <MetricCard
   label="Release boundary"
@@ -236,6 +271,8 @@ The capture standard requires synthetic demonstration records, removal of creden
     "Transactional outbox and async workers",
     "Structured logs, metrics, and tracing",
     "Azure Container Apps staging",
+    "Scheduled Container Apps Jobs",
+    "Ephemeral staging teardown",
     "Bicep infrastructure as code",
     "GitHub OIDC delivery",
     "Immutable deployment evidence"
@@ -292,10 +329,11 @@ RegImpact demonstrates applied AI engineering beyond a notebook or chatbot:
 - infrastructure as code
 - OIDC-based cloud delivery
 - migration-gated release engineering
+- cost-aware ephemeral staging and automatic teardown
 - immutable deployment evidence
 - explicit separation of implemented and planned capabilities
 
-The strongest engineering result is not a single model metric. It is the end-to-end system boundary: **evidence is preserved, automation is constrained, authorized people remain accountable, and the deployed staging release is independently inspectable.**
+The strongest engineering result is not a single model metric. It is the end-to-end system boundary: **evidence is preserved, automation is constrained, authorized people remain accountable, cloud delivery is independently inspectable, and staging infrastructure is now lifecycle-managed rather than left running by default.**
 
 <section className="my-10 rounded-hero border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] p-6 shadow-card sm:p-8">
   <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Inspect the implementation</p>
