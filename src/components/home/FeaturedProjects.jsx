@@ -16,7 +16,7 @@ function HomeProjectCard({ project, index }) {
 
   return (
     <Reveal delay={index * 0.08}>
-      <article className="border-t border-line py-14 sm:py-18 lg:py-20">
+      <article className="border-t border-line py-14 sm:py-[4.5rem] lg:py-20">
         <div className="grid gap-10 lg:grid-cols-[1.08fr_.92fr] lg:items-center lg:gap-16">
           <div className={reverse ? 'lg:order-2' : undefined}>
             <ProjectVisual visual={project.homepageVisual} title={project.title} />
