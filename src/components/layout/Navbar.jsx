@@ -73,6 +73,8 @@ export function Navbar() {
             className="grid h-10 w-10 place-items-center rounded-xl border border-line bg-[rgb(var(--surface2-rgb)/0.7)] text-ink"
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle navigation"
+            aria-expanded={open}
+            aria-controls="mobile-navigation"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -87,6 +89,7 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.15 }}
+            id="mobile-navigation"
             className="border-t border-line bg-[rgb(var(--base-rgb)/0.96)] px-4 py-4 shadow-xl backdrop-blur-xl lg:hidden"
           >
             <div className="mx-auto grid max-w-[1100px] gap-1.5">
