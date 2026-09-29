@@ -84,7 +84,7 @@ function homeStructuredData() {
       '@context': 'https://schema.org',
       '@type': 'ProfilePage',
       '@id': `${BASE_URL}/#profile-page`,
-      name: 'Chintan Patel | Applied AI Engineer',
+      name: `Chintan Patel | ${siteMeta.title} · ${siteMeta.specialization}`,
       url: absoluteUrl('/'),
       mainEntity: { '@id': PERSON_ID },
       isPartOf: { '@id': WEBSITE_ID }
@@ -191,7 +191,7 @@ function metadataForPath(pathname) {
 
   if (path === '/') {
     return {
-      title: 'Chintan Patel | Applied AI Engineer',
+      title: `Chintan Patel | ${siteMeta.title} · ${siteMeta.specialization}`,
       description: HOME_DESCRIPTION,
       canonical: absoluteUrl('/'),
       ...image,
