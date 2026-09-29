@@ -12,7 +12,7 @@ export function ScrollCue({ target = 'highlights' }) {
       type="button"
       onClick={handleClick}
       aria-label="Scroll to content"
-      className="group hidden flex-col items-center gap-3 sm:flex"
+      className="group hidden flex-col items-center gap-3 lg:flex"
     >
       <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.35em] text-ink-faint transition-colors duration-200 group-hover:text-accent">
         Scroll
