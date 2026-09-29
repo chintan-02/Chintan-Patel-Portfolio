@@ -7,6 +7,17 @@ export const projects = [
     status: 'v0.5.0 · Verified Azure staging release',
     featured: true,
     featuredOrder: 1,
+    homepageVisual: {
+      type: 'evidence',
+      eyebrow: 'Verified Azure delivery',
+      title: 'From source commit to healthy staging workloads',
+      items: [
+        'Protected staging environment · Azure Canada Central',
+        'OIDC-authenticated GitHub Actions delivery',
+        'Migration-gated promotion with API, web, worker, dispatcher, and scheduler healthy',
+        'Immutable deployment evidence retained for v0.5.0'
+      ]
+    },
     description:
       'Evidence-linked regulatory intelligence platform that versions source documents, detects section-level changes, extracts obligation candidates, retrieves relevant controls, and routes uncertain or consequential findings to authorized reviewers.',
     problem:
@@ -77,6 +88,12 @@ export const projects = [
     status: 'Verified local workflow · clinical NLP complete',
     featured: true,
     featuredOrder: 2,
+    homepageVisual: {
+      type: 'image',
+      src: '/images/case-studies/triageai/05-prediction-result.png',
+      alt: 'TriageAI prediction result showing LightGBM probabilities, routing recommendation, and safety-aware decision support',
+      caption: 'Prediction result with model probabilities, recommendation, and safety-aware routing context.'
+    },
     description:
       'Review-first healthcare AI decision-support workflow combining structured intake, evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, transparent safety escalation, clinician review, audit evidence, dashboard workflows, and backend-generated PDF summaries.',
     problem:
@@ -158,6 +175,12 @@ export const projects = [
     status: 'v0.3.0 · Verified local release · Not cloud deployed',
     featured: true,
     featuredOrder: 3,
+    homepageVisual: {
+      type: 'image',
+      src: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png',
+      alt: 'PolicyGPT Enterprise citation-backed policy answer with confidence diagnostics and page-level evidence',
+      caption: 'Citation-backed answer with calibrated confidence and page-level evidence.'
+    },
     description:
       'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation, and exposes page-level citations, confidence diagnostics, benchmark evaluation, and operational health through a Next.js console.',
     problem:
