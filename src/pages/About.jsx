@@ -50,7 +50,7 @@ const values = [
   {
     icon: Rocket,
     title: 'Ship, then improve',
-    text: 'ResumeIQ has an Azure portfolio demo, while TriageAI and PolicyGPT have verified local workflows with explicit deployment boundaries. I document what is built, what is tested, what remains local, and what would be required before production use.'
+    text: 'RegImpact has a verified Azure staging release, Product Finder runs on Google Cloud Run + Netlify, ResumeIQ has an Azure portfolio demo, and TriageAI and PolicyGPT retain explicit local-release boundaries. I document what is built, what is tested, what is deployed, and what still requires production hardening.'
   }
 ];
 
@@ -84,7 +84,7 @@ export function About() {
                   That mix shapes how I build applied ML systems: software engineering keeps the work usable and maintainable, supply chain gives me a lens on operational data and decision workflows, and AI brings the modeling layer into practical products.
                 </p>
                 <p>
-                  I am looking for Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, and AI-focused software-development opportunities across Canada — especially where explainable and traceable systems matter.
+                  I am looking for Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer opportunities across Canada — especially where evaluated, traceable, and production-minded systems matter.
                 </p>
               </div>
 
@@ -127,7 +127,7 @@ export function About() {
                 </div>
                 <div>
                   <p className="font-bold text-ink">Chintan Patel</p>
-                  <p className="text-sm text-ink-faint">Applied AI/ML Engineer</p>
+                  <p className="text-sm text-ink-faint">Applied AI Engineer</p>
                 </div>
               </div>
               <div className="mt-5 space-y-3 border-t border-line pt-5 text-sm">
@@ -245,7 +245,7 @@ export function About() {
               Open to the right opportunity.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-8 text-ink-muted">
-              Applied AI/ML Engineering, Machine Learning Engineering, GenAI/RAG, NLP, and AI-focused software-development opportunities across Canada. If this looks like a fit, the fastest next step is a quick email or a look at the résumé.
+              Applied AI Engineering, Machine Learning Engineering, GenAI/RAG, NLP, and AI-focused software-development opportunities across Canada. If this looks like a fit, the fastest next step is a quick email or a look at the résumé.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button href={`mailto:${siteMeta.email}`} variant="onDarkAccent">Email me</Button>
