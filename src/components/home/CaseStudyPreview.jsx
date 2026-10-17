@@ -10,7 +10,7 @@ const caseStudyFocus = {
   triageai: {
     summary:
       'How safety-tuned model selection, review-first clinical NLP, transparent escalation, clinician decisions, and audit evidence form one bounded workflow.',
-    topics: ['Safety-tuned ML', 'Clinical NLP review', 'Audit + PDF evidence'],
+    topics: ['Safety-tuned ML', 'Cloud delivery', 'Private reports + alerts'],
     proof: '78.32% accuracy · 0.68% unsafe ESI 3→5'
   },
   resumeiq: {

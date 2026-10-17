@@ -16,7 +16,7 @@ const capabilities = [
   {
     title: 'Deliver',
     icon: Rocket,
-    text: 'React, Next.js, and Streamlit interfaces, Docker Compose, CI, Azure demos, readiness contracts, and structured logs.'
+    text: 'React, Next.js, and Streamlit interfaces, Docker, CI, Azure and GCP delivery, PostgreSQL migrations, readiness checks, private storage, and operational alerts.'
   }
 ];
 

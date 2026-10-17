@@ -104,7 +104,7 @@ export const projects = [
     category: 'Healthcare AI',
     title: 'TriageAI',
     subtitle: 'Clinical Intake & ESI Care Routing Assistant',
-    status: 'Verified local workflow · clinical NLP complete',
+    status: 'Live educational demo · Cloud Run + PostgreSQL',
     featured: true,
     featuredOrder: 2,
     proofHighlight: {
@@ -118,8 +118,8 @@ export const projects = [
         { value: '70.37%', label: 'Macro F1' },
         { value: '0.68%', label: 'Unsafe ESI 3→5 rate' }
       ],
-      stack: ['React', 'FastAPI', 'LightGBM', 'SQLAlchemy', 'pytest'],
-      scope: 'Verified local React + FastAPI workflow · clinical decision support only'
+      stack: ['React', 'FastAPI', 'LightGBM', 'PostgreSQL', 'Cloud Run'],
+      scope: 'Live Netlify + Cloud Run demo · private workspaces · educational decision support only'
     },
     homepageVisual: {
       type: 'image',
@@ -132,7 +132,7 @@ export const projects = [
     problem:
       'Emergency intake requires more than a model label. Clinical notes and structured data must be reviewable, higher-risk signals need transparent escalation, clinicians must remain the final authority, and every meaningful action should be traceable.',
     contribution:
-      'Built the ML inference path, FastAPI services, React workflow, evidence-linked NLP extraction, safety escalation rules, clinician review flow, audit trail, and backend-generated PDF reporting.',
+      'Built the evaluated ML and review-first React/FastAPI workflow, then deployed authenticated private workspaces on Cloud Run with PostgreSQL migrations, private PDF storage, bounded demo cleanup, and verified operational alerts.',
     outcome:
       'Evaluated the final LightGBM V2 workflow on the ESI 3/4/5 scope with 78.32% accuracy, 70.37% Macro F1, 54.70% ESI 5 F1, and a 0.68% unsafe ESI 3-to-5 downgrade rate.',
     stack: [
@@ -143,7 +143,13 @@ export const projects = [
       'LightGBM',
       'Scikit-learn',
       'SQLAlchemy',
-      'SQLite',
+      'PostgreSQL',
+      'Alembic',
+      'Google Cloud Run',
+      'Google Cloud Storage',
+      'Secret Manager',
+      'Cloud Monitoring',
+      'Docker',
       'ReportLab',
       'pytest'
     ],
@@ -155,7 +161,12 @@ export const projects = [
       'Clinician Review & Override',
       'Reviewed NLP Audit Evidence',
       'Dashboard & Assessment Detail',
-      'PDF Reporting'
+      'Fresh PDF Snapshots',
+      'Owner-Scoped Authentication',
+      'Managed PostgreSQL + Migrations',
+      'Private GCS Reports',
+      'Scheduled Demo Cleanup',
+      'Uptime + Failure Alerts'
     ],
     metrics: [
       { value: '78.32%', label: 'Accuracy' },
@@ -195,9 +206,14 @@ export const projects = [
       'Clinician Decision',
       'Audit + PDF'
     ],
-    liveUrl: null,
+    liveUrl: 'https://triageai-chintan-staging.netlify.app/',
     githubUrl: 'https://github.com/chintan-02/triageai-esi-care-routing',
     caseStudyUrl: '/case-studies/triageai',
+    seo: {
+      title: 'TriageAI | Live Cloud ML Decision-Support Demo',
+      description: 'Review-first LightGBM workflow deployed with React, FastAPI, Cloud Run, PostgreSQL, authenticated workspaces, private PDF reports and verified operational alerts.',
+      image: '/images/case-studies/triageai/05-prediction-result.png'
+    },
     accent: 'from-amber-400 to-orange-500'
   },
   {
@@ -381,7 +397,7 @@ export const projects = [
     category: 'NLP / Resume Intelligence',
     title: 'ResumeIQ',
     subtitle: 'Privacy-Aware Resume Intelligence Platform',
-    status: 'Azure demo · active engineering project',
+    status: 'Demo offline · frontend migration planned',
     featured: true,
     featuredOrder: 5,
     homepage: {
@@ -390,7 +406,7 @@ export const projects = [
         { value: 'Human', label: 'Final review required' }
       ],
       stack: ['Python', 'FastAPI', 'Streamlit', 'scikit-learn', 'Azure'],
-      scope: 'Azure-hosted portfolio demo · not an automated hiring decision system'
+      scope: 'Previously demonstrated on Azure · currently offline · frontend migration planned'
     },
     description:
       'Privacy-aware NLP decision-support platform for multi-format resume parsing, baseline role classification, ATS-style compatibility signals, semantic job-description matching, skill intelligence, writing-quality review, batch comparison, and human recruiter workflows.',
@@ -426,7 +442,7 @@ export const projects = [
       { value: '3', label: 'Resume formats supported' },
       { value: 'Multi-signal', label: 'Analysis approach' },
       { value: 'Human', label: 'Review required' },
-      { value: 'Azure', label: 'Portfolio demo' }
+      { value: 'Offline', label: 'Demo status' }
     ],
     screenshots: [
       {
@@ -459,7 +475,7 @@ export const projects = [
       'Quality Review',
       'Human Review'
     ],
-    liveUrl: 'https://resume-classifier-chintan.azurewebsites.net',
+    liveUrl: null,
     githubUrl: 'https://github.com/chintan-02/smart-resume-classifier',
     caseStudyUrl: '/case-studies/resumeiq',
     accent: 'from-amber-400 to-rose-400'

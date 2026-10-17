@@ -2,16 +2,22 @@ import { CaseStudyHero, TechStackBlock, ArchitectureBlock, ScreenshotGallery, St
 
 <CaseStudyHero
   label="NLP Case Study"
-  meta="Azure portfolio demo · Active engineering project"
+  meta="Demo temporarily offline · Frontend migration planned"
   title="ResumeIQ — Privacy-Aware Resume Intelligence Platform"
   description="A multi-signal NLP decision-support workflow for resume parsing, baseline role classification, ATS-style compatibility estimates, semantic job-description matching, skill intelligence, writing-quality review, batch comparison, and human recruiter workflows. It does not claim to predict hiring outcomes or reproduce a commercial ATS."
   links={[
-    { label: 'Live Demo', href: 'https://resume-classifier-chintan.azurewebsites.net', external: true },
     { label: 'GitHub', href: 'https://github.com/chintan-02/smart-resume-classifier', external: true }
   ]}
 />
 
 <TechStackBlock items={["Python", "Streamlit", "FastAPI", "Scikit-learn", "TF-IDF", "SQLAlchemy", "SQLite", "Docker Compose", "GitHub Actions", "Azure"]} />
+
+## Demo availability
+
+The previous Azure demo is currently offline after its student credits were
+exhausted and hosting was shut down. Source code and case-study evidence remain
+available. Migration from Streamlit to a React/Next.js frontend is planned, not
+implemented or redeployed yet.
 
 ## Problem
 
@@ -51,7 +57,7 @@ The primary Streamlit application can operate locally even when the optional Fas
     "Privacy-safe display mode",
     "FastAPI and SQLAlchemy foundations",
     "Docker Compose and GitHub Actions",
-    "Azure-hosted demonstration"
+    "Previous Azure demonstration (currently offline)"
   ]}
   planned={[
     "Independent leakage and duplicate audit",

@@ -147,6 +147,8 @@ The project combines:
 - prediction latency tracking
 - backend-generated PDF summaries with reviewed NLP evidence
 
+Cloud delivery: Netlify frontend, Cloud Run API, Neon PostgreSQL/Alembic, owner-scoped sessions, private GCS reports, hourly cleanup and verified operational email alerts.
+
 Verified model evidence:
 
 | Metric | Value |
@@ -160,7 +162,7 @@ Verified model evidence:
 
 > TriageAI is positioned as clinical decision support, not diagnosis or autonomous medical decision-making.
 
-[Case Study](https://chintan-patel-ai.netlify.app/case-studies/triageai) ·
+[Live Demo](https://triageai-chintan-staging.netlify.app/) · [Case Study](https://chintan-patel-ai.netlify.app/case-studies/triageai) ·
 [Repository](https://github.com/chintan-02/triageai-esi-care-routing)
 
 ---
@@ -228,11 +230,10 @@ The project includes:
 - SQLAlchemy persistence
 - Docker Compose
 - GitHub Actions
-- Azure demonstration deployment
+- Previous Azure demonstration; currently offline pending frontend migration
 
 ResumeIQ avoids presenting its baseline model as production-validated until leakage, split quality, class balance, calibration, and independent evaluation are completed.
 
-[Live Demo](https://resume-classifier-chintan.azurewebsites.net/) ·
 [Case Study](https://chintan-patel-ai.netlify.app/case-studies/resumeiq) ·
 [Repository](https://github.com/chintan-02/smart-resume-classifier)
 

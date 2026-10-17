@@ -2,16 +2,17 @@ import { ArchitectureBlock, CaseStudyHero, ExpandableImage, MetricCard, ProductW
 
 <CaseStudyHero
   label="Healthcare AI Case Study"
-  meta="Demo freeze complete · 96 backend tests · 52 frontend tests"
-  badges={["Clinical decision-support workflow prototype", "Human review required"]}
+  meta="Live cloud demo · 160 Python tests · 60 React tests"
+  badges={["Live educational demo", "Human review required"]}
   title="TriageAI — ESI Clinical Intake & Care Routing Assistant"
   description="A review-first healthcare AI decision-support workflow that converts structured intake or clinician notes into auditable ESI care-routing support. It combines evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, transparent safety escalation, clinician review or override, server-side audit evidence, dashboard workflows, and backend-generated PDF summaries."
   links={[
+    { label: 'Live Demo', href: 'https://triageai-chintan-staging.netlify.app/', external: true },
     { label: 'GitHub', href: 'https://github.com/chintan-02/triageai-esi-care-routing', external: true }
   ]}
 />
 
-<TechStackBlock items={["Python", "FastAPI", "React", "TypeScript", "LightGBM", "Scikit-learn", "SQLAlchemy", "SQLite", "ReportLab", "Pydantic", "pytest"]} />
+<TechStackBlock items={["Python", "FastAPI", "React", "TypeScript", "LightGBM", "Scikit-learn", "SQLAlchemy", "PostgreSQL", "Alembic", "Cloud Run", "Cloud Storage", "Secret Manager", "Cloud Monitoring", "Docker", "ReportLab", "Pydantic", "pytest"]} />
 
 ## Problem
 
@@ -34,7 +35,7 @@ After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 
 
 <aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.07)] p-5">
   <div className="text-sm leading-7 text-ink-muted">
-    <strong className="text-ink">My engineering scope:</strong> clinical data preparation, model-registry integration, deterministic evidence-linked NLP, React and FastAPI workflows, safety-rule escalation, clinician review, persistence, audit evidence, PDF reporting and automated validation. The result is a local clinical decision-support workflow prototype—not a diagnostic or clinically validated system.
+    <strong className="text-ink">My engineering scope:</strong> clinical data preparation, model-registry integration, deterministic evidence-linked NLP, React and FastAPI workflows, safety-rule escalation, clinician review, persistence, audit evidence, PDF reporting, cloud delivery and automated validation. The workflow is now deployed as an educational cloud demo with private workspaces, PostgreSQL migrations, private reports and operational alerts. It is not diagnostic or clinically validated.
   </div>
 </aside>
 
@@ -75,14 +76,18 @@ After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 
     "Model Monitoring with registry metrics",
     "Final screenshot set",
     "Final synthetic product walkthrough",
-    "Automated workflow validation"
+    "Automated workflow validation",
+    "Owner-scoped sessions and workflow roles",
+    "Managed PostgreSQL and Alembic",
+    "Private GCS report snapshots",
+    "Cloud Run candidate verification",
+    "Scheduled retention cleanup",
+    "Uptime, failure alerts and verified email delivery"
   ]}
   planned={[
-    "Production authentication and RBAC",
-    "Managed PostgreSQL",
-    "Secure cloud secrets",
     "Formal clinical validation",
-    "Controlled production monitoring"
+    "Independent staging and verified cloud restore",
+    "Live drift and subgroup evaluation"
   ]}
 />
 
@@ -205,14 +210,14 @@ The source dataset contains 366,890 emergency-department records and 972 columns
 
 The model was selected after comparison with XGBoost, Random Forest, a Dense Neural Network, an RNN, and a GRU. Selection considered weighted and macro F1, class-level behavior, ESI 5 performance, and unsafe ESI 3-to-ESI 5 downgrades rather than raw accuracy alone.
 
-## Final software validation
+## Software and deployment validation
 
 <section className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.8)] p-5 shadow-card sm:p-6">
-  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Verified local software checks</p>
+  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Current software validation</p>
   <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
     {[
-      ["96", "Backend tests passed"],
-      ["52", "Frontend tests passed across 14 files"],
+      ["160", "Python tests passed; 1 PostgreSQL-only case skipped locally"],
+      ["60", "React tests passed across 15 files"],
       ["Passed", "React production build"],
       ["Passed", "Docker Compose build and full-stack validation"],
       ["Passed", "/health check"],
@@ -226,7 +231,7 @@ The model was selected after comparison with XGBoost, Random Forest, a Dense Neu
   </div>
 </section>
 
-These results validate the software and local review-first workflow. They are not clinical validation and do not establish safety or effectiveness in patient care.
+These counts are from the release-documentation verification. PostgreSQL migrations and API integration passed separately in GitHub CI. Dated evidence is recorded in the repository. These results validate software behavior and the review-first workflow. They are not clinical validation and do not establish safety or effectiveness in patient care.
 
 ## Human-in-the-loop design
 
@@ -284,18 +289,79 @@ The final model is strongest and most precisely evaluated for ESI 3/4/5. Higher-
 
 A checkbox only proves that someone clicked it. Persisting the reviewed fields, evidence snippets, safety cues, and missing-information state makes the review itself auditable.
 
+## Live deployment and reliability
+
+The React/TypeScript frontend is delivered through Netlify. A non-root Docker
+image serves FastAPI and the real LightGBM registry on Google Cloud Run.
+Neon PostgreSQL is the system of record; Alembic migrations run separately from
+API startup. Runtime, migration and cleanup use separate database identities.
+
+### Access and report lifecycle
+
+Database-backed opaque sessions, server-enforced roles and owner-scoped APIs
+separate demo workspaces. Client-supplied reviewer identities are replaced with
+the authenticated principal. The Doctor demo role is a workflow permission, not
+verification of professional credentials.
+
+PDFs are stored in a private GCS bucket and downloaded through authenticated APIs.
+After a clinician review or assessment input changes, assessment-level PDF
+generation creates a fresh snapshot. Older report IDs preserve their historical
+bytes. The regression test verified pending → accepted review → fresh accepted
+PDF, original report preservation, and reuse when inputs remain unchanged.
+
+### Deployment topology
+
+<ExpandableImage
+  src="/images/case-studies/triageai/cloud-deployment.svg"
+  alt="Netlify frontend calls the Cloud Run API, which uses Neon PostgreSQL, private GCS reports and Secret Manager. Hourly Scheduler invokes a cleanup job; Cloud Monitoring delivers operator email alerts."
+  label="Verified educational cloud deployment"
+  imageClassName="h-auto w-full bg-white object-contain"
+/>
+
+Secrets are supplied through Secret Manager. Shared rate limits, workspace quotas
+and bounded cleanup constrain demo usage. Cleanup runs hourly, targeting eligible
+inactive demo workspaces older than 24 hours; active-session exclusions and batch
+limits mean retention is not an exact deletion deadline. Object soft deletion
+retains a recovery window.
+
+### Verified release and alerts
+
+The PDF fix was tested on private staging, then on a tagged demo candidate before
+traffic promotion to `triageai-demo-00002-buj`. Images are pinned by digest, and
+previous revision information is recorded for application rollback. This was an
+operator-driven release; automatic public CI/CD is not claimed.
+
+Two uptime checks and five operational alert policies cover frontend/API
+availability, API 5xx bursts, cleanup failures and missing cleanup completions.
+A temporary test policy delivered opening and closure emails and was removed.
+This verifies notification delivery; it does not exercise every failure condition.
+Registry metrics remain offline evaluation, not live accuracy or drift monitoring.
+
+[Deployment evidence](https://github.com/chintan-02/triageai-esi-care-routing/blob/main/docs/releases/cloud-demo-2026-10-17.md)
+· [Operations and rollback](https://github.com/chintan-02/triageai-esi-care-routing/blob/main/docs/deployment/live-demo-runbook.md)
+
+## Try the live workflow
+
+Choose **Start a private demo session**, use only synthetic information, review
+extracted intake, run prediction, accept or override the result, then generate a
+PDF from the assessment. Inspect the audit trail and log out. A fresh workspace
+starts empty; anonymous sessions and demo data are temporary. The first request
+may take longer during a cold start. Optional Azure Speech requires separate
+configuration and is not claimed as a verified live capability.
+
 ## Current limitations and roadmap
 
-Current limitations include local SQLite persistence, demonstration authentication, no production RBAC, no managed cloud database, no clinical validation, no production monitoring, and a deterministic NLP vocabulary that requires controlled expansion and testing.
+The public application is an educational demo, not a clinical production service.
+Private staging and demo currently share the database and report infrastructure.
+Independent staging, verified cloud database restore, staff identity lifecycle,
+prospective clinical validation, subgroup evaluation and model drift monitoring
+remain future work. No uptime SLA, real-patient deployment, regulatory compliance
+certification or production-scale load claim is made.
 
-Next steps are:
-
-- harden authentication and role boundaries
-- move professional deployment persistence to PostgreSQL
-- add secure secrets and cloud storage controls
-- strengthen monitoring, audit analytics, and model-observation workflows
-- evaluate NLP or model challengers only when a measured benchmark justifies the added complexity
+Further NLP/model complexity should be justified by measured benchmarks rather
+than added for its own sake. The existing deterministic vocabulary still requires
+controlled expansion and tests.
 
 ## What this project demonstrates
 
-TriageAI demonstrates end-to-end ownership across clinical data preparation, multiclass evaluation, model-registry integration, deterministic NLP extraction, React and FastAPI integration, human-in-the-loop safety design, SQLAlchemy persistence, auditability, backend reporting, automated testing, and responsible-AI boundaries.
+TriageAI demonstrates end-to-end ownership across clinical data preparation, multiclass evaluation, model-registry integration, deterministic NLP extraction, React and FastAPI integration, human-in-the-loop safety design, SQLAlchemy persistence, auditability, backend reporting, automated testing, authenticated cloud delivery, private object storage, operational monitoring, retention controls, and responsible-AI boundaries.

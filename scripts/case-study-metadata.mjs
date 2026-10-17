@@ -23,7 +23,7 @@ export const CASE_STUDY_ROUTES = [
     output: 'dist/case-studies/triageai/index.html',
     title: 'TriageAI — Clinical Intake & ESI Care Routing | Chintan Patel',
     description:
-      'Review-first healthcare AI case study combining a 273-feature LightGBM ESI model, evidence-linked clinical NLP, transparent safety escalation, clinician review, audit trails, and PDF reporting.',
+      'Live educational ML demo with a 273-feature LightGBM model, review-first clinical NLP, Cloud Run, PostgreSQL, private PDF reports, workspace isolation and verified operational alerts.',
     canonical: `${SITE_URL}/case-studies/triageai`,
     robots: 'index, follow',
     ogType: 'article',
