@@ -2,7 +2,7 @@ export const siteMeta = {
   name: 'Chintan Patel',
   title: 'Applied AI Engineer',
   specialization: 'Full-Stack AI Systems',
-  location: 'Calgary, AB · Canada',
+  location: 'Edmonton, AB · Canada',
   email: 'patel.chintan380@gmail.com',
   github: 'https://github.com/chintan-02',
   linkedin: 'https://www.linkedin.com/in/chintan-patel-ai/',
@@ -13,7 +13,7 @@ export const siteMeta = {
 
 export const proofPoints = [
   'SAIT Integrated AI',
-  'Calgary, Canada',
+  'Edmonton, Canada',
   'Python + SQL',
   'FastAPI + React / Next.js',
   'ML + RAG + Agents',
