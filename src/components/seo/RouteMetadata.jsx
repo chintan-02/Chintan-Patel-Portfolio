@@ -208,6 +208,10 @@ function metadataForPath(pathname) {
       title: 'AI Engineering Case Studies | Chintan Patel',
       description: CASE_STUDIES_DESCRIPTION
     },
+    '/engineering': {
+      title: 'How I Engineer | AI-Assisted Development · Chintan Patel',
+      description: 'A documented AI-assisted review: architecture decisions, security corrections and verifiable implementation evidence from RegImpact AI.'
+    },
     '/writing': {
       title: 'Technical Writing | Chintan Patel',
       description: WRITING_DESCRIPTION

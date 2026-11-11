@@ -1,67 +1,26 @@
-import { CheckCircle2 } from 'lucide-react';
-import { SectionHeader } from '../ui/SectionHeader.jsx';
+import { Link } from 'react-router-dom';
+import { ArrowRight, GitPullRequest, ShieldCheck } from 'lucide-react';
+import { engineeringExample } from '../../data/engineering.js';
 import { Reveal } from '../ui/Reveal.jsx';
-
-const principles = [
-  {
-    title: 'Evidence before confidence',
-    text: 'I prefer measurable evaluation, traceable evidence, and explicit uncertainty over impressive-looking output without support.'
-  },
-  {
-    title: 'Ship the whole system',
-    text: 'A model matters when the API, interface, persistence, deployment, and operating workflow also work together.'
-  },
-  {
-    title: 'Keep people in consequential decisions',
-    text: 'For safety-sensitive or high-impact workflows, automation should support authorized human judgment rather than silently replace it.'
-  }
-];
 
 export function HowIWork() {
   return (
-    <section className="px-6 py-20 sm:px-6 lg:px-8" id="how-i-work">
-      <div className="mx-auto max-w-[1100px]">
-        <SectionHeader
-          eyebrow="How I Work"
-          title="I care about what happens after the model works."
-          description="My path from web development into applied AI made me especially interested in the engineering around a model: evaluation, APIs, product decisions, deployment, review, and reliability."
-        />
-
-        <div className="grid gap-10 lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start">
-          <Reveal>
-            <div className="overflow-hidden rounded-panel border border-line bg-surface">
-              <img
-                src="/profile.JPG"
-                alt="Chintan Patel"
-                width="560"
-                height="680"
-                loading="lazy"
-                decoding="async"
-                className="aspect-[4/5] w-full object-cover object-[56%_18%]"
-              />
-            </div>
-          </Reveal>
-
-          <div className="grid gap-0">
-            {principles.map((principle, index) => (
-              <Reveal key={principle.title} delay={index * 0.07}>
-                <article className="border-t border-line py-6 first:border-t-0 first:pt-0">
-                  <div className="flex gap-4">
-                    <CheckCircle2 className="mt-1 h-5 w-5 shrink-0 text-accent" />
-                    <div>
-                      <h3 className="font-display text-xl font-bold tracking-[-0.02em] text-ink">
-                        {principle.title}
-                      </h3>
-                      <p className="mt-2 max-w-2xl text-sm leading-7 text-ink-muted">
-                        {principle.text}
-                      </p>
-                    </div>
-                  </div>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-        </div>
+    <section className="engineering-teaser px-6 py-16 lg:px-8" id="how-i-work" aria-labelledby="engineering-preview-title">
+      <div className="mx-auto grid max-w-[1100px] gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+        <Reveal>
+          <p className="engineering-eyebrow">How I engineer</p>
+          <h2 id="engineering-preview-title" className="mt-5 font-display text-3xl font-semibold leading-tight tracking-[-0.04em] text-ink sm:text-4xl">AI-assisted work.<br /><span className="text-accent">Engineering accountability.</span></h2>
+          <p className="mt-5 max-w-lg text-base leading-8 text-ink-muted">I use AI to explore, build and review software. The decisions, verification and responsibility stay with me.</p>
+          <Link className="engineering-link mt-6" to="/engineering">Explore my engineering approach <ArrowRight size={17} aria-hidden="true" /></Link>
+        </Reveal>
+        <Reveal>
+          <Link to="/engineering" className="engineering-preview-card group block rounded-panel border border-line p-6 sm:p-8">
+            <div className="flex items-center justify-between gap-4 text-accent"><span className="engineering-eyebrow">A decision, open for review</span><GitPullRequest size={21} aria-hidden="true" /></div>
+            <h3 className="mt-5 font-display text-2xl font-semibold leading-snug tracking-tight text-ink">{engineeringExample.title}</h3>
+            <p className="mt-4 text-sm leading-7 text-ink-muted">Three automated review findings. A safer staging lifecycle. A public record of what changed and why.</p>
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5"><span className="inline-flex items-center gap-2 text-xs font-semibold text-ink-muted"><ShieldCheck size={16} className="text-accent" aria-hidden="true" />RegImpact · Merged PR #26</span><span className="inline-flex items-center gap-2 text-sm font-semibold text-accent">Read the decisions <ArrowRight size={16} aria-hidden="true" /></span></div>
+          </Link>
+        </Reveal>
       </div>
     </section>
   );

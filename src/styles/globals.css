@@ -642,3 +642,48 @@ html.cursor-none textarea { cursor: text; }
     transition-duration: 0.001ms !important;
   }
 }
+
+/* Evidence-led engineering page: shares the existing theme and type tokens. */
+.engineering-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  line-height: 1.8;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(var(--accent-rgb));
+}
+.engineering-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.6;
+  color: rgb(var(--accent-rgb));
+  text-underline-offset: 0.3em;
+}
+.engineering-link:hover { text-decoration: underline; }
+.engineering-link:focus-visible,
+.engineering-preview-card:focus-visible,
+.engineering-details summary:focus-visible {
+  outline: 2px solid rgb(var(--accent-rgb));
+  outline-offset: 5px;
+  border-radius: 0.35rem;
+}
+.engineering-teaser { background: rgb(var(--surface-rgb)/0.35); }
+.engineering-preview-card,
+.engineering-lifecycle {
+  background: linear-gradient(130deg, rgb(var(--accent-rgb)/0.07), rgb(var(--surface-rgb)/0.85) 65%);
+}
+.engineering-preview-card { transition: border-color 180ms ease, background-color 180ms ease; }
+.engineering-preview-card:hover { border-color: rgb(var(--accent-rgb)/0.6); }
+.engineering-hero { background: radial-gradient(ellipse at 80% 10%, rgb(var(--accent-rgb)/0.065), transparent 60%); }
+.engineering-anchor { scroll-margin-top: 7rem; }
+.engineering-details summary { cursor: pointer; min-height: 2.75rem; padding-block: 0.6rem; }
+.engineering-page { overflow-wrap: anywhere; }
+@media (max-width: 639px) {
+  .engineering-ownership { margin-top: 0.5rem; }
+  .engineering-eyebrow { letter-spacing: 0.12em; }
+}

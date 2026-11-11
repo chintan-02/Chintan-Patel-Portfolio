@@ -34,14 +34,14 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="hidden items-center gap-0 xl:gap-1 lg:flex">
           {navLinks.map((link) => (
             <NavLink
               key={link.href}
               to={link.href}
               end={link.href === '/'}
               className={({ isActive }) => cn(
-                'relative rounded-lg px-3.5 py-2 text-[13px] font-semibold transition-all duration-150',
+                'relative rounded-lg px-2.5 py-2 text-[12px] xl:px-3.5 xl:text-[13px] font-semibold transition-all duration-150',
                 'after:absolute after:bottom-1.5 after:left-3 after:right-3 after:h-[2px] after:origin-left after:rounded-full after:bg-accent after:transition-transform after:duration-200',
                 isActive
                   ? 'bg-[rgb(var(--accent-rgb)/0.1)] text-ink ring-1 ring-[rgb(var(--accent-rgb)/0.22)] after:scale-x-100'

@@ -3,6 +3,21 @@ export const HOMEPAGE_CANONICAL = `${SITE_URL}/`;
 
 export const CASE_STUDY_ROUTES = [
   {
+    route: '/engineering',
+    output: 'dist/engineering/index.html',
+    title: 'How I Engineer | AI-Assisted Development · Chintan Patel',
+    description: 'A documented AI-assisted review: architecture decisions, security corrections and verifiable implementation evidence from RegImpact AI.',
+    canonical: `${SITE_URL}/engineering`,
+    robots: 'index, follow',
+    ogType: 'website',
+    image: `${SITE_URL}/og-image.png`,
+    imageWidth: '1200',
+    imageHeight: '630',
+    imageType: 'image/png',
+    imageAlt: 'Chintan Patel — applied AI engineering and full-stack AI systems',
+    twitterCard: 'summary_large_image'
+  },
+  {
     route: '/case-studies/regimpact-ai',
     output: 'dist/case-studies/regimpact-ai/index.html',
     title: 'RegImpact AI | Regulatory Change & Controls Assurance Case Study',
