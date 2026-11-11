@@ -5,16 +5,40 @@ export function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
-    if (hash) {
-      // target section may not have committed layout yet on the same tick
-      // as the route change, so wait a frame before measuring/scrolling.
-      const id = hash.replace('#', '');
-      requestAnimationFrame(() => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+    if (!hash) {
+      window.scrollTo(0, 0);
       return;
     }
-    window.scrollTo(0, 0);
+
+    // The destination can still be suspended while its route module loads.
+    // Watch for the section instead of assuming one animation frame is enough.
+    const id = hash.slice(1);
+    let observer;
+    let timeout;
+    const scrollWhenReady = () => {
+      const target = document.getElementById(id);
+      if (!target) return false;
+      observer?.disconnect();
+      window.clearTimeout(timeout);
+      target.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+        block: 'start'
+      });
+      return true;
+    };
+
+    const frame = requestAnimationFrame(() => {
+      if (scrollWhenReady()) return;
+      observer = new MutationObserver(scrollWhenReady);
+      observer.observe(document.body, { childList: true, subtree: true });
+      timeout = window.setTimeout(() => observer.disconnect(), 10000);
+    });
+
+    return () => {
+      cancelAnimationFrame(frame);
+      observer?.disconnect();
+      window.clearTimeout(timeout);
+    };
   }, [pathname, hash]);
 
   return null;
