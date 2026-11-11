@@ -40,7 +40,7 @@ export function Hero() {
 
         <motion.h1
           variants={item}
-          className="mt-5 max-w-[920px] font-display-serif text-[clamp(2.8rem,7vw,5.8rem)] font-normal leading-[1.01] tracking-[-0.035em] text-ink"
+          className="mt-5 max-w-[1040px] font-display-serif text-[clamp(2.8rem,7vw,5.8rem)] font-normal leading-[1.01] tracking-[-0.035em] text-ink"
         >
           I build and evaluate AI systems, from model to <span className="italic text-accent">product</span>.
         </motion.h1>
