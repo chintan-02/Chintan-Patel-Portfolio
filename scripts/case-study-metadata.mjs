@@ -6,7 +6,7 @@ export const CASE_STUDY_ROUTES = [
     route: '/engineering',
     output: 'dist/engineering/index.html',
     title: 'How I Engineer | AI-Assisted Development · Chintan Patel',
-    description: 'A documented AI-assisted review: architecture decisions, security corrections and verifiable implementation evidence from RegImpact AI.',
+    description: 'Documented AI-assisted engineering: RegImpact code-review decisions and a TriageAI smoke test that exposed an incomplete authentication recommendation.',
     canonical: `${SITE_URL}/engineering`,
     robots: 'index, follow',
     ogType: 'website',

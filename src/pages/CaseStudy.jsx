@@ -2,7 +2,7 @@ import { lazy, Suspense } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { projects } from '../data/projects.js';
-import { engineeringExample } from '../data/engineering.js';
+import { engineeringExample, operatorVerification } from '../data/engineering.js';
 import { NotFound } from './NotFound.jsx';
 
 const studies = {
@@ -20,6 +20,11 @@ export function CaseStudy() {
   const { slug } = useParams();
   const canonicalSlug = slug === 'policygpt' ? 'policygpt-enterprise' : slug;
   const project = projects.find((item) => item.caseStudyUrl === `/case-studies/${canonicalSlug}`);
+  const engineeringNote = canonicalSlug === engineeringExample.caseStudySlug
+    ? { href: '/engineering#staging-lifecycle', text: 'A documented AI-assisted review of staging security and lifecycle decisions.' }
+    : canonicalSlug === operatorVerification.caseStudySlug
+      ? { href: `/engineering#${operatorVerification.id}`, text: 'How an operator-run smoke test exposed an incomplete AI authentication recommendation.' }
+      : null;
   const caseStudyProjects = projects.filter((item) => item.caseStudyUrl);
   const currentIndex = project
     ? caseStudyProjects.findIndex((item) => item.caseStudyUrl === project.caseStudyUrl)
@@ -48,10 +53,10 @@ export function CaseStudy() {
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
           Back to Case Studies
         </Link>
-        {canonicalSlug === engineeringExample.caseStudySlug && (
+        {engineeringNote && (
           <aside className="mb-8 flex flex-col justify-between gap-4 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.72)] p-5 sm:flex-row sm:items-center">
-            <div><p className="text-sm font-semibold text-ink">How this was engineered</p><p className="mt-1 text-sm leading-7 text-ink-muted">A documented AI-assisted review of staging security and lifecycle decisions.</p></div>
-            <Link to="/engineering" className="engineering-link shrink-0">Read the walkthrough <ArrowRight size={16} aria-hidden="true" /></Link>
+            <div><p className="text-sm font-semibold text-ink">How this was engineered</p><p className="mt-1 text-sm leading-7 text-ink-muted">{engineeringNote.text}</p></div>
+            <Link to={engineeringNote.href} className="engineering-link shrink-0">Read the walkthrough <ArrowRight size={16} aria-hidden="true" /></Link>
           </aside>
         )}
         <div className="prose-ai">

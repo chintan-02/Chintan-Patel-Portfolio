@@ -48,3 +48,24 @@ export const engineeringBoundaries = [
   ['Security', 'Public examples link to sanitized repository evidence rather than private prompts, credentials or client information.'],
   ['Evidence', 'A merged change, a tested release and a production deployment are different claims. Limitations stay visible.']
 ];
+
+export const operatorVerification = {
+  id: 'triageai-iam-verification',
+  project: 'TriageAI',
+  date: '16 October 2026',
+  caseStudySlug: 'triageai',
+  title: 'The smoke test contradicted the AI recommendation.',
+  summary: 'An assistant recommended a narrow token-creation role for a private Cloud Run smoke check. I ran the check, reported the permission denial and used that result to get the recommendation corrected before continuing.',
+  recommendation: 'The initial AI recommendation was Service Account OpenID Connect Identity Token Creator. It did not cover the gcloud impersonation flow used in this deployment.',
+  observation: 'My terminal returned PERMISSION_DENIED for iam.serviceAccounts.getAccessToken. That was evidence that the proposed configuration was insufficient for the actual command path.',
+  response: 'I brought the failing smoke-test result back to the assistant instead of treating the IAM setup as verified. The assistant then revised its recommendation to Service Account Token Creator.',
+  correction: 'The recorded final configuration grants Token Creator on the smoke service account only. The smoke identity has Cloud Run Invoker access, without database-secret or report-bucket access. No service-account key file was needed.',
+  outcome: 'The release record documents successful private-candidate checks for health, readiness, inference, workspace isolation and private PDF retrieval.',
+  limitation: 'This is operator verification that exposed an incomplete AI recommendation. The assistant supplied the revised IAM diagnosis; I do not claim to have independently derived it. The public runbook corroborates the configuration, while the original development exchange remains private.',
+  evidence: [
+    { label: 'Pinned IAM runbook', url: 'https://github.com/chintan-02/triageai-esi-care-routing/blob/8af95ea72bfe595c4b0789ef352556d84e661bec/docs/deployment/live-demo-runbook.md#runtime-configuration-and-iam' },
+    { label: 'Pinned release verification', url: 'https://github.com/chintan-02/triageai-esi-care-routing/blob/8af95ea72bfe595c4b0789ef352556d84e661bec/docs/releases/cloud-demo-2026-10-17.md' },
+    { label: 'Attribution and evidence notes', url: 'https://github.com/chintan-02/Chintan-Patel-Portfolio/blob/main/docs/engineering/triageai-iam-verification.md' },
+    { label: 'Google IAM role reference', url: 'https://docs.cloud.google.com/iam/docs/service-account-permissions' }
+  ]
+};
