@@ -6,6 +6,7 @@ const Home = lazy(() => import('../pages/Home.jsx').then((module) => ({ default:
 const Projects = lazy(() => import('../pages/Projects.jsx').then((module) => ({ default: module.Projects })));
 const CaseStudies = lazy(() => import('../pages/CaseStudies.jsx').then((module) => ({ default: module.CaseStudies })));
 const CaseStudy = lazy(() => import('../pages/CaseStudy.jsx').then((module) => ({ default: module.CaseStudy })));
+const Engineering = lazy(() => import('../pages/Engineering.jsx').then((module) => ({ default: module.Engineering })));
 const Writing = lazy(() => import('../pages/Writing.jsx').then((module) => ({ default: module.Writing })));
 const Article = lazy(() => import('../pages/Article.jsx').then((module) => ({ default: module.Article })));
 const About = lazy(() => import('../pages/About.jsx').then((module) => ({ default: module.About })));
@@ -30,6 +31,7 @@ export function AppRoutes() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/case-studies" element={<CaseStudies />} />
           <Route path="/case-studies/:slug" element={<CaseStudy />} />
+          <Route path="/engineering" element={<Engineering />} />
           <Route path="/writing" element={<Writing />} />
           <Route path="/writing/:slug" element={<Article />} />
           <Route path="/about" element={<About />} />

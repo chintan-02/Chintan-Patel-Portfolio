@@ -42,7 +42,7 @@ export function Hero() {
           variants={item}
           className="mt-5 max-w-[920px] font-display-serif text-[clamp(2.8rem,7vw,5.8rem)] font-normal leading-[1.01] tracking-[-0.035em] text-ink"
         >
-          I build AI systems you can trust in <span className="italic text-accent">production</span>.
+          I build evaluated AI systems, from model to <span className="italic text-accent">product</span>.
         </motion.h1>
 
         <motion.p
