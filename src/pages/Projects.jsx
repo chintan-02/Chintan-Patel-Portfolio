@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { projects } from '../data/projects.js';
 import { SectionHeader } from '../components/ui/SectionHeader.jsx';
 import { ProjectCard } from '../components/projects/ProjectCard.jsx';
@@ -12,8 +13,9 @@ export function Projects() {
     <section className="px-6 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1100px]">
         <SectionHeader
-          eyebrow="Projects"
-          title="Applied AI systems with verified engineering depth."
+          as="h1"
+          eyebrow="Work"
+          title="Explore the products and the engineering behind them."
           description="A focused portfolio spanning ML, RAG, agentic workflows, full-stack AI products, cloud delivery, evaluation, and operational reliability."
         />
         <div className="grid gap-8">
@@ -23,6 +25,7 @@ export function Projects() {
             </Reveal>
           ))}
         </div>
+        <div className="mt-12 border-t border-line pt-8"><h2 className="text-xl font-bold text-ink">Earlier work</h2><p className="mt-3 text-sm leading-7 text-ink-muted">ResumeIQ — resume parsing, role classification, and job-description matching. The demo is offline while the frontend upgrade is planned.</p><Link to="/case-studies/resumeiq" className="mt-3 inline-block font-semibold text-accent">Read the ResumeIQ case study →</Link></div>
       </div>
     </section>
   );

@@ -2,123 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, FileSearch, Image, Layers3, Maximize2, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const previewConfig = {
-  triageai: {
-    eyebrow: 'Review-first clinical AI workflow',
-    title: 'Clinical note → reviewed intake → ESI care routing',
-    leftTitle: 'Evidence-linked intake',
-    leftRows: ['Clinical note or structured data', 'Extracted fields + evidence', 'Missing information'],
-    mainTitle: 'Reviewed decision support',
-    mainValue: 'ESI 3 / 4 / 5',
-    mainMeta: 'Clinician confirmation + safety-rule escalation',
-    rightTitle: 'Traceability',
-    rightRows: ['Clinician decision', 'Audit evidence', 'PDF reporting']
-  },
-  resumeiq: {
-    eyebrow: 'Privacy-aware resume intelligence',
-    title: 'Multi-format resume → transparent signals → human review',
-    leftTitle: 'Parsing and context',
-    leftRows: ['PDF / DOCX / TXT', 'Target role', 'Job description'],
-    mainTitle: 'Multi-signal analysis',
-    mainValue: 'Skills, match, quality',
-    mainMeta: 'Classification + keyword + semantic + structure signals',
-    rightTitle: 'Human workflow',
-    rightRows: ['Improvement guidance', 'Candidate comparison', 'Reviewer responsibility']
-  },
-  policygpt: {
-    eyebrow: 'v0.3.0 evidence intelligence',
-    title: 'Documents → Ask → Evaluation → System',
-    leftTitle: 'Durable ingestion',
-    leftRows: ['SHA-256 identity', 'PostgreSQL lifecycle', 'Chroma evidence'],
-    mainTitle: 'Evidence-gated answer',
-    mainValue: 'Generate, cite, or refuse',
-    mainMeta: 'Calibrated answerability + provider-resilient fallback',
-    rightTitle: 'Evaluation and operations',
-    rightRows: ['16-case benchmark', 'Readiness contracts', 'Structured logs']
-  }
-};
-
 export function ProductPreview({ project, slug, title, className = '' }) {
   const key = slug ?? project?.slug;
-  const config = previewConfig[key] ?? previewConfig.policygpt;
-  const displayTitle = title ?? config.title;
-
-  return (
-    <div className={`group overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] shadow-card ${className}`}>
-      <div className="flex items-center gap-2 border-b border-line bg-[rgb(var(--surface2-rgb)/0.58)] px-4 py-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-[rgb(var(--accent-rgb)/0.8)]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[rgb(var(--ink-rgb)/0.22)]" />
-        <span className="h-2.5 w-2.5 rounded-full bg-[rgb(var(--violet-rgb)/0.55)]" />
-        <span className="ml-auto rounded-full border border-line bg-[rgb(var(--surface-rgb)/0.7)] px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
-          Product preview
-        </span>
-      </div>
-      <div className="relative min-h-[260px] p-4 sm:p-6">
-        <div className="absolute inset-0 opacity-60 transition-transform duration-500 group-hover:scale-[1.015]">
-          <div className="absolute inset-x-8 top-8 h-24 rounded-full bg-[rgb(var(--accent-rgb)/0.08)] blur-3xl" />
-          <div className="absolute bottom-8 right-10 h-28 w-44 rounded-full bg-[rgb(var(--violet-rgb)/0.08)] blur-3xl" />
-        </div>
-        <div className="relative z-10">
-          <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">{config.eyebrow}</p>
-          <h4 className="mt-2 font-display text-xl font-semibold tracking-[-0.02em] text-ink">{displayTitle}</h4>
-          {key === 'triageai' ? (
-            <div className="mt-5 overflow-hidden rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-2 sm:p-3">
-              <Link
-                to="/case-studies/triageai"
-                aria-label="Open the TriageAI case study"
-                className="block overflow-hidden rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)]"
-              >
-                <img
-                  src="/images/case-studies/triageai/01-command-center.png"
-                  alt="TriageAI Command Center showing clinical intake workflow and assessment overview"
-                  loading="lazy"
-                  decoding="async"
-                  className="h-auto w-full object-contain"
-                />
-              </Link>
-            </div>
-          ) : key === 'policygpt' ? (
-            <div className="mt-5 overflow-hidden rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-2 sm:p-3">
-              <Link
-                to="/case-studies/policygpt-enterprise"
-                aria-label="Open the PolicyGPT Enterprise case study"
-                className="block max-h-[430px] overflow-hidden rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)]"
-              >
-                <img
-                  src="/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png"
-                  alt="PolicyGPT Enterprise citation-backed remote-work policy answer with confidence and page-level evidence"
-                  loading="lazy"
-                  decoding="async"
-                  className="h-auto w-full object-contain object-top"
-                />
-              </Link>
-            </div>
-          ) : (
-            <div className="mt-5 rounded-card border border-[rgb(var(--accent-rgb)/0.2)] bg-[rgb(var(--accent-rgb)/0.06)] p-5">
-              <div className="rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-5">
-                <div className="flex items-center gap-3">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-inset border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
-                    <Image className="h-4 w-4" />
-                  </span>
-                  <div>
-                    <p className="font-display text-lg font-semibold text-ink">Updated screenshots coming next</p>
-                    <p className="mt-1 text-sm leading-6 text-ink-muted">{config.mainMeta}</p>
-                  </div>
-                </div>
-                <div className="mt-5 grid gap-2 sm:grid-cols-3">
-                  {[config.leftTitle, config.mainTitle, config.rightTitle].map((label) => (
-                    <div key={label} className="rounded-inset border border-line bg-[rgb(var(--surface-rgb)/0.5)] px-3 py-2">
-                      <p className="text-xs font-semibold leading-5 text-ink-muted">{label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
+  const captures = {
+    triageai: { src: '/images/case-studies/triageai/01-command-center.png', alt: 'TriageAI clinical intake dashboard', href: '/case-studies/triageai' },
+    policygpt: { src: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png', alt: 'PolicyGPT policy answer with page-level citations', href: '/case-studies/policygpt-enterprise' }
+  };
+  const capture = captures[key];
+  if (!capture) return null;
+  return <figure className={`overflow-hidden rounded-panel border border-line ${className}`}>
+    <Link to={capture.href} aria-label={`Open ${title ?? project?.title ?? key} case study`}>
+      <img src={capture.src} alt={capture.alt} loading="lazy" decoding="async" className="h-auto max-h-[430px] w-full object-contain object-top" />
+    </Link>
+  </figure>;
 }
 
 export function ScreenshotSlot({ label, detail = 'Updated screenshots coming next' }) {

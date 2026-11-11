@@ -1,10 +1,9 @@
 import { lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { PageShell } from '../components/layout/PageShell.jsx';
 
 const Home = lazy(() => import('../pages/Home.jsx').then((module) => ({ default: module.Home })));
 const Projects = lazy(() => import('../pages/Projects.jsx').then((module) => ({ default: module.Projects })));
-const CaseStudies = lazy(() => import('../pages/CaseStudies.jsx').then((module) => ({ default: module.CaseStudies })));
 const CaseStudy = lazy(() => import('../pages/CaseStudy.jsx').then((module) => ({ default: module.CaseStudy })));
 const Engineering = lazy(() => import('../pages/Engineering.jsx').then((module) => ({ default: module.Engineering })));
 const Writing = lazy(() => import('../pages/Writing.jsx').then((module) => ({ default: module.Writing })));
@@ -29,7 +28,7 @@ export function AppRoutes() {
         <Route element={<PageShell />}>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
-          <Route path="/case-studies" element={<CaseStudies />} />
+          <Route path="/case-studies" element={<Navigate to="/projects" replace />} />
           <Route path="/case-studies/:slug" element={<CaseStudy />} />
           <Route path="/engineering" element={<Engineering />} />
           <Route path="/writing" element={<Writing />} />

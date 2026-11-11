@@ -47,24 +47,24 @@ export function CaseStudy() {
       <div className="mx-auto max-w-5xl">
         {/* back nav */}
         <Link
-          to="/case-studies"
+          to="/projects"
           className="group mb-10 inline-flex items-center gap-2 rounded-lg border border-line bg-[rgb(var(--surface2-rgb)/0.7)] px-4 py-2 text-sm font-semibold text-ink-muted transition-all hover:-translate-x-0.5 hover:border-accent hover:text-accent"
         >
           <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-          Back to Case Studies
+          Back to Work
         </Link>
-        {engineeringNote && (
-          <aside className="mb-8 flex flex-col justify-between gap-4 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.72)] p-5 sm:flex-row sm:items-center">
-            <div><p className="text-sm font-semibold text-ink">How this was engineered</p><p className="mt-1 text-sm leading-7 text-ink-muted">{engineeringNote.text}</p></div>
-            <Link to={engineeringNote.href} className="engineering-link shrink-0">Read the walkthrough <ArrowRight size={16} aria-hidden="true" /></Link>
-          </aside>
-        )}
         <div className="prose-ai">
           <Suspense fallback={<ContentFallback />}>
             <Study />
           </Suspense>
         </div>
 
+        {engineeringNote && (
+          <aside className="mb-8 flex flex-col justify-between gap-4 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.72)] p-5 sm:flex-row sm:items-center">
+            <div><p className="text-sm font-semibold text-ink">How this was engineered</p><p className="mt-1 text-sm leading-7 text-ink-muted">{engineeringNote.text}</p></div>
+            <Link to={engineeringNote.href} className="engineering-link shrink-0">Read the walkthrough <ArrowRight size={16} aria-hidden="true" /></Link>
+          </aside>
+        )}
         {(previousCaseStudy || nextCaseStudy) && (
           <>
             <nav
@@ -124,11 +124,11 @@ export function CaseStudy() {
 
             <div className="mt-6 flex justify-center">
               <Link
-                to="/case-studies"
+                to="/projects"
                 className="group inline-flex items-center gap-2 rounded-lg border border-line bg-[rgb(var(--surface2-rgb)/0.7)] px-4 py-2 text-sm font-semibold text-ink-muted transition-all hover:-translate-x-0.5 hover:border-accent hover:text-accent"
               >
                 <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-0.5" />
-                Back to all case studies
+                Back to Work
               </Link>
             </div>
           </>

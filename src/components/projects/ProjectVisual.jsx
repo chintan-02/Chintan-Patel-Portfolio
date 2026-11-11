@@ -34,22 +34,19 @@ export function ProjectVisual({ visual, title }) {
     return (
       <div className="project-window rounded-panel border border-[rgb(var(--accent-rgb)/0.22)] bg-[linear-gradient(145deg,rgb(var(--accent-rgb)/0.07),rgb(var(--surface-rgb)/0.78))] p-6 shadow-feature sm:p-7">
         <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
-          {visual.eyebrow}
+          System workflow
         </p>
         <h4 className="mt-3 max-w-md font-display text-2xl font-bold tracking-[-0.03em] text-ink sm:text-3xl">
-          {visual.title}
+          Regulation changes → analyst decisions
         </h4>
         <div className="mt-7 space-y-4">
-          {visual.items.map((item) => (
+          {['Compare document versions and changed sections', 'Extract obligations and retrieve related controls', 'Route proposed changes to authorized reviewers', 'Retain the sources and review history'].map((item) => (
             <div key={item} className="flex gap-3">
               <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
               <p className="text-sm leading-6 text-ink-muted">{item}</p>
             </div>
           ))}
         </div>
-        <p className="mt-7 border-t border-line pt-5 text-xs leading-5 text-ink-faint">
-          Fresh sanitized v0.5.0 product captures are still pending; no placeholder screenshot is shown.
-        </p>
       </div>
     );
   }

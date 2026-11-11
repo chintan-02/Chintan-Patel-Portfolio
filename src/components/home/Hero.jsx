@@ -1,7 +1,6 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { FileDown } from 'lucide-react';
 import { Button } from '../ui/Button.jsx';
-import { ScrollCue } from './ScrollCue.jsx';
 import { siteMeta } from '../../data/siteMeta.js';
 import { proof } from '../../data/proof.js';
 import { EASE } from '../../lib/motion.js';
@@ -35,21 +34,21 @@ export function Hero() {
           variants={item}
           className="font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-accent"
         >
-          {siteMeta.title} · {siteMeta.specialization} · Canada
+          {siteMeta.title} · {siteMeta.specialization} · Edmonton, Canada
         </motion.p>
 
         <motion.h1
           variants={item}
           className="mt-5 max-w-[1040px] font-display-serif text-[clamp(2.8rem,7vw,5.8rem)] font-normal leading-[1.01] tracking-[-0.035em] text-ink"
         >
-          I build and evaluate AI systems, from model to <span className="italic text-accent">product</span>.
+          I turn models and data into <span className="italic text-accent">AI products</span>.
         </motion.h1>
 
         <motion.p
           variants={item}
           className="mx-auto mt-6 max-w-[720px] text-[clamp(1rem,1.65vw,1.25rem)] leading-[1.75] text-ink-muted md:mx-0"
         >
-          ML, RAG, and agentic systems—from data and APIs to product interfaces, cloud deployment, and operational reliability.
+          Clinical triage, regulatory analysis, policy search, and product-finding agents. Built with Python, FastAPI, React, and cloud delivery on Azure and GCP.
         </motion.p>
 
         <motion.div
@@ -66,7 +65,8 @@ export function Hero() {
         </motion.div>
 
         <motion.div variants={item} className="mt-9 flex flex-wrap justify-center gap-3 md:justify-start">
-          <Button href="/projects" variant="onDarkAccent">View Selected Work</Button>
+          <Button href="https://triageai-chintan-staging.netlify.app/" external variant="onDarkAccent">Try TriageAI Demo</Button>
+          <Button href="/projects" variant="onDark">View Work</Button>
           <Button href={siteMeta.resume} variant="onDark" download icon={false}>
             <FileDown className="h-4 w-4" />
             Download Résumé
@@ -74,9 +74,6 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      <div className="absolute bottom-8 left-1/2 z-10 -translate-x-1/2">
-        <ScrollCue target="projects" />
-      </div>
     </section>
   );
 }

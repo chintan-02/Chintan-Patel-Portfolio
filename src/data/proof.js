@@ -1,7 +1,6 @@
-// Single source of truth for the headline proof used in the Hero
-// and echoed on the About page.
+// Delivery states are project-specific; do not call every project cloud deployed.
 export const proof = [
-  { value: 'v0.5.0', label: 'verified Azure staging release' },
-  { value: '366K+', label: 'clinical source records' },
-  { value: 'Azure + GCP', label: 'verified cloud delivery' }
+  { value: '2', label: 'public AI demos' },
+  { value: 'Azure + GCP', label: 'cloud delivery' },
+  { value: 'Open to work', label: 'across Canada' }
 ];

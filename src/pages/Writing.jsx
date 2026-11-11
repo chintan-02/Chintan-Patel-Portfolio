@@ -9,10 +9,12 @@ export function Writing() {
     <section className="px-6 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-[1100px]">
         <SectionHeader
+          as="h1"
           eyebrow="Writing"
           title="Technical notes that show how I think."
           description="Short articles for explaining ML concepts, project decisions, model evaluation, and production concerns."
         />
+        <Link to="/engineering" className="mb-8 block rounded-panel border border-line p-6 sm:p-8"><p className="font-mono text-xs uppercase tracking-widest text-accent">Engineering decisions</p><h2 className="mt-3 text-2xl font-bold text-ink">Review, test, and take responsibility.</h2><p className="mt-3 text-sm leading-7 text-ink-muted">Two documented examples: securing an Azure staging workflow and testing an AI IAM recommendation against a real smoke test.</p><span className="mt-4 inline-block font-semibold text-accent">Explore the walkthroughs →</span></Link>
         <div className="grid gap-5 lg:grid-cols-2">
           {writingItems.map((item, index) => (
             <Reveal key={item.slug} delay={index * 0.07}>

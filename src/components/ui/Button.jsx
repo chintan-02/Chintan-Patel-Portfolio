@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
-import { cn, externalProps } from '../../lib/utils.js';
+import { cn } from '../../lib/utils.js';
 
 const variants = {
   // primary action — accent fill; hover darkens + grows shadow + lifts
@@ -33,7 +33,7 @@ export function Button({ href, children, variant = 'primary', className, externa
   if (!href) return <button className={styles} {...props}>{content}</button>;
 
   if (external || download || href.startsWith('http') || href.startsWith('mailto:') || href.endsWith('.pdf')) {
-    const linkProps = external || href.startsWith('http') || href.startsWith('mailto:') ? externalProps('Open link') : {};
+    const linkProps = external || href.startsWith('http') || href.startsWith('mailto:') ? { target: '_blank', rel: 'noopener noreferrer' } : {};
     return <a href={href} className={styles} download={download || undefined} {...linkProps} {...props}>{content}</a>;
   }
 
