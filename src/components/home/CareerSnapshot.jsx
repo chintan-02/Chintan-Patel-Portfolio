@@ -34,7 +34,7 @@ export function CareerSnapshot() {
         <SectionHeader
           eyebrow="Career Snapshot"
           title="Software engineering foundation, now focused on applied AI."
-          description="The homepage keeps the story short; the full timeline and education details remain on the About page and résumé."
+          description="Computer Science, client-facing web development in India, and applied AI training at SAIT."
         />
 
         <div className="grid gap-5 lg:grid-cols-3">

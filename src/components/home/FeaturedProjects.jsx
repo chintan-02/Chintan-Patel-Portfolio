@@ -35,14 +35,7 @@ function HomeProjectCard({ project, index }) {
             </h3>
             <p className="mt-2 text-sm font-semibold text-accent">{project.subtitle}</p>
 
-            <p className="mt-6 text-[1rem] leading-8 text-ink-muted">{project.problem}</p>
-
-            <div className="mt-6">
-              <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">
-                My contribution
-              </p>
-              <p className="mt-2 text-sm leading-7 text-ink-muted">{project.contribution}</p>
-            </div>
+            <p className="mt-6 text-[1rem] leading-8 text-ink-muted">{project.description}</p>
 
             {metrics.length > 0 && (
               <div className="mt-7 grid grid-cols-2 gap-5 border-y border-line py-5">
@@ -66,18 +59,13 @@ function HomeProjectCard({ project, index }) {
             </p>
 
             <div className="mt-7 flex flex-wrap gap-3">
+              {project.liveUrl && <Button href={project.liveUrl} external variant="onDarkAccent">Live Demo</Button>}
               {project.caseStudyUrl ? (
-                <Button href={project.caseStudyUrl} variant="onDarkAccent">View Case Study</Button>
+                <Button href={project.caseStudyUrl} variant={project.liveUrl ? 'onDark' : 'onDarkAccent'}>View Case Study</Button>
               ) : (
                 <Button href={project.githubUrl} external icon={false} variant="onDarkAccent">
                   <BrandGithub className="h-4 w-4" />
                   View Project
-                </Button>
-              )}
-
-              {project.releaseUrl && (
-                <Button href={project.releaseUrl} external variant="onDark">
-                  Release Evidence
                 </Button>
               )}
 
@@ -88,6 +76,7 @@ function HomeProjectCard({ project, index }) {
                 </Button>
               )}
             </div>
+            {project.writingUrl && <a href={project.writingUrl} className="mt-4 inline-block text-sm font-semibold text-accent">Read the engineering note →</a>}
           </div>
         </div>
       </article>
@@ -171,8 +160,8 @@ export function FeaturedProjects() {
       <div className="mx-auto max-w-[1160px]">
         <SectionHeader
           eyebrow="Selected Work"
-          title="Three systems that show how I engineer AI end to end."
-          description="Regulatory intelligence, safety-sensitive machine learning, and evidence-gated RAG—each presented with verified delivery state, measurable proof, and explicit system boundaries."
+          title="AI products, from workflow to deployment."
+          description="Explore a live clinical demo, a regulatory analysis platform, and policy search with source citations."
         />
 
         <div>

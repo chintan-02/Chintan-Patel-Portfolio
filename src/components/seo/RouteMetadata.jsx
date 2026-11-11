@@ -9,7 +9,7 @@ const PERSON_ID = `${BASE_URL}/#person`;
 const WEBSITE_ID = `${BASE_URL}/#website`;
 
 const DEFAULT_IMAGE = {
-  path: '/og-image.png',
+  path: '/og-image.jpg',
   width: 1200,
   height: 630
 };
@@ -36,7 +36,7 @@ const CASE_STUDIES_DESCRIPTION =
 const WRITING_DESCRIPTION =
   'Technical notes explaining ML concepts, project decisions, model evaluation, responsible AI, and production concerns.';
 const ABOUT_DESCRIPTION =
-  'Learn how Chintan Patel combines software engineering, ML, RAG, full-stack product development, and cloud delivery as an Applied AI Engineer in Calgary, Alberta.';
+  'Learn how Chintan Patel combines software engineering, ML, RAG, full-stack product development, and cloud delivery as an Applied AI Engineer in Edmonton, Alberta.';
 const CONTACT_DESCRIPTION =
   'Contact Chintan Patel about Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer opportunities in Canada.';
 const PRIVACY_DESCRIPTION =
@@ -99,7 +99,7 @@ function homeStructuredData() {
       sameAs: [siteMeta.github, siteMeta.linkedin],
       address: {
         '@type': 'PostalAddress',
-        addressLocality: 'Calgary',
+        addressLocality: 'Edmonton',
         addressRegion: 'Alberta',
         addressCountry: 'Canada'
       }
@@ -209,7 +209,7 @@ function metadataForPath(pathname) {
       description: CASE_STUDIES_DESCRIPTION
     },
     '/engineering': {
-      title: 'How I Engineer | AI-Assisted Development · Chintan Patel',
+      title: 'Engineering Decisions | Chintan Patel',
       description: 'Documented AI-assisted engineering: RegImpact code-review decisions and a TriageAI smoke test that exposed an incomplete authentication recommendation.'
     },
     '/writing': {

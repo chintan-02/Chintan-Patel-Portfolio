@@ -4,7 +4,6 @@ import { Reveal } from '../components/ui/Reveal.jsx';
 import { TechChip } from '../components/ui/TechChip.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { siteMeta } from '../data/siteMeta.js';
-import { proof } from '../data/proof.js';
 import { cn } from '../lib/utils.js';
 
 const ICON_TILE = 'border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-accent';
@@ -19,13 +18,13 @@ const timeline = [
   {
     icon: Briefcase,
     period: '2021 – 2024',
-    title: 'Web development in industry',
+    title: 'Web development · India',
     detail: 'Worked as a web developer and later delivered client projects through Dreamview Technology, building websites and web applications around real requirements, deadlines, deployment, and post-release support.'
   },
   {
     icon: MapPin,
     period: 'January 2025 – December 2025',
-    title: 'Moved to Canada',
+    title: 'MacEwan · Supply Chain & Logistics',
     detail: 'Completed a Professional Development Certificate in Supply Chain Management & Logistics through MacEwan University’s School of Continuing Education, strengthening my understanding of operational data, process flows, inventory, analytics, and risk.'
   },
   {
@@ -50,7 +49,7 @@ const values = [
   {
     icon: Rocket,
     title: 'Ship, then improve',
-    text: 'RegImpact has a verified Azure staging release, Product Finder runs on Google Cloud Run + Netlify, ResumeIQ has an Azure portfolio demo, and TriageAI and PolicyGPT retain explicit local-release boundaries. I document what is built, what is tested, what is deployed, and what still requires production hardening.'
+    text: 'TriageAI and Product Finder run as public cloud demos. RegImpact has a validated Azure staging release; PolicyGPT has a reproducible local Docker release. I keep those delivery states distinct and document the next operational steps.'
   }
 ];
 
@@ -74,7 +73,7 @@ export function About() {
                 About
               </span>
               <h1 className="mt-6 font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.1] tracking-[-0.025em] text-ink">
-                CS grad turned AI engineer,<br className="hidden sm:block" /> building in Calgary.
+                CS grad turned AI engineer,<br className="hidden sm:block" /> building in Edmonton.
               </h1>
               <div className="mt-6 space-y-4 text-[1rem] leading-8 text-ink-muted">
                 <p>
@@ -86,18 +85,6 @@ export function About() {
                 <p>
                   I am looking for Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer opportunities across Canada — especially where evaluated, traceable, and production-minded systems matter.
                 </p>
-              </div>
-
-              {/* proof row — same real numbers as the hero, so About isn't the
-                  only page on the site with zero concrete evidence on it */}
-              <div className="mt-7 flex flex-wrap gap-x-5 gap-y-2 border-t border-line pt-6 font-mono text-[13px] text-ink-faint">
-                {proof.map((p, i) => (
-                  <span key={p.label} className="inline-flex items-center gap-2">
-                    {i > 0 && <span className="mr-3 hidden text-ink-faint/50 sm:inline">·</span>}
-                    <span className="font-semibold text-accent">{p.value}</span>
-                    <span>{p.label}</span>
-                  </span>
-                ))}
               </div>
 
               <div className="mt-8 flex flex-wrap gap-3">
@@ -133,7 +120,7 @@ export function About() {
               <div className="mt-5 space-y-3 border-t border-line pt-5 text-sm">
                 <div className="flex items-center gap-3 text-ink-muted">
                   <MapPin className="h-4 w-4 shrink-0 text-ink-faint" />
-                  Calgary, Alberta · Canada
+                  {siteMeta.location}
                 </div>
                 <div className="flex items-center gap-3 text-ink-muted">
                   <GraduationCap className="h-4 w-4 shrink-0 text-ink-faint" />
@@ -167,8 +154,8 @@ export function About() {
         <Reveal>
           <div className="mb-8 flex flex-wrap items-end justify-between gap-3">
             <h2 className="font-display text-2xl font-semibold tracking-[-0.02em] text-ink">The path here</h2>
-            <Link to="/#now" className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-faint transition-colors hover:text-accent">
-              See what I&apos;m building right now <ArrowRight className="h-3.5 w-3.5" />
+            <Link to="/projects" className="inline-flex items-center gap-1.5 text-sm font-semibold text-ink-faint transition-colors hover:text-accent">
+              Explore current work <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
         </Reveal>
@@ -215,6 +202,8 @@ export function About() {
             })}
           </div>
         </div>
+
+        <Reveal><section className="mb-14 rounded-panel border border-line p-6 sm:p-8"><p className="font-mono text-xs font-semibold uppercase tracking-widest text-accent">Current client delivery</p><h2 className="mt-3 text-2xl font-bold text-ink">Dreamview Technology</h2><p className="mt-4 text-sm leading-7 text-ink-muted">Alongside my personal AI projects, I continue client website delivery through Dreamview. Hina’s Collection includes an owner-managed product catalogue and direct ordering workflow; DJ Meet Sound &amp; Light includes event enquiries and a downloadable press kit. These are client web-delivery examples, separate from my personal AI systems.</p><a href="https://dreamviewtechnology.com/" target="_blank" rel="noopener noreferrer" className="mt-4 inline-block font-semibold text-accent">View Dreamview client work ↗</a></section></Reveal>
 
         {/* Values */}
         <Reveal>

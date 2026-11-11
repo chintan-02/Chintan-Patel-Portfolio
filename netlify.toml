@@ -8,6 +8,11 @@
   status = 301
 
 [[redirects]]
+  from = "/case-studies"
+  to = "/projects"
+  status = 301
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

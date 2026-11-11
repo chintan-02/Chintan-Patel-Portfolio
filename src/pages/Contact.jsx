@@ -1,5 +1,4 @@
-import { Mail, MapPin, FileText, Compass, Clock } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Mail, MapPin, FileText, Compass } from 'lucide-react';
 import { BrandGithub, BrandLinkedin } from '../components/ui/BrandIcons.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { SectionHeader } from '../components/ui/SectionHeader.jsx';
@@ -10,28 +9,27 @@ export function Contact() {
   const items = [
     { label: 'Email', value: siteMeta.email, href: `mailto:${siteMeta.email}`, icon: Mail, ariaLabel: `Email ${siteMeta.name}` },
     { label: 'LinkedIn', value: siteMeta.linkedin.replace('https://www.', '').replace(/\/$/, ''), href: siteMeta.linkedin, icon: BrandLinkedin, ariaLabel: 'Open Chintan Patel LinkedIn profile' },
-    { label: 'GitHub', value: 'github.com/chintan-02', href: siteMeta.github, icon: BrandGithub, ariaLabel: 'Open Chintan Patel GitHub profile' },
-    { label: 'Location', value: siteMeta.location, href: null, icon: MapPin }
+    { label: 'GitHub', value: 'github.com/chintan-02', href: siteMeta.github, icon: BrandGithub, ariaLabel: 'Open Chintan Patel GitHub profile' }
   ];
 
   const context = [
-    { icon: MapPin, label: 'Based in', value: 'Calgary, Alberta · Canada' },
-    { icon: Compass, label: 'Open to', value: 'Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer roles · Canada' },
-    { icon: Clock, label: 'Response time', value: 'Usually within 24 hours' }
+    { icon: MapPin, label: 'Based in', value: siteMeta.location },
+    { icon: Compass, label: 'Focus', value: 'ML products · RAG · Full-stack AI systems' }
   ];
 
   return (
     <section className="px-6 py-16 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
         <SectionHeader
+          as="h1"
           eyebrow="Contact"
-          title="Open to Applied AI engineering opportunities across Canada."
+          title="Let’s build useful AI products."
           description={siteMeta.availability}
           align="center"
         />
 
         <Reveal>
-          <div className="mb-10 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-3">
+          <div className="mb-10 grid gap-px overflow-hidden rounded-card border border-line bg-line sm:grid-cols-2">
             {context.map((c) => {
               const Icon = c.icon;
               return (
@@ -76,18 +74,6 @@ export function Contact() {
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Button href={siteMeta.resume} download variant="onDarkAccent"><FileText className="h-4 w-4" />Download Resume</Button>
           <Button href="/projects" variant="onDark">View Projects</Button>
-        </div>
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-2 border-t border-line pt-6">
-          <span className="mr-1 font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-ink-faint">Explore my work</span>
-          <Link to="/projects" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
-            View Projects
-          </Link>
-          <Link to="/case-studies" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
-            Case Studies
-          </Link>
-          <a href={siteMeta.github} target="_blank" rel="noopener noreferrer" aria-label="Open Chintan Patel GitHub profile" className="rounded-full border border-line px-3 py-1.5 text-xs font-bold text-ink-muted transition hover:border-[rgb(var(--accent-rgb)/0.42)] hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base">
-            GitHub
-          </a>
         </div>
       </div>
     </section>

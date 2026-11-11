@@ -295,9 +295,19 @@ The repository deliberately separates delivered engineering from roadmap items.
 | Sentence-transformer embeddings and hybrid retrieval | Implemented |
 | Evaluated deterministic obligation extraction | Implemented |
 | Persisted policy-gated workflow with human approval | Implemented |
-| Fine-tuned regulatory-clause classifier | Corpus governance and rights-review controls exist; approval, annotation, training, evaluation, and promotion remain required |
+| Fine-tuned regulatory-clause classifier | Governed corpus and human-label evaluation tooling implemented; model training and promotion remain gated |
+| Controlled impact-workflow evaluation | Implemented: citations, tenant isolation, policy blocks, and approval enforcement; deterministic, not open-ended LLM tool use |
+| Separate MCP companion | Planned; integration audit precedes implementation |
 | LangGraph orchestration | Planned for v0.7; not implemented |
 | AKS / Kubernetes runtime | Planned for v1.0; not implemented |
+
+## Human-label evaluation and next agent work
+
+The repository now includes human-evaluation packaging and a governed multi-human adjudication workflow. A single-human evidence package is available; independent second-reviewer annotation and completed adjudication are still pending. Implementing that workflow is not evidence of completed independent review, nor authorization to train or promote a classifier.
+
+The controlled agent workflow is a tenant-scoped state machine that gathers evidence and proposes an impact assessment. Its evaluation checks citations, isolation, approval enforcement, and policy blocks. It does not execute actions or provide an open-ended LLM agent. The separate MCP companion remains planned, beginning with an audit of API and authorization contracts.
+
+[Controlled workflow evaluation](https://github.com/chintan-02/regimpact-ai/blob/448f598/docs/agent-evaluation.md) · [Workflow implementation](https://github.com/chintan-02/regimpact-ai/blob/448f598/apps/api/src/regimpact/agent_workflow.py) · [Human-evaluation packaging](https://github.com/chintan-02/regimpact-ai/blob/448f598/apps/api/scripts/package_human_silver_evaluation.py)
 
 ## Current limitations
 

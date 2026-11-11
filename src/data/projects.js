@@ -1,12 +1,13 @@
 export const projects = [
   {
     slug: 'regimpact-ai',
+    writingUrl: '/writing/regimpact-azure-deployment',
     category: 'Regulatory AI · AI Systems Engineering',
     title: 'RegImpact AI',
     subtitle: 'Regulatory Change Impact & Controls Assurance Platform',
-    status: 'v0.5.0 verified Azure release · ephemeral staging now default',
+    status: 'Azure staging release · human-reviewed regulatory analysis',
     featured: true,
-    featuredOrder: 1,
+    featuredOrder: 2,
     proofHighlight: {
       value: 'Ephemeral',
       label: 'Azure staging lifecycle',
@@ -15,11 +16,11 @@ export const projects = [
     homepage: {
       displayTitle: 'RegImpact AI',
       metrics: [
-        { value: 'v0.5.0', label: 'Verified Azure staging release' },
-        { value: 'Ephemeral', label: 'Cost-aware staging lifecycle' }
+        { value: 'Hybrid', label: 'Keyword + vector retrieval' },
+        { value: 'Human review', label: 'Approval before consequential decisions' }
       ],
       stack: ['FastAPI', 'Next.js', 'PostgreSQL + pgvector', 'Redis', 'Azure Container Apps'],
-      scope: 'Verified Azure Canada Central release evidence · staging now tears down by default · production remains intentionally unapproved'
+      scope: 'Azure staging validated; regulatory decisions remain subject to authorized human review.'
     },
     homepageVisual: {
       type: 'evidence',
@@ -33,7 +34,7 @@ export const projects = [
       ]
     },
     description:
-      'Evidence-linked regulatory intelligence platform that versions source documents, detects section-level changes, extracts obligation candidates, retrieves relevant controls, and routes uncertain or consequential findings to authorized reviewers.',
+      'Helps analysts see what changed in a regulation, identify affected obligations, and review the controls that may need updating.',
     problem:
       'Regulatory change is not just a search problem. Teams need to prove what changed, which obligations were inferred, which controls may be affected, who reviewed the proposal, and why a decision was accepted or rejected.',
     contribution:
@@ -101,22 +102,23 @@ export const projects = [
   },
   {
     slug: 'triageai',
+    writingUrl: '/writing/lightgbm-vs-xgboost',
     category: 'Healthcare AI',
     title: 'TriageAI',
     subtitle: 'Clinical Intake & ESI Care Routing Assistant',
     status: 'Live educational demo · Cloud Run + PostgreSQL',
     featured: true,
-    featuredOrder: 2,
+    featuredOrder: 1,
     proofHighlight: {
       value: '0.68%',
-      label: 'Unsafe ESI 3→5 rate',
+      label: 'Under-triage: ESI 3 predicted as 5',
       detail: 'Safety-sensitive model evaluation'
     },
     homepage: {
       displayTitle: 'TriageAI / SympDirect',
       metrics: [
-        { value: '70.37%', label: 'Macro F1' },
-        { value: '0.68%', label: 'Unsafe ESI 3→5 rate' }
+        { value: '70.4%', label: 'Macro F1 · ESI 3/4/5 test set' },
+        { value: '0.68%', label: 'Under-triage: ESI 3 predicted as 5' }
       ],
       stack: ['React', 'FastAPI', 'LightGBM', 'PostgreSQL', 'Cloud Run'],
       scope: 'Live Netlify + Cloud Run demo · private workspaces · educational decision support only'
@@ -128,7 +130,7 @@ export const projects = [
       caption: 'Prediction result with model probabilities, recommendation, and safety-aware routing context.'
     },
     description:
-      'Review-first healthcare AI decision-support workflow combining structured intake, evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, transparent safety escalation, clinician review, audit evidence, dashboard workflows, and backend-generated PDF summaries.',
+      'An educational intake assistant that turns clinical notes into reviewable fields and care-routing suggestions, with clinicians responsible for the final decision.',
     problem:
       'Emergency intake requires more than a model label. Clinical notes and structured data must be reviewable, higher-risk signals need transparent escalation, clinicians must remain the final authority, and every meaningful action should be traceable.',
     contribution:
@@ -170,9 +172,9 @@ export const projects = [
     ],
     metrics: [
       { value: '78.32%', label: 'Accuracy' },
-      { value: '70.37%', label: 'Macro F1' },
+      { value: '70.4%', label: 'Macro F1 · ESI 3/4/5 test set' },
       { value: '54.70%', label: 'ESI 5 F1' },
-      { value: '0.68%', label: 'Unsafe ESI 3→5 rate' }
+      { value: '0.68%', label: 'Under-triage: ESI 3 predicted as 5' }
     ],
     screenshots: [
       {
@@ -218,25 +220,26 @@ export const projects = [
   },
   {
     slug: 'policygpt',
+    writingUrl: '/writing/rag-evaluation-beyond-demo',
     category: 'GenAI · RAG · AI Systems Engineering',
     title: 'PolicyGPT Enterprise',
-    subtitle: 'Evidence-Gated Policy RAG System',
-    status: 'v0.3.0 · Verified local release · Not cloud deployed',
+    subtitle: 'Policy Answers with Source Citations',
+    status: 'Local Docker release · citation-backed policy search',
     featured: true,
     featuredOrder: 3,
     proofHighlight: {
       value: '358',
-      label: 'Automated tests',
+      label: 'PolicyGPT tests · release snapshot',
       detail: '230 backend + 128 frontend'
     },
     homepage: {
       displayTitle: 'PolicyGPT Enterprise',
       metrics: [
-        { value: '16', label: 'Controlled benchmark cases' },
-        { value: '358', label: 'Automated tests' }
+        { value: '11 + 5', label: 'Supported + unsupported evaluation cases' },
+        { value: '358', label: 'PolicyGPT tests · release snapshot' }
       ],
       stack: ['Next.js', 'FastAPI', 'PostgreSQL', 'ChromaDB', 'Docker Compose'],
-      scope: 'v0.3.0 verified local release · not cloud deployed'
+      scope: 'Reproducible local Docker release. Benchmark covers one fictional policy handbook.'
     },
     homepageVisual: {
       type: 'image',
@@ -245,7 +248,7 @@ export const projects = [
       caption: 'Citation-backed answer with calibrated confidence and page-level evidence.'
     },
     description:
-      'Production-style evidence intelligence and policy RAG system that converts policy PDFs into durable, searchable evidence, blocks unsupported generation, and exposes page-level citations, confidence diagnostics, benchmark evaluation, and operational health through a Next.js console.',
+      'Answers questions about uploaded policy PDFs with page-level sources, and falls back safely when the documents do not support an answer.',
     problem:
       'Policy answers are consequential. A fluent response without provenance is difficult to review, and raw vector similarity does not prove that retrieved text directly supports a question. PolicyGPT makes identity, evidence, answerability, failure states, and readiness part of the product contract.',
     contribution:
@@ -358,7 +361,7 @@ export const projects = [
       scope: 'Live portfolio deployment · deterministic Python owns authoritative filtering'
     },
     description:
-      'Grounded product-search agent using Google ADK with deterministic Python filtering for category, price, product name, and availability constraints.',
+      'Finds products from a fixed 13-item catalogue using natural-language requests, while Python tools enforce category and price filters.',
     problem:
       'Natural-language product search is useful only when the model cannot invent catalogue facts or perform unreliable numeric filtering.',
     contribution:
@@ -398,7 +401,7 @@ export const projects = [
     title: 'ResumeIQ',
     subtitle: 'Privacy-Aware Resume Intelligence Platform',
     status: 'Demo offline · frontend migration planned',
-    featured: true,
+    featured: false,
     featuredOrder: 5,
     homepage: {
       metrics: [

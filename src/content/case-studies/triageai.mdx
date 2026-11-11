@@ -1,367 +1,80 @@
-import { ArchitectureBlock, CaseStudyHero, ExpandableImage, MetricCard, ProductWalkthrough, StatusBadges, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+import { CaseStudyHero, ExpandableImage, MetricCard, ProductWalkthrough, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
   label="Healthcare AI Case Study"
-  meta="Live cloud demo · 160 Python tests · 60 React tests"
-  badges={["Live educational demo", "Human review required"]}
-  title="TriageAI — ESI Clinical Intake & Care Routing Assistant"
-  description="A review-first healthcare AI decision-support workflow that converts structured intake or clinician notes into auditable ESI care-routing support. It combines evidence-linked clinical NLP, LightGBM ESI 3/4/5 prediction, transparent safety escalation, clinician review or override, server-side audit evidence, dashboard workflows, and backend-generated PDF summaries."
+  meta="Educational demo · synthetic data only"
+  badges={["Live demo", "Human review required"]}
+  title="TriageAI — Reviewed Clinical Intake"
+  description="Clinical notes become editable intake fields and ESI routing suggestions. Clinicians review the inputs and make the final decision."
   links={[
     { label: 'Live Demo', href: 'https://triageai-chintan-staging.netlify.app/', external: true },
     { label: 'GitHub', href: 'https://github.com/chintan-02/triageai-esi-care-routing', external: true }
   ]}
+  image="/images/case-studies/triageai/05-prediction-result.png"
+  imageAlt="TriageAI prediction result with class probabilities and safety escalation"
+  imageCaption="The model suggestion, safety rules, and clinician decision are separate parts of the workflow."
 />
 
-<TechStackBlock items={["Python", "FastAPI", "React", "TypeScript", "LightGBM", "Scikit-learn", "SQLAlchemy", "PostgreSQL", "Alembic", "Cloud Run", "Cloud Storage", "Secret Manager", "Cloud Monitoring", "Docker", "ReportLab", "Pydantic", "pytest"]} />
+<MetricCard label="Offline test-set evaluation · LightGBM V2" value="70.4% macro F1 · 78.3% accuracy · 0.68% ESI 3→5 under-triage" note="The under-triage metric is the proportion of true ESI 3 cases predicted as ESI 5 (215 cases); it is not an overall clinical-safety rate. ESI 5 F1 is 54.70%. These are model metrics, not patient-care outcomes." />
 
-## Problem
+## Try the workflow
 
-Emergency intake is a safety-sensitive workflow. A model label is not enough.
+Open the demo and choose **Start a private demo session**. Use synthetic information only. Extract a clinical note, correct the fields, confirm review, and run prediction. Accept or override the suggestion, then generate a PDF and inspect the audit trail. A new workspace starts empty. Sessions are temporary and the first API request can take longer during a cold start.
 
-Clinical notes and structured vital signs must be converted into reviewable information. Higher-risk signals need explicit escalation. Clinicians must remain the final authority. Predictions, corrections, overrides, and supporting evidence need to survive beyond the current screen so the full decision path can be audited.
+## Problem and my contribution
 
-TriageAI is therefore positioned as a **clinical decision-support workflow prototype**. It does not diagnose patients, replace clinician judgment, or claim production clinical validation.
+Emergency intake needs reviewable information, rather than just a model label. I built data preparation and registry integration, deterministic clinical-note extraction, the React/FastAPI workflow, safety rules, clinician review, persistence, PDF reporting, cloud delivery, and validation. This is educational decision support; it does not diagnose patients or claim clinical validation.
 
-## Solution
-
-TriageAI supports two intake paths:
-
-- direct structured patient intake
-- free-text clinician notes processed through a deterministic Clinical Intake NLP Safety Layer
-
-The NLP layer extracts demographics, symptoms, vital signs, safety cues, missing information, and evidence snippets. Extracted values are copied into editable fields, but prediction remains locked until a clinician confirms that the information has been reviewed.
-
-After review, FastAPI builds the model features, runs the final LightGBM V2 ESI 3/4/5 model, applies transparent safety rules, stores the assessment, and returns confidence and class probabilities. The clinician can accept, override, or mark the case for further review. Reviewed NLP evidence and clinician actions are persisted in the audit workflow and included in the backend-generated PDF summary.
-
-<aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.07)] p-5">
-  <div className="text-sm leading-7 text-ink-muted">
-    <strong className="text-ink">My engineering scope:</strong> clinical data preparation, model-registry integration, deterministic evidence-linked NLP, React and FastAPI workflows, safety-rule escalation, clinician review, persistence, audit evidence, PDF reporting, cloud delivery and automated validation. The workflow is now deployed as an educational cloud demo with private workspaces, PostgreSQL migrations, private reports and operational alerts. It is not diagnostic or clinically validated.
-  </div>
-</aside>
-
-<ArchitectureBlock steps={[
-  { title: "Clinical note or structured intake", description: "Patient context, symptoms, and vital signs" },
-  { title: "Evidence-linked NLP extraction", description: "Fields, source snippets, safety cues, and missing information" },
-  { title: "Clinician review and correction", description: "Editable values and mandatory confirmation before prediction" },
-  { title: "FastAPI feature builder", description: "Typed validation and final 273-feature input contract" },
-  { title: "LightGBM V2", description: "ESI 3, ESI 4, and ESI 5 probabilities" },
-  { title: "Safety-rule escalation", description: "Explicit higher-risk routing safeguards" },
-  { title: "Clinician decision", description: "Accept, override, or needs-review action" },
-  { title: "Database, audit, and PDF", description: "Server-side traceability and decision-support summary" }
-]} />
-
-<figure className="my-10 overflow-hidden rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] shadow-card">
-  <ExpandableImage
-    src="/images/case-studies/triageai/13-system-architecture.png"
-    alt="TriageAI system architecture showing clinician-reviewed intake flowing through FastAPI, 273-feature LightGBM decision support, safety escalation, persistence, audit trail, and PDF reporting"
-    label="Exported TriageAI system architecture"
-    imageClassName="h-auto w-full bg-white object-contain"
-  />
-  <figcaption className="border-t border-line px-4 py-3.5 text-sm font-medium leading-6 text-ink-muted">
-    Exported system architecture. Open the diagram to inspect the complete review-first workflow.
-  </figcaption>
-</figure>
-
-<StatusBadges
-  built={[
-    "React + FastAPI workflow",
-    "Clinical Intake NLP extraction",
-    "Editable pre-prediction review",
-    "LightGBM ESI 3/4/5 inference",
-    "Safety-rule escalation",
-    "Clinician accept/override",
-    "Reviewed NLP audit evidence",
-    "Assessment detail and dashboard",
-    "Final PDF decision-support reporting",
-    "Model Monitoring with registry metrics",
-    "Final screenshot set",
-    "Final synthetic product walkthrough",
-    "Automated workflow validation",
-    "Owner-scoped sessions and workflow roles",
-    "Managed PostgreSQL and Alembic",
-    "Private GCS report snapshots",
-    "Cloud Run candidate verification",
-    "Scheduled retention cleanup",
-    "Uptime, failure alerts and verified email delivery"
-  ]}
-  planned={[
-    "Formal clinical validation",
-    "Independent staging and verified cloud restore",
-    "Live drift and subgroup evaluation"
-  ]}
-/>
+<TechStackBlock items={["Python", "FastAPI", "React", "TypeScript", "LightGBM", "PostgreSQL", "Alembic", "Cloud Run", "GCS", "Docker", "pytest"]} />
 
 ## Product walkthrough
 
-<ProductWalkthrough
-  title="Review-first product walkthrough"
-  steps={[
-    {
-      title: "Command Center",
-      why: "Gives reviewers one operational view of stored assessments, pending clinician reviews, safety escalations, routing outcomes, and model connectivity.",
-      image: "/images/case-studies/triageai/01-command-center.png",
-      alt: "TriageAI Command Center showing assessment totals, pending reviews, safety escalations, recent assessments, and final ESI distribution"
-    },
-    {
-      title: "Clinical note intake",
-      why: "Supports free-text note entry as an intake path while keeping extraction and clinician confirmation as explicit next steps.",
-      image: "/images/case-studies/triageai/02-new-intake-note.png",
-      alt: "TriageAI new intake screen with the clinical note entry workflow and controls for extracting structured intake fields"
-    },
-    {
-      title: "Evidence-linked NLP extraction",
-      why: "Makes extracted fields, source evidence, safety cues, and missing information visible before any prediction can run.",
-      image: "/images/case-studies/triageai/03-nlp-review-evidence.png",
-      alt: "Clinical Intake NLP Safety Layer showing extracted demographics, symptoms, vital signs, safety cues, missing information, and supporting note evidence"
-    },
-    {
-      title: "Reviewed structured intake",
-      why: "Lets the clinician correct structured values and explicitly confirm the reviewed intake rather than treating extraction as verified truth.",
-      image: "/images/case-studies/triageai/04-reviewed-structured-intake.png",
-      alt: "TriageAI structured intake form populated from a clinical note with editable patient details, symptoms, vital signs, and review confirmation"
-    },
-    {
-      title: "Prediction and safety escalation",
-      why: "Separates model probabilities from transparent safety-rule escalation so the output remains decision support, not an autonomous clinical decision.",
-      image: "/images/case-studies/triageai/05-prediction-result.png",
-      alt: "TriageAI prediction result showing ESI class probabilities, model confidence, safety escalation details, and decision-support wording"
-    },
-    {
-      title: "Clinician sign-off",
-      why: "Keeps the clinician responsible for accepting, overriding, or requesting further review, with a documented reason when needed.",
-      image: "/images/case-studies/triageai/06-clinician-review.png",
-      alt: "TriageAI clinician review screen with accept, override, and further-review decision controls"
-    },
-    {
-      title: "Auditability and PDF reporting",
-      why: "Turns the reviewed intake, model output, safety context, and clinician decision into a durable decision-support summary.",
-      image: "/images/case-studies/triageai/10-pdf-summary.png",
-      alt: "TriageAI PDF decision-support summary containing reviewed intake data, model output, safety context, and clinician decision"
-    },
-    {
-      title: "Model monitoring",
-      why: "Surfaces the loaded registry version, evaluation metrics, feature contract, and decision threshold for operational inspection.",
-      image: "/images/case-studies/triageai/11-model-monitoring.png",
-      alt: "TriageAI model monitoring screen showing the loaded model registry, evaluation metrics, 273-feature contract, and 0.60 decision threshold"
-    }
-  ]}
-/>
+<ProductWalkthrough title="From note to reviewed decision" steps={[
+  { title: "Review the extracted intake", why: "Deterministic NLP extracts supported fields, missing information, and source snippets. Prediction waits for explicit clinician confirmation.", image: "/images/case-studies/triageai/03-nlp-review-evidence.png", alt: "Editable intake extraction with clinical evidence and missing fields" },
+  { title: "Inspect and sign off", why: "Class probabilities and safety escalation remain distinct. The clinician can accept, override with a reason, or request further review.", image: "/images/case-studies/triageai/06-clinician-review.png", alt: "Clinician accept, override, and further-review controls" },
+  { title: "Retain the reviewed result", why: "The backend stores review history and creates a PDF snapshot. Changed inputs or review state produce a fresh report without altering historical report bytes.", image: "/images/case-studies/triageai/10-pdf-summary.png", alt: "PDF summary of reviewed intake, model output, and clinician decision" }
+]} />
 
-## Evidence and audit lifecycle
+## Model evaluation and calibration
 
-The review workflow preserves evidence before and after prediction so the final decision can be inspected as a sequence, not just as a model label.
+The source dataset contains 366,890 emergency-department records; the ESI 3/4/5 modelling subset contains 257,306. The runtime uses the final **273-feature LightGBM V2 registry**, a **0.60 threshold**, and raw model probabilities. ESI 1/2 escalation uses explicit safety rules outside this classifier.
 
-<ArchitectureBlock
-  title="Evidence-to-audit lifecycle"
-  steps={[
-    { title: "Extracted intake evidence", description: "Structured fields, source snippets, safety cues and missing information" },
-    { title: "Clinician review", description: "Editable values are corrected and explicitly confirmed before prediction" },
-    { title: "Model and safety output", description: "ESI 3/4/5 probabilities remain separate from explicit escalation rules" },
-    { title: "Clinician decision", description: "Accept, override or needs-review action with reviewer responsibility" },
-    { title: "Audit and PDF", description: "Reviewed evidence, actions and decision-support summary persist server-side" }
-  ]}
-/>
+Macro F1 gives each class equal weight. The lower **54.70% ESI 5 F1** remains a limitation even with 78.32% overall accuracy. The registry reports **70.37% macro F1**, **78.88% weighted F1**, and **215 ESI 3-to-5 downgrades (0.68% of true ESI 3 cases)**.
 
-## Clinical Intake NLP Safety Layer
+<ExpandableImage src="/images/case-studies/triageai/esi5-calibration.svg" alt="ESI 5 reliability curve: raw LightGBM predicted probabilities exceed observed class frequencies across most bins" label="ESI 5 reliability curve from the committed registry report" imageClassName="h-auto w-full rounded-panel bg-white" />
 
-The NLP layer is deterministic and evidence-linked rather than an unrestricted medical chatbot.
+The curve shows that raw probabilities should not be read as calibrated clinical confidence. Calibration was evaluated: Platt scaling improved test Brier score from **0.312 to 0.281**, but the validation selection rejected it because macro F1 and ESI 5 F1 were not preserved. Isotonic calibration was also rejected because ESI 5 F1 was not preserved. This records a tradeoff; it does not establish that the deployed probabilities are calibrated.
 
-It can extract:
+[Final test metrics](https://github.com/chintan-02/triageai-esi-care-routing/blob/8af95ea72bfe595c4b0789ef352556d84e661bec/model_registry/esi_345_lightgbm_v2/reports/lightgbm_v2_test_metrics.json) · [Calibration decision](https://github.com/chintan-02/triageai-esi-care-routing/blob/8af95ea72bfe595c4b0789ef352556d84e661bec/model_registry/esi_345_lightgbm_v2/reports/calibration_deployment_decision.csv) · [Model-selection article](/writing/lightgbm-vs-xgboost)
 
-- age and gender
-- chief complaint and symptom list
-- heart rate, blood pressure, respiratory rate, oxygen saturation, and temperature
-- configured safety cues
-- missing vital-sign fields
-- source-text evidence for extracted values
+An archived model-comparison table contains a different LightGBM snapshot. I do not combine it with the final registry to claim a like-for-like baseline improvement.
 
-Every extraction requires clinician review. The UI does not automatically call prediction after extraction, and the backend does not treat extracted values as verified clinical truth.
+## Architecture, review, and safety
 
-Reviewed NLP audit metadata includes the reviewed status, source, extracted fields, safety cues, missing fields, evidence snippets, and decision-support disclaimer. The audit payload intentionally excludes raw note text, diagnosis, treatment recommendations, and NLP-generated ESI decisions.
+<ExpandableImage src="/images/case-studies/triageai/13-system-architecture.png" alt="Reviewed intake flows through FastAPI, LightGBM, safety rules, clinician decision, database, audit trail, and PDF reporting" label="TriageAI system architecture" imageClassName="h-auto w-full bg-white" />
 
-## Model scope and evaluation
+FastAPI and PostgreSQL own assessments, predictions, reviews, audit events, and official reports. The browser is not the source of truth. Reviewed extraction metadata preserves supported fields and evidence without storing raw note text in the NLP audit payload. The NLP layer does not infer diagnoses, treatments, or ESI decisions.
 
-<MetricCard
-  label="Final LightGBM V2 Registry"
-  value="78.32% accuracy · 0.68% unsafe ESI 3→5 rate"
-  note="Verified final metrics: Macro F1 70.37%, Weighted F1 78.88%, ESI 5 F1 54.70%. The runtime registry uses 273 features and raw LightGBM probabilities. The model is scoped to ESI 3/4/5; ESI 1/2 escalation is handled through explicit safety logic and clinician review."
-/>
+Database-backed sessions and owner-scoped APIs isolate demo workspaces. Backend tests check cross-workspace access and replace client-supplied reviewer identity with the authenticated principal. The Doctor demo role is a workflow permission, not verification of professional credentials.
 
-<section className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.8)] p-5 shadow-card sm:p-6">
-  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Evaluation source of truth</p>
-  <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-    {[
-      ["Final model registry", "LightGBM V2 is the loaded runtime and evaluation source of truth."],
-      ["Feature contract", "273 features define the verified runtime input identity."],
-      ["Decision threshold", "0.60 is the configured decision threshold."],
-      ["Evaluated scope", "The classifier is evaluated for ESI 3, ESI 4 and ESI 5."],
-      ["Safety escalation", "ESI 1/2 escalation remains explicit safety logic outside the classifier."],
-      ["Clinical validation", "No formal clinical validation or patient-care effectiveness claim."]
-    ].map(([title, detail]) => (
-      <article key={title} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
-        <h3 className="text-sm font-bold leading-6 text-ink">{title}</h3>
-        <p className="mt-2 text-sm leading-6 text-ink-muted">{detail}</p>
-      </article>
-    ))}
-  </div>
-</section>
+## Cloud delivery and reliability
 
-The source dataset contains 366,890 emergency-department records and 972 columns. The final ESI 3/4/5 modeling subset contains 257,306 records.
+Netlify serves React; a non-root Cloud Run container serves FastAPI and the real registry. Neon PostgreSQL stores application data, while a private GCS bucket stores reports. Secret Manager supplies secrets. Separate runtime, migration, and cleanup database identities limit privileges; migrations run separately from startup.
 
-The model was selected after comparison with XGBoost, Random Forest, a Dense Neural Network, an RNN, and a GRU. Selection considered weighted and macro F1, class-level behavior, ESI 5 performance, and unsafe ESI 3-to-ESI 5 downgrades rather than raw accuracy alone.
+<ExpandableImage src="/images/case-studies/triageai/cloud-deployment.svg" alt="Netlify, Cloud Run, Neon PostgreSQL, private GCS, Secret Manager, scheduled cleanup, and Cloud Monitoring" label="Educational cloud deployment topology" imageClassName="h-auto w-full bg-white" />
 
-## Software and deployment validation
+Release verification tested a private candidate before traffic promotion, with digest-pinned images and recorded rollback information. This was an operator-driven release, not automatic cloud CI/CD. Two uptime checks and five alert policies cover availability, API errors, and cleanup. A temporary alert verified opening and closure email delivery; not every failure condition was exercised.
 
-<section className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.8)] p-5 shadow-card sm:p-6">
-  <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">Current software validation</p>
-  <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-    {[
-      ["160", "Python tests passed; 1 PostgreSQL-only case skipped locally"],
-      ["60", "React tests passed across 15 files"],
-      ["Passed", "React production build"],
-      ["Passed", "Docker Compose build and full-stack validation"],
-      ["Passed", "/health check"],
-      ["Passed", "/ready check"]
-    ].map(([value, label]) => (
-      <div key={label} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.62)] p-4">
-        <p className="font-display text-2xl font-bold tracking-[-0.04em] text-ink">{value}</p>
-        <p className="mt-2 text-xs font-semibold leading-5 text-ink-muted">{label}</p>
-      </div>
-    ))}
-  </div>
-</section>
+Hourly cleanup targets eligible inactive workspaces older than 24 hours. Active-session exclusions and batch limits mean this is not an exact deletion deadline. Quotas and shared rate limits constrain demo usage.
 
-These counts are from the release-documentation verification. PostgreSQL migrations and API integration passed separately in GitHub CI. Dated evidence is recorded in the repository. These results validate software behavior and the review-first workflow. They are not clinical validation and do not establish safety or effectiveness in patient care.
+## Validation and evidence
 
-## Human-in-the-loop design
+The documented release snapshot records **160 Python tests passed, one PostgreSQL-only case skipped locally, and 60 React tests passed across 15 files**. Production frontend build, Docker full-stack checks, health, and readiness passed. PostgreSQL migrations and API integration were checked separately in CI. These historical results are software verification, not a new test run or clinical validation.
 
-Human review is not a decorative confirmation step.
+[Cloud release record](https://github.com/chintan-02/triageai-esi-care-routing/blob/8af95ea72bfe595c4b0789ef352556d84e661bec/docs/releases/cloud-demo-2026-10-17.md) · [Operations and rollback](https://github.com/chintan-02/triageai-esi-care-routing/blob/8af95ea72bfe595c4b0789ef352556d84e661bec/docs/deployment/live-demo-runbook.md)
 
-Before prediction, the clinician reviews and can correct extracted fields. After prediction and safety escalation, the clinician remains responsible for the final care-routing decision. Overrides require a documented reason and are stored with the assessment and audit trail.
+## Limitations and next steps
 
-This separates three responsibilities:
+No real-patient deployment, patient-outcome improvement, clinical validation, compliance certification, or uptime SLA is claimed. Staging and demo share database and report infrastructure. Independent staging, verified cloud database restoration, staff identity lifecycle, prospective clinical validation, and live drift monitoring remain future work. Offline subgroup reports exist; they do not replace clinical or prospective subgroup validation. Optional Azure Speech is not a verified live capability.
 
-1. the NLP layer extracts reviewable information
-2. the model estimates ESI 3/4/5 probabilities
-3. the clinician makes the final reviewed decision
-
-## Source-of-truth architecture
-
-The React frontend does not own assessment truth.
-
-FastAPI and the database remain authoritative for:
-
-- assessments
-- predictions
-- clinician reviews
-- audit events
-- dashboard summaries
-- report records
-- official PDF generation
-
-Mock data remains limited to explicit development and test fixtures. Browser storage is not used as the source of truth for real assessments.
-
-## Safety boundaries
-
-TriageAI does not claim to:
-
-- diagnose patients
-- autonomously assign final clinical priority
-- replace clinical assessment
-- operate as a validated clinical system
-- guarantee patient outcomes
-- infer missing values
-- use NLP output without human confirmation
-
-A real clinical deployment would require formal clinical validation, privacy and security review, governance, regulatory assessment, controlled rollout, monitoring, and organizational approval.
-
-## Engineering decisions
-
-### Why deterministic NLP?
-
-The goal was structured extraction with visible evidence, not free-form clinical interpretation. Deterministic rules make supported fields, missing values, and failure boundaries easier to inspect and test.
-
-### Why keep ESI 1/2 outside the classifier?
-
-The final model is strongest and most precisely evaluated for ESI 3/4/5. Higher-acuity signals are handled through explicit safety escalation so the system does not overstate model support for rare, high-severity classes.
-
-### Why persist reviewed evidence?
-
-A checkbox only proves that someone clicked it. Persisting the reviewed fields, evidence snippets, safety cues, and missing-information state makes the review itself auditable.
-
-## Live deployment and reliability
-
-The React/TypeScript frontend is delivered through Netlify. A non-root Docker
-image serves FastAPI and the real LightGBM registry on Google Cloud Run.
-Neon PostgreSQL is the system of record; Alembic migrations run separately from
-API startup. Runtime, migration and cleanup use separate database identities.
-
-### Access and report lifecycle
-
-Database-backed opaque sessions, server-enforced roles and owner-scoped APIs
-separate demo workspaces. Client-supplied reviewer identities are replaced with
-the authenticated principal. The Doctor demo role is a workflow permission, not
-verification of professional credentials.
-
-PDFs are stored in a private GCS bucket and downloaded through authenticated APIs.
-After a clinician review or assessment input changes, assessment-level PDF
-generation creates a fresh snapshot. Older report IDs preserve their historical
-bytes. The regression test verified pending → accepted review → fresh accepted
-PDF, original report preservation, and reuse when inputs remain unchanged.
-
-### Deployment topology
-
-<ExpandableImage
-  src="/images/case-studies/triageai/cloud-deployment.svg"
-  alt="Netlify frontend calls the Cloud Run API, which uses Neon PostgreSQL, private GCS reports and Secret Manager. Hourly Scheduler invokes a cleanup job; Cloud Monitoring delivers operator email alerts."
-  label="Verified educational cloud deployment"
-  imageClassName="h-auto w-full bg-white object-contain"
-/>
-
-Secrets are supplied through Secret Manager. Shared rate limits, workspace quotas
-and bounded cleanup constrain demo usage. Cleanup runs hourly, targeting eligible
-inactive demo workspaces older than 24 hours; active-session exclusions and batch
-limits mean retention is not an exact deletion deadline. Object soft deletion
-retains a recovery window.
-
-### Verified release and alerts
-
-The PDF fix was tested on private staging, then on a tagged demo candidate before
-traffic promotion to `triageai-demo-00002-buj`. Images are pinned by digest, and
-previous revision information is recorded for application rollback. This was an
-operator-driven release; automatic public CI/CD is not claimed.
-
-Two uptime checks and five operational alert policies cover frontend/API
-availability, API 5xx bursts, cleanup failures and missing cleanup completions.
-A temporary test policy delivered opening and closure emails and was removed.
-This verifies notification delivery; it does not exercise every failure condition.
-Registry metrics remain offline evaluation, not live accuracy or drift monitoring.
-
-[Deployment evidence](https://github.com/chintan-02/triageai-esi-care-routing/blob/main/docs/releases/cloud-demo-2026-10-17.md)
-· [Operations and rollback](https://github.com/chintan-02/triageai-esi-care-routing/blob/main/docs/deployment/live-demo-runbook.md)
-
-## Try the live workflow
-
-Choose **Start a private demo session**, use only synthetic information, review
-extracted intake, run prediction, accept or override the result, then generate a
-PDF from the assessment. Inspect the audit trail and log out. A fresh workspace
-starts empty; anonymous sessions and demo data are temporary. The first request
-may take longer during a cold start. Optional Azure Speech requires separate
-configuration and is not claimed as a verified live capability.
-
-## Current limitations and roadmap
-
-The public application is an educational demo, not a clinical production service.
-Private staging and demo currently share the database and report infrastructure.
-Independent staging, verified cloud database restore, staff identity lifecycle,
-prospective clinical validation, subgroup evaluation and model drift monitoring
-remain future work. No uptime SLA, real-patient deployment, regulatory compliance
-certification or production-scale load claim is made.
-
-Further NLP/model complexity should be justified by measured benchmarks rather
-than added for its own sake. The existing deterministic vocabulary still requires
-controlled expansion and tests.
-
-## What this project demonstrates
-
-TriageAI demonstrates end-to-end ownership across clinical data preparation, multiclass evaluation, model-registry integration, deterministic NLP extraction, React and FastAPI integration, human-in-the-loop safety design, SQLAlchemy persistence, auditability, backend reporting, automated testing, authenticated cloud delivery, private object storage, operational monitoring, retention controls, and responsible-AI boundaries.
+The next ML work is a reproducible baseline comparison against the final registry and broader evaluation of calibration, subgroup errors, and safety-rule behavior. The next operational work is isolated staging and a tested restore procedure.
