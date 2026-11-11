@@ -210,7 +210,7 @@ function metadataForPath(pathname) {
     },
     '/engineering': {
       title: 'How I Engineer | AI-Assisted Development · Chintan Patel',
-      description: 'A documented AI-assisted review: architecture decisions, security corrections and verifiable implementation evidence from RegImpact AI.'
+      description: 'Documented AI-assisted engineering: RegImpact code-review decisions and a TriageAI smoke test that exposed an incomplete authentication recommendation.'
     },
     '/writing': {
       title: 'Technical Writing | Chintan Patel',
