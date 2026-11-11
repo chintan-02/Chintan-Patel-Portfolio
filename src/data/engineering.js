@@ -10,6 +10,7 @@ export const engineeringExample = {
   limitation: 'This is evidence of a merged implementation and automated review, not a new cloud deployment, a completed deletion check or measured cost savings. Azure was disabled at the time of the PR.',
   url: 'https://github.com/chintan-02/regimpact-ai/pull/26',
   caseStudy: '/case-studies/regimpact-ai',
+  caseStudySlug: 'regimpact-ai',
   date: '29 September 2026',
   decisions: [
     {
