@@ -17,7 +17,7 @@ export function HowIWork() {
           <Link to="/engineering" className="engineering-preview-card group block rounded-panel border border-line p-6 sm:p-8">
             <div className="flex items-center justify-between gap-4 text-accent"><span className="engineering-eyebrow">A decision, open for review</span><GitPullRequest size={21} aria-hidden="true" /></div>
             <h3 className="mt-5 font-display text-2xl font-semibold leading-snug tracking-tight text-ink">{engineeringExample.title}</h3>
-            <p className="mt-4 text-sm leading-7 text-ink-muted">Three automated review findings. A safer staging lifecycle. A public record of what changed and why.</p>
+            <p className="mt-4 text-sm leading-7 text-ink-muted">Three automated review findings. Two engineering decisions. A safer staging lifecycle.</p>
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-5"><span className="inline-flex items-center gap-2 text-xs font-semibold text-ink-muted"><ShieldCheck size={16} className="text-accent" aria-hidden="true" />RegImpact · Merged PR #26</span><span className="inline-flex items-center gap-2 text-sm font-semibold text-accent">Read the decisions <ArrowRight size={16} aria-hidden="true" /></span></div>
           </Link>
         </Reveal>

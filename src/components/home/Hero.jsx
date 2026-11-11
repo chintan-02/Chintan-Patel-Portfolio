@@ -40,16 +40,16 @@ export function Hero() {
 
         <motion.h1
           variants={item}
-          className="mt-5 max-w-[920px] font-display-serif text-[clamp(2.8rem,7vw,5.8rem)] font-normal leading-[1.01] tracking-[-0.035em] text-ink"
+          className="mt-5 max-w-[1040px] font-display-serif text-[clamp(2.8rem,7vw,5.8rem)] font-normal leading-[1.01] tracking-[-0.035em] text-ink"
         >
-          I build evaluated AI systems, from model to <span className="italic text-accent">product</span>.
+          I build and evaluate AI systems, from model to <span className="italic text-accent">product</span>.
         </motion.h1>
 
         <motion.p
           variants={item}
           className="mx-auto mt-6 max-w-[720px] text-[clamp(1rem,1.65vw,1.25rem)] leading-[1.75] text-ink-muted md:mx-0"
         >
-          Building evaluated ML, RAG, and agentic systems—from data and APIs to product interfaces, cloud deployment, and operational reliability.
+          ML, RAG, and agentic systems—from data and APIs to product interfaces, cloud deployment, and operational reliability.
         </motion.p>
 
         <motion.div
