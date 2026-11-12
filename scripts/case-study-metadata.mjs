@@ -1,4 +1,4 @@
-export const SITE_URL = 'https://chintan-patel-ai.netlify.app';
+export const SITE_URL = 'https://chintanpatel.dev';
 export const HOMEPAGE_CANONICAL = `${SITE_URL}/`;
 
 export const CASE_STUDY_ROUTES = [

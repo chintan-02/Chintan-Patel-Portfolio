@@ -11,7 +11,7 @@ Deployed an educational demo using Netlify, a non-root Cloud Run container, Neon
 Use synthetic data only. This is decision support, not diagnosis or a clinically validated system.
 
 Live: https://triageai-chintan-staging.netlify.app/
-Case study: https://chintan-patel-ai.netlify.app/case-studies/triageai
+Case study: https://chintanpatel.dev/case-studies/triageai
 Code: https://github.com/chintan-02/triageai-esi-care-routing
 
 ## Featured
@@ -36,7 +36,7 @@ One useful bug surfaced during the live walkthrough: a PDF generated before clin
 The model evaluation remains unchanged: 70.37% Macro F1 and 0.68% unsafe ESI 3-to-5 downgrade rate for its evaluated scope. Operational monitoring is separate from clinical validation and live model-drift monitoring.
 
 Try it with synthetic data: https://triageai-chintan-staging.netlify.app/
-Architecture and limitations: https://chintan-patel-ai.netlify.app/case-studies/triageai
+Architecture and limitations: https://chintanpatel.dev/case-studies/triageai
 
 This is an educational decision-support demo, not a diagnostic or clinically validated application.
 
