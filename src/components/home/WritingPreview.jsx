@@ -7,9 +7,7 @@ import { TechChip } from '../ui/TechChip.jsx';
 
 const featuredArticles = [
   { slug: 'regimpact-azure-deployment', project: 'RegImpact AI', focus: 'Azure delivery' },
-  { slug: 'lightgbm-vs-xgboost', project: 'TriageAI', focus: 'Safety-tuned ML' },
-  { slug: 'rag-evaluation-beyond-demo', project: 'PolicyGPT', focus: 'RAG evaluation' },
-  { slug: 'resume-intelligence-multi-signal', project: 'ResumeIQ', focus: 'Responsible NLP' }
+  { slug: 'policygpt-cost-10000-queries', project: 'PolicyGPT', focus: 'Cost analysis' }
 ];
 
 export function WritingPreview() {
@@ -21,13 +19,13 @@ export function WritingPreview() {
     .filter(Boolean);
 
   return (
-    <section className="px-6 py-16 sm:px-6 lg:px-8" id="writing-preview">
-      <div className="mx-auto max-w-[1100px]">
+    <section className="section-space" id="writing-preview">
+      <div className="site-container">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <SectionHeader
             eyebrow="Technical Thinking"
-            title="One engineering decision from each flagship system."
-            description="The homepage writing selection now spans four systems: reliable Azure delivery in RegImpact AI, safety-sensitive model selection in TriageAI, inspectable RAG evaluation in PolicyGPT, and multi-signal responsible design in ResumeIQ."
+            title="Engineering notes"
+            description="A deployment postmortem and a transparent cost model: decisions, tradeoffs, and what I learned."
           />
           <Link
             to="/writing"
@@ -38,7 +36,7 @@ export function WritingPreview() {
           </Link>
         </div>
 
-        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-5 md:grid-cols-2">
           {articles.map((article, index) => (
             <Reveal key={article.slug} delay={index * 0.07}>
               <Link
@@ -46,15 +44,15 @@ export function WritingPreview() {
                 className="group flex h-full flex-col card card-hover p-6"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+                  <span className="rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent">
                     {article.project}
                   </span>
-                  <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-faint">
+                  <span className="font-mono text-xs font-semibold uppercase tracking-[0.16em] text-ink-faint">
                     {article.focus}
                   </span>
                 </div>
 
-                <p className="mt-5 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-ink-faint">
+                <p className="mt-5 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-ink-faint">
                   {article.meta ?? 'Published July 2026 · 5 min read'}
                 </p>
                 <h3 className="mt-3 font-display text-lg font-bold leading-snug tracking-[-0.02em] text-ink">

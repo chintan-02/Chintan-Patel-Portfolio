@@ -11,7 +11,7 @@ export function Reveal({ children, delay = 0, className }) {
   return (
     <motion.div
       variants={variants}
-      initial="hidden"
+      initial={reduce ? false : "hidden"}
       whileInView="show"
       viewport={viewport}
       transition={{ delay: reduce ? 0 : delay }}

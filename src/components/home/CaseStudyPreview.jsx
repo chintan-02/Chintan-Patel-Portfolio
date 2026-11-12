@@ -55,12 +55,12 @@ export function CaseStudyPreview() {
                     <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
                       <BookOpenCheck className="h-5 w-5" />
                     </div>
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-ink-faint">
+                    <span className="font-mono text-xs font-bold uppercase tracking-[0.08em] text-ink-faint">
                       Case study {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>
 
-                  <span className="mt-5 w-fit rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.1)] px-3 py-1 font-mono text-[10px] font-semibold uppercase tracking-[0.16em] text-accent">
+                  <span className="mt-5 w-fit rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.1)] px-3 py-1 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-accent">
                     {project.category}
                   </span>
 
@@ -83,7 +83,7 @@ export function CaseStudyPreview() {
 
                   <div className="mt-auto pt-6">
                     <div className="rounded-inset border border-line bg-[rgb(var(--surface2-rgb)/0.58)] px-3 py-2.5">
-                      <p className="font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+                      <p className="font-mono text-xs font-bold uppercase tracking-[0.16em] text-ink-faint">
                         Evidence
                       </p>
                       <p className="mt-1 text-xs font-semibold leading-5 text-ink">{focus.proof}</p>

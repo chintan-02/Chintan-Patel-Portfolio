@@ -12,7 +12,7 @@
   /* type — Fraunces (cinematic serif, used ONCE) + Space Grotesk (headings)
      + Inter (body) + JetBrains Mono (data/labels) */
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --font-display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-display-serif: "Fraunces", Georgia, "Times New Roman", serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
@@ -36,6 +36,8 @@
   --color-ink: #F4F4F8;           /* primary text */
   --color-ink-muted: #B0B2C2;     /* secondary text */
   --color-ink-faint: #888A9D;     /* faint labels / captions */
+  --color-action: #E8A87C;
+  --color-action-hover: #F0B98E;
   --color-accent: #E8A87C;        /* amber accent */
   --color-accent-strong: #F0B98E; /* amber hover (brighter on dark) */
   --color-accent-deep: #C98A5E;   /* amber pressed / deep */
@@ -89,8 +91,10 @@ html[data-theme="light"] {
   --color-ink: #2A2620;
   --color-ink-muted: #5C554A;
   --color-ink-faint: #70665B;
-  --color-accent: #B8763E;
-  --color-accent-strong: #9C5F2E; /* hover darkens on light, mirrors dark theme's brighten-on-dark logic */
+  --color-action: #B8763E;
+  --color-action-hover: #C98A5E;
+  --color-accent: #8A4F22;
+  --color-accent-strong: #75421B; /* hover darkens on light, mirrors dark theme's brighten-on-dark logic */
   --color-accent-deep: #7D4D26;
   --color-violet: #6B5BC4;
   --color-line: rgb(var(--ink-rgb)/0.12);
@@ -228,7 +232,7 @@ html.lenis, html.lenis body { height: auto; }
 /* ── eyebrow / data label (mono, amber-tinted) ──────────────── */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;        /* 11px */
+  font-size: 0.75rem;        /* 11px */
   font-weight: 600;
   letter-spacing: 0.34em;
   text-transform: uppercase;
@@ -646,7 +650,7 @@ html.cursor-none textarea { cursor: text; }
 /* Evidence-led engineering page: shares the existing theme and type tokens. */
 .engineering-eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.8;
   letter-spacing: 0.16em;
@@ -687,3 +691,18 @@ html.cursor-none textarea { cursor: text; }
   .engineering-ownership { margin-top: 0.5rem; }
   .engineering-eyebrow { letter-spacing: 0.12em; }
 }
+
+/* Shared layout: all primary sections align to the same readable frame. */
+:root { --site-gutter: clamp(20px, 4vw, 48px); --section-space: clamp(64px, 7vw, 96px); }
+.site-container { width: 100%; max-width: 1200px; margin-inline: auto; padding-inline: var(--site-gutter); }
+.section-space { padding-block: var(--section-space); }
+h1, h2, h3 { text-wrap: balance; }
+h1, h2 { font-family: var(--font-display-serif); font-weight: 400; letter-spacing: -0.025em; }
+p { text-wrap: pretty; }
+.font-mono { font-variant-numeric: tabular-nums; }
+.hero-refined { padding-block: clamp(48px, 6vw, 64px); }
+.hero-refined h1 { max-width: 1000px; }
+@media (min-width: 1024px) { .hero-refined { min-height: min(540px, 65svh); display: flex; align-items: center; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+[class~="text-[9px]"], [class~="text-[10px]"], [class~="text-[11px]"] { font-size: 0.75rem; }

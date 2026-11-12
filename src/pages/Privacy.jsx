@@ -10,10 +10,10 @@ const analyticsDetails = [
 
 export function Privacy() {
   return (
-    <section className="px-6 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
+    <section className="section-space">
+      <div className="site-container">
         <div className="max-w-3xl">
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.24em] text-accent">
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.12em] text-accent">
             Privacy
           </p>
           <h1 className="mt-4 font-display text-[clamp(2.4rem,6vw,4.5rem)] font-semibold leading-[1.03] tracking-[-0.045em] text-ink">
@@ -39,7 +39,7 @@ export function Privacy() {
             <ul className="mt-4 space-y-2 text-sm leading-6 text-ink-muted">
               {analyticsDetails.map((detail) => (
                 <li key={detail} className="flex gap-2">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-accent" />
+                  <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-action" />
                   <span>{detail}</span>
                 </li>
               ))}
@@ -79,7 +79,7 @@ export function Privacy() {
               </p>
               <a
                 href={`mailto:${siteMeta.email}`}
-                className="mt-4 inline-flex items-center gap-2 rounded-card border border-accent bg-accent px-4 py-2.5 text-sm font-bold text-[#0A0A0F] transition-all hover:-translate-y-0.5 hover:bg-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+                className="mt-4 inline-flex items-center gap-2 rounded-card border border-accent bg-action px-4 py-2.5 text-sm font-bold text-[#0A0A0F] transition-all hover:-translate-y-0.5 hover:bg-action-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
               >
                 <Mail className="h-4 w-4" />
                 {siteMeta.email}

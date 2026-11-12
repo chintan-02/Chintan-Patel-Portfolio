@@ -22,7 +22,7 @@ export {
 export function MetricCard({ label, value, note }) {
   return (
     <div className="my-7 rounded-panel border border-[rgb(var(--accent-rgb)/0.18)] bg-[rgb(var(--accent-rgb)/0.06)] p-5 shadow-card backdrop-blur-sm sm:p-6">
-      <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-accent">{label}</p>
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.12em] text-accent">{label}</p>
       <p className="mt-2 font-display text-2xl font-bold tracking-[-0.04em] text-ink sm:text-3xl">{value}</p>
       {note && <p className="mt-3 text-sm leading-7 text-ink-muted">{note}</p>}
     </div>
@@ -67,11 +67,11 @@ export function CaseStudyHero({
 }) {
   return (
     <div className="glass-panel mb-12 rounded-hero p-6 sm:p-8 lg:p-10">
-      <p className="font-mono text-xs font-bold uppercase tracking-[0.24em] text-accent sm:text-sm">
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.12em] text-accent sm:text-sm">
         {label}
       </p>
       {meta && (
-        <p className="mt-3 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-ink-faint sm:text-xs sm:tracking-[0.18em]">
+        <p className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-ink-faint sm:text-xs sm:tracking-[0.08em]">
           {meta}
         </p>
       )}
@@ -80,7 +80,7 @@ export function CaseStudyHero({
           {badges.map((badge) => (
             <span
               key={badge}
-              className="rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.14em] text-accent sm:text-[11px]"
+              className="rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.14em] text-accent sm:text-xs"
             >
               {badge}
             </span>

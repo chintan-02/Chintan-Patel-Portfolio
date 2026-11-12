@@ -1,7 +1,6 @@
 import { Code2, Gauge, Rocket, MapPin, GraduationCap, Briefcase, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Reveal } from '../components/ui/Reveal.jsx';
-import { TechChip } from '../components/ui/TechChip.jsx';
 import { Button } from '../components/ui/Button.jsx';
 import { siteMeta } from '../data/siteMeta.js';
 import { cn } from '../lib/utils.js';
@@ -53,23 +52,17 @@ const values = [
   }
 ];
 
-const interests = [
-  'Healthcare AI', 'Enterprise RAG', 'NLP Applications',
-  'Explainable AI', 'Responsible AI', 'MLOps',
-  'Data Pipelines', 'API Design'
-];
-
 export function About() {
   return (
-    <div className="px-6 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1100px]">
+    <div className="section-space">
+      <div className="site-container">
 
         {/* Hero block */}
         <Reveal>
           <div className="mb-16 grid gap-10 lg:grid-cols-[1fr_340px] lg:items-start">
             <div>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.26em] text-accent">
-                <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3.5 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.26em] text-accent">
+                <span className="h-1.5 w-1.5 rounded-full bg-action" />
                 About
               </span>
               <h1 className="mt-6 font-display text-[clamp(2rem,4vw,3rem)] font-semibold leading-[1.1] tracking-[-0.025em] text-ink">
@@ -128,20 +121,14 @@ export function About() {
                 </div>
                 <div className="flex items-center gap-3 text-ink-muted">
                   <span className="relative flex h-2 w-2 shrink-0">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-accent" />
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-action opacity-60" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-action" />
                   </span>
                   Open to work · Canada
                 </div>
               </div>
-              <div className="mt-5 border-t border-line pt-5">
-                <p className="mb-3 font-mono text-xs font-bold uppercase tracking-[0.15em] text-ink-faint">Interests</p>
-                <div className="flex flex-wrap gap-2">
-                  {interests.map((i) => <TechChip key={i}>{i}</TechChip>)}
-                </div>
-              </div>
               <a href={siteMeta.resume} download
-                className="mt-5 flex w-full items-center justify-center gap-2 rounded-card border border-accent bg-accent px-4 py-2.5 text-sm font-bold text-[#0A0A0F] transition hover:bg-accent-strong">
+                className="mt-5 flex w-full items-center justify-center gap-2 rounded-card border border-accent bg-action px-4 py-2.5 text-sm font-bold text-[#0A0A0F] transition hover:bg-action-hover">
                 Download Resume
               </a>
             </div>
@@ -170,14 +157,14 @@ export function About() {
                     <div className="relative z-10 shrink-0">
                       <div className={cn(
                         'grid h-10 w-10 place-items-center rounded-full border sm:h-12 sm:w-12',
-                        item.current ? 'border-accent bg-accent text-[#0A0A0F]' : 'border-line bg-surface text-ink-faint'
+                        item.current ? 'border-accent bg-action text-[#0A0A0F]' : 'border-line bg-surface text-ink-faint'
                       )}>
                         <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
                       {item.current && (
                         <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3">
-                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
-                          <span className="relative inline-flex h-3 w-3 rounded-full bg-accent ring-2 ring-[var(--color-base)]" />
+                          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-action opacity-60" />
+                          <span className="relative inline-flex h-3 w-3 rounded-full bg-action ring-2 ring-[var(--color-base)]" />
                         </span>
                       )}
                     </div>
@@ -188,7 +175,7 @@ export function About() {
                       <div className="flex flex-wrap items-center gap-3">
                         <span className="font-mono text-xs font-semibold text-ink-faint">{item.period}</span>
                         {item.current && (
-                          <span className="rounded-full border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.1)] px-2.5 py-0.5 font-mono text-[10px] font-bold uppercase tracking-[0.15em] text-accent">
+                          <span className="rounded-full border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.1)] px-2.5 py-0.5 font-mono text-xs font-bold uppercase tracking-[0.15em] text-accent">
                             Current
                           </span>
                         )}

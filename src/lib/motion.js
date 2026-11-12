@@ -3,7 +3,7 @@
 // are mirrored here to stay in sync with src/styles/globals.css.
 export const DURATION = {
   fast: 0.15,
-  base: 0.5,
+  base: 0.3,
   slow: 0.65
 };
 
@@ -14,7 +14,7 @@ export const EASE = {
 };
 
 export const fadeUp = {
-  hidden: { opacity: 0, y: 22 },
+  hidden: { opacity: 0, y: 12 },
   show: {
     opacity: 1,
     y: 0,

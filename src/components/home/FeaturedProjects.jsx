@@ -1,192 +1,44 @@
-import { ArrowUpRight, RadioTower } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { projects } from '../../data/projects.js';
-import { SectionHeader } from '../ui/SectionHeader.jsx';
+import { projectEvidence } from '../../data/projectEvidence.js';
 import { Reveal } from '../ui/Reveal.jsx';
 import { TechChip } from '../ui/TechChip.jsx';
 import { Button } from '../ui/Button.jsx';
-import { BrandGithub } from '../ui/BrandIcons.jsx';
 import { ProjectVisual } from '../projects/ProjectVisual.jsx';
 
-function HomeProjectCard({ project, index }) {
-  const homepage = project.homepage ?? {};
-  const title = homepage.displayTitle ?? project.title;
-  const metrics = homepage.metrics ?? project.metrics?.slice(0, 2) ?? [];
-  const stack = homepage.stack ?? project.stack?.slice(0, 5) ?? [];
-  const reverse = index % 2 === 1;
-
-  return (
-    <Reveal delay={index * 0.08}>
-      <article className="border-t border-line py-14 sm:py-[4.5rem] lg:py-20">
-        <div className="grid gap-10 lg:grid-cols-[1.08fr_.92fr] lg:items-center lg:gap-16">
-          <div className={reverse ? 'lg:order-2' : undefined}>
-            <ProjectVisual visual={project.homepageVisual} title={project.title} />
-          </div>
-
-          <div className={reverse ? 'lg:order-1' : undefined}>
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
-                Selected work {String(index + 1).padStart(2, '0')}
-              </span>
-              <span className="text-xs font-semibold text-ink-faint">{project.status}</span>
-            </div>
-
-            <h3 className="mt-4 text-balance font-display text-3xl font-bold leading-tight tracking-[-0.04em] text-ink sm:text-4xl">
-              {title}
-            </h3>
-            <p className="mt-2 text-sm font-semibold text-accent">{project.subtitle}</p>
-
-            <p className="mt-6 text-[1rem] leading-8 text-ink-muted">{project.description}</p>
-
-            {metrics.length > 0 && (
-              <div className="mt-7 grid grid-cols-2 gap-5 border-y border-line py-5">
-                {metrics.map((metric) => (
-                  <div key={`${metric.value}-${metric.label}`}>
-                    <p className="font-display text-2xl font-bold tracking-[-0.04em] text-ink sm:text-3xl">
-                      {metric.value}
-                    </p>
-                    <p className="mt-1 text-xs font-semibold leading-5 text-ink-muted">{metric.label}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            <div className="mt-6 flex flex-wrap gap-2">
-              {stack.map((tech) => <TechChip key={tech}>{tech}</TechChip>)}
-            </div>
-
-            <p className="mt-5 text-xs font-medium leading-6 text-ink-faint">
-              {homepage.scope ?? project.status}
-            </p>
-
-            <div className="mt-7 flex flex-wrap gap-3">
-              {project.liveUrl && <Button href={project.liveUrl} external variant="onDarkAccent">Live Demo</Button>}
-              {project.caseStudyUrl ? (
-                <Button href={project.caseStudyUrl} variant={project.liveUrl ? 'onDark' : 'onDarkAccent'}>View Case Study</Button>
-              ) : (
-                <Button href={project.githubUrl} external icon={false} variant="onDarkAccent">
-                  <BrandGithub className="h-4 w-4" />
-                  View Project
-                </Button>
-              )}
-
-              {project.caseStudyUrl && project.githubUrl && (
-                <Button href={project.githubUrl} external icon={false} variant="onDark">
-                  <BrandGithub className="h-4 w-4" />
-                  GitHub
-                </Button>
-              )}
-            </div>
-            {project.writingUrl && <a href={project.writingUrl} className="mt-4 inline-block text-sm font-semibold text-accent">Read the engineering note →</a>}
-          </div>
-        </div>
-      </article>
-    </Reveal>
-  );
-}
-
-function SupportingProjectCard({ project, index }) {
-  const homepage = project.homepage ?? {};
-  const metrics = homepage.metrics ?? project.metrics?.slice(0, 2) ?? [];
-  const stack = homepage.stack ?? project.stack?.slice(0, 5) ?? [];
-
-  return (
-    <Reveal delay={index * 0.06}>
-      <article className="group h-full border-t border-line py-8">
-        <div className="flex h-full flex-col">
-          <p className="font-mono text-[10px] font-bold uppercase tracking-[0.18em] text-accent">
-            More engineering work
-          </p>
-          <h3 className="mt-4 font-display text-2xl font-bold tracking-[-0.03em] text-ink">
-            {project.title}
-          </h3>
-          <p className="mt-2 text-sm font-semibold text-accent">{project.subtitle}</p>
-          <p className="mt-4 text-sm leading-7 text-ink-muted">{project.description}</p>
-
-          {metrics.length > 0 && (
-            <div className="mt-6 grid grid-cols-2 gap-4 border-y border-line py-4">
-              {metrics.map((metric) => (
-                <div key={`${metric.value}-${metric.label}`}>
-                  <p className="font-display text-xl font-bold tracking-[-0.03em] text-ink">
-                    {metric.value}
-                  </p>
-                  <p className="mt-1 text-[11px] font-semibold leading-5 text-ink-muted">
-                    {metric.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <div className="mt-5 flex flex-wrap gap-2">
-            {stack.map((tech) => <TechChip key={tech}>{tech}</TechChip>)}
-          </div>
-
-          {homepage.scope && (
-            <p className="mt-5 text-xs leading-6 text-ink-faint">{homepage.scope}</p>
-          )}
-
-          <div className="mt-auto flex flex-wrap gap-3 pt-7">
-            <Button href={project.githubUrl} external icon={false} variant="onDark">
-              <BrandGithub className="h-4 w-4" />
-              GitHub
-            </Button>
-            {project.liveUrl && (
-              <Button href={project.liveUrl} external icon={false} variant="onDarkAccent">
-                <RadioTower className="h-4 w-4" />
-                Live Demo
-              </Button>
-            )}
-            {project.caseStudyUrl && (
-              <Button href={project.caseStudyUrl} variant="onDark" icon={false}>
-                Case Study <ArrowUpRight className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
-      </article>
-    </Reveal>
-  );
+function ProjectActions({ project }) {
+  return <div className="mt-6 flex flex-wrap items-center gap-4">
+    {project.caseStudyUrl && <Button href={project.caseStudyUrl} variant="onDarkAccent">Case Study</Button>}
+    {project.liveUrl && <Button href={project.liveUrl} external variant={project.caseStudyUrl ? 'onDark' : 'onDarkAccent'}>Live Demo</Button>}
+    <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="rounded text-sm font-semibold text-ink-muted underline decoration-line underline-offset-4 hover:text-accent">Code ↗</a>
+  </div>;
 }
 
 export function FeaturedProjects() {
-  const ordered = [...projects]
-    .filter((project) => project.featured)
-    .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99));
-  const flagshipProjects = ordered.slice(0, 3);
-  const supportingProjects = ordered.slice(3);
-
-  return (
-    <section className="px-6 py-24 sm:px-6 lg:px-8" id="projects">
-      <div className="mx-auto max-w-[1160px]">
-        <SectionHeader
-          eyebrow="Selected Work"
-          title="AI products, from workflow to deployment."
-          description="Explore a live clinical demo, a regulatory analysis platform, and policy search with source citations."
-        />
-
-        <div>
-          {flagshipProjects.map((project, index) => (
-            <HomeProjectCard key={project.slug} project={project} index={index} />
-          ))}
-        </div>
-
-        {supportingProjects.length > 0 && (
-          <div className="mt-12">
-            <div className="mb-3 flex items-center gap-3">
-              <span className="h-px flex-1 bg-line" />
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">
-                Additional systems
-              </span>
-              <span className="h-px flex-1 bg-line" />
-            </div>
-            <div className="grid gap-8 md:grid-cols-2">
-              {supportingProjects.map((project, index) => (
-                <SupportingProjectCard key={project.slug} project={project} index={index} />
-              ))}
-            </div>
+  const ordered = projects.filter((project) => project.featured).sort((a, b) => a.featuredOrder - b.featuredOrder);
+  return <section id="projects" className="pb-12">
+    <div className="site-container">
+      <div className="mb-8 flex items-end justify-between gap-4 border-b border-line pb-5"><h2 className="text-3xl text-ink sm:text-4xl">Selected work</h2><Link to="/projects" className="shrink-0 text-sm font-semibold text-ink-muted hover:text-accent">All work →</Link></div>
+      {ordered.slice(0,3).map((project,index) => <Reveal key={project.slug}>
+        <article className="grid gap-8 border-b border-line py-10 first:pt-0 lg:grid-cols-2 lg:items-center lg:gap-12 lg:py-12">
+          <ProjectVisual visual={project.homepageVisual} title={project.title} priority={index===0} />
+          <div className="min-w-0">
+            <p className="font-mono text-xs leading-6 tracking-[0.05em] text-ink-faint">0{index+1} / {project.status}</p>
+            <h3 className="mt-3 font-display text-3xl font-semibold tracking-[-0.03em] text-ink">{project.homepage?.displayTitle ?? project.title}</h3>
+            <p className="mt-4 text-base leading-7 text-ink-muted">{project.description}</p>
+            <div className="mt-5 grid grid-cols-2 gap-5 border-y border-line py-4">{project.homepage.metrics.map((metric) => <div key={metric.label}><p className="font-mono text-2xl font-semibold text-ink">{metric.value}</p><p className="mt-2 text-xs leading-5 text-ink-muted">{metric.label}</p></div>)}</div>
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2">{(projectEvidence[project.slug] ?? []).map(source => <a key={source.url} href={source.url} target="_blank" rel="noopener noreferrer" className="rounded text-xs leading-6 text-accent underline underline-offset-4">{source.label} ↗</a>)}</div>
+            <div className="mt-4 flex flex-wrap gap-2">{project.homepage.stack.slice(0,5).map(tech => <TechChip key={tech}>{tech}</TechChip>)}</div>
+            <p className="mt-4 text-xs leading-6 text-ink-faint">{project.homepage.scope}</p>
+            <ProjectActions project={project} />
+            {project.writingUrl && <Link to={project.writingUrl} className="mt-4 inline-block rounded text-sm font-medium text-ink-muted hover:text-accent">Engineering note →</Link>}
           </div>
-        )}
-      </div>
-    </section>
-  );
+        </article>
+      </Reveal>)}
+      {ordered.slice(3).map(project => <Reveal key={project.slug}><article className="mt-8 grid gap-6 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.6)] p-6 sm:p-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+        <div><p className="font-mono text-xs uppercase tracking-[0.08em] text-ink-faint">Also built / Tool-using agent</p><h3 className="mt-3 text-2xl font-semibold text-ink">{project.title}</h3><p className="mt-3 text-base leading-7 text-ink-muted">An LLM interprets the request; deterministic Python tools own category and price filtering. The model does not supply catalogue facts.</p><p className="mt-3 text-xs leading-6 text-ink-faint">Single ADK agent · fixed 13-product catalogue · Cloud Run + Netlify</p></div>
+        <div><div className="flex flex-wrap gap-2">{project.homepage.stack.map(tech=><TechChip key={tech}>{tech}</TechChip>)}</div><ProjectActions project={project} /></div>
+      </article></Reveal>)}
+    </div>
+  </section>;
 }

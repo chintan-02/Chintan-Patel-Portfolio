@@ -32,7 +32,7 @@ export function EngineeringProof() {
                 <p className="mt-2 text-xs leading-5 text-ink-faint">
                   {project.proofHighlight.detail}
                 </p>
-                <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-ink-faint">
+                <p className="mt-3 font-mono text-xs uppercase tracking-[0.16em] text-ink-faint">
                   {project.title}
                 </p>
               </div>

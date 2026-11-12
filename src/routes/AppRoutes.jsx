@@ -15,7 +15,7 @@ const NotFound = lazy(() => import('../pages/NotFound.jsx').then((module) => ({ 
 
 function RouteFallback() {
   return (
-    <div className="px-6 py-24 text-center font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">
+    <div className="px-6 py-24 text-center font-mono text-xs font-semibold uppercase tracking-[0.1em] text-ink-faint">
       Loading
     </div>
   );

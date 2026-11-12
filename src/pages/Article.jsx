@@ -16,7 +16,7 @@ const articles = Object.fromEntries(
 function ContentFallback() {
   return (
     <div className="rounded-card border border-line bg-[rgb(var(--surface-rgb)/0.72)] p-6">
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">
+      <p className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-ink-faint">
         Loading article
       </p>
     </div>
@@ -36,8 +36,8 @@ export function Article() {
   if (!ArticleComponent) return <NotFound />;
 
   return (
-    <section className="px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
-      <div className="mx-auto max-w-[1040px]">
+    <section className="section-space">
+      <div className="site-container">
         <Link
           to="/writing"
           className="group mb-8 inline-flex items-center gap-2 rounded-lg border border-line bg-[rgb(var(--surface2-rgb)/0.72)] px-4 py-2 text-sm font-semibold text-ink-muted transition-all hover:-translate-x-0.5 hover:border-accent hover:text-accent sm:mb-10"
@@ -62,7 +62,7 @@ export function Article() {
                 to={previousArticle.route}
                 className="group card card-hover flex min-h-[138px] flex-col justify-between p-5 sm:p-6"
               >
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">
+                <span className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink-faint">
                   Previous article
                 </span>
                 <div className="mt-5">
@@ -84,7 +84,7 @@ export function Article() {
                 to={nextArticle.route}
                 className="group card card-hover flex min-h-[138px] flex-col justify-between p-5 text-left sm:p-6 sm:text-right"
               >
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">
+                <span className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink-faint">
                   Next article
                 </span>
                 <div className="mt-5">

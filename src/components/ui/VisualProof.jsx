@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDown, FileSearch, Image, Layers3, Maximize2, X } from 'lucide-react';
+import { ResponsiveImage } from './ResponsiveImage.jsx';
 import { Link } from 'react-router-dom';
 
 export function ProductPreview({ project, slug, title, className = '' }) {
@@ -12,7 +13,7 @@ export function ProductPreview({ project, slug, title, className = '' }) {
   if (!capture) return null;
   return <figure className={`overflow-hidden rounded-panel border border-line ${className}`}>
     <Link to={capture.href} aria-label={`Open ${title ?? project?.title ?? key} case study`}>
-      <img src={capture.src} alt={capture.alt} loading="lazy" decoding="async" className="h-auto max-h-[430px] w-full object-contain object-top" />
+      <ResponsiveImage src={capture.src} alt={capture.alt} loading="lazy" className="h-auto max-h-[430px] w-full object-contain object-top" />
     </Link>
   </figure>;
 }
@@ -61,11 +62,11 @@ export function ScreenshotGallery({
     <div className="my-8 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.78)] p-5 shadow-card backdrop-blur-sm">
       <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{title}</p>
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-accent">{title}</p>
           {note && <p className="mt-2 max-w-2xl text-sm leading-7 text-ink-muted">{note}</p>}
         </div>
         {shouldShowBadge && (
-          <span className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-accent">
+          <span className="inline-flex items-center gap-2 rounded-full border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.16em] text-accent">
             <Layers3 className="h-3.5 w-3.5" />
             {hasOnlyImages ? 'Repository capture' : 'Replaceable assets'}
           </span>
@@ -87,7 +88,7 @@ export function ProductWalkthrough({ title = 'Product Walkthrough', steps = [] }
 
   return (
     <div className="my-10 min-w-0 rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.82)] p-5 shadow-card">
-      <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{title}</p>
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-accent">{title}</p>
       <div className="mt-6 space-y-4">
         {steps.map((step, index) => (
           <div key={step.title}>
@@ -174,15 +175,14 @@ export function ExpandableImage({
         aria-label={`Expand ${label}`}
         className="group/image relative block w-full overflow-hidden text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
       >
-        <img
+        <ResponsiveImage
           src={src}
           alt={alt}
           loading={loading}
-          decoding="async"
           fetchPriority={fetchPriority}
           className={imageClassName}
         />
-        <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/70 px-3 py-1.5 text-[11px] font-semibold text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity group-hover/image:opacity-100 group-focus-visible/image:opacity-100">
+        <span className="pointer-events-none absolute right-3 top-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/70 px-3 py-1.5 text-xs font-semibold text-white opacity-0 shadow-lg backdrop-blur-sm transition-opacity group-hover/image:opacity-100 group-focus-visible/image:opacity-100">
           <Maximize2 className="h-3.5 w-3.5" aria-hidden="true" />
           Expand
         </span>
@@ -254,11 +254,11 @@ function EvidenceExplorerPreview() {
 
   return (
     <div className="rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] p-5 shadow-card">
-      <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">Evidence Explorer</p>
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.08em] text-accent">Evidence Explorer</p>
       <div className="mt-4 grid gap-3 md:grid-cols-3">
         {primary.map(([label, value]) => (
           <div key={label} className="rounded-card border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] p-4">
-            <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">{label}</p>
+            <p className="font-mono text-xs font-bold uppercase tracking-[0.08em] text-accent">{label}</p>
             <p className="mt-2 text-sm font-semibold leading-6 text-ink">{value}</p>
           </div>
         ))}
@@ -283,7 +283,7 @@ function EvidenceExplorerPreview() {
 function ApiPreview() {
   return (
     <div className="rounded-panel border border-line bg-[rgb(var(--surface-rgb)/0.88)] p-5 shadow-card">
-      <p className="font-mono text-[11px] font-bold uppercase tracking-[0.18em] text-accent">FastAPI Docs</p>
+      <p className="font-mono text-xs font-bold uppercase tracking-[0.08em] text-accent">FastAPI Docs</p>
       <div className="mt-4 space-y-3">
         {[
           ['POST', '/api/v1/documents/upload', 'Validate, identify, persist, and index one PDF'],
@@ -355,11 +355,11 @@ export function VisualFlow({ title = 'Architecture Flow', steps = [] }) {
           <span className="grid h-9 w-9 place-items-center rounded-inset border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
             <FileSearch className="h-4 w-4" />
           </span>
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-accent">
             {title}
           </p>
         </div>
-        <span className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.58)] px-3 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.16em] text-ink-faint">
+        <span className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.58)] px-3 py-1 font-mono text-xs font-bold uppercase tracking-[0.16em] text-ink-faint">
           {steps.length} stages
         </span>
       </div>
@@ -378,10 +378,10 @@ export function VisualFlow({ title = 'Architecture Flow', steps = [] }) {
                 aria-hidden="true"
               />
               <div className="flex items-start justify-between gap-3">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[rgb(var(--accent-rgb)/0.22)] bg-[rgb(var(--accent-rgb)/0.08)] font-mono text-[11px] font-bold text-accent">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-[rgb(var(--accent-rgb)/0.22)] bg-[rgb(var(--accent-rgb)/0.08)] font-mono text-xs font-bold text-accent">
                   {String(index + 1).padStart(2, '0')}
                 </span>
-                <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.14em] text-ink-faint">
+                <span className="font-mono text-xs font-semibold uppercase tracking-[0.14em] text-ink-faint">
                   Stage
                 </span>
               </div>
@@ -413,7 +413,7 @@ export function StatusBadges({ built = [], planned = [] }) {
     <div className="my-8 grid gap-4 sm:grid-cols-2">
       {groups.map((group) => (
         <div key={group.label} className="rounded-card border border-line bg-[rgb(var(--surface-rgb)/0.72)] p-5 shadow-card">
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-accent">{group.label}</p>
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-accent">{group.label}</p>
           <div className="mt-4 flex flex-wrap gap-2">
             {group.items.map((item) => (
               <span key={item} className={`rounded-full border px-3 py-1 text-xs font-semibold ${group.tone}`}>

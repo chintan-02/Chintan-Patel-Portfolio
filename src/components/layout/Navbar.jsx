@@ -20,7 +20,7 @@ export function Navbar() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-[rgb(var(--base-rgb)/0.72)] backdrop-blur-xl">
-      <div className="mx-auto flex h-[76px] max-w-[1100px] items-center justify-between px-6">
+      <div className="site-container flex h-[76px] items-center justify-between">
 
         {/* Logo */}
         <Link to="/" className="flex shrink-0 items-center gap-3" onClick={handleLogoClick}>
@@ -29,7 +29,7 @@ export function Navbar() {
           </span>
           <span className="grid">
             <span className="text-sm font-extrabold leading-none text-ink">Chintan Patel</span>
-            <span className="mt-1 text-[11px] font-semibold text-ink-faint">Applied AI Engineer</span>
+            <span className="mt-1 text-xs font-semibold text-ink-faint">Applied AI Engineer</span>
           </span>
         </Link>
 
@@ -42,7 +42,7 @@ export function Navbar() {
               end={link.href === '/'}
               className={({ isActive }) => cn(
                 'relative rounded-lg px-2.5 py-2 text-[12px] xl:px-3.5 xl:text-[13px] font-semibold transition-all duration-150',
-                'after:absolute after:bottom-1.5 after:left-3 after:right-3 after:h-[2px] after:origin-left after:rounded-full after:bg-accent after:transition-transform after:duration-200',
+                'after:absolute after:bottom-1.5 after:left-3 after:right-3 after:h-[2px] after:origin-left after:rounded-full after:bg-action after:transition-transform after:duration-200',
                 isActive
                   ? 'bg-[rgb(var(--accent-rgb)/0.1)] text-ink ring-1 ring-[rgb(var(--accent-rgb)/0.22)] after:scale-x-100'
                   : 'text-ink-muted hover:bg-[rgb(var(--ink-rgb)/0.05)] hover:text-ink after:scale-x-0 hover:after:scale-x-100'
@@ -56,10 +56,11 @@ export function Navbar() {
         {/* Global resume access: smaller than the hero CTA, always available. */}
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeToggle />
+          <Link to="/contact" className="rounded-lg border border-line px-3 py-2 text-sm font-semibold text-ink transition hover:border-accent">Contact</Link>
           <a
             href={siteMeta.resume}
             download
-            className="inline-flex items-center gap-1.5 rounded-lg border border-[rgb(var(--accent-rgb)/0.55)] bg-[rgb(var(--accent-rgb)/0.92)] px-3.5 py-2 text-xs font-bold text-[#0A0A0F] shadow-[0_6px_16px_rgb(var(--accent-rgb)/0.16)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-strong hover:shadow-[0_10px_24px_rgb(var(--accent-rgb)/0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+            className="inline-flex items-center gap-1.5 rounded-lg border border-[rgb(var(--accent-rgb)/0.55)] bg-[rgb(var(--accent-rgb)/0.92)] px-3.5 py-2 text-xs font-bold text-[#0A0A0F] shadow-[0_6px_16px_rgb(var(--accent-rgb)/0.16)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-action-strong hover:shadow-[0_10px_24px_rgb(var(--accent-rgb)/0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
           >
             <FileDown className="h-3.5 w-3.5" />
             Resume
@@ -109,6 +110,7 @@ export function Navbar() {
                   {link.label}
                 </NavLink>
               ))}
+              <Link to="/contact" onClick={() => setOpen(false)} className="rounded-xl border border-line px-4 py-3 text-sm font-semibold text-ink">Contact</Link>
               <div className="mt-2 flex gap-2 border-t border-line pt-3">
                 <a href={siteMeta.github} target="_blank" rel="noopener noreferrer"
                   className="flex-1 rounded-xl py-2.5 text-center text-xs font-bold text-ink-muted ring-1 ring-line hover:text-ink">GitHub</a>
@@ -118,7 +120,7 @@ export function Navbar() {
                   className="flex-1 rounded-xl py-2.5 text-center text-xs font-bold text-ink-muted ring-1 ring-line hover:text-ink">Email</a>
               </div>
               <a href={siteMeta.resume} download
-                className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-accent py-3 text-sm font-bold text-[#0A0A0F]">
+                className="mt-1 flex items-center justify-center gap-2 rounded-xl bg-action py-3 text-sm font-bold text-[#0A0A0F]">
                 <FileDown className="h-4 w-4" />
                 Download Resume
               </a>

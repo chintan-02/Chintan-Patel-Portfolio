@@ -39,12 +39,12 @@ export function Now() {
             <h2 className="mt-5 font-sans text-3xl font-extrabold tracking-[-0.04em] text-ink sm:text-4xl">
               What I&apos;m focused on right now.
             </h2>
-            <p className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.18em] text-ink-faint">
+            <p className="mt-3 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-ink-faint">
               Last updated: September 2026
             </p>
           </div>
 
-          <span className="mb-1 inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3.5 py-1.5 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-accent">
+          <span className="mb-1 inline-flex items-center gap-2.5 rounded-full border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.08)] px-3.5 py-1.5 font-mono text-xs font-semibold uppercase tracking-[0.08em] text-accent">
             <span className="relative flex h-1.5 w-1.5">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-60" />
               <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
@@ -63,7 +63,7 @@ export function Now() {
                   <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
                     <Icon className="h-5 w-5" />
                   </div>
-                  <p className="mt-5 font-mono text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                  <p className="mt-5 font-mono text-xs font-semibold uppercase tracking-[0.12em] text-accent">
                     {item.tag}
                   </p>
                   <h3 className="mt-2 font-display text-[1rem] font-bold leading-snug tracking-[-0.01em] text-ink">

@@ -15,8 +15,8 @@ export function Engineering() {
   ];
   return (
     <div className="engineering-page">
-      <header className="engineering-hero px-6 pb-14 pt-14 lg:px-8 lg:pt-20">
-        <div className="mx-auto max-w-[1100px]">
+      <header className="engineering-hero pb-14 pt-14 lg:pt-20">
+        <div className="site-container">
           <p className="engineering-eyebrow">Working approach / Applied AI engineering</p>
           <div className="mt-6 grid gap-8 lg:grid-cols-[1.3fr_0.7fr] lg:items-end">
             <div><h1 className="max-w-3xl font-display-serif text-[clamp(2.8rem,6vw,5rem)] font-normal leading-[1.06] tracking-[-0.035em] text-ink">Engineering decisions.<br /><span className="italic text-accent">Tested in practice.</span></h1><p className="mt-6 max-w-2xl text-lg leading-8 text-ink-muted">How I turn AI assistance into reviewed, verifiable software—from architecture and implementation to security and delivery.</p></div>
@@ -26,7 +26,7 @@ export function Engineering() {
         </div>
       </header>
 
-      <div className="mx-auto max-w-[1100px] px-6 lg:px-0">
+      <div className="site-container">
         <section aria-label="Working principles" className="engineering-practices grid gap-6 border-y border-line py-7 md:grid-cols-3">
           {engineeringPractices.map((p, i) => <div key={p.title} className="flex gap-4"><span className="shrink-0 whitespace-nowrap font-mono text-xs text-accent pt-1">0{i + 1}</span><div><h2 className="text-sm font-semibold text-ink">{p.title}</h2><p className="mt-2 text-sm leading-6 text-ink-muted">{p.text}</p></div></div>)}
         </section>

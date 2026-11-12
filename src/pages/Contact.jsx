@@ -18,8 +18,8 @@ export function Contact() {
   ];
 
   return (
-    <section className="px-6 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <section className="section-space">
+      <div className="site-container">
         <SectionHeader
           as="h1"
           eyebrow="Contact"
@@ -36,7 +36,7 @@ export function Contact() {
                 <div key={c.label} className="flex items-start gap-3 bg-surface p-5">
                   <Icon className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
                   <div>
-                    <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">{c.label}</p>
+                    <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink-faint">{c.label}</p>
                     <p className="mt-1.5 text-sm font-semibold leading-6 text-ink">{c.value}</p>
                   </div>
                 </div>
@@ -53,7 +53,7 @@ export function Contact() {
                 <div className="grid h-12 w-12 place-items-center rounded-2xl border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-accent transition-colors duration-200 group-hover:border-[rgb(var(--accent-rgb)/0.36)] group-hover:bg-[rgb(var(--accent-rgb)/0.13)]">
                   <Icon className="h-5 w-5" />
                 </div>
-                <p className="mt-5 font-mono text-xs font-bold uppercase tracking-[0.2em] text-ink-faint">{item.label}</p>
+                <p className="mt-5 font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink-faint">{item.label}</p>
                 <p className="mt-2 break-words text-[1rem] font-bold text-ink">{item.value}</p>
               </div>
             );

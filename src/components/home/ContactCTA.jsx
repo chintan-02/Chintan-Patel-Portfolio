@@ -5,8 +5,8 @@ import { siteMeta } from '../../data/siteMeta.js';
 
 export function ContactCTA() {
   return (
-    <section className="px-6 py-20 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1100px] border-t border-line pt-14 sm:pt-16">
+    <section className="section-space">
+      <div className="site-container border-t border-line pt-14 sm:pt-16">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
           <div>
             <p className="eyebrow text-accent">Contact</p>

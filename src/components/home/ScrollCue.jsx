@@ -19,7 +19,7 @@ export function ScrollCue({ target = 'highlights' }) {
       </span>
 
       <span className="hidden flex-col items-center gap-3 lg:flex">
-        <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.35em] transition-colors duration-200 group-hover:text-accent">
+        <span className="font-mono text-xs font-semibold uppercase tracking-[0.35em] transition-colors duration-200 group-hover:text-accent">
           Scroll
         </span>
         <span className="relative h-12 w-3">

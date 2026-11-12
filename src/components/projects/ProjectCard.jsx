@@ -21,10 +21,10 @@ export function ProjectCard({ project }) {
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-card border border-line bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
                 <FileText className="h-4 w-4" />
               </div>
-              <span className="rounded-full border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.1)] px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-accent">
+              <span className="rounded-full border border-[rgb(var(--accent-rgb)/0.3)] bg-[rgb(var(--accent-rgb)/0.1)] px-3 py-1 font-mono text-xs font-semibold uppercase tracking-[0.16em] text-accent">
                 {project.category}
               </span>
-              <span className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.7)] px-3 py-1 text-[11px] font-semibold text-ink-muted">
+              <span className="rounded-full border border-line bg-[rgb(var(--surface2-rgb)/0.7)] px-3 py-1 text-xs font-semibold text-ink-muted">
                 {project.status}
               </span>
             </div>
@@ -56,7 +56,7 @@ export function ProjectCard({ project }) {
             {topMetrics.map((m) => (
               <div key={m.label} className="rounded-inset border border-[rgb(var(--accent-rgb)/0.16)] bg-[rgb(var(--accent-rgb)/0.05)] px-4 py-3">
                 <p style={{ color: 'var(--color-accent-strong)' }} className="font-mono text-base font-bold leading-none">{m.value}</p>
-                <p className="mt-2 text-[11px] leading-tight text-ink-muted">{m.label}</p>
+                <p className="mt-2 text-xs leading-tight text-ink-muted">{m.label}</p>
               </div>
             ))}
           </div>
