@@ -14,7 +14,7 @@ const variants = {
   // SOLID light button for DARK backgrounds (Contact CTA primary action)
   onDarkSolid: 'bg-white text-ink border border-white shadow-[0_10px_30px_rgba(0,0,0,0.25)] hover:bg-sky-50 hover:shadow-[0_16px_40px_rgba(0,0,0,0.35)] hover:-translate-y-0.5',
   // OUTLINE button that sits directly on the page background (Contact CTA
-  // secondary action, Résumé button, etc.) — uses ink/line tokens rather than
+  // secondary action, Resume button, etc.) — uses ink/line tokens rather than
   // literal white so it stays correctly visible in both the dark and light themes.
   onDark: 'bg-transparent text-ink border border-[rgb(var(--ink-rgb)/0.35)] hover:bg-[rgb(var(--ink-rgb)/0.1)] hover:border-[rgb(var(--ink-rgb)/0.6)] hover:-translate-y-0.5',
   // AMBER primary for DARK backgrounds — dark text on amber (brand, high-contrast)
