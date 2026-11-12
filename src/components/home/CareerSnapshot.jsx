@@ -29,11 +29,11 @@ const milestones = [
 
 export function CareerSnapshot() {
   return (
-    <section className="px-6 py-20 sm:px-6 lg:px-8" id="journey">
-      <div className="mx-auto max-w-[1100px]">
+    <section className="section-space" id="journey">
+      <div className="site-container">
         <SectionHeader
           eyebrow="Career Snapshot"
-          title="Software engineering foundation, now focused on applied AI."
+          title="Software foundation. Applied AI focus."
           description="Computer Science, client-facing web development in India, and applied AI training at SAIT."
         />
 
@@ -48,7 +48,7 @@ export function CareerSnapshot() {
                     <div className="grid h-10 w-10 place-items-center rounded-xl bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
                       <Icon className="h-4 w-4" />
                     </div>
-                    <span className="font-mono text-[11px] font-semibold text-ink-faint">{item.period}</span>
+                    <span className="font-mono text-xs font-semibold text-ink-faint">{item.period}</span>
                   </div>
                   <h3 className="mt-5 font-display text-xl font-bold tracking-[-0.025em] text-ink">
                     {item.title}
@@ -61,6 +61,10 @@ export function CareerSnapshot() {
           })}
         </div>
 
+        <div className="mt-8 flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
+          <img src="/profile.JPG" alt="Chintan Patel" width="64" height="64" loading="lazy" className="h-16 w-16 rounded-full object-cover object-[56%_18%]" />
+          <p className="max-w-3xl text-sm leading-7 text-ink-muted">Current client delivery through <a href="https://dreamviewtechnology.com/" target="_blank" rel="noopener noreferrer" className="rounded font-semibold text-accent underline underline-offset-4">Dreamview Technology ↗</a> includes Hina’s Collection’s owner-managed catalogue and DJ Meet Sound &amp; Light’s event-enquiry website. This client work is separate from my personal AI projects.</p>
+        </div>
         <Reveal delay={0.12}>
           <Link
             to="/about"

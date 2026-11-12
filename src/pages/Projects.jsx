@@ -10,8 +10,8 @@ export function Projects() {
     .sort((a, b) => (a.featuredOrder ?? 99) - (b.featuredOrder ?? 99));
 
   return (
-    <section className="px-6 py-16 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-[1100px]">
+    <section className="section-space">
+      <div className="site-container">
         <SectionHeader
           as="h1"
           eyebrow="Work"

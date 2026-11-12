@@ -23,7 +23,7 @@ export class AppErrorBoundary extends Component {
           role="alert"
           aria-labelledby="application-error-title"
         >
-          <p className="font-mono text-xs font-bold uppercase tracking-[0.22em] text-accent">
+          <p className="font-mono text-xs font-bold uppercase tracking-[0.12em] text-accent">
             Unexpected error
           </p>
           <h1
@@ -39,7 +39,7 @@ export class AppErrorBoundary extends Component {
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="inline-flex items-center justify-center rounded-card border border-accent bg-accent px-5 py-3 text-sm font-bold text-[#0A0A0F] shadow-[0_10px_30px_rgb(var(--accent-rgb)/0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
+              className="inline-flex items-center justify-center rounded-card border border-accent bg-action px-5 py-3 text-sm font-bold text-[#0A0A0F] shadow-[0_10px_30px_rgb(var(--accent-rgb)/0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-action-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-base"
             >
               Reload page
             </button>

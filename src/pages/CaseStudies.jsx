@@ -32,7 +32,7 @@ export function CaseStudies() {
                         <FileCode2 className="h-6 w-6" />
                       </div>
                       <div>
-                        <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+                        <span className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-accent">
                           {project.category}
                         </span>
                         <p className="mt-1 text-xs font-semibold text-ink-faint">{project.status}</p>

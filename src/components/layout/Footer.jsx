@@ -7,7 +7,7 @@ import { externalProps } from '../../lib/utils.js';
 export function Footer() {
   return (
     <footer className="border-t border-line bg-[rgb(var(--base-rgb)/0.6)]">
-      <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-10 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+      <div className="site-container flex flex-col gap-6 py-10 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <p className="font-display text-lg font-bold tracking-[-0.04em] text-ink">Chintan Patel</p>
           <p className="mt-1 text-sm text-ink-faint">Applied AI Engineer · ML · RAG · Full-Stack AI Systems</p>

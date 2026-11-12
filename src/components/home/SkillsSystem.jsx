@@ -54,7 +54,7 @@ export function SkillsSystem() {
                     <div className="grid h-11 w-11 place-items-center rounded-2xl bg-[rgb(var(--accent-rgb)/0.08)] text-accent">
                       <Icon className="h-5 w-5" />
                     </div>
-                    <span className="font-mono text-[10px] font-semibold uppercase tracking-[0.18em] text-ink-faint">
+                    <span className="font-mono text-xs font-semibold uppercase tracking-[0.08em] text-ink-faint">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </div>

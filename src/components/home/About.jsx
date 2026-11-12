@@ -53,7 +53,7 @@ export function About() {
                 <BrainCircuit className="h-5 w-5" />
               </div>
               <div>
-                <p className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-accent">
+                <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-accent">
                   System focus
                 </p>
                 <h3 className="mt-2 font-display text-xl font-bold tracking-[-0.02em] text-ink">

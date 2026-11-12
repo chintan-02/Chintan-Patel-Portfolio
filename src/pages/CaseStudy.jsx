@@ -13,7 +13,7 @@ const studies = {
 };
 
 function ContentFallback() {
-  return <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Loading case study</p>;
+  return <p className="font-mono text-xs font-semibold uppercase tracking-[0.1em] text-ink-faint">Loading case study</p>;
 }
 
 export function CaseStudy() {
@@ -43,8 +43,8 @@ export function CaseStudy() {
   if (!Study) return <NotFound />;
 
   return (
-    <section className="px-4 py-12 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-5xl">
+    <section className="section-space">
+      <div className="site-container">
         {/* back nav */}
         <Link
           to="/projects"
@@ -76,7 +76,7 @@ export function CaseStudy() {
                   to={previousCaseStudy.caseStudyUrl}
                   className="group card card-hover flex min-h-[138px] flex-col justify-between p-5 sm:p-6"
                 >
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">
+                  <span className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink-faint">
                     Previous case study
                   </span>
                   <div className="mt-5">
@@ -101,7 +101,7 @@ export function CaseStudy() {
                   to={nextCaseStudy.caseStudyUrl}
                   className="group card card-hover flex min-h-[138px] flex-col justify-between p-5 text-left sm:p-6 sm:text-right"
                 >
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-ink-faint">
+                  <span className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink-faint">
                     Next case study
                   </span>
                   <div className="mt-5">

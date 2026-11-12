@@ -21,7 +21,7 @@ export function Education() {
                 ? 'rounded-panel border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.06)] p-6'
                 : 'card p-5'}
             >
-              <p className="font-mono text-xs font-bold uppercase tracking-[0.2em] text-ink-faint">{item.period}</p>
+              <p className="font-mono text-xs font-bold uppercase tracking-[0.1em] text-ink-faint">{item.period}</p>
               <h3 className="mt-4 text-xl font-extrabold tracking-[-0.02em] text-ink">{item.degree}</h3>
               <p className="mt-2 text-sm font-semibold text-accent">{item.school}</p>
               {item.note && <p className="mt-4 text-sm leading-7 text-ink-muted">{item.note}</p>}
