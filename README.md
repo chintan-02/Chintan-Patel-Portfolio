@@ -11,7 +11,7 @@
 
 **A recruiter-focused portfolio for applied AI/ML engineering, data science, NLP, RAG, and responsible AI product work.**
 
-[Live Portfolio](https://chintan-patel-ai.netlify.app/) ·
+[Live Portfolio](https://chintanpatel.dev/) ·
 [GitHub Profile](https://github.com/chintan-02) ·
 [LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
 
@@ -66,7 +66,7 @@ The portfolio targets opportunities in:
 
 | Resource | Link |
 |---|---|
-| Portfolio | [chintan-patel-ai.netlify.app](https://chintan-patel-ai.netlify.app/) |
+| Portfolio | [chintan-patel-ai.netlify.app](https://chintanpatel.dev/) |
 | GitHub | [github.com/chintan-02](https://github.com/chintan-02) |
 | LinkedIn | [linkedin.com/in/chintan-patel-ai](https://www.linkedin.com/in/chintan-patel-ai/) |
 
@@ -112,10 +112,10 @@ npm run validate:meta
 After deployment, inspect the metadata returned without browser JavaScript:
 
 ```bash
-curl -sL https://chintan-patel-ai.netlify.app/case-studies/triageai | rg '<title>|canonical|og:url|og:image|twitter:image'
-curl -sL https://chintan-patel-ai.netlify.app/case-studies/policygpt-enterprise | rg '<title>|canonical|og:url|og:image|twitter:image'
-curl -sL https://chintan-patel-ai.netlify.app/case-studies/resumeiq | rg '<title>|canonical|og:url|og:image|twitter:image'
-curl -I https://chintan-patel-ai.netlify.app/case-studies/policygpt
+curl -sL https://chintanpatel.dev/case-studies/triageai | rg '<title>|canonical|og:url|og:image|twitter:image'
+curl -sL https://chintanpatel.dev/case-studies/policygpt-enterprise | rg '<title>|canonical|og:url|og:image|twitter:image'
+curl -sL https://chintanpatel.dev/case-studies/resumeiq | rg '<title>|canonical|og:url|og:image|twitter:image'
+curl -I https://chintanpatel.dev/case-studies/policygpt
 ```
 
 For LinkedIn, open [Post Inspector](https://www.linkedin.com/post-inspector/),
@@ -162,7 +162,7 @@ Verified model evidence:
 
 > TriageAI is positioned as clinical decision support, not diagnosis or autonomous medical decision-making.
 
-[Live Demo](https://triageai-chintan-staging.netlify.app/) · [Case Study](https://chintan-patel-ai.netlify.app/case-studies/triageai) ·
+[Live Demo](https://triageai-chintan-staging.netlify.app/) · [Case Study](https://chintanpatel.dev/case-studies/triageai) ·
 [Repository](https://github.com/chintan-02/triageai-esi-care-routing)
 
 ---
@@ -201,7 +201,7 @@ Verified v0.3.0 evidence:
 
 > The benchmark values describe one controlled local provider-disabled run. Supported cases returned citation-only evidence, so generated-answer quality was not evaluated. This is not a cloud-production or real-company deployment claim.
 
-[Case Study](https://chintan-patel-ai.netlify.app/case-studies/policygpt-enterprise) ·
+[Case Study](https://chintanpatel.dev/case-studies/policygpt-enterprise) ·
 [Repository](https://github.com/chintan-02/policygpt-enterprise)
 
 ---
@@ -234,7 +234,7 @@ The project includes:
 
 ResumeIQ avoids presenting its baseline model as production-validated until leakage, split quality, class balance, calibration, and independent evaluation are completed.
 
-[Case Study](https://chintan-patel-ai.netlify.app/case-studies/resumeiq) ·
+[Case Study](https://chintanpatel.dev/case-studies/resumeiq) ·
 [Repository](https://github.com/chintan-02/smart-resume-classifier)
 
 ---
@@ -831,7 +831,7 @@ The portfolio itself is a deployed frontend application and project communicatio
 
 Applied AI/ML Engineer based in Calgary, Alberta, Canada.
 
-- [Portfolio](https://chintan-patel-ai.netlify.app/)
+- [Portfolio](https://chintanpatel.dev/)
 - [LinkedIn](https://www.linkedin.com/in/chintan-patel-ai/)
 - [GitHub](https://github.com/chintan-02)
 - [Email](mailto:patel.chintan380@gmail.com)

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://chintan-patel-ai.netlify.app/sitemap.xml
+Sitemap: https://chintanpatel.dev/sitemap.xml

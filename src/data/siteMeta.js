@@ -6,7 +6,7 @@ export const siteMeta = {
   email: 'patel.chintan380@gmail.com',
   github: 'https://github.com/chintan-02',
   linkedin: 'https://www.linkedin.com/in/chintan-patel-ai/',
-  portfolio: 'https://chintan-patel-ai.netlify.app/',
+  portfolio: 'https://chintanpatel.dev/',
   resume: '/Chintan_Patel_Resume.pdf',
   availability: 'Open to Applied AI Engineer, Machine Learning Engineer, and Full-Stack AI Engineer opportunities across Canada.'
 };
