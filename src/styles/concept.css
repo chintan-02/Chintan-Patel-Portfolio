@@ -106,3 +106,7 @@ html[data-theme="light"] .hero-landscape img{filter:drop-shadow(0 4px 12px rgb(3
 .hero-landscape .hero-figure-highlight{clip-path:inset(29% 40% 46% 44%);filter:grayscale(.65) brightness(1.8)}
 html[data-theme="light"] .hero-landscape .hero-figure-highlight{display:none}
 @media(max-width:760px){.hero-landscape{aspect-ratio:auto;height:max(276px,41.81vw)}.hero-landscape img{width:660px;min-width:100%}}
+
+/* Secondary location balances the rotating identity caption. */
+.header-location{margin-top:0;text-align:right;color:var(--folio-muted);font-size:14px;line-height:27px}
+@media(max-width:900px){.header-location{margin-top:8px;font-size:12px;line-height:1.7}}
