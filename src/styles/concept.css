@@ -103,3 +103,7 @@ html[data-theme="light"]{--folio-line:#c5ccd4;--color-line:rgb(32 37 43 / .19);-
 .hero-landscape:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 85%,var(--folio-bg) 100%)}
 html[data-theme="light"] .hero-landscape img{filter:drop-shadow(0 4px 12px rgb(32 37 43 / .07))}
 @media(max-width:760px){.hero-landscape{height:270px}.hero-landscape img{top:auto;bottom:0;width:660px;min-width:100%}}
+
+/* A small lift confined to the figure; cliffs and light mode are unchanged. */
+.hero-landscape .hero-figure-highlight{clip-path:inset(29% 40% 46% 44%);filter:grayscale(.85) brightness(1.8)}
+html[data-theme="light"] .hero-landscape .hero-figure-highlight{display:none}
