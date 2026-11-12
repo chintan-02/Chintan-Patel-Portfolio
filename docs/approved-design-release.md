@@ -4,7 +4,7 @@ Base: f9ce13e5ba3f0bd52070434a32c4848dee782b41.
 
 ## Implemented
 
-Approved editorial homepage and compact shared navigation; three rotating captions and reduced-motion support; 14px desktop / 16px mobile navigation; measured illustration connections with card-edge gaps and vertical mobile/tablet flow; CP favicon; new portrait on homepage and About; historical India-only Dreamview experience.
+Approved editorial homepage and compact shared navigation; three rotating captions and reduced-motion support; 14px desktop / 16px mobile navigation; supplied jumping-figure landscape with a transparent background and responsive desktop/mobile framing; CP favicon; new portrait on homepage and About; historical India-only Dreamview experience.
 
 ## Preserved
 
@@ -16,7 +16,7 @@ TriageAI e6bf93c model registry: Macro F1 0.703701847 and ESI 3-to-5 rate 0.0068
 
 ## Validation
 
-Lint/build and generated SEO checks; whitespace and preserved-file comparisons. Browser checks at 360, 390, 768 and 1280 widths, including tablet overlap correction, mobile menu/Escape, theme persistence, navigation, official canonical/indexing and new About portrait. Final Netlify deploy-preview checks and post-merge production verification remain release steps.
+Lint/build and generated SEO checks; whitespace and preserved-file comparisons. Browser checks at 360, 390, 768 and 1280 widths, including image framing, mobile menu/Escape, theme persistence, navigation, official canonical/indexing and new About portrait. Final Netlify deploy-preview checks and post-merge production verification remain release steps.
 
 ## Pending project work
 
@@ -24,3 +24,5 @@ Lint/build and generated SEO checks; whitespace and preserved-file comparisons. 
 - PolicyGPT broader live-provider generated-answer quality evaluation.
 - Product Finder agent/tool-use evaluation beyond its bounded catalogue.
 - New current test-count claims require freshly executed project suites.
+
+The supplied hero image had an opaque background. Background extraction produced a transparent asset; an optimized WebP is used with theme-specific CSS brightness and edge blending. The prior conceptual diagram and its animated connections are removed. Headline, subtitle, buttons and all other sections stay unchanged.

@@ -96,3 +96,12 @@ html[data-theme="light"]{--folio-line:#c5ccd4;--color-line:rgb(32 37 43 / .19);-
  .art-note{position:relative;display:block;top:550px;right:auto;text-align:center;font-size:10px;line-height:1.5}.art-connections{opacity:1}.home-expanded-menu a{font-size:16px;min-height:44px}
 }
 @media(min-width:761px) and (max-width:900px){.home-intro-inner{display:block;position:relative}.home-right{min-width:0;padding-top:0}.home-intro .navigation-intro{position:absolute;top:0;right:clamp(22px,5vw,72px);display:flex;flex-direction:row;gap:8px}.navigation-intro .home-nav-controls{display:flex;gap:8px}.home-desktop-links,.desktop-social-links{display:none}.home-menu-toggle{display:grid}.mobile-social-links{display:block}.home-person .hero-permanent-role{max-width:calc(100% - 110px)}}
+
+/* The supplied landscape replaces only the conceptual hero diagram. */
+.hero-landscape{position:relative;isolation:isolate;overflow:hidden;max-width:1200px;width:100%;height:clamp(320px,38vw,500px);margin:20px auto 0;pointer-events:none}
+.hero-landscape img{display:block;position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:none;height:auto;filter:brightness(1.6) drop-shadow(0 -2px 8px rgb(227 178 141 / .12))}
+.hero-landscape:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 82%,var(--folio-bg) 100%)}
+html[data-theme="light"] .hero-landscape img{filter:drop-shadow(0 4px 12px rgb(32 37 43 / .07))}
+@media(max-width:760px){.hero-landscape{height:270px;margin-top:28px}.hero-landscape img{width:660px;min-width:100%}}
+
+.hero-landscape img{mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent)}
