@@ -28,3 +28,5 @@ Lint/build and generated SEO checks; whitespace and preserved-file comparisons. 
 The supplied hero image had an opaque background. Background extraction produced a transparent asset; an optimized WebP is used with theme-specific CSS brightness and edge blending. The prior conceptual diagram and its animated connections are removed. Headline, subtitle, buttons and all other sections stay unchanged.
 
 Final refinement: desktop image area reduced from 40vw to 32vw (capped at 480px), with top anchoring to preserve the figure and cliff edges. Dark mode removes the warm glow and substantially desaturates the blue; mobile framing remains unchanged.
+
+Final approved composition: retain all lower image detail, including falling stones. Crop only empty sky above the figure, use a short bottom-edge fade, and keep a moderate blue-charcoal figure treatment without glow. No other sections or official-domain settings change.

@@ -97,13 +97,12 @@ html[data-theme="light"]{--folio-line:#c5ccd4;--color-line:rgb(32 37 43 / .19);-
 }
 @media(min-width:761px) and (max-width:900px){.home-intro-inner{display:block;position:relative}.home-right{min-width:0;padding-top:0}.home-intro .navigation-intro{position:absolute;top:0;right:clamp(22px,5vw,72px);display:flex;flex-direction:row;gap:8px}.navigation-intro .home-nav-controls{display:flex;gap:8px}.home-desktop-links,.desktop-social-links{display:none}.home-menu-toggle{display:grid}.mobile-social-links{display:block}.home-person .hero-permanent-role{max-width:calc(100% - 110px)}}
 
-/* Image framing keeps the figure clear while reducing decorative hero height. */
-.hero-landscape{position:relative;isolation:isolate;overflow:hidden;width:100%;height:clamp(280px,32vw,480px);margin:28px auto 0;pointer-events:none}
-.hero-landscape img{display:block;position:absolute;left:50%;top:-14vw;transform:translateX(-50%);width:100%;max-width:none;height:auto;filter:grayscale(.85) brightness(1.6)}
-.hero-landscape:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 85%,var(--folio-bg) 100%)}
+/* Crop only empty sky; retain the full lower cliffs and falling stones. */
+.hero-landscape{position:relative;isolation:isolate;overflow:hidden;width:100%;aspect-ratio:1679 / 702;margin:28px auto 0;pointer-events:none}
+.hero-landscape img{display:block;position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:none;height:auto;filter:grayscale(.85) brightness(1.6)}
+.hero-landscape:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,transparent 93%,var(--folio-bg) 100%)}
 html[data-theme="light"] .hero-landscape img{filter:drop-shadow(0 4px 12px rgb(32 37 43 / .07))}
-@media(max-width:760px){.hero-landscape{height:270px}.hero-landscape img{top:auto;bottom:0;width:660px;min-width:100%}}
-
-/* A small lift confined to the figure; cliffs and light mode are unchanged. */
-.hero-landscape .hero-figure-highlight{clip-path:inset(29% 40% 46% 44%);filter:grayscale(.85) brightness(1.8)}
+/* A restrained blue-charcoal lift confined to the figure, with no glow. */
+.hero-landscape .hero-figure-highlight{clip-path:inset(29% 40% 46% 44%);filter:grayscale(.65) brightness(1.8)}
 html[data-theme="light"] .hero-landscape .hero-figure-highlight{display:none}
+@media(max-width:760px){.hero-landscape{aspect-ratio:auto;height:max(276px,41.81vw)}.hero-landscape img{width:660px;min-width:100%}}
