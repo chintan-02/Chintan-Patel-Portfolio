@@ -105,3 +105,7 @@ html[data-theme="light"] .hero-landscape img{filter:drop-shadow(0 4px 12px rgb(3
 @media(max-width:760px){.hero-landscape{height:270px;margin-top:28px}.hero-landscape img{width:660px;min-width:100%}}
 
 .hero-landscape img{mask-image:linear-gradient(to right,transparent,black 5%,black 95%,transparent)}
+/* Let the cliffs meet the viewport edges without a visible image frame. */
+.hero-landscape{max-width:none;height:max(320px,40vw);margin-top:28px}
+.hero-landscape img{mask-image:none}
+@media(max-width:760px){.hero-landscape{height:270px}}
