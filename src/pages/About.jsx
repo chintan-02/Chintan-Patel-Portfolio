@@ -19,7 +19,7 @@ const timeline = [
     icon: Briefcase,
     period: '2021 – 2024',
     title: 'Web development · India',
-    detail: 'Worked as a web developer and later delivered client projects through Dreamview Technology, building websites and web applications around real requirements, deadlines, deployment, and post-release support.'
+    detail: 'Worked in web development at Divyaraj Design and Dreamview Technology in India, building websites and web applications around requirements, implementation, deployment, and support.'
   },
   {
     icon: MapPin,
@@ -101,13 +101,13 @@ export function About() {
                   <div className="avatar-ring" />
                   <div className="relative z-10 h-20 w-20 overflow-hidden rounded-full border border-line bg-surface">
                     <img
-                      src="/profile.JPG"
+                      src="/chintan-portrait.webp"
                       alt="Chintan Patel"
                       width="80"
                       height="80"
                       loading="lazy"
                       decoding="async"
-                      className="h-full w-full object-cover object-[56%_18%]"
+                      className="h-full w-full object-cover object-center"
                     />
                     <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[rgb(var(--base-rgb)/0.5)] via-transparent to-[rgb(var(--accent-rgb)/0.1)] mix-blend-overlay" />
                   </div>
@@ -203,7 +203,6 @@ export function About() {
           </div>
         </div>
 
-        <Reveal><section className="mb-14 rounded-panel border border-line p-6 sm:p-8"><p className="font-mono text-xs font-semibold uppercase tracking-widest text-accent">Current client delivery</p><h2 className="mt-3 text-2xl font-bold text-ink">Dreamview Technology</h2><p className="mt-4 text-sm leading-7 text-ink-muted">Alongside my personal AI projects, I continue client website delivery through Dreamview. Hina’s Collection includes an owner-managed product catalogue and direct ordering workflow; DJ Meet Sound &amp; Light includes event enquiries and a downloadable press kit. These are client web-delivery examples, separate from my personal AI systems.</p><a href="https://dreamviewtechnology.com/" target="_blank" rel="noopener noreferrer" className="mt-4 inline-block font-semibold text-accent">View Dreamview client work ↗</a></section></Reveal>
 
         {/* Values */}
         <Reveal>
@@ -227,18 +226,18 @@ export function About() {
         </div>
 
         {/* CTA — deliberately a different next step than the hero buttons
-            above (résumé as a concrete takeaway) rather than repeating them */}
+            above (resume as a concrete takeaway) rather than repeating them */}
         <Reveal>
           <div className="glass-panel rounded-panel p-8 text-center sm:p-12">
             <h2 className="font-display text-2xl font-semibold text-ink sm:text-3xl">
               Open to the right opportunity.
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[1rem] leading-8 text-ink-muted">
-              Applied AI Engineering, Machine Learning Engineering, GenAI/RAG, NLP, and AI-focused software-development opportunities across Canada. If this looks like a fit, the fastest next step is a quick email or a look at the résumé.
+              Applied AI Engineering, Machine Learning Engineering, GenAI/RAG, NLP, and AI-focused software-development opportunities across Canada. If this looks like a fit, the fastest next step is a quick email or a look at the resume.
             </p>
             <div className="mt-8 flex flex-wrap justify-center gap-3">
               <Button href={`mailto:${siteMeta.email}`} variant="onDarkAccent">Email me</Button>
-              <Button href={siteMeta.resume} variant="onDark" download icon={false}>Download résumé</Button>
+              <Button href={siteMeta.resume} variant="onDark" download icon={false}>Download resume</Button>
             </div>
           </div>
         </Reveal>

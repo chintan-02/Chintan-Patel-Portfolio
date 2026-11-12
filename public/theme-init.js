@@ -4,7 +4,7 @@
       document.documentElement.setAttribute('data-theme', 'light');
       document.addEventListener('DOMContentLoaded', function () {
         var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', '#F6F1E9');
+        if (meta) meta.setAttribute('content', '#F7F8FA');
       });
     }
   } catch {
