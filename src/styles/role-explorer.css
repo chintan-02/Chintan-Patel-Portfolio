@@ -1,0 +1,41 @@
+/* Additive homepage section: use the portfolio's existing type, color, and spacing tokens. */
+.role-explorer{border-top:1px solid var(--folio-line);border-bottom:1px solid var(--folio-line);scroll-margin-top:90px}
+.role-explorer .folio-section-head{margin-bottom:30px}
+.role-explorer-roles{display:flex;flex-wrap:wrap;gap:10px}
+.role-explorer-roles button{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;min-height:48px;padding:12px 17px;border:1px solid var(--folio-line);border-radius:5px;color:var(--folio-muted);background:var(--folio-panel);font-size:13px;font-weight:600;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.role-explorer-roles button:hover{border-color:var(--folio-copper);color:var(--folio-text)}
+.role-explorer-roles button[aria-pressed="true"]{border-color:var(--folio-copper);color:var(--folio-copper);background:var(--folio-soft)}
+.role-explorer-description{margin:17px 0 24px;font-size:13px;line-height:1.8;color:var(--folio-muted);min-height:24px}
+.role-explorer-frame{display:grid;grid-template-columns:minmax(235px,.38fr) minmax(0,1fr);border:1px solid var(--folio-line);border-radius:10px;overflow:hidden;background:var(--folio-panel)}
+.role-explorer-menu{padding:27px 18px;background:var(--folio-soft);border-right:1px solid var(--folio-line)}
+.role-explorer-caption{font:10px/1.7 var(--font-mono);letter-spacing:.12em;color:var(--folio-muted);padding:0 12px;margin-bottom:20px}
+.role-explorer-menu button{display:flex;align-items:center;gap:12px;width:100%;min-height:82px;margin-top:8px;padding:15px 12px;text-align:left;border:1px solid transparent;border-radius:6px;background:transparent;color:var(--folio-muted);cursor:pointer}
+.role-explorer-index{font:11px var(--font-mono);color:var(--folio-copper)}
+.role-explorer-menu button>span:nth-child(2){flex:1;min-width:0}
+.role-explorer-menu strong{display:block;font-size:13px;font-weight:600;line-height:1.5}
+.role-explorer-menu small{display:block;font-size:11px;margin-top:5px;color:var(--folio-muted)}
+.role-explorer-menu button:hover{border-color:var(--folio-line);color:var(--folio-text)}
+.role-explorer-menu button[aria-pressed="true"]{background:var(--folio-panel);border-color:var(--folio-copper);color:var(--folio-text)}
+.role-explorer-menu-note{display:flex;align-items:flex-start;gap:8px;padding:25px 12px 0;font-size:11px;line-height:1.7;color:var(--folio-muted)}
+.role-explorer-menu-note svg{flex-shrink:0;margin-top:3px;color:var(--folio-copper)}
+.role-explorer-detail{padding:34px 36px;min-height:610px}
+.role-explorer-detail-head{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;font:10px/1.7 var(--font-mono);color:var(--folio-muted)}
+.role-explorer-detail-head>span:first-child{color:var(--folio-copper);text-transform:uppercase;letter-spacing:.08em}
+.role-explorer-detail h3{font-family:var(--font-display-serif);font-size:clamp(25px,2.5vw,34px);font-weight:400;line-height:1.2;letter-spacing:-.02em;margin-top:22px;max-width:610px;text-wrap:balance}
+.role-explorer-summary{font-size:14px;line-height:1.85;color:var(--folio-muted);margin-top:15px}
+.role-explorer-decision{padding-left:16px;border-left:2px solid var(--folio-copper);margin-top:23px}
+.role-explorer-detail h4{font:10px/1.7 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--folio-text)}
+.role-explorer-decision p,.role-explorer-proof p{font-size:13px;line-height:1.8;color:var(--folio-muted);margin-top:6px}
+.role-explorer-detail .project-tags{margin-top:20px;gap:6px}
+.role-explorer-detail .project-tags span{font-size:10px;padding:6px 8px}
+.role-explorer-proof{margin-top:23px}
+.role-explorer-boundary{font-size:11px;line-height:1.8;color:var(--folio-muted);padding-top:16px;margin-top:16px;border-top:1px solid var(--folio-line)}
+.role-explorer-boundary strong{color:var(--folio-text);font-weight:600;margin-right:6px}
+.role-explorer-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:23px}
+.role-explorer-actions .folio-primary,.role-explorer-actions .folio-secondary{font-size:12px;gap:16px;padding:12px 16px;min-height:44px}
+.role-explorer-walkthrough{display:inline-flex;align-items:center;gap:9px;margin-top:18px;font-size:12px;line-height:1.7;color:var(--folio-copper)}
+.role-explorer-footnote{font-size:11px;line-height:1.8;color:var(--folio-muted);margin-top:18px;max-width:750px}
+.role-explorer button:focus-visible,.role-explorer a:focus-visible{outline:2px solid var(--folio-copper);outline-offset:4px}
+@media(max-width:900px){.role-explorer-frame{grid-template-columns:235px minmax(0,1fr)}.role-explorer-detail{padding:28px 24px}.role-explorer-menu{padding:25px 12px}.role-explorer-menu button{gap:8px;padding-inline:9px}.role-explorer-menu strong{font-size:12px}}
+@media(max-width:680px){.role-explorer-roles{display:grid;grid-template-columns:1fr 1fr;gap:8px}.role-explorer-roles button{font-size:12px;gap:8px;padding:12px;min-height:50px}.role-explorer-roles button svg{width:13px;flex-shrink:0}.role-explorer-frame{grid-template-columns:minmax(0,1fr)}.role-explorer-menu{border-right:0;border-bottom:1px solid var(--folio-line);padding:17px 14px;display:flex;flex-direction:column;gap:5px}.role-explorer-caption{margin-bottom:6px;padding-left:8px}.role-explorer-menu button{min-height:52px;margin:0;padding:10px;gap:12px}.role-explorer-menu button>span:nth-child(2){display:flex;align-items:center;justify-content:space-between;gap:12px}.role-explorer-menu strong{font-size:12px}.role-explorer-menu small{font-size:10px;margin:0;max-width:95px;text-align:right}.role-explorer-menu-note{display:none}.role-explorer-detail{padding:25px 20px;min-height:0}.role-explorer-detail-head{font-size:9px;gap:8px}.role-explorer-description{min-height:46px}.role-explorer-detail h3{font-size:28px}.role-explorer-actions{gap:8px}.role-explorer-actions .folio-primary,.role-explorer-actions .folio-secondary{padding:12px;gap:10px;font-size:11px}}
+@media(prefers-reduced-motion:reduce){.role-explorer-roles button{transition:none}}
