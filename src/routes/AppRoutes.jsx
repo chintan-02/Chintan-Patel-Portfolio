@@ -2,16 +2,16 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { PageShell } from '../components/layout/PageShell.jsx';
 
-const Home = lazy(() => import('../pages/Home.jsx').then((module) => ({ default: module.Home })));
-const Projects = lazy(() => import('../pages/Projects.jsx').then((module) => ({ default: module.Projects })));
-const CaseStudy = lazy(() => import('../pages/CaseStudy.jsx').then((module) => ({ default: module.CaseStudy })));
-const Engineering = lazy(() => import('../pages/Engineering.jsx').then((module) => ({ default: module.Engineering })));
-const Writing = lazy(() => import('../pages/Writing.jsx').then((module) => ({ default: module.Writing })));
-const Article = lazy(() => import('../pages/Article.jsx').then((module) => ({ default: module.Article })));
-const About = lazy(() => import('../pages/About.jsx').then((module) => ({ default: module.About })));
-const Contact = lazy(() => import('../pages/Contact.jsx').then((module) => ({ default: module.Contact })));
-const Privacy = lazy(() => import('../pages/Privacy.jsx').then((module) => ({ default: module.Privacy })));
-const NotFound = lazy(() => import('../pages/NotFound.jsx').then((module) => ({ default: module.NotFound })));
+const LazyHome = lazy(() => import('../pages/Home.jsx').then((module) => ({ default: module.Home })));
+const LazyProjects = lazy(() => import('../pages/Projects.jsx').then((module) => ({ default: module.Projects })));
+const LazyCaseStudy = lazy(() => import('../pages/CaseStudy.jsx').then((module) => ({ default: module.CaseStudy })));
+const LazyEngineering = lazy(() => import('../pages/Engineering.jsx').then((module) => ({ default: module.Engineering })));
+const LazyWriting = lazy(() => import('../pages/Writing.jsx').then((module) => ({ default: module.Writing })));
+const LazyArticle = lazy(() => import('../pages/Article.jsx').then((module) => ({ default: module.Article })));
+const LazyAbout = lazy(() => import('../pages/About.jsx').then((module) => ({ default: module.About })));
+const LazyContact = lazy(() => import('../pages/Contact.jsx').then((module) => ({ default: module.Contact })));
+const LazyPrivacy = lazy(() => import('../pages/Privacy.jsx').then((module) => ({ default: module.Privacy })));
+const LazyNotFound = lazy(() => import('../pages/NotFound.jsx').then((module) => ({ default: module.NotFound })));
 
 function RouteFallback() {
   return (
@@ -21,7 +21,17 @@ function RouteFallback() {
   );
 }
 
-export function AppRoutes() {
+export function AppRoutes({ pages = {} }) {
+  const Home = pages.Home ?? LazyHome;
+  const Projects = pages.Projects ?? LazyProjects;
+  const CaseStudy = pages.CaseStudy ?? LazyCaseStudy;
+  const Engineering = pages.Engineering ?? LazyEngineering;
+  const Writing = pages.Writing ?? LazyWriting;
+  const Article = pages.Article ?? LazyArticle;
+  const About = pages.About ?? LazyAbout;
+  const Contact = pages.Contact ?? LazyContact;
+  const Privacy = pages.Privacy ?? LazyPrivacy;
+  const NotFound = pages.NotFound ?? LazyNotFound;
   return (
     <Suspense fallback={<RouteFallback />}>
       <Routes>

@@ -23,9 +23,9 @@ function ContentFallback() {
   );
 }
 
-export function Article() {
+export function Article({ articleModules: staticArticles }) {
   const { slug } = useParams();
-  const ArticleComponent = articles[slug];
+  const ArticleComponent = staticArticles?.[slug] ?? articles[slug];
   const currentIndex = writingItems.findIndex((item) => item.slug === slug);
   const previousArticle = currentIndex > 0 ? writingItems[currentIndex - 1] : null;
   const nextArticle =

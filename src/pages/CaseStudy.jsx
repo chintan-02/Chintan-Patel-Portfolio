@@ -16,7 +16,7 @@ function ContentFallback() {
   return <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-ink-faint">Loading case study</p>;
 }
 
-export function CaseStudy() {
+export function CaseStudy({ studyModules }) {
   const { slug } = useParams();
   const canonicalSlug = slug === 'policygpt' ? 'policygpt-enterprise' : slug;
   const project = projects.find((item) => item.caseStudyUrl === `/case-studies/${canonicalSlug}`);
@@ -38,7 +38,7 @@ export function CaseStudy() {
     return <Navigate to="/case-studies/policygpt-enterprise" replace />;
   }
 
-  const Study = studies[slug];
+  const Study = studyModules?.[slug] ?? studies[slug];
 
   if (!Study) return <NotFound />;
 

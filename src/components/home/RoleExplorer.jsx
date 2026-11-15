@@ -30,7 +30,7 @@ export function RoleExplorer() {
         <div className="role-explorer-roles" role="group" aria-label="Choose an engineering focus">
           {portfolioRoles.map((item) => (
             <button key={item.id} type="button" aria-pressed={roleId === item.id} onClick={() => selectRole(item)}>
-              {item.label}<ArrowUpRight size={15} aria-hidden="true" />
+              {item.label}
             </button>
           ))}
         </div>

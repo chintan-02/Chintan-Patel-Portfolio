@@ -1,15 +1,16 @@
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, StaticRouter } from 'react-router-dom';
 import { AppRoutes } from './routes/AppRoutes.jsx';
 import { ScrollToTop } from './components/layout/ScrollToTop.jsx';
 import { ThemeProvider } from './lib/themeStore.jsx';
 
-export default function App() {
+export default function App({ location, pages }) {
+  const Router = location ? StaticRouter : BrowserRouter;
   return (
     <ThemeProvider>
-      <BrowserRouter>
+      <Router location={location}>
         <ScrollToTop />
-        <AppRoutes />
-      </BrowserRouter>
+        <AppRoutes pages={pages} />
+      </Router>
     </ThemeProvider>
   );
 }
