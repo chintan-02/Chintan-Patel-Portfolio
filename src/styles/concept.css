@@ -113,3 +113,10 @@ html[data-theme="light"] .hero-landscape .hero-figure-highlight{display:none}
 
 /* Align secondary header details without increasing the introduction height. */
 @media(min-width:901px){.home-intro .navigation-intro{grid-template-rows:40px 24px}.navigation-intro .desktop-social-links .hero-socials a{height:24px}}
+
+/* The intro name opens the background; the compact brand keeps its home action. */
+.home-person .hero-name-about:hover{color:var(--folio-copper)}
+.hero-name-cue{display:inline-block;margin-left:12px;vertical-align:middle;font:10px/1.5 var(--font-mono);letter-spacing:0;color:var(--folio-muted);white-space:nowrap}
+.hero-name-about:hover .hero-name-cue,.hero-name-about:focus-visible .hero-name-cue{color:var(--folio-copper)}
+#my-path{scroll-margin-top:85px}
+@media(max-width:760px){.hero-name-cue{font-size:9px;margin-left:8px}}
