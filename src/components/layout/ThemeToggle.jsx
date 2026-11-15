@@ -1,12 +1,19 @@
+import { useSyncExternalStore } from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../../lib/themeStore.jsx';
+
+const subscribe = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 // Simple line-icon toggle (~20px icon, matches the reference spec). Sits in
 // the same icon-button family as the mobile hamburger — same size, same
 // border/bg treatment — so it reads as part of the nav, not a bolted-on widget.
 export function ThemeToggle({ className = '' }) {
   const { theme, toggleTheme } = useTheme();
-  const isLight = theme === 'light';
+  // Match static HTML on the hydration pass, then restore the stored theme icon.
+  const hydrated = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
+  const isLight = hydrated && theme === 'light';
 
   return (
     <button

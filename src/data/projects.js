@@ -111,14 +111,14 @@ export const projects = [
     featuredOrder: 1,
     proofHighlight: {
       value: '0.68%',
-      label: 'Under-triage: ESI 3 predicted as 5',
-      detail: 'Safety-sensitive model evaluation'
+      label: 'ESI 3 → 5 under-triage · lower is better',
+      detail: 'Share of true ESI 3 test cases predicted as ESI 5'
     },
     homepage: {
       displayTitle: 'TriageAI / SympDirect',
       metrics: [
         { value: '70.4%', label: 'Macro F1 · ESI 3/4/5 test set' },
-        { value: '0.68%', label: 'Under-triage: ESI 3 predicted as 5' }
+        { value: '0.68%', label: 'ESI 3 → 5 under-triage · lower is better' }
       ],
       stack: ['React', 'FastAPI', 'LightGBM', 'PostgreSQL', 'Cloud Run'],
       scope: 'Live Netlify + Cloud Run demo · private workspaces · educational decision support only'
@@ -174,7 +174,7 @@ export const projects = [
       { value: '78.32%', label: 'Accuracy' },
       { value: '70.4%', label: 'Macro F1 · ESI 3/4/5 test set' },
       { value: '54.70%', label: 'ESI 5 F1' },
-      { value: '0.68%', label: 'Under-triage: ESI 3 predicted as 5' }
+      { value: '0.68%', label: 'ESI 3 → 5 under-triage · lower is better' }
     ],
     screenshots: [
       {

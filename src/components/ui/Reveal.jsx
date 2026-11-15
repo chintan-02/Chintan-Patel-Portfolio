@@ -15,7 +15,7 @@ export function Reveal({ children, delay = 0, className }) {
       whileInView="show"
       viewport={viewport}
       transition={{ delay: reduce ? 0 : delay }}
-      className={className}
+      className={`prerender-reveal ${className ?? ''}`}
     >
       {children}
     </motion.div>
