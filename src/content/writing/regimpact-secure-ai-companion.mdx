@@ -1,0 +1,278 @@
+import {
+  ArchitectureBlock,
+  CaseStudyHero,
+  ClaimBoundary,
+  EvaluationScorecard,
+  MetricCard
+} from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="AI Security Architecture"
+  meta="Published November 2026 · 14 min read"
+  title="Before Building the Agent: Designing a Secure Read-Only AI Companion"
+  description="How I audited RegImpact AI, designed delegated identity, tenant-bound authorization, citation integrity, rate limits, and a fail-closed API boundary before creating the companion runtime."
+  badges={["Read-only OBO", "Fail-closed access", "Durable audit"]}
+/>
+
+## The first agent milestone contained no agent
+
+The natural next step for RegImpact AI was an investigation companion: a conversational interface that could search regulatory changes, inspect obligations and controls, resolve supporting evidence, and help an analyst understand why a change mattered.
+
+It would have been easy to begin with an MCP server, connect an LLM to the existing APIs, and demonstrate a convincing conversation.
+
+I deliberately did not do that.
+
+An agent changes the security model of the system it connects to. It can combine multiple reads, retrieve evidence at speed, cross boundaries users rarely traverse manually, and turn a small authorization mistake into broad data exposure. A polished agent interface does not compensate for ambiguous identity, incomplete citation lineage, missing quotas, or an API that assumes every bearer token came from the browser.
+
+The first companion milestone was therefore **companion readiness inside RegImpact**, not the companion runtime itself.
+
+That decision produced four stages of work:
+
+1. audit the existing system and document the actual integration boundary
+2. choose an identity and token-exchange architecture
+3. implement external identity mapping and fail-closed Entra validation
+4. expose a narrowly allowlisted, delegated, read-only API surface
+
+Only after those controls were merged did creating a separate companion repository become reasonable.
+
+## Phase 0: audit before architecture
+
+I reviewed the real FastAPI routes, authentication path, RBAC rules, retrieval implementation, citation fields, audit events, tests, Azure configuration, and deployment assumptions.
+
+The audit identified several blockers that a demo could easily hide:
+
+- the existing HS256 token used the `regimpact-web` audience
+- the console forwarded that token directly to the API
+- there was no companion audience, scope, token exchange, or client grant
+- a separately deployed service had no private-connectivity contract
+- retrieval still depended on local embedding defaults in non-local environments
+- search-index readiness was not guaranteed after ingestion
+- collection routes did not share one bounded pagination contract
+- the API had no companion-specific rate limit or emergency client shutdown
+- citations could identify a section without proving that it belonged to the expected immutable version
+
+The audit changed the implementation plan. The companion would remain a separate repository, but RegImpact first needed an explicit contract for what the companion was allowed to do.
+
+<MetricCard
+  label="Phase 0 outcome"
+  value="Three architecture contracts · two security migrations · one bounded read surface"
+  note="The companion runtime, browser login, OBO client, and Azure application registrations remained intentionally out of scope."
+/>
+
+## Separate audiences for separate trust boundaries
+
+The original flow treated one web token as sufficient from browser to console and console to API. That becomes unsafe when a separate companion is introduced.
+
+The chosen architecture uses Microsoft Entra ID Workforce with three distinct audiences:
+
+- `regimpact-web` for the existing console
+- `regimpact-companion` for the separate companion
+- `regimpact-api` for RegImpact API access
+
+The browser signs into the companion through Authorization Code with PKCE. When the companion calls RegImpact on behalf of a user, it must exchange the incoming token through OAuth 2.0 On-Behalf-Of and receive a new API-audience token.
+
+<ArchitectureBlock steps={[
+  { title: "Browser sign-in", description: "Authorization Code with PKCE obtains a companion-audience user token" },
+  { title: "Companion session", description: "The separate runtime binds execution state to the authenticated user" },
+  { title: "OBO exchange", description: "Entra exchanges the delegated assertion for a RegImpact API token" },
+  { title: "API validation", description: "RegImpact validates issuer, tenant, audience, signature, client, and token lifetime" },
+  { title: "Local authorization", description: "External identity, client grant, RBAC, organization, and ownership are intersected" },
+  { title: "Bounded response", description: "Only allowlisted reads return paginated, evidence-linked data with durable audit" }
+]} />
+
+```text
+browser
+  └─ token audience: regimpact-companion
+       └─ OBO exchange at Entra
+            └─ token audience: regimpact-api
+                 └─ RegImpact delegated read boundary
+```
+
+**Browser-token passthrough is prohibited.** The companion cannot forward its own browser token to RegImpact and hope the API accepts it. Each hop receives a token intended for that hop.
+
+Service identities are separate again. They use managed identity and application roles for explicitly approved non-user operations. For the first release, the application-principal data-access allowlist is empty.
+
+## Migrating identity without creating a fallback hole
+
+RegImpact already issued HS256 tokens for its local authentication flow. Replacing that path in one release would create unnecessary migration risk, so I implemented three explicit validator modes:
+
+| Mode | Accepted bearer tokens | Legacy login |
+| --- | --- | --- |
+| `legacy` | Existing HS256 tokens | Enabled |
+| `dual` | HS256 and configured Entra RS256 tokens | Enabled |
+| `entra` | Entra RS256 tokens only | Disabled |
+
+The important property is not that two validators exist. It is that token families are classified once.
+
+An Entra-shaped or RS256 token that fails validation never falls back to the legacy HS256 path. Otherwise, an attacker could deliberately fail the stronger validator and search for a more permissive interpretation in the older one.
+
+Entra validation requires:
+
+- RS256 and a trusted JWKS key ID
+- exact issuer, API audience, and tenant
+- mandatory `exp`, `nbf`, `iat`, `oid`, and client claims
+- a configurable maximum token lifetime
+- a tenant-specific Microsoft JWKS endpoint outside tests
+- bounded JWKS timeouts, cache lifetime, key count, and response size
+
+Unknown keys trigger at most one refresh. Authentication errors remain generic, and logs record only safe failure categories and token family—not the token, subject, or Entra object identifier.
+
+## Cryptographic identity was not enough
+
+A correctly signed Entra token proves that Entra issued claims. It does not prove which local RegImpact user, organization, role, or resources those claims should access.
+
+The first temporary implementation matched the Entra `oid` directly to `UserRecord.id`. Security review correctly exposed that as a migration shortcut, not a durable identity model.
+
+I replaced it with an `external_identities` table keyed by:
+
+```text
+(provider, entra_tenant_id, external_oid)
+```
+
+Each record points to one existing local user and organization. Database constraints prevent duplicate external identities, silent re-linking, cross-organization mappings, invalid provider values, and inconsistent active/disabled state.
+
+After cryptographic token validation, authentication must resolve an active mapping and an active local user. Unknown, malformed, ambiguous, disabled, or inactive mappings return a generic `401`. No user or mapping is created automatically.
+
+Most importantly, permissions do not come from `oid`, `sub`, groups, scopes, or application roles. They continue to come from the local database and resource queries.
+
+## Bootstrap without creating a permanent backdoor
+
+External identity mapping creates an operational question: who maps the first administrator when no Entra administrator can sign in yet?
+
+The answer is a narrow offline bootstrap command—not a public self-link endpoint.
+
+Bootstrap works only:
+
+- in `dual` mode
+- when no mapping exists
+- for an existing active local administrator
+- with exact operator acknowledgements
+
+A corresponding rollback command works only in `legacy` or `dual` mode and only for a mapping created by the bootstrap actor. A read-only, network-free preflight verifies migration revision, tenant consistency, mapping uniqueness, and the existence of an active administrator mapping before Entra-only cutover.
+
+Normal API self-linking remains prohibited. An administrator cannot disable the mapping used by the current session, and Entra-only mode protects the last active administrator mapping.
+
+These are operational controls, not merely schema constraints. They prevent a technically valid deployment from locking every administrator out.
+
+## Authorization is an intersection, not one claim
+
+For companion traffic, possession of a valid API token is only the beginning. A read is authorized only when every required condition is true.
+
+<EvaluationScorecard
+  items={[
+    { label: "Token boundary", value: "Exact", detail: "Issuer, tenant, API audience, signature, lifetime, and companion client" },
+    { label: "Grant boundary", value: "Durable", detail: "Tenant-bound organization grant with canonical delegated scopes" },
+    { label: "Data boundary", value: "Local", detail: "Active mapping, user, RBAC, organization, and resource ownership" },
+    { label: "Runtime boundary", value: "Fail closed", detail: "Allowlist, audit, Redis rate limit, and emergency shutdown" }
+  ]}
+  note="No single scope, role, group, client claim, or external identifier can independently grant RegImpact access."
+/>
+
+Conceptually, the decision is:
+
+```text
+authorized =
+  valid API-audience delegated token
+  ∩ exact companion client
+  ∩ enabled companion access
+  ∩ allowlisted method and route
+  ∩ required delegated scope
+  ∩ active tenant-bound client grant
+  ∩ active external identity and local user
+  ∩ local RBAC
+  ∩ organization and resource ownership
+  ∩ available rate-limit and audit controls
+```
+
+This prevents a confused-deputy problem where a token intended for another client or tenant is accepted simply because it contains a familiar scope name.
+
+## The first API surface is intentionally small
+
+The companion receives only human-delegated, read-only access to a fixed allowlist:
+
+- regulations and regulation versions
+- regulatory changes and change detail
+- obligations
+- controls and control mappings
+- search
+- canonical evidence resolution
+
+Review queues, workflow decisions, classifications, administration, ingestion, indexing, suggestions, and every mutation remain denied.
+
+That choice is more restrictive than the existing analyst console. The companion is not a second user interface with every route exposed. It is a new client with a smaller capability envelope.
+
+Client grants are stored durably in `companion_client_grants`, bound to organization, Entra tenant, companion client, and canonical delegated scopes. Grant creation, scope changes, and disablement are offline operator actions. Wildcards are rejected.
+
+The emergency shutdown is deliberately simple:
+
+```text
+REGIMPACT_COMPANION_ACCESS_ENABLED=false
+```
+
+It disables companion traffic without deleting identity mappings, grants, or audit history.
+
+## Citation integrity is an authorization concern
+
+An AI companion does not become trustworthy because its answer contains a citation-shaped object.
+
+The API now distinguishes two questions:
+
+1. **Is the citation structurally valid and resolvable?**
+2. **Does the cited evidence actually support the generated claim?**
+
+RegImpact can enforce the first. The future companion evaluation suite must measure the second.
+
+Search results now include immutable version and section hashes. Canonical evidence resolution requires the expected regulation version ID, version hash, and section hash to match. Stale, altered, unresolved, or cross-tenant citations return a generic `404`.
+
+Evidence bodies are bounded and report truncation explicitly. Search fails with a generic `503 search_unavailable` when its provider or index is missing, stale, or inconsistent. Returning incomplete search as if it were an empty valid result would be more dangerous for an investigation agent.
+
+## Rate limits and audit are part of authorization
+
+Companion calls are rate-limited through Redis using a key that binds client, organization, capability, and time window. Exhaustion returns deterministic `429` and `Retry-After` values.
+
+If the limiter or durable audit mechanism is unavailable, the request fails closed with `503`. This trades availability for a clear security property: the companion cannot continue high-speed investigation when the controls designed to bound and reconstruct that activity are missing.
+
+Authorized and denied calls produce correlation-aware audit events without recording tokens, external object IDs, subjects, raw queries, or evidence bodies. Incoming request IDs are bounded and sanitized before use.
+
+Uniform `limit` and `offset` parameters cap collection responses at 200 records; search retains a maximum of 50. Pagination is not only a performance detail—it limits accidental bulk extraction and makes agent execution budgets predictable.
+
+## What this milestone proves—and what it does not
+
+<ClaimBoundary
+  verified={[
+    "RegImpact can validate delegated Entra API tokens without fallback to legacy interpretation",
+    "External identities and companion grants are tenant- and organization-bound in the database",
+    "Only a fixed read-only route allowlist can pass the companion access boundary",
+    "Evidence resolution, pagination, audit, rate limits, and emergency shutdown fail closed"
+  ]}
+  notClaimed={[
+    "The companion runtime or MCP server has been built",
+    "Browser PKCE and OBO have been tested against live production Entra resources",
+    "Private networking and production application registrations are provisioned",
+    "Citation validity alone proves that generated claims are supported"
+  ]}
+/>
+
+The distinction matters. The repository now contains the API-side prerequisites for a companion; it does not contain the companion.
+
+Live traffic still requires operator decisions and infrastructure: production client identifiers, organization grants, quotas, audit retention, a production embedding provider, index backfill, non-production OBO tests, Entra registrations, consent, managed identity, and private networking.
+
+## What I learned
+
+The strongest lesson was that an agent should inherit fewer assumptions than the application it augments.
+
+Building the boundary first exposed design questions that an agent prototype would have postponed:
+
+- Which audience is each token intended for?
+- Which client is allowed to request each scope?
+- Where does external identity stop and local authorization begin?
+- What happens when audit or rate limiting is unavailable?
+- Can a citation resolve to stale evidence?
+- Which reads are safe for a delegated agent, not merely safe for the console?
+- How can an operator stop the client without destroying forensic history?
+
+The answers became code, database constraints, migrations, tests, runbooks, and deployment gates before they became tool definitions.
+
+That sequence is slower than producing the first chat demo. It is faster than discovering after launch that the agent can cross tenants, reuse the wrong token, cite stale text, or operate without an audit trail.
+
+The RegImpact-side implementation is available in the [RegImpact AI repository](https://github.com/chintan-02/regimpact-ai). The next engineering milestone will move into a separate `regimpact-companion` repository containing the MCP adapter, bounded agent runtime, execution state, token cache, and evaluation suite.
