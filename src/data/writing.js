@@ -1,5 +1,25 @@
 export const writingItems = [
   {
+    slug: 'regimpact-secure-ai-companion',
+    title: 'Before Building the Agent: Designing a Secure Read-Only AI Companion',
+    description: 'How I audited RegImpact AI, designed delegated Entra identity, external identity mapping, client grants, citation integrity, rate limits, and a fail-closed API boundary before creating the agent runtime.',
+    meta: 'Published November 2026 · 14 min read',
+    datePublished: '2026-11-16',
+    dateModified: '2026-11-16',
+    tags: ['Agentic AI', 'AI Security', 'System Design'],
+    route: '/writing/regimpact-secure-ai-companion'
+  },
+  {
+    slug: 'regimpact-human-ai-evaluation',
+    title: 'When AI Labels Aren’t Ground Truth: Building a Governed Human-Evaluation Pipeline',
+    description: 'How RegImpact AI moved from dual-model silver labels to a blinded, held-out human evaluation with reproducible evidence, explicit promotion boundaries, and a multi-human adjudication path.',
+    meta: 'Published November 2026 · 13 min read',
+    datePublished: '2026-11-15',
+    dateModified: '2026-11-15',
+    tags: ['AI Evaluation', 'Human in the Loop', 'Responsible AI'],
+    route: '/writing/regimpact-human-ai-evaluation'
+  },
+  {
     slug: 'regimpact-azure-deployment',
     title: 'Seven Hours to Green: What Deploying RegImpact AI to Azure Taught Me',
     description: 'A real deployment postmortem covering OIDC federation, two-phase Bicep provisioning, immutable images, pgvector migrations, Azure control-plane failures, and verifiable release evidence.',

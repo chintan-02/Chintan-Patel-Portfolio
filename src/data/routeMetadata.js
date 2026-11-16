@@ -169,6 +169,8 @@ function articleMetadata(article) {
         '@type': 'TechArticle',
         headline: article.title,
         description: article.description,
+        ...(article.datePublished ? { datePublished: article.datePublished } : {}),
+        ...(article.dateModified ? { dateModified: article.dateModified } : {}),
         author: personReference(),
         mainEntityOfPage: canonical,
         url: canonical,

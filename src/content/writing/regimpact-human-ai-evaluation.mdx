@@ -1,0 +1,210 @@
+import {
+  ArchitectureBlock,
+  CaseStudyHero,
+  ClaimBoundary,
+  EvaluationScorecard,
+  MetricCard
+} from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="AI Evaluation Case Study"
+  meta="Published November 2026 · 13 min read"
+  title="When AI Labels Aren’t Ground Truth: Building a Governed Human-Evaluation Pipeline"
+  description="How RegImpact AI moved from dual-model silver labels to a blinded, held-out human evaluation with reproducible evidence, explicit promotion boundaries, and a path to independent multi-human adjudication."
+  badges={["70-clause holdout", "Blinded review", "SHA-256 evidence"]}
+/>
+
+## The model output was useful—but it was not truth
+
+RegImpact AI needed more labelled regulatory clauses than one person could review manually. Two local language models could accelerate that work by assigning one of seven legal-function labels: obligation, permission, prohibition, definition, reporting requirement, record-retention requirement, or non-obligation.
+
+The tempting shortcut was to treat model agreement as correctness. If both models chose the same label with high confidence, why not call it ground truth and train the next model?
+
+Because agreement only proves that two systems produced the same answer. They may share the same blind spot, interpret an ambiguous clause in the same way, or inherit similar prompt bias. Confidence is also a model-reported signal—not an independently calibrated probability of legal correctness.
+
+I therefore designed the workflow around a stricter distinction:
+
+- **silver labels** are useful weak supervision produced by models
+- **human reference labels** are evaluation evidence produced under controlled conditions
+- **adjudicated labels** require independent human review and resolution
+- **training or production promotion** requires a separate governed decision
+
+That vocabulary changed the architecture. Evaluation could no longer be a spreadsheet comparison at the end. It had to preserve sample identity, reviewer independence, model provenance, and the exact boundary of every claim.
+
+## The governed evaluation design
+
+The pipeline starts with a fixed corpus campaign and two independently configured model labelers. It then separates training candidates from a document-level holdout before any human evaluation occurs.
+
+<ArchitectureBlock steps={[
+  { title: "Freeze the experiment", description: "Record corpus, taxonomy, prompt, model, threshold, and sample identities" },
+  { title: "Run two labelers", description: "Collect append-only responses from distinct local model streams" },
+  { title: "Compile consensus", description: "Apply the manifest's governed confidence threshold and route disagreements" },
+  { title: "Create the holdout", description: "Reserve 70 clauses from whole documents and exclude them from training" },
+  { title: "Blind the human", description: "Remove model labels, confidence, rationales, and the second reviewer’s work" },
+  { title: "Evaluate and package", description: "Calculate metrics, preserve disagreements, and hash the evidence" },
+  { title: "Adjudicate separately", description: "Use independent human A/B review before any ground-truth claim" }
+]} />
+
+```text
+corpus campaign
+→ immutable experiment manifest
+→ model A + model B
+→ governed consensus
+→ document-held-out sample
+→ blinded human reference
+→ metrics + disagreement records
+→ cryptographic evidence receipt
+→ independent multi-human adjudication gate
+```
+
+The order matters. If a reviewer sees model output before labelling, the evaluation can measure anchoring as much as model quality. If the holdout contains clauses from documents also used for training, near-duplicate legal language can inflate the result. If the threshold is supplied differently at each command, the final report can no longer prove which policy produced the labels.
+
+## Holding out documents, not random sentences
+
+Regulatory documents repeat terminology, section structure, definitions, and drafting patterns. A random clause split can place text from the same document on both sides of the evaluation boundary.
+
+The experiment therefore sampled evaluation clauses from whole held-out documents. The 70 human-evaluation clauses were excluded from the training set, and the manifest recorded the sample identity. This was a small holdout, but it tested a more realistic generalization boundary than a random row split.
+
+The human package also carried immutable clause IDs and content hashes. Before scoring, the evaluator verified that the completed workspace still matched the original package. A missing task, altered clause, duplicate identifier, wrong reviewer slot, or mismatched hash failed validation instead of producing a plausible-looking report from the wrong data.
+
+<MetricCard
+  label="Evaluation Boundary"
+  value="70 clauses · whole-document holdout · zero training overlap"
+  note="The package was designed to detect identity or content drift before metrics were calculated."
+/>
+
+## Blinding was a system property
+
+The reviewer did not receive the raw experiment directory. The generated workspace contained only the clause text, allowed taxonomy, annotation controls, and progress state.
+
+It deliberately excluded:
+
+- model A and model B predictions
+- confidence values
+- model rationales
+- consensus status
+- training-set membership
+- another human’s labels
+
+The exported annotation package was validated against the original sample, not trusted because it came from the expected filename. This made blinding and completeness enforceable properties of the workflow rather than instructions in a README.
+
+The same principle shaped the later multi-human path. Human A and Human B receive deterministic but separate workspaces for the same sample. Comparison happens only after both exports are complete, and the adjudication package contains clause IDs, hashes, labels, and controlled reason codes—not clause text or model persuasion material.
+
+## What the first evaluation measured
+
+The completed single-human evaluation compared each labeler with one human reference on the held-out set. It also measured whether model consensus improved precision at the cost of coverage.
+
+<EvaluationScorecard
+  items={[
+    { label: "Labeler A accuracy", value: "71.43%", detail: "Macro-F1 72.47%" },
+    { label: "Labeler B accuracy", value: "72.86%", detail: "Macro-F1 72.73%" },
+    { label: "A/B agreement", value: "72.86%", detail: "Raw agreement across 70 clauses" },
+    { label: "Consensus accuracy", value: "82.35%", detail: "Against the single-human reference" }
+  ]}
+  note="The governed minimum-confidence threshold was 0.80. Consensus covered 72.86% of the holdout, while 28 disagreement or error records were preserved for review."
+/>
+
+| Measure | Labeler A | Labeler B |
+| --- | ---: | ---: |
+| Accuracy | 71.43% | 72.86% |
+| Macro-F1 | 72.47% | 72.73% |
+| Weighted-F1 | 71.21% | 71.55% |
+
+The headline is not that one model “won.” Labeler B was slightly stronger overall, while the class-level results exposed different error profiles.
+
+Definitions were easiest for both systems. Record-retention requirements also performed strongly. Obligations and non-obligations were more difficult, and the labelers traded precision for recall differently. That matters operationally: a model can have a respectable aggregate score while systematically missing the class the product cares about most.
+
+Consensus was the more interesting result. When the two labelers agreed under the governed threshold, accuracy against the human reference rose to 82.35%. But consensus did not cover every clause. The gain came from abstaining and routing uncertain cases—not from making the underlying ambiguity disappear.
+
+## The threshold belonged to the experiment
+
+One review uncovered a subtle governance defect: downstream consensus and adjudication commands still had their own default confidence value. An experiment prepared at 0.95 could later be compiled with an implicit 0.80 threshold.
+
+That would make the manifest descriptive rather than authoritative.
+
+I changed the design so the experiment manifest owns the threshold. Downstream commands may omit it and inherit the recorded value. An explicit value is accepted only when it matches. Invalid or conflicting values fail before downstream artifacts are created. Legacy manifests retain the documented 0.80 default.
+
+This was not a model-quality improvement. It was provenance engineering. A metric is only reproducible when the policy that selected its examples is reproducible too.
+
+## Evidence packaging, not screenshots
+
+The evaluation command generated a self-contained evidence directory containing:
+
+- the human-versus-silver evaluation report
+- text-free disagreement records for controlled review
+- a readable experiment summary
+- an evidence receipt with implementation commit, file sizes, and SHA-256 hashes
+- references to the experiment, model responses, consensus, and adjudication artifacts
+
+The receipt connected source code, inputs, and outputs without copying sensitive clause text into the summary. Re-running SHA-256 over the outputs reproduced the hashes in the package.
+
+This matters because a screenshot of “82.35%” cannot answer basic review questions:
+
+- Which model versions produced the labels?
+- Which prompt and taxonomy were active?
+- Was the sample held out from training?
+- Did a file change after the report was generated?
+- Was the reference independently adjudicated?
+- Did this result authorize promotion?
+
+The evidence package can answer those questions—or state explicitly when the answer is no.
+
+## Drawing the claim boundary
+
+The first evaluation used one human annotator. That makes it valuable exploratory evidence, but not adjudicated ground truth. The implementation and article both preserve that limitation.
+
+<ClaimBoundary
+  verified={[
+    "Two model streams were evaluated on the same fixed, document-held-out sample",
+    "The reviewer workspace excluded model predictions, confidence, and rationales",
+    "Aggregate and per-class metrics were calculated reproducibly",
+    "Disagreements and cryptographic receipts were retained for review"
+  ]}
+  notClaimed={[
+    "The human reference is independently adjudicated ground truth",
+    "The package authorizes model training or dataset promotion",
+    "The result proves production legal accuracy",
+    "The 70-clause sample represents every regulatory domain"
+  ]}
+/>
+
+This distinction is not cautious wording added after the analysis. It is encoded in the package metadata:
+
+```text
+single_human_reference: true
+adjudicated_gold_data: false
+held_out_from_training: true
+model_training_authorized: false
+production_promotion_authorized: false
+```
+
+Those fields turn limitations into machine-readable release gates.
+
+## From one human to independent adjudication
+
+The next workflow stage is implemented but deliberately not represented as completed evidence.
+
+It creates a second blinded workspace for Human B, validates two complete and independently identified exports, measures raw agreement, Cohen’s kappa, per-class agreement, and the human-to-human confusion matrix, then generates a text-free adjudication package for every disagreement.
+
+An adjudicator must resolve each record with an allowed final label and reason code. The compiler rejects incomplete, altered, cross-sample, or unauthorized packages. Only that resolved output can support a later decision about adjudicated labels.
+
+At the time of this article, Human B has not completed the 70-clause package. The capability exists; the evidence milestone does not. Keeping those statements separate is part of the engineering.
+
+## What I learned
+
+The most important lesson was that human-in-the-loop AI is not created by adding a review screen. It requires boundaries that remain intact across data preparation, interfaces, metrics, artifacts, and release decisions.
+
+I now treat evaluation governance as a system with its own requirements:
+
+- **blindness must be enforced by the package**, not requested from the reviewer
+- **holdouts should reflect the real leakage boundary**, not the easiest split
+- **thresholds and prompts are versioned policy**, not convenient defaults
+- **aggregate metrics need class-level error analysis**
+- **abstention and review routing are valid model behaviours**
+- **evidence must connect code, inputs, outputs, and decisions**
+- **implemented capability and completed evidence are different milestones**
+- **a useful experiment can still be insufficient for production promotion**
+
+The result was more than a model comparison. It became an inspectable path from weak supervision to human evidence, with explicit gates preventing an exploratory result from silently becoming “ground truth.”
+
+The implementation, tests, runbooks, and workflow diagrams are available in the [RegImpact AI repository](https://github.com/chintan-02/regimpact-ai). The next article will cover the companion-readiness work: designing delegated, read-only AI access before building the agent runtime.
