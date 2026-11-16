@@ -55,6 +55,16 @@ try {
     if (route === '/') assert(page.includes('lower is better') && page.includes('explore-by-role'));
     if (route === '/case-studies/triageai') assert(page.includes('70.37%') && page.includes('54.70%'));
     if (route.startsWith('/writing/')) assert(page.includes('TechArticle') && page.includes('prose-ai'));
+    if (route === '/writing/regimpact-human-ai-evaluation') {
+      assert(page.includes('When AI Labels Aren’t Ground Truth'));
+      assert(page.includes('82.35%') && page.includes('single_human_reference'));
+      assert(page.includes('2026-11-15'), `${route}: missing structured publication date`);
+    }
+    if (route === '/writing/regimpact-secure-ai-companion') {
+      assert(page.includes('Before Building the Agent'));
+      assert(page.includes('Browser-token passthrough') && page.includes('REGIMPACT_COMPANION_ACCESS_ENABLED'));
+      assert(page.includes('2026-11-16'), `${route}: missing structured publication date`);
+    }
     const output = route === '/' ? 'dist/index.html' : `dist${route}/index.html`;
     await mkdir(dirname(output), { recursive: true });
     await writeFile(output, page);
