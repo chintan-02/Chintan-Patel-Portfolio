@@ -361,13 +361,13 @@ export const projects = [
       scope: 'Live portfolio deployment · deterministic Python owns authoritative filtering'
     },
     description:
-      'Finds products from a fixed 13-item catalogue using natural-language requests, while Python tools enforce category and price filters.',
+      'Carries shopping constraints across turns and checks matches against a fixed catalogue.',
     problem:
       'Natural-language product search is useful only when the model cannot invent catalogue facts or perform unreliable numeric filtering.',
     contribution:
       'Built a single Google ADK agent for intent interpretation while keeping authoritative category and price filtering in deterministic Python services exposed through FastAPI.',
     outcome:
-      'Deployed the containerized backend to Google Cloud Run and the React frontend to Netlify, with the Gemini key stored in Google Secret Manager and verified production frontend-to-backend interaction.',
+      'Deployed the containerized backend to Google Cloud Run and the React frontend to Netlify, with the Gemini key stored in Google Secret Manager and a hosted evaluation that passed 5 of 5 scripted conversations across 25 turns.',
     stack: [
       'Google ADK',
       'Gemini',
@@ -392,7 +392,7 @@ export const projects = [
     ],
     githubUrl: 'https://github.com/chintan-02/product-finder-adk-agent',
     liveUrl: 'https://product-finder-adk-chintan.netlify.app/',
-    caseStudyUrl: null,
+    caseStudyUrl: '/case-studies/product-finder-ai-agent',
     accent: 'from-amber-400 to-orange-400'
   },
   {

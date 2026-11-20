@@ -19,6 +19,7 @@ import { NotFound } from './pages/NotFound.jsx';
 const studies = import.meta.glob('./content/case-studies/*.mdx', { eager: true });
 const articles = import.meta.glob('./content/writing/*.mdx', { eager: true });
 const studyModules = {
+  'product-finder-ai-agent': studies['./content/case-studies/product-finder.mdx'].default,
   'regimpact-ai': studies['./content/case-studies/regimpact.mdx'].default,
   triageai: studies['./content/case-studies/triageai.mdx'].default,
   resumeiq: studies['./content/case-studies/resumeiq.mdx'].default,

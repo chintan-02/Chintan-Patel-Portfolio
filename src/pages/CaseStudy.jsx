@@ -6,6 +6,7 @@ import { engineeringExample, operatorVerification } from '../data/engineering.js
 import { NotFound } from './NotFound.jsx';
 
 const studies = {
+  'product-finder-ai-agent': lazy(() => import('../content/case-studies/product-finder.mdx')),
   'regimpact-ai': lazy(() => import('../content/case-studies/regimpact.mdx')),
   triageai: lazy(() => import('../content/case-studies/triageai.mdx')),
   resumeiq: lazy(() => import('../content/case-studies/resumeiq.mdx')),

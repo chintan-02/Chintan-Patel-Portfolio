@@ -3,6 +3,21 @@ export const HOMEPAGE_CANONICAL = `${SITE_URL}/`;
 
 export const CASE_STUDY_ROUTES = [
   {
+    route: '/case-studies/product-finder-ai-agent',
+    output: 'dist/case-studies/product-finder-ai-agent/index.html',
+    title: 'Product Finder AI Agent | Chintan Patel',
+    description: 'A conversational catalogue search with Google ADK, Gemini, validated filter updates, FastAPI, and a verified Cloud Run walkthrough.',
+    canonical: `${SITE_URL}/case-studies/product-finder-ai-agent`,
+    robots: 'index, follow',
+    ogType: 'article',
+    image: `${SITE_URL}/og-image.jpg`,
+    imageWidth: '1200',
+    imageHeight: '630',
+    imageType: 'image/jpeg',
+    imageAlt: 'Chintan Patel applied AI engineering portfolio',
+    twitterCard: 'summary_large_image'
+  },
+  {
     route: '/engineering',
     output: 'dist/engineering/index.html',
     title: 'Engineering Decisions | Chintan Patel',

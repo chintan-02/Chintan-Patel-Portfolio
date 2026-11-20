@@ -1,0 +1,39 @@
+import { ArchitectureBlock, CaseStudyHero } from '../../components/mdx/MDXComponents.jsx';
+
+<CaseStudyHero
+  label="Applied AI · Tool Calling"
+  title="Product Finder AI Agent"
+  description="A conversational catalogue search that carries shopping constraints across turns, shows which filters are active and asks before relaxing a budget."
+  badges={['Live demo', 'Google ADK', 'Cloud Run']}
+  links={[
+    { label: 'Try the live demo', href: 'https://product-finder-adk-chintan.netlify.app/', external: true },
+    { label: 'Source and evaluation', href: 'https://github.com/chintan-02/product-finder-adk-agent', external: true }
+  ]}
+/>
+
+## How a search works
+
+React sends the latest shopper message and the previously applied filters to FastAPI. Gemini, through a single Google ADK agent, proposes a structured filter change. Python validates the change and searches the fixed catalogue. React renders the returned data and shows the applied filters.
+
+<ArchitectureBlock steps={[
+  { title: 'Capture the turn', description: 'React sends the latest message and active filters to FastAPI on Cloud Run.' },
+  { title: 'Interpret the change', description: 'Gemini and Google ADK propose a structured filter patch.' },
+  { title: 'Validate and search', description: 'Python applies the patch and checks each catalogue item against the filters.' },
+  { title: 'Present matches', description: 'React renders product cards, applied filters, and any budget offer.' }
+]} />
+
+The four fixed catalogue examples use explicit browser-side filters. The conversational walkthrough invokes Gemini. When removing colour, the UI checks that the other filters survive the change. If the model alters another filter, the UI retries once and retains the previous search if the retry also fails.
+
+## Walkthrough and verification
+
+| Shopper action | Expected catalogue behaviour |
+| --- | --- |
+| Find black waterproof jackets within $150 | Show Trail and Summit |
+| Reduce the cap to $100 | Retain black and waterproof and show Trail |
+| Remove the colour requirement | Keep the $100 cap and waterproof filter and add Ridge |
+| Require size XL | Show zero exact matches and suggest $115 |
+| Raise the cap to $130 | Retain XL and waterproof and show Summit and Coast |
+
+The hosted scripted evaluation passed **5 of 5 conversations** and **25 of 25 turns** with eight seconds between requests. All 35 returned items met the expected constraints, counting repeated items across turns. I also completed the same five-step flow in the production browser. These results describe a fixed sample catalogue and scripted walkthrough. Free-tier Gemini rate limits affected earlier runs, and response times vary by request and network path.
+
+[View the evaluation fixtures](https://github.com/chintan-02/product-finder-adk-agent/blob/main/backend/eval/conversations.json) · [Open the FastAPI reference](https://product-finder-api-688514789228.us-west1.run.app/docs)
