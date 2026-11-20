@@ -10,11 +10,11 @@ export const CASE_STUDY_ROUTES = [
     canonical: `${SITE_URL}/case-studies/product-finder-ai-agent`,
     robots: 'index, follow',
     ogType: 'article',
-    image: `${SITE_URL}/og-image.jpg`,
-    imageWidth: '1200',
-    imageHeight: '630',
-    imageType: 'image/jpeg',
-    imageAlt: 'Chintan Patel applied AI engineering portfolio',
+    image: `${SITE_URL}/images/case-studies/product-finder/search-home.webp`,
+    imageWidth: '1280',
+    imageHeight: '710',
+    imageType: 'image/webp',
+    imageAlt: 'Product Finder search interface and example queries',
     twitterCard: 'summary_large_image'
   },
   {
