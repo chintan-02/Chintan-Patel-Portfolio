@@ -75,8 +75,8 @@ export const CASE_STUDY_ROUTES = [
     robots: 'index, follow',
     ogType: 'article',
     image: `${SITE_URL}/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png`,
-    imageWidth: '2990',
-    imageHeight: '1722',
+    imageWidth: '1600',
+    imageHeight: '815',
     imageType: 'image/png',
     imageAlt:
       'PolicyGPT Enterprise evidence-backed policy answer with confidence diagnostics and page-level citations',

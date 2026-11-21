@@ -12,8 +12,8 @@ import { Button } from '../../components/ui/Button.jsx';
     { label: 'v0.3.0 Release', href: 'https://github.com/chintan-02/policygpt-enterprise/releases/tag/v0.3.0', external: true }
   ]}
   image="/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png"
-  imageAlt="PolicyGPT Enterprise answer to a remote-work policy question with calibrated confidence and page-level citations"
-  imageCaption="Evidence-backed remote-work policy answer with calibrated confidence and page-level source citations."
+  imageAlt="PolicyGPT handbook answer with its page 12 citation placed first"
+  imageCaption="When a printed handbook conflicts with the approved repository, PolicyGPT identifies the controlling version and cites page 12 of the sample handbook."
 />
 
 ## Problem
@@ -28,11 +28,11 @@ PolicyGPT validates and registers policy PDFs with persistent identity, extracts
 
 Supported results attach page-level citations and interpretable confidence diagnostics. Missing evidence produces a controlled unsupported response, while provider failure preserves answer-ready evidence through citation-only fallback. Evaluation artifacts and readiness views make quality and operational state inspectable.
 
-It is an independent portfolio engineering project with a local Docker Compose release profile—not a generic PDF chatbot, a commercially adopted product or a cloud-production system. Intended review contexts include HR, policy ownership, compliance, governance, SOP operations and RAG engineering evaluation; they are not claims of real-company usage.
+I built PolicyGPT as an independent local engineering project for policy owners and reviewers who need to verify an answer against its source. The demo uses a fictional HR handbook.
 
 <aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.28)] bg-[rgb(var(--accent-rgb)/0.07)] p-5">
   <div className="text-sm leading-7 text-ink-muted">
-    <strong className="text-ink">My engineering scope:</strong> end-to-end RAG architecture, ingestion, retrieval, evidence gating, confidence diagnostics, FastAPI services, PostgreSQL lifecycle metadata, the Next.js console, evaluation workflows, tests and Docker Compose release engineering. The verified baseline includes a 16-case benchmark, 230 backend tests and 128 frontend tests; authentication, tenancy and managed cloud deployment remain explicit boundaries. The 16-case benchmark is a controlled functional evaluation, not a statistically representative benchmark or evidence of production performance.
+    <strong className="text-ink">My engineering scope:</strong> end-to-end RAG architecture, ingestion, retrieval, evidence gating, confidence diagnostics, FastAPI services, PostgreSQL lifecycle metadata, the Next.js console, evaluation workflows, tests and Docker Compose release engineering. Authentication, tenancy and managed cloud deployment are outside the verified local scope.
 
   </div>
 </aside>
@@ -44,8 +44,17 @@ It is an independent portfolio engineering project with a local Docker Compose r
 | Reviewable provenance | Document, page, section, chunk and excerpt |
 | Unsupported questions | Controlled rejection with no unsupported generation |
 | Provider failure | Citation-only evidence with explicit degraded state |
-| Evaluation | Versioned 16-case supported/unsupported benchmark |
+| Evaluation | Versioned 24-case holdout with case-level outcomes |
 | Operations | Migrations, liveness, readiness, request IDs and release verification |
+
+## Engineering milestones
+
+| Milestone | Delivered |
+| --- | --- |
+| Document ingestion | Validated PDFs, deduplicated by SHA-256, and tracked indexing state in PostgreSQL. |
+| Retrieval and answer gating | Indexed page-aware evidence in ChromaDB and assessed direct support before deciding whether to generate. |
+| Evidence review | Built the Next.js console to show cited passages, refusal reasons, and confidence diagnostics. |
+| Reliability and evaluation | Added citation-only fallback for provider outages, Compose health checks, and read-only views over saved benchmark results. |
 
 ## Technology stack
 
@@ -249,7 +258,7 @@ This separation prevents weak evidence and provider outages from collapsing into
   title="Unsupported-answer guardrail"
   items={[
     {
-      label: "Controlled unsupported-answer state that blocks generation when indexed policies provide no usable evidence.",
+      label: "PolicyGPT declined to name AtlasWorks’ approved password manager because the indexed passages did not support a product name.",
       image: "/images/case-studies/policygpt/03-policygpt-unsupported-answer-fallback.png",
       alt: "PolicyGPT Enterprise unsupported-answer state showing insufficient evidence, blocked generation, and a safe fallback message"
     }
@@ -283,104 +292,31 @@ The final decision uses these diagnostics to explain why evidence was accepted o
   ]}
 />
 
-## Evaluation
+## Final holdout evaluation
 
-<div className="my-8 grid gap-3 sm:grid-cols-3">
-  {[
-    ["16", "Benchmark cases"],
-    ["11", "Expected-supported"],
-    ["5", "Expected-unsupported"]
-  ].map(([value, label]) => (
-    <div key={label} className="rounded-card border border-line bg-[rgb(var(--surface2-rgb)/0.64)] p-4 text-center">
-      <p className="font-display text-3xl font-bold tracking-[-0.04em] text-ink">{value}</p>
-      <p className="mt-2 text-xs font-semibold text-ink-muted">{label}</p>
-    </div>
-  ))}
-</div>
+| Measure | Saved local run |
+| --- | --- |
+| Benchmark cases passed | **23/24** |
+| Correct refusals | **4/4** |
+| Request errors | **0** |
+| Expected-page retrieval and answer-readiness accuracy | **100% each** |
+| Generated answers returned for answer-ready cases | **20/20** |
 
-<div className="my-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-  {[
-    ["100%", "Answer-readiness accuracy"],
-    ["100%", "Unsupported / fallback accuracy"],
-    ["100%", "Expected-page retrieval hit rate"],
-    ["0", "Request errors"]
-  ].map(([value, label]) => (
-    <div key={label} className="rounded-card border border-[rgb(var(--accent-rgb)/0.24)] bg-[rgb(var(--accent-rgb)/0.07)] p-4">
-      <p className="font-display text-2xl font-bold tracking-[-0.04em] text-ink">{value}</p>
-      <p className="mt-2 text-xs font-semibold leading-5 text-ink-muted">{label}</p>
-    </div>
-  ))}
-</div>
-
-<aside className="my-8 rounded-panel border border-[rgb(var(--accent-rgb)/0.32)] bg-[rgb(var(--accent-rgb)/0.08)] p-5">
-  <p className="font-mono text-xs font-bold uppercase tracking-[0.18em] text-accent">Controlled local benchmark—not production accuracy.</p>
-  <div className="mt-3 text-sm leading-7 text-ink-muted">
-    The verified run disabled the generation provider. Supported questions therefore returned citation-only evidence. The run verified answer-readiness, unsupported and fallback behaviour, expected-page retrieval and request reliability; it did not verify generated-answer quality.
-  </div>
-</aside>
+The one scored miss came from the keyword checker expecting “locked” when the generated answer said “lock.” The saved run retains that failure. This controlled holdout uses one fictional handbook and measures behavior on those 24 cases.
 
 <ScreenshotGallery
-  title="Evaluation dashboard"
-  showBadge
-  items={[
-    {
-      label: "Controlled RAG benchmark showing retrieval quality, unsupported-answer safety, provider availability, and production-style quality gates.",
-      image: "/images/case-studies/policygpt/06-policygpt-evaluation-overview.png",
-      alt: "PolicyGPT Enterprise evaluation overview showing benchmark metrics, retrieval quality, unsupported-answer safety, provider availability, and quality gates"
-    }
-  ]}
-/>
-
-## Supported and unsupported cases
-
-The case-level view keeps supported and unsupported expectations inspectable instead of reducing the benchmark to one aggregate score. Each capture is full width so confidence, gate state and fallback behavior remain readable.
-
-<ScreenshotGallery
-  title="Supported benchmark cases"
+  title="Final evaluation dashboard"
   columns={1}
   items={[
     {
-      label: "Supported remote-work benchmark cases with answer-ready evidence, passed safety gates, calibrated confidence, and citation-only provider fallback.",
-      image: "/images/case-studies/policygpt/07a-policygpt-supported-evaluation-cases.png",
-      alt: "PolicyGPT Enterprise supported evaluation cases with answer-ready evidence, confidence, safety gates, citations, and provider fallback status"
-    },
-    {
-      label: "Five unsupported benchmark cases correctly rejected with insufficient evidence, no generation, and validated safe fallback behavior.",
-      image: "/images/case-studies/policygpt/07b-policygpt-unsupported-evaluation-cases.png",
-      alt: "PolicyGPT Enterprise unsupported evaluation cases showing five correct rejections, insufficient evidence, no generation, and safe fallback validation"
+      label: "Corrected Evaluation overview showing full run coverage, zero request errors, and the one benchmark case requiring review.",
+      image: "/images/case-studies/policygpt/06-policygpt-evaluation-overview.png",
+      alt: "PolicyGPT Evaluation overview with 24 cases evaluated, one case failure, four correct refusals reflected as 100 percent fallback accuracy, and zero request errors"
     }
   ]}
 />
 
-## Provider reliability
-
-Provider state is reported separately from evidence quality. In the provider-disabled benchmark, supported cases remained answer-ready and returned citation-only evidence; unsupported cases were still rejected before generation.
-
-<ScreenshotGallery
-  title="Provider-resilient results"
-  items={[
-    {
-      label: "Provider-reliability diagnostics showing that evidence retrieval remained answer-ready while citation-only fallback preserved usable results during generation unavailability.",
-      image: "/images/case-studies/policygpt/09-policygpt-provider-reliability.png",
-      alt: "PolicyGPT Enterprise provider-reliability diagnostics showing answer-ready retrieval and citation-only fallback while generation is unavailable"
-    }
-  ]}
-/>
-
-## Evaluation artifacts
-
-Completed evaluation runs preserve the dataset identity and execution configuration needed to interpret and reproduce the results. The UI exposes the full case coverage and downloadable artifacts rather than presenting metrics without their run context.
-
-<ScreenshotGallery
-  title="Versioned evaluation run"
-  items={[
-    {
-      label: "Versioned evaluation artifact with reproducible dataset identity, complete benchmark coverage, execution configuration, and downloadable JSON/CSV results.",
-      image: "/images/case-studies/policygpt/11-policygpt-evaluation-run-details.png",
-      alt: "PolicyGPT Enterprise evaluation run details with dataset version, benchmark coverage, execution settings, and JSON and CSV download controls"
-    }
-  ]}
-/>
+The Evaluation console reads saved JSON and CSV artifacts. A previous provider-disabled run exercised citation-only fallback independently of this generated-answer holdout.
 
 ## Docker and operations
 
@@ -480,7 +416,7 @@ The verified repository baseline includes:
   {[
     ["230", "Backend tests"],
     ["128", "Frontend tests"],
-    ["16 cases", "Benchmark validation"],
+    ["23/24", "Final holdout cases passed"],
     ["Passed", "Frontend lint"],
     ["Passed", "Production build"],
     ["Verified", "Docker Compose health and release workflow"]

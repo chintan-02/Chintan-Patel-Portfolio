@@ -235,7 +235,7 @@ export const projects = [
     homepage: {
       displayTitle: 'PolicyGPT Enterprise',
       metrics: [
-        { value: '11 + 5', label: 'Supported + unsupported evaluation cases' },
+        { value: '23/24', label: 'Final holdout cases passed' },
         { value: '358', label: 'PolicyGPT tests · release snapshot' }
       ],
       stack: ['Next.js', 'FastAPI', 'PostgreSQL', 'ChromaDB', 'Docker Compose'],
@@ -254,7 +254,7 @@ export const projects = [
     contribution:
       'Built the ingestion architecture, evidence API, retrieval and evidence-gating logic, answerability diagnostics, Next.js console, PostgreSQL document lifecycle, controlled evaluation workflow, and release-like Docker Compose environment.',
     outcome:
-      'Verified a 16-question benchmark covering supported and unsupported requests, page-level evidence, controlled fallback behavior, and operational readiness without presenting the small benchmark as production accuracy.',
+      'Passed 23 of 24 local holdout cases, with 4 of 4 correct refusals and zero request errors.',
     stack: [
       'Next.js',
       'React',
@@ -274,18 +274,18 @@ export const projects = [
       'Calibrated Answerability',
       'Page-Level Citations',
       'Provider-Resilient Fallback',
-      '16-Case RAG Evaluation',
+      '24-Case Holdout Evaluation',
       'Request IDs & Structured Logs'
     ],
     metrics: [
       { value: 'Docker Compose', label: 'Verified local release' },
-      { value: '16', label: 'Case benchmark' },
+      { value: '23/24', label: 'Final holdout cases passed' },
       { value: '230', label: 'Backend tests' },
       { value: '128', label: 'Frontend tests' }
     ],
     proofStrip: [
       'Docker Compose',
-      '16-case benchmark',
+      '23/24 holdout cases passed',
       '230 backend tests',
       '128 frontend tests'
     ],

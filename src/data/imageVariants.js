@@ -10,8 +10,8 @@ export const imageVariants = {
     "base": "/images/responsive/triage-dashboard"
   },
   "/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png": {
-    "width": 2990,
-    "height": 1722,
+    "width": 1600,
+    "height": 815,
     "base": "/images/responsive/policy-answer"
   }
 };

@@ -20,8 +20,8 @@ const CASE_STUDY_IMAGES = {
   },
   '/case-studies/policygpt-enterprise': {
     path: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png',
-    width: 2990,
-    height: 1722
+    width: 1600,
+    height: 815
   }
 };
 
@@ -120,8 +120,8 @@ function caseStudyMetadata(project) {
     project.seo?.image
       ? {
           path: project.seo.image,
-          width: 2990,
-          height: 1722
+          width: 1600,
+          height: 815
         }
       : CASE_STUDY_IMAGES[canonicalPath] ?? DEFAULT_IMAGE;
   const image = imageMetadata(selectedImage);
