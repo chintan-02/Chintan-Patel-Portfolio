@@ -6,7 +6,9 @@ export function ProductPreview({ project, slug, title, className = '' }) {
   const key = slug ?? project?.slug;
   const captures = {
     triageai: { src: '/images/case-studies/triageai/01-command-center.png', alt: 'TriageAI clinical intake dashboard', href: '/case-studies/triageai' },
-    policygpt: { src: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png', alt: 'PolicyGPT policy answer with page-level citations', href: '/case-studies/policygpt-enterprise' }
+    policygpt: { src: '/images/case-studies/policygpt/01-policygpt-citation-backed-answer.png', alt: 'PolicyGPT policy answer with page-level citations', href: '/case-studies/policygpt-enterprise' },
+    'regimpact-ai': { src: '/images/regimpact-walkthrough/change-register.png', alt: 'RegImpact change register with the incident notification amendment selected', href: '/case-studies/regimpact-ai' },
+    'product-finder-ai-agent': { src: '/images/case-studies/product-finder/search-home.webp', alt: 'Product Finder search interface with example queries', href: '/case-studies/product-finder-ai-agent' }
   };
   const capture = captures[key];
   if (!capture) return null;
