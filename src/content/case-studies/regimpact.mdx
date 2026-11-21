@@ -1,4 +1,5 @@
 import { ArchitectureBlock, CaseStudyHero, MetricCard, StatusBadges, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
+import { Button } from '../../components/ui/Button.jsx';
 
 <CaseStudyHero
   label="Regulatory AI Case Study"
@@ -366,14 +367,9 @@ The strongest engineering result is not a single model metric. It is the end-to-
     Review the source code, release audit, architecture, operational documentation, and immutable Azure deployment evidence.
   </p>
   <div className="mt-6 flex flex-wrap gap-3">
-    <a
-      href="https://github.com/chintan-02/regimpact-ai"
-      target="_blank"
-      rel="noopener noreferrer"
-      className="inline-flex items-center justify-center gap-2 rounded-card border border-accent bg-accent px-5 py-3 text-sm font-bold text-[#0A0A0F] shadow-[0_10px_30px_rgb(var(--accent-rgb)/0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#F0B98E]"
-    >
-      View GitHub Repository ↗
-    </a>
+    <Button href="https://github.com/chintan-02/regimpact-ai" variant="onDarkAccent">
+      View GitHub Repository
+    </Button>
     <a
       href="https://github.com/chintan-02/regimpact-ai/blob/main/docs/release-audit-v0.5.md"
       target="_blank"
