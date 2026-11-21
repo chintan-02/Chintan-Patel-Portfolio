@@ -2,7 +2,7 @@ import { ArchitectureBlock, CaseStudyHero, MetricCard, StatusBadges, TechStackBl
 
 <CaseStudyHero
   label="Regulatory AI Case Study"
-  meta="v0.5.0 verified Azure release · immutable evidence · ephemeral staging now default"
+  meta="Locally verified reviewer walkthrough · v0.5.0 Azure staging evidence"
   badges={["Analyst-assurance platform", "Human approval required", "Production intentionally unapproved"]}
   title="RegImpact AI — Regulatory Change Impact & Controls Assurance"
   description="An evidence-linked regulatory intelligence platform that versions source documents, detects section-level changes, identifies obligation candidates, retrieves relevant controls, and routes uncertain or consequential findings to authorized reviewers."
@@ -43,7 +43,19 @@ RegImpact was therefore designed as an **analyst-assurance platform**, not a reg
   { title: "Audit trail", description: "Decision history remains durable and append-only" }
 ]} />
 
-A representative workflow is a regulator changing an incident-reporting deadline. RegImpact identifies the old and new clauses, retrieves the internal control that still reflects the previous deadline, cites both sources, and presents the impact proposal for review. The system does not silently modify the control.
+## Verified local walkthrough
+
+The Docker Compose walkthrough uses synthetic Directive 060 clauses. The sample § 4.2 reporting window changes from 72 to 24 hours and adds a requirement to preserve the submission receipt.
+
+![Change register with the modified § 4.2 incident-notification clause selected](/images/regimpact-walkthrough/change-register.png)
+
+![Side-by-side clause comparison showing the 72-hour and 24-hour sample windows and one extracted obligation](/images/regimpact-walkthrough/clause-comparison.png)
+
+The Analyst traced the extracted obligation to version 2, page 43, and deferred the proposed mapping to control `REG-IR-01` pending confirmation that the control owner could meet the shorter window. The rationale and revision 2 persisted after refresh. The Viewer could read that decision and saw a read-only notice.
+
+![Read-only Viewer detail showing the source evidence and saved deferred analyst decision](/images/regimpact-walkthrough/viewer-review.png)
+
+The [authenticated API walkthrough](https://github.com/chintan-02/regimpact-ai/blob/main/apps/api/tests/test_reviewer_walkthrough.py) passed five local runs and checked that a Viewer write returns HTTP 403. The [v0.5.0 release audit](https://github.com/chintan-02/regimpact-ai/blob/main/docs/release-audit-v0.5.md) records the earlier Azure staging deployment.
 
 ## Architecture
 
