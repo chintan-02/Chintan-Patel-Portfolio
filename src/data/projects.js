@@ -5,7 +5,7 @@ export const projects = [
     category: 'Regulatory AI · AI Systems Engineering',
     title: 'RegImpact AI',
     subtitle: 'Regulatory Change Impact & Controls Assurance Platform',
-    status: 'Azure staging release · human-reviewed regulatory analysis',
+    status: 'Locally verified reviewer workflow · v0.5.0 Azure staging',
     featured: true,
     featuredOrder: 2,
     proofHighlight: {
@@ -20,7 +20,7 @@ export const projects = [
         { value: 'Human review', label: 'Approval before consequential decisions' }
       ],
       stack: ['FastAPI', 'Next.js', 'PostgreSQL + pgvector', 'Redis', 'Azure Container Apps'],
-      scope: 'Azure staging validated; regulatory decisions remain subject to authorized human review.'
+      scope: 'Reviewer walkthrough verified locally. Azure staging evidence covers the v0.5.0 release.'
     },
     homepageVisual: {
       type: 'evidence',
