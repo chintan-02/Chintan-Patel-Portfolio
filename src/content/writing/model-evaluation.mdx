@@ -136,7 +136,7 @@ For a stronger evaluation I would report:
 - sensitivity to threshold and random seed
 - performance on a later or external dataset
 
-Small evaluation sets need especially careful language. PolicyGPT’s checked-in 16-case benchmark, for example, is useful for controlled regression testing but is not a statistically representative estimate of production RAG accuracy.
+Small evaluation sets need especially careful language. PolicyGPT’s original 16-case benchmark, for example, is useful for controlled regression testing but is not a statistically representative estimate of production RAG accuracy.
 
 ## Subgroup and fairness analysis
 
@@ -179,7 +179,7 @@ RAG quality is not one answer-quality number. I separate:
 - generated-answer quality when generation is enabled
 - latency and cost
 
-The current 16-case PolicyGPT benchmark contains supported and unsupported questions and is valuable as a versioned functional regression suite. It should be expanded before any production-quality claim, and a run with generation disabled cannot validate generated-answer content.
+The original 16-case PolicyGPT benchmark contains supported and unsupported questions and is valuable as a versioned functional regression suite. It should be expanded before any production-quality claim, and a run with generation disabled cannot validate generated-answer content.
 
 ## Operational evaluation belongs in the release gate
 
@@ -226,3 +226,5 @@ A monitoring alert is a request to investigate. It is not automatic proof that t
 The strongest model is not necessarily the one with the highest headline score. It is the one that beats a relevant baseline, remains understandable under class-level and risk-aligned analysis, behaves honestly when uncertain, survives operational testing, and stays inside clearly documented boundaries.
 
 Evaluation is not a final chart in a notebook. It is the evidence used to decide whether a system should be released, monitored, revised, or stopped.
+
+The case study shows the later 24-case holdout and the case-level scoring result. [PolicyGPT Enterprise case study](/case-studies/policygpt-enterprise).

@@ -135,7 +135,7 @@ RAG systems have additional sources of change:
 
 For PolicyGPT, I would track expected-page hit rate, supported-question readiness, unsupported-question rejection, citation coverage, retrieval-score distribution, lexical coverage, provider-fallback rate, and response latency.
 
-The checked-in 16-case benchmark is useful as a controlled regression suite, but it is not large enough to estimate production accuracy. It should be expanded using reviewed cases collected from realistic policy workflows before being used for operational claims.
+The original 16-case benchmark is useful as a controlled regression suite, but it is not large enough to estimate production accuracy. It should be expanded using reviewed cases collected from realistic policy workflows before being used for operational claims.
 
 ## Alerting without creating alarm fatigue
 
@@ -204,3 +204,5 @@ Raw clinical notes, resumes, policy questions, and protected attributes should n
 Drift monitoring is not a dashboard that declares a model healthy or unhealthy. It is an evidence system that connects data quality, distributions, task performance, operational behaviour, and human review.
 
 The strongest monitoring design is conservative: it detects change early, explains why an alert fired, protects sensitive data, and prevents automatic retraining from turning an uncertain signal into an unreviewed production decision.
+
+The case study includes the later 24-case local holdout. [PolicyGPT Enterprise case study](/case-studies/policygpt-enterprise).

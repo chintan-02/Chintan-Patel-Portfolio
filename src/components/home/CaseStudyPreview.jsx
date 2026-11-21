@@ -22,7 +22,7 @@ const caseStudyFocus = {
   policygpt: {
     summary:
       'How document identity, evidence gating, calibrated answerability, provider resilience, evaluation, and local release engineering work together.',
-    topics: ['Evidence architecture', '16-case evaluation', 'Release reliability'],
+    topics: ['Evidence architecture', '24-case holdout evaluation', 'Release reliability'],
     proof: '230 backend · 128 frontend tests'
   }
 };

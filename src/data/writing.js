@@ -78,7 +78,7 @@ export const writingItems = [
   {
     slug: 'evidence-gated-rag',
     title: 'Building an Evidence Gate: How to Stop a RAG System from Hallucinating',
-    description: 'How PolicyGPT moved from thresholded retrieval to calibrated answerability, provider-resilient fallback, and a repeatable 16-case evaluation workflow.',
+    description: 'How PolicyGPT moved from thresholded retrieval to calibrated answerability, provider-resilient fallback, and a repeatable evaluation workflow.',
     meta: 'Published July 2026 · 5 min read',
     tags: ['RAG', 'GenAI', 'System Design'],
     route: '/writing/evidence-gated-rag'
