@@ -85,17 +85,17 @@ export const CASE_STUDY_ROUTES = [
   {
     route: '/case-studies/resumeiq',
     output: 'dist/case-studies/resumeiq/index.html',
-    title: 'ResumeIQ — Privacy-Aware Resume Intelligence | Chintan Patel',
+    title: 'ResumeIQ — Evidence-Grounded Resume Tailoring | Chintan Patel',
     description:
-      'Privacy-aware resume intelligence case study covering multi-format parsing, TF-IDF classification, semantic job-description matching, skill analysis, writing review, and human decision support.',
+      'ResumeIQ maps job requirements to exact evidence and checks drafted resume bullets for unsupported claims.',
     canonical: `${SITE_URL}/case-studies/resumeiq`,
     robots: 'index, follow',
     ogType: 'article',
-    image: `${SITE_URL}/images/resumeiq-og.png`,
-    imageWidth: '2904',
-    imageHeight: '1574',
-    imageType: 'image/png',
-    imageAlt: 'ResumeIQ privacy-aware resume intelligence and job application dashboard',
+    image: `${SITE_URL}/images/case-studies/resumeiq/demo-v2.webp`,
+    imageWidth: '1440',
+    imageHeight: '1180',
+    imageType: 'image/webp',
+    imageAlt: 'ResumeIQ fit map and highlighted resume evidence',
     twitterCard: 'summary_large_image'
   }
 ];

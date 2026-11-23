@@ -44,7 +44,7 @@ const values = [
   {
     icon: Gauge,
     title: 'Explainability over black boxes',
-    text: 'Explainability changes by system: clinical evidence and human review in TriageAI, decomposed resume signals in ResumeIQ, and answerability diagnostics with citations and safe fallback in PolicyGPT. The common rule is intelligence you can trace, not output you must accept on faith.'
+    text: 'Explainability changes by system: clinical evidence and human review in TriageAI, exact resume citations and claim checks in ResumeIQ, and answerability diagnostics with citations and safe fallback in PolicyGPT. The common rule is intelligence you can trace, not output you must accept on faith.'
   },
   {
     icon: Rocket,

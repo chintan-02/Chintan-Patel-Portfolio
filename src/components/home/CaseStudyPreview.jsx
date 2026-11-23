@@ -15,9 +15,9 @@ const caseStudyFocus = {
   },
   resumeiq: {
     summary:
-      'Why resume intelligence should separate parsing, classification, keyword and semantic evidence, skill gaps, privacy, and recruiter responsibility.',
-    topics: ['Multi-signal NLP', 'Privacy boundaries', 'Human review'],
-    proof: 'PDF · DOCX · TXT supported'
+      'How ResumeIQ links requirements to evidence and checks drafted bullets for overstatement.',
+    topics: ['Evidence matching', 'Claim checking', 'Holdout evaluation'],
+    proof: '0.77 macro-F1 · synthetic holdout'
   },
   policygpt: {
     summary:

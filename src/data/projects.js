@@ -399,87 +399,37 @@ export const projects = [
     slug: 'resumeiq',
     category: 'NLP / Resume Intelligence',
     title: 'ResumeIQ',
-    subtitle: 'Privacy-Aware Resume Intelligence Platform',
-    status: 'Demo offline · frontend migration planned',
-    featured: false,
-    featuredOrder: 5,
+    subtitle: 'Evidence-Grounded Resume Tailoring',
+    status: 'Live educational demo',
+    featured: true,
+    featuredOrder: 3.5,
     homepage: {
       metrics: [
-        { value: '3', label: 'Resume formats supported' },
-        { value: 'Human', label: 'Final review required' }
+        { value: '0.77', label: 'Matcher macro-F1 · synthetic holdout' },
+        { value: '20/20', label: 'Overstated drafts blocked · synthetic holdout' }
       ],
-      stack: ['Python', 'FastAPI', 'Streamlit', 'scikit-learn', 'Azure'],
-      scope: 'Previously demonstrated on Azure · currently offline · frontend migration planned'
+      stack: ['Next.js', 'FastAPI', 'Python', 'Cloud Run', 'Vercel'],
+      scope: 'Candidate decision support evaluated on synthetic data.'
     },
-    description:
-      'Privacy-aware NLP decision-support platform for multi-format resume parsing, baseline role classification, ATS-style compatibility signals, semantic job-description matching, skill intelligence, writing-quality review, batch comparison, and human recruiter workflows.',
-    problem:
-      'Candidates and reviewers often receive opaque resume scores without knowing which skills, keywords, structural issues, or writing patterns influenced the result. ResumeIQ separates these signals and presents them for transparent human interpretation.',
-    contribution:
-      'Built multi-format parsing, NLP preprocessing, baseline classification, job-description matching, skill intelligence, recruiter-review workflows, FastAPI foundations, persistence, Docker/CI foundations, and an Azure-hosted portfolio demonstration.',
-    outcome:
-      'Created a working multi-signal resume intelligence workflow while explicitly separating implemented capabilities from experimental foundations and avoiding unverified headline model-accuracy claims.',
-    stack: [
-      'Python',
-      'Streamlit',
-      'FastAPI',
-      'Scikit-learn',
-      'TF-IDF',
-      'SQLAlchemy',
-      'SQLite',
-      'Docker Compose',
-      'GitHub Actions',
-      'Azure'
-    ],
-    features: [
-      'PDF, DOCX & TXT Parsing',
-      'Baseline Role Classification',
-      'ATS-Style Signals',
-      'Semantic JD Matching',
-      'Normalized Skill Intelligence',
-      'Writing & Structure Review',
-      'Batch Resume Comparison',
-      'Privacy-Aware Human Review'
-    ],
+    homepageVisual: {
+      type: 'image',
+      src: '/images/case-studies/resumeiq/demo-v2.webp',
+      alt: 'ResumeIQ fit map with highlighted resume evidence',
+      caption: 'ResumeIQ explains how strongly the cited resume passage supports each requirement.'
+    },
+    description: 'Maps job requirements to exact resume passages, grades evidence strength, and checks drafted bullets for unsupported claims.',
+    problem: 'Keyword overlap obscures weak evidence, and generated rewrites can exaggerate what a candidate did.',
+    contribution: 'Built evidence matching, document parsing, optional Claude drafting, deterministic claim checks, and a Next.js workflow backed by FastAPI.',
+    outcome: 'Matcher v3 scored 0.77 macro-F1 on 34 synthetic held-out cases. Checker v3 blocked 20/20 overstated drafts and wrongly blocked 3/20 honest drafts on its holdout.',
+    stack: ['Next.js', 'TypeScript', 'Python', 'FastAPI', 'Claude API', 'Cloud Run', 'Vercel', 'GitHub Actions'],
+    features: ['PDF, DOCX & TXT parsing', 'Exact source citations', 'Evidence strength', 'Tailor plan', 'Edited-draft rechecks', 'Report export'],
     metrics: [
-      { value: '3', label: 'Resume formats supported' },
-      { value: 'Multi-signal', label: 'Analysis approach' },
-      { value: 'Human', label: 'Review required' },
-      { value: 'Offline', label: 'Demo status' }
+      { value: '0.77', label: 'Synthetic holdout macro-F1' },
+      { value: '20/20', label: 'Overstated drafts blocked on checker holdout' },
+      { value: '148 + 20', label: 'API and web tests passed' }
     ],
-    screenshots: [
-      {
-        label: 'Multi-format resume upload',
-        detail: 'Upload PDF, DOCX, or TXT files for text extraction and normalization.'
-      },
-      {
-        label: 'Resume intelligence dashboard',
-        detail: 'Review classification, structure, skills, keyword, semantic, and writing-quality signals.'
-      },
-      {
-        label: 'Job-description matching',
-        detail: 'Inspect keyword overlap, semantic similarity, role alignment, and missing skills separately.'
-      },
-      {
-        label: 'Writing and structure guidance',
-        detail: 'Review generic wording, incomplete sections, placeholders, and targeted rewrite suggestions.'
-      },
-      {
-        label: 'Recruiter review workflow',
-        detail: 'Compare candidates, add notes, and preserve human responsibility for final decisions.'
-      }
-    ],
-    pipeline: [
-      'Resume Upload',
-      'Parse + Normalize',
-      'Baseline Classification',
-      'Skill Intelligence',
-      'Keyword + Semantic JD Matching',
-      'Quality Review',
-      'Human Review'
-    ],
-    liveUrl: null,
-    githubUrl: 'https://github.com/chintan-02/smart-resume-classifier',
+    liveUrl: 'https://resumeiq-chintan.vercel.app/demo',
+    githubUrl: 'https://github.com/chintan-02/resumeiq',
     caseStudyUrl: '/case-studies/resumeiq',
     accent: 'from-amber-400 to-rose-400'
   }

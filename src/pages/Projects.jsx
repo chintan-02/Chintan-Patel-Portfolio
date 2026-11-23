@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import { projects } from '../data/projects.js';
 import { SectionHeader } from '../components/ui/SectionHeader.jsx';
 import { ProjectCard } from '../components/projects/ProjectCard.jsx';
@@ -25,7 +24,6 @@ export function Projects() {
             </Reveal>
           ))}
         </div>
-        <div className="mt-12 border-t border-line pt-8"><h2 className="text-xl font-bold text-ink">Earlier work</h2><p className="mt-3 text-sm leading-7 text-ink-muted">ResumeIQ — resume parsing, role classification, and job-description matching. The demo is offline while the frontend upgrade is planned.</p><Link to="/case-studies/resumeiq" className="mt-3 inline-block font-semibold text-accent">Read the ResumeIQ case study →</Link></div>
       </div>
     </section>
   );
