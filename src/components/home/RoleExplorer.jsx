@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowUpRight, Check, ChevronRight } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ChevronRight } from 'lucide-react';
 import { projects } from '../../data/projects.js';
 import { portfolioRoles, roleEvidence } from '../../data/roleEvidence.js';
 import '../../styles/role-explorer.css';
@@ -29,7 +29,7 @@ export function RoleExplorer() {
         </div>
         <div className="role-explorer-roles" role="group" aria-label="Choose an engineering focus">
           {portfolioRoles.map((item) => (
-            <button key={item.id} type="button" aria-pressed={roleId === item.id} onClick={() => selectRole(item)}>
+            <button key={item.id} type="button" aria-pressed={roleId === item.id} aria-controls="role-evidence-detail" onClick={() => selectRole(item)}>
               {item.label}
             </button>
           ))}
@@ -38,18 +38,16 @@ export function RoleExplorer() {
         <div className="role-explorer-frame">
           <div className="role-explorer-menu" role="group" aria-label={`${role.label} project evidence`}>
             <p className="role-explorer-caption">FOLLOW A SKILL</p>
-            {role.evidence.map((id, index) => {
+            {role.evidence.map((id) => {
               const item = roleEvidence[id];
               const source = projects.find((entry) => entry.slug === item.projectSlug);
               return (
                 <button key={id} type="button" aria-pressed={id === evidenceId} aria-controls="role-evidence-detail" onClick={() => setEvidenceId(id)}>
-                  <span className="role-explorer-index">0{index + 1}</span>
                   <span><strong>{item.label}</strong><small>{source.title}</small></span>
                   <ChevronRight size={16} aria-hidden="true" />
                 </button>
               );
             })}
-            <p className="role-explorer-menu-note"><Check size={14} aria-hidden="true" />Linked to documented project work</p>
           </div>
           <div id="role-evidence-detail" className="role-explorer-detail" aria-live="polite" aria-atomic="true">
             <div className="role-explorer-detail-head"><span>{evidence.category}</span><span>{project.title}</span></div>
@@ -63,12 +61,11 @@ export function RoleExplorer() {
               {project.caseStudyUrl
                 ? <Link className="folio-primary" to={project.caseStudyUrl}>Read case study <ArrowRight size={16} aria-hidden="true" /></Link>
                 : <a className="folio-primary" href={project.liveUrl} target="_blank" rel="noopener noreferrer">Try the demo <ArrowUpRight size={16} aria-hidden="true" /></a>}
-              <a className="folio-secondary" href={project.githubUrl} target="_blank" rel="noopener noreferrer">Inspect source <ArrowUpRight size={16} aria-hidden="true" /></a>
+              <a className="folio-secondary" href={evidence.evidenceUrl ?? project.githubUrl} target="_blank" rel="noopener noreferrer">{evidence.evidenceLabel ?? "Inspect source"} <ArrowUpRight size={16} aria-hidden="true" /></a>
             </div>
             {evidence.writingUrl && <Link className="role-explorer-walkthrough" to={evidence.writingUrl}>{evidence.writingLabel} <ArrowRight size={14} aria-hidden="true" /></Link>}
           </div>
         </div>
-        <p className="role-explorer-footnote">A curated guide to my work. Each path links to the same case studies and source code—without automated fit scores.</p>
       </div>
     </section>
   );
