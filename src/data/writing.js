@@ -71,7 +71,7 @@ export const writingItems = [
     slug: 'resume-intelligence-multi-signal',
     title: 'Why ResumeIQ Uses Multiple Signals Instead of One ATS Score',
     description: 'A product and responsible-AI explanation of parsing, classification, keyword and semantic matching, skill gaps, writing quality, privacy, and human review.',
-    meta: 'Published July 2026 · 8 min read',
+    meta: 'Published July 2026 · 8 min read · About ResumeIQ v0.9 (archived)',
     tags: ['NLP', 'Responsible AI', 'Product Design'],
     route: '/writing/resume-intelligence-multi-signal'
   },

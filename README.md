@@ -208,34 +208,25 @@ Verified v0.3.0 evidence:
 
 ### ResumeIQ
 
-**Privacy-Aware Resume Intelligence Platform**
+**Evidence-Grounded Resume Tailoring**
 
-An NLP decision-support system for resume analysis, job-description matching, skill intelligence, and structured reviewer workflows.
+Maps each job requirement to the exact resume passage that supports it, grades how strong that evidence is, and
+checks drafted bullets so they never claim more than the evidence shows.
 
-The project includes:
+- requirement extraction from untrusted job postings, with instruction-like lines removed and reported
+- evidence matching with exact citation offsets and evidence-strength grading (aware, used, built, owned)
+- tailor plan, resume checklist, privacy mode, and report export
+- PDF, DOCX, and TXT uploads read in memory, with contact details masked
+- optional Claude drafting behind a deterministic claim checker; edits require a fresh check before approval
+- versioned synthetic holdouts frozen before each version, plus audited live-model runs
+- Next.js on Vercel, FastAPI on Cloud Run, Secret Manager, GitHub Actions
 
-- PDF, DOCX, and TXT parsing
-- TF-IDF role classification
-- ATS-style compatibility signals
-- keyword matching
-- semantic similarity
-- skill normalization
-- skill-gap analysis
-- generic-sentence detection
-- rewrite guidance
-- batch ranking foundations
-- recruiter notes and shortlist workflows
-- privacy-safe display mode
-- FastAPI foundation
-- SQLAlchemy persistence
-- Docker Compose
-- GitHub Actions
-- Previous Azure demonstration; currently offline pending frontend migration
-
-ResumeIQ avoids presenting its baseline model as production-validated until leakage, split quality, class balance, calibration, and independent evaluation are completed.
+Matcher v3 scored 0.77 macro-F1 on 34 synthetic held-out cases. Claim checker v3 blocked 20/20 overstated drafts
+and wrongly blocked 3/20 honest drafts on its holdout. Labels are AI-drafted and the sets are small.
 
 [Case Study](https://chintanpatel.dev/case-studies/resumeiq) ·
-[Repository](https://github.com/chintan-02/smart-resume-classifier)
+[Live Demo](https://resumeiq-chintan.vercel.app/demo) ·
+[Repository](https://github.com/chintan-02/resumeiq)
 
 ---
 

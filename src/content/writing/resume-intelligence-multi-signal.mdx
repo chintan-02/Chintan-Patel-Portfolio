@@ -2,10 +2,12 @@ import { CaseStudyHero, MetricCard, ArchitectureBlock, TechStackBlock } from '..
 
 <CaseStudyHero
   label="Technical Writing"
-  meta="Published July 2026 · 8 min read"
+  meta="Published July 2026 · 8 min read · About ResumeIQ v0.9 (archived)"
   title="Why ResumeIQ Uses Multiple Signals Instead of One ATS Score"
   description="How I designed ResumeIQ to separate parsing, role classification, keyword coverage, semantic matching, skill gaps, writing quality, privacy, and human review rather than hiding everything behind one unexplained percentage."
 />
+
+*This article describes the original ResumeIQ (v0.9), now archived at the [legacy tag](https://github.com/chintan-02/resumeiq/tree/v0.9-legacy). The [current case study](/case-studies/resumeiq) covers the v2 evidence map and claim checker, which replaced the classifier and ATS-style signals described here.*
 
 <TechStackBlock items={["NLP", "TF-IDF", "Scikit-learn", "Semantic Similarity", "Skill Extraction", "Streamlit", "FastAPI", "Responsible AI"]} />
 
@@ -258,4 +260,3 @@ parser quality
 
 Making those parts visible creates a more honest and useful product than compressing them into a number that users cannot explain.
 
-The [current ResumeIQ case study](/case-studies/resumeiq) covers the v2 evidence map and claim checker. Earlier classifier and ATS-style examples reflect the original implementation.

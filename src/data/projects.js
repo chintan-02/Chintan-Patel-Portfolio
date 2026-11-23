@@ -420,7 +420,7 @@ export const projects = [
     description: 'Maps job requirements to exact resume passages, grades evidence strength, and checks drafted bullets for unsupported claims.',
     problem: 'Keyword overlap obscures weak evidence, and generated rewrites can exaggerate what a candidate did.',
     contribution: 'Built evidence matching, document parsing, optional Claude drafting, deterministic claim checks, and a Next.js workflow backed by FastAPI.',
-    outcome: 'Matcher v3 scored 0.77 macro-F1 on 34 synthetic held-out cases. Checker v3 blocked 20/20 overstated drafts and wrongly blocked 3/20 honest drafts on its holdout.',
+    outcome: 'Matcher v3 scored 0.77 macro-F1 on 34 synthetic held-out cases. Checker v3 blocked 20/20 overstated drafts and wrongly blocked 3/20 honest drafts on its holdout. In a live model run, an AI audit found no clearly overstated final bullet, while new synonyms still caused false alarms.',
     stack: ['Next.js', 'TypeScript', 'Python', 'FastAPI', 'Claude API', 'Cloud Run', 'Vercel', 'GitHub Actions'],
     features: ['PDF, DOCX & TXT parsing', 'Exact source citations', 'Evidence strength', 'Tailor plan', 'Edited-draft rechecks', 'Report export'],
     metrics: [

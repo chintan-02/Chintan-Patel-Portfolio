@@ -1,7 +1,8 @@
-import { CaseStudyHero, ScreenshotGallery } from '../../components/mdx/MDXComponents.jsx';
+import { ArchitectureBlock, CaseStudyHero, MetricCard, ScreenshotGallery, TechStackBlock } from '../../components/mdx/MDXComponents.jsx';
 
 <CaseStudyHero
-  label="APPLIED NLP · FULL-STACK AI"
+  label="Applied NLP · Full-Stack AI"
+  meta="Live demo · synthetic data only"
   title="ResumeIQ — Evidence-Grounded Resume Tailoring"
   description="Match a job requirement to an exact quote from your resume. See what the quote supports, then draft and check a bullet against it."
   badges={["Live demo", "Synthetic holdout evaluation"]}
@@ -14,9 +15,19 @@ import { CaseStudyHero, ScreenshotGallery } from '../../components/mdx/MDXCompon
   ]}
 />
 
-## Why I built ResumeIQ
+<MetricCard label="Synthetic held-out evaluation · matcher v3 and claim checker v3" value="0.77 macro-F1 · 20/20 overstated drafts blocked" note="Matcher: 34 cases, up from 0.69 for v2 on the same set, with overlapping 95% intervals. Checker: 3/20 honest drafts were also wrongly blocked. Each set was frozen before the version it tests and scored once. Labels are AI-drafted, so treat these as small-sample engineering results." />
+
+## Try the workflow
+
+Open the demo. It starts on a synthetic sample resume and job posting. Open **Fit map** and select the partly backed requirement to see the cited lines highlighted in the source document. Open **Tailor plan** for the prioritized fixes. To test the checker, draft a bullet, edit it to claim more than the evidence shows, and run the check again. You can also paste your own job posting or upload a PDF, DOCX, or TXT resume. Uploads are read in memory and are not stored.
+
+## Problem and my contribution
 
 Keyword overlap can show that a resume mentions a tool. It gives a candidate little guidance on whether their resume shows using, building with, or owning work on that tool. A generated rewrite can then turn a contribution into a leadership claim. I built ResumeIQ so candidates can see what their documents actually support before deciding what to rewrite or leave out.
+
+I designed and built the full system: requirement extraction from untrusted postings, evidence matching with exact citation offsets, evidence-strength rules, the tailor plan, document uploads with contact masking, optional Claude drafting behind a deterministic claim checker, the Next.js workflow, Cloud Run and Vercel delivery, and the versioned evaluation sets. It is decision support for candidates. It does not score, rank, or screen people.
+
+<TechStackBlock items={["Python", "FastAPI", "Pydantic", "Next.js", "React", "TypeScript", "Tailwind CSS", "Claude API", "Cloud Run", "Vercel", "Secret Manager", "GitHub Actions", "pytest"]} />
 
 ## How it works
 
@@ -35,7 +46,14 @@ Keyword overlap can show that a resume mentions a tool. It gives a candidate lit
 
 ## Architecture
 
-The Next.js client on Vercel calls its own backend routes. Those routes forward requests to FastAPI on Cloud Run. Requirement extraction and matching use rules and run without a model. Optional Claude drafting receives the masked requirement and cited lines. The API checks the proposed bullet and can retry once or fall back to a rule-based draft.
+<ArchitectureBlock steps={[
+  { title: 'Receive the request', description: 'Next.js on Vercel forwards size-capped, rate-limited requests through its own backend routes to FastAPI on Cloud Run.' },
+  { title: 'Extract and mask', description: 'Requirements come from the posting with instruction-like lines removed and reported. Resume text is read in memory and contact details are masked.' },
+  { title: 'Match with rules', description: 'Each requirement is matched to document spans with exact offsets and graded from awareness to ownership. No model is called.' },
+  { title: 'Draft and check', description: 'Optional Claude drafting sees only the masked requirement and cited lines. The claim checker approves, triggers one retry, or falls back to a rule-based draft.' }
+]} />
+
+Matching and checking stay deterministic so every status can be traced to a quote and a rule, and the public demo costs nothing per visitor. The model only proposes wording. Model calls require a configured key and pass through a per-instance daily budget and a provider spend cap. The API key is held in Secret Manager. Logs record the route, status, and latency, never resume content.
 
 ## Engineering milestones
 
@@ -46,16 +64,26 @@ The Next.js client on Vercel calls its own backend routes. Those routes forward 
 | Tailoring workflow | Multi-format uploads, a fit map and tailor plan, claim checking, rechecks on edits, and report export. |
 | Evaluation and reliability | Per-skill evidence strength, versioned holdouts, live-model audits, rate limits, and operational logging. |
 
+The baseline also settled a design question. On the first labeled set, an embedding matcher alone scored 0.36 macro-F1 and plain keywords scored 0.40. Adding evidence-strength rules lifted both to 0.71, so the deployed matcher kept local rules instead of per-request embeddings.
+
 ## What the evaluation showed
 
 | Measure | Result |
 | --- | --- |
-| Matcher v3 on 34 synthetic held-out cases | **0.77 macro-F1**, up from 0.69 for v2 on the same set. Evidence recall@3 was 0.95 for both. |
-| Claim checker v3 on the synthetic holdout | **20/20** overstated drafts blocked and **3/20** honest drafts wrongly blocked. |
-| Live model audit | **3/15** model-generated final bullets were flagged as borderline by an AI audit. |
+| Matcher v3 on 34 synthetic held-out cases | **0.77 macro-F1** [0.55, 0.95], up from 0.69 [0.52, 0.88] for v2 on the same set. Accuracy 0.85. Keyword traps 9/12 for both versions. Evidence recall@3 was 0.95 for both. |
+| Claim checker v3 on the synthetic holdout | **20/20** overstated drafts blocked and **3/20** honest drafts wrongly blocked. Checker v2 wrongly blocked 15/20 on the same set. |
+| Live model run (20 requirements, Claude Haiku) | The checker blocked **15/20** first drafts: 6 overstatements, 5 borderline, and 4 false alarms. An AI audit judged **0/15** final model bullets clearly overstated and **3/15** borderline. |
 | Automated checks | **148 API tests** and **20 web tests** passed. Four committed evaluation reports reproduced exactly. |
 
-These are small, synthetic holdouts with AI-drafted labels. The matcher can still attach a strong verb to unrelated work, and the live audit shows why candidates should review any approved wording. See the [matcher report](https://github.com/chintan-02/resumeiq/blob/main/evals/reports/eval_v2/REPORT.md), [checker report](https://github.com/chintan-02/resumeiq/blob/main/evals/reports/claimcheck_v3/REPORT.md), and [live drafting audit](https://github.com/chintan-02/resumeiq/blob/main/evals/reports/drafting_v2/NOTES.md).
+The live run is the most useful result. Checker v3 added a list of honest synonyms, which cut false alarms on its holdout from 15/20 to 3/20. Live drafts still raised false alarms, because the model used synonyms the list did not include. The holdout result was optimistic because the same author wrote the test cases and the list. I kept v3, stopped extending the list, and documented a meaning-based check as the next step.
+
+These are small, synthetic holdouts with AI-drafted labels. See the [matcher report](https://github.com/chintan-02/resumeiq/blob/0a871eea38667444f012b273ea1fb47cec8951fd/evals/reports/eval_v2/REPORT.md), [checker report](https://github.com/chintan-02/resumeiq/blob/0a871eea38667444f012b273ea1fb47cec8951fd/evals/reports/claimcheck_v3/REPORT.md), and [live drafting audit](https://github.com/chintan-02/resumeiq/blob/0a871eea38667444f012b273ea1fb47cec8951fd/evals/reports/drafting_v2/NOTES.md).
+
+## Limitations and next steps
+
+The matcher reads words, not meaning. It can still credit a strong verb attached to unrelated work, for example "led inventory planning" for a requirement to lead a data platform migration. The claim checker cannot recognize synonyms outside its list. The instruction filter handles known patterns, and the claim checker is a separate layer behind it. No human has reviewed the evaluation labels yet. A review kit exists and does not edit frozen sets. Candidates should still review any approved wording before using it.
+
+The next steps are a meaning-based check that can only clear a wording flag, never override the other rules; verb-object matching for strong verbs; and a human label review followed by re-publishing every number. Each change needs a new frozen evaluation set.
 
 ## Project history
 

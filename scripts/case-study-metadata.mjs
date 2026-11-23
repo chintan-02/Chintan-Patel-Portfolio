@@ -91,10 +91,10 @@ export const CASE_STUDY_ROUTES = [
     canonical: `${SITE_URL}/case-studies/resumeiq`,
     robots: 'index, follow',
     ogType: 'article',
-    image: `${SITE_URL}/images/case-studies/resumeiq/demo-v2.webp`,
-    imageWidth: '1440',
-    imageHeight: '1180',
-    imageType: 'image/webp',
+    image: `${SITE_URL}/images/case-studies/resumeiq/og-resumeiq.png`,
+    imageWidth: '1200',
+    imageHeight: '630',
+    imageType: 'image/png',
     imageAlt: 'ResumeIQ fit map and highlighted resume evidence',
     twitterCard: 'summary_large_image'
   }
